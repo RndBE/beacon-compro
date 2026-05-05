@@ -1,4 +1,14 @@
-import { PUBLIC_API_BASE } from '$env/static/public';
+import { PUBLIC_API_BASE, PUBLIC_STORAGE_BASE } from '$env/static/public';
+
+/**
+ * Converts a relative storage path (e.g. /storage/articles/...)
+ * to a full URL pointing to the backend server.
+ */
+export function storageUrl(path: string | null | undefined): string | null {
+	if (!path) return null;
+	if (path.startsWith('http://') || path.startsWith('https://')) return path;
+	return `${PUBLIC_STORAGE_BASE}${path.startsWith('/') ? '' : '/'}${path}`;
+}
 
 /**
  * Typed API fetcher for the Beacon backend.
