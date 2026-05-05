@@ -16,6 +16,7 @@ export interface SubSolutionItem {
 	slug: string;
 	abbreviation: string;
 	icon: string | null;
+	thumbnail: string | null;
 	products_count: number;
 }
 
