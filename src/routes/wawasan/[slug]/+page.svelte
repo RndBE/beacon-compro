@@ -1,11 +1,23 @@
 <script lang="ts">
 	import ArticleLayout from '$lib/components/ArticleLayout.svelte';
 	import { page } from '$app/stores';
+	import { PUBLIC_STORAGE_BASE } from '$env/static/public';
 
 	let { data } = $props();
 	
 	let article = $derived(data.articleData?.article);
 	let related = $derived(data.articleData?.related_articles || []);
+
+	// Replace relative /storage/ paths in HTML content with full backend URL
+	function processContent(html: string): string {
+		if (!html) return '';
+		return html.replace(/(?:src|href)="(\/storage\/[^"]+)"/g, (match, path) => {
+			const attr = match.startsWith('src') ? 'src' : 'href';
+			return `${attr}="${PUBLIC_STORAGE_BASE}${path}"`;
+		});
+	}
+
+	let processedContent = $derived(processContent(article?.content || ''));
 
 	// Format related articles to match ArticleLayout expected props
 	let formattedRelated = $derived(
@@ -42,7 +54,7 @@
 	>
 		<!-- Render content as HTML directly from database -->
 		<div class="article-content">
-			{@html article.content}
+			{@html processedContent}
 		</div>
 	</ArticleLayout>
 {:else}
