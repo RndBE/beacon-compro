@@ -171,7 +171,6 @@
 			</div>
 		</div>
 		{/if}
-	</div>
 
 		<!-- Mobile CTA -->
 		<div class="sm:hidden mt-8 text-center">
