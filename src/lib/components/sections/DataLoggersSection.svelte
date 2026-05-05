@@ -12,11 +12,11 @@
 	let visible = $state(false);
 	let activeId = $state("bl-2000");
 
-	// Scroll Tracking State
-	let scrollY = $state(0);
+	// Viewport Tracking State
 	let innerHeight = $state(0);
 	let innerWidth = $state(0);
 	let sectionRef: HTMLElement | undefined = $state();
+	const mediaPreloads: HTMLImageElement[] = [];
 
 	const fallbackProducts: HomepageDataLogger[] = [
 		{
@@ -63,6 +63,48 @@
 			: dataLoggers,
 	);
 
+	function isImageMedia(product: HomepageDataLogger) {
+		return product.image && product.media_type !== "video";
+	}
+
+	function preloadProductImages() {
+		if (typeof Image === "undefined") return;
+
+		const images = products.filter(isImageMedia);
+		mediaPreloads.length = 0;
+		images.forEach((product) => {
+			const image = new Image();
+			image.decoding = "async";
+			image.src = product.image as string;
+			image.decode?.().catch(() => {
+				// The browser can still use the image cache even if decode is interrupted.
+			});
+			mediaPreloads.push(image);
+		});
+	}
+
+	function updateActiveFromScroll() {
+		if (innerWidth < 1024) return;
+		if (!products.length) return;
+		if (!sectionRef) return;
+
+		const rect = sectionRef.getBoundingClientRect();
+		const maxScroll = rect.height - innerHeight;
+
+		if (maxScroll <= 0) return;
+
+		const progress = Math.min(1, Math.max(0, -rect.top / maxScroll));
+		const index = Math.min(
+			products.length - 1,
+			Math.floor(progress * products.length),
+		);
+		const nextActiveId = products[index].id;
+
+		if (nextActiveId !== activeId) {
+			activeId = nextActiveId;
+		}
+	}
+
 	// Action untuk efek tilt 3D khusus di dalam container Apple-style ini
 	function tilt(node: HTMLElement, enabled: boolean = true) {
 		const handleMove = (e: MouseEvent) => {
@@ -106,6 +148,7 @@
 			(entries) => {
 				if (entries[0].isIntersecting) {
 					visible = true;
+					preloadProductImages();
 					observer.disconnect();
 				}
 			},
@@ -115,7 +158,26 @@
 		const el = document.getElementById("data-loggers-section");
 		if (el) observer.observe(el);
 
-		return () => observer.disconnect();
+		let frame = 0;
+		const requestScrollUpdate = () => {
+			if (frame) return;
+			frame = requestAnimationFrame(() => {
+				frame = 0;
+				updateActiveFromScroll();
+			});
+		};
+
+		window.addEventListener("scroll", requestScrollUpdate, { passive: true });
+		window.addEventListener("resize", requestScrollUpdate, { passive: true });
+		requestScrollUpdate();
+
+		return () => {
+			observer.disconnect();
+			window.removeEventListener("scroll", requestScrollUpdate);
+			window.removeEventListener("resize", requestScrollUpdate);
+			if (frame) cancelAnimationFrame(frame);
+			mediaPreloads.length = 0;
+		};
 	});
 
 	$effect(() => {
@@ -125,29 +187,11 @@
 		}
 	});
 
-	// Sticky Scroll Logic
 	$effect(() => {
-		// Only run sticky logic on desktop viewports
-		if (innerWidth < 1024) return;
-		if (!products.length) return;
-
-		scrollY; // register dependency
-		if (!sectionRef) return;
-
-		const rect = sectionRef.getBoundingClientRect();
-		// maxScroll is the total scrollable distance inside the sticky track
-		const maxScroll = rect.height - innerHeight;
-
-		if (maxScroll <= 0) return;
-
-		let progress = -rect.top / maxScroll;
-		if (progress < 0) progress = 0;
-		if (progress > 1) progress = 1;
-
-		let index = Math.floor(progress * products.length);
-		if (index >= products.length) index = products.length - 1;
-
-		activeId = products[index].id;
+		innerHeight;
+		innerWidth;
+		products.length;
+		updateActiveFromScroll();
 	});
 
 	function scrollToProduct(index: number) {
@@ -184,7 +228,7 @@
 	let isVideoMedia = $derived(activeProduct.media_type === "video");
 </script>
 
-<svelte:window bind:scrollY bind:innerHeight bind:innerWidth />
+<svelte:window bind:innerHeight bind:innerWidth />
 
 {#if products.length > 0}
 <section id="data-loggers-section" class="relative w-full py-24 bg-[#F9FAFB]">
@@ -426,6 +470,8 @@
 															alt={`${activeProduct.name} Data Logger`}
 															class="relative z-10 h-full max-h-[520px] w-full object-contain drop-shadow-[0_28px_48px_rgba(0,0,0,0.85)]"
 															draggable="false"
+															loading="eager"
+															decoding="async"
 														/>
 													{/if}
 												</div>
@@ -503,6 +549,8 @@
 														alt="BL-1100 Data Logger"
 														class="w-full h-full object-contain relative z-10 drop-shadow-[0_20px_30px_rgba(0,0,0,0.8)]"
 														draggable="false"
+														loading="eager"
+														decoding="async"
 													/>
 												</div>
 											{:else if activeProduct.id === "bl-110"}
