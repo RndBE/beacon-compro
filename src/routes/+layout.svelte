@@ -5,7 +5,7 @@
 	import WhatsAppFloat from '$lib/components/WhatsAppFloat.svelte';
 	import Chatbot from '$lib/components/Chatbot.svelte';
 
-	let { children } = $props();
+	let { children, data } = $props();
 </script>
 
 <svelte:head>
@@ -13,7 +13,7 @@
 </svelte:head>
 
 <div class="min-h-screen flex flex-col">
-	<Header />
+	<Header solutions={data.solutions} />
 	<main class="flex-1">
 		{@render children()}
 	</main>

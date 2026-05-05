@@ -5,13 +5,15 @@
 	import ProductSpecs from '$lib/components/ProductSpecs.svelte';
 
 	let { data } = $props();
+	let solutionName = $derived(data.subSolutionDetail?.sub_solution?.solution?.name ?? 'Infrastructure Security');
+	let solutionSlug = $derived(data.subSolutionDetail?.sub_solution?.solution?.slug ?? 'infrastructure-security');
 
 	let mounted = $state(false);
 	onMount(() => { mounted = true; });
 
 	let activeVariant = $state(0);
 
-	const fallbackVariants = [
+	const fallbackVariants: any[] = [
 		{ name: 'BE PLR-1000', subtitle: 'Pressure Level Recorder', desc: 'Pemantauan tekanan otomatis untuk aplikasi geothermal, well testing, dan infrastruktur kritis. Sensitivitas tinggi hingga 3000 psi.', use: 'Geothermal, well testing, pipa tekanan' ,
 		specs: [
 		{ label: 'Range Tekanan', value: 'Hingga 3000 psi' },
@@ -98,7 +100,7 @@
 			<ChevronRight size={11} />
 			<a href="/solusi" class="hover:text-[#C8102E] transition-colors">Solusi</a>
 			<ChevronRight size={11} />
-			<a href="/solusi/pressure-measurement" class="hover:text-[#10B981] transition-colors">Pressure Measurement</a>
+			<a href="/solusi/{solutionSlug}" class="hover:text-[#10B981] transition-colors">{solutionName}</a>
 			<ChevronRight size={11} />
 			<span style="color: #10B981;" class="font-medium">APLR</span>
 		</nav>
@@ -112,7 +114,7 @@
 		<div class="grid lg:grid-cols-2 gap-12 items-center">
 			<div class="space-y-6">
 				<div class="flex items-center gap-2">
-					<span class="text-xs font-semibold uppercase tracking-widest" style="color: #10B981;">Pressure Measurement</span>
+					<span class="text-xs font-semibold uppercase tracking-widest" style="color: #10B981;">{solutionName}</span>
 					<span style="color: #E5E5E5;">·</span>
 					<span class="text-xs" style="color: #9A9A9A;">Pressure Recording</span>
 				</div>
@@ -326,7 +328,7 @@
 					<MessageCircle size={18} />
 					Konsultasi APLR
 				</a>
-				<a href="/solusi/pressure-measurement" class="w-full sm:w-auto inline-flex justify-center items-center gap-2 px-8 py-4 rounded-full text-sm font-bold text-white transition-all hover:bg-zinc-800 btn-tactile" style="border: 1px solid rgba(255,255,255,0.15);">
+				<a href="/solusi/{solutionSlug}" class="w-full sm:w-auto inline-flex justify-center items-center gap-2 px-8 py-4 rounded-full text-sm font-bold text-white transition-all hover:bg-zinc-800 btn-tactile" style="border: 1px solid rgba(255,255,255,0.15);">
 					<ArrowRight size={18} />
 					Jelajahi Produk Lain
 				</a>

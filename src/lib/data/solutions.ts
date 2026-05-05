@@ -16,11 +16,11 @@ export const solutions = [
 		accent: 'from-sky-500/10 to-blue-500/5'
 	},
 	{
-		icon: Cloud, name: 'Weather Forecast',
+		icon: Cloud, name: 'Weather & Climate Intelligence',
 		tagline: 'Pantau cuaca akurat',
 		desc: 'Cuaca tidak bisa dilawan, tapi bisa diprediksi. Stasiun cuaca otomatis untuk pertanian, bendungan, dan aviasi.',
 		products: ['AWR', 'ARR'],
-		href: '/solusi/weather-forecast',
+		href: '/solusi/weather-climate-intelligence',
 		color: '#6366F1',
 		stat: '2', statLabel: 'Produk',
 		accent: 'from-indigo-500/10 to-violet-500/5'
@@ -36,21 +36,21 @@ export const solutions = [
 		accent: 'from-amber-500/10 to-yellow-500/5'
 	},
 	{
-		icon: Gauge, name: 'Pressure Measurement',
+		icon: Gauge, name: 'Infrastructure Security',
 		tagline: 'Tekanan presisi tinggi',
 		desc: 'Akurasi tinggi untuk medan ekstrem — geothermal, well testing, infrastruktur kritis. Terbukti di Kawah Ijen.',
 		products: ['APLR'],
-		href: '/solusi/pressure-measurement',
+		href: '/solusi/infrastructure-security',
 		color: '#10B981',
 		stat: '1', statLabel: 'Produk',
 		accent: 'from-emerald-500/10 to-green-500/5'
 	},
 	{
-		icon: Monitor, name: 'STESY Application',
+		icon: Monitor, name: 'Digital Monitoring Platform',
 		tagline: 'Platform monitoring 1 pintu',
 		desc: 'Platform tunggal yang mengikat semua perangkat menjadi satu dashboard real-time. Cross-platform, multi-tenant, AI-powered.',
 		products: ['Smart Telemetry System'],
-		href: '/solusi/stesy',
+		href: '/solusi/digital-monitoring-platform',
 		color: '#C8102E',
 		stat: '47', statLabel: 'Stasiun Aktif',
 		accent: 'from-red-500/10 to-rose-500/5'

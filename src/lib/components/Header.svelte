@@ -4,7 +4,12 @@
 	import { goto } from '$app/navigation';
 	import { PUBLIC_API_BASE } from '$env/static/public';
 	import logoBeacon from '$lib/assets/logo_be.png';
-	import type { SearchResult, SearchResponse } from '$lib/api';
+	import {
+		storageUrl,
+		type SearchResult,
+		type SearchResponse,
+		type SolutionSummary
+	} from '$lib/api';
 	import {
 		Phone,
 		Mail,
@@ -40,6 +45,7 @@
 	let searchOpen = $state(false);
 	let searchQuery = $state('');
 	let currentLang = $state('ID');
+	let { solutions = null }: { solutions?: SolutionSummary[] | null } = $props();
 
 	// Live search state
 	let searchResults = $state<SearchResult[]>([]);
@@ -125,6 +131,10 @@
 		goto(result.href);
 	}
 
+	function resultAssetUrl(result: SearchResult): string | null {
+		return storageUrl(result.thumbnail || result.icon);
+	}
+
 	function updateScroll() {
 		scrollY = window.scrollY;
 		const docHeight = document.documentElement.scrollHeight - window.innerHeight;
@@ -198,7 +208,15 @@
 		document.body.style.overflow = '';
 	}
 
-	const solutionCategories = [
+	type SolutionCategory = {
+		name: string;
+		desc: string;
+		icon: typeof Droplets;
+		items: string[];
+		href: string;
+	};
+
+	const fallbackSolutionCategories: SolutionCategory[] = [
 		{
 			name: 'Water Security',
 			desc: 'Amankan air & bendungan',
@@ -207,11 +225,11 @@
 			href: '/solusi/water-security'
 		},
 		{
-			name: 'Weather Forecast',
+			name: 'Weather & Climate Intelligence',
 			desc: 'Pantau cuaca akurat',
 			icon: Cloud,
 			items: ['AWR', 'ARR'],
-			href: '/solusi/weather-forecast'
+			href: '/solusi/weather-climate-intelligence'
 		},
 		{
 			name: 'Early Warning',
@@ -221,26 +239,62 @@
 			href: '/solusi/early-warning'
 		},
 		{
-			name: 'Pressure Measurement',
+			name: 'Infrastructure Security',
 			desc: 'Tekanan presisi tinggi',
 			icon: Gauge,
 			items: ['APLR'],
-			href: '/solusi/pressure-measurement'
+			href: '/solusi/infrastructure-security'
 		},
 		{
-			name: 'STESY Application',
+			name: 'Digital Monitoring Platform',
 			desc: 'Platform monitoring 1-pintu',
 			icon: Monitor,
 			items: ['Smart Telemetry System'],
-			href: '/solusi/stesy'
+			href: '/solusi/digital-monitoring-platform'
 		}
 	];
 
-	const popularSolutions = [
-		'AWLR untuk bendungan',
-		'EWS untuk wilayah rawan banjir',
-		'STESY untuk integrasi monitoring'
-	];
+	function getSolutionIcon(slug: string): typeof Droplets {
+		const iconMap: Record<string, typeof Droplets> = {
+			'water-security': Droplets,
+			'weather-climate-intelligence': Cloud,
+			'weather-forecast': Cloud,
+			'early-warning': AlertTriangle,
+			'infrastructure-security': Gauge,
+			'pressure-measurement': Gauge,
+			'digital-monitoring-platform': Monitor,
+			'stesy': Monitor
+		};
+
+		return iconMap[slug] || Monitor;
+	}
+
+	function shortText(value: string | null | undefined, max = 34): string {
+		const text = value?.trim();
+		if (!text) return 'Solusi telemetri Beacon';
+		return text.length > max ? `${text.slice(0, max - 1)}...` : text;
+	}
+
+	const solutionCategories = $derived(
+		solutions && solutions.length > 0
+			? solutions.map((solution) => ({
+					name: solution.name,
+					desc: shortText(solution.description),
+					icon: getSolutionIcon(solution.slug),
+					items: (solution.sub_solutions ?? [])
+						.map((item) => item.abbreviation || item.name)
+						.filter(Boolean)
+						.slice(0, 4),
+					href: `/solusi/${solution.slug}`
+				}))
+			: fallbackSolutionCategories
+	);
+
+	const popularSolutions = $derived(
+		solutionCategories
+			.slice(0, 3)
+			.map((cat) => (cat.items[0] ? `${cat.items[0]} untuk ${cat.name}` : cat.name))
+	);
 
 	const aboutLinks = [
 		{ name: 'Profil Perusahaan', desc: 'Sejarah & identitas Beacon', icon: Building2, href: '/tentang-kami', color: '#C8102E' },
@@ -618,6 +672,7 @@
 							<div class="space-y-0.5">
 								{#each items as result, idx}
 									{@const globalIdx = searchResults.indexOf(result)}
+									{@const assetUrl = resultAssetUrl(result)}
 									<button 
 										class="w-full flex items-center gap-4 p-3 rounded-xl border border-transparent transition-all text-left group {activeIndex === globalIdx ? 'bg-white shadow-sm border-zinc-200/60' : 'hover:bg-white hover:shadow-sm hover:border-zinc-200/60'}"
 										onclick={() => navigateToResult(result)}
@@ -627,8 +682,8 @@
 											class="w-10 h-10 rounded-[10px] bg-white border border-zinc-100 flex items-center justify-center shrink-0 transition-transform {activeIndex === globalIdx ? 'scale-105' : 'group-hover:scale-105'}" 
 											style="color: {typeColorMap[result.type] || '#C8102E'};"
 										>
-											{#if result.thumbnail}
-												<img src={result.thumbnail} alt="" class="w-full h-full object-cover rounded-[10px]" />
+											{#if assetUrl}
+												<img src={assetUrl} alt="" class="w-full h-full object-cover rounded-[10px]" />
 											{:else}
 												<svelte:component this={typeIconMap[result.type] || Search} size={18} />
 											{/if}

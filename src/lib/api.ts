@@ -43,6 +43,14 @@ export interface SolutionSummary {
 	color: string;
 	sub_solutions_count: number;
 	products_count: number;
+	sub_solutions?: SolutionMenuSubSolution[];
+}
+
+export interface SolutionMenuSubSolution {
+	id: number;
+	name: string;
+	slug: string;
+	abbreviation: string | null;
 }
 
 export interface FeaturedProject {

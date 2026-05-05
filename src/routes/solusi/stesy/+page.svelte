@@ -22,6 +22,9 @@
 	import Ornaments from '$lib/components/Ornaments.svelte';
 
 	let mounted = $state(false);
+	let { data } = $props();
+	let solutionSlug = $derived(data.solutionDetail?.solution?.slug ?? 'digital-monitoring-platform');
+
 	onMount(() => {
 		mounted = true;
 	});
@@ -195,7 +198,7 @@
 						Minta Demo STESY
 					</a>
 					<a
-						href="/solusi/stesy/smart-telemetry-system"
+						href="/solusi/{solutionSlug}/smart-telemetry-system"
 						class="btn-tactile inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-[14px] text-sm font-semibold bg-white"
 						style="border: 1px solid #E5E5E5; color: #1A1A1A;"
 					>

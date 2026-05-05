@@ -5,13 +5,15 @@
 	import ProductSpecs from '$lib/components/ProductSpecs.svelte';
 
 	let { data } = $props();
+	let solutionName = $derived(data.subSolutionDetail?.sub_solution?.solution?.name ?? 'Weather & Climate Intelligence');
+	let solutionSlug = $derived(data.subSolutionDetail?.sub_solution?.solution?.slug ?? 'weather-climate-intelligence');
 
 	let mounted = $state(false);
 	onMount(() => { mounted = true; });
 
 	let activeVariant = $state(0);
 
-	const fallbackVariants = [
+	const fallbackVariants: any[] = [
 		{ name: 'BR-800', subtitle: 'Standard Rain Gauge', desc: 'Tipping bucket standar dengan data logger terintegrasi. Siap pasang di tiang 2m atau 4m. Ideal untuk jaringan pos hujan.', use: 'Pos hujan, jaringan ARR DAS, BBWS/BWS' ,
 		specs: [
 		{ label: 'Tipe Sensor', value: 'Tipping Bucket Rain Gauge' },
@@ -114,7 +116,7 @@
 			<ChevronRight size={11} />
 			<a href="/solusi" class="hover:text-[#C8102E] transition-colors">Solusi</a>
 			<ChevronRight size={11} />
-			<a href="/solusi/weather-forecast" class="hover:text-[#C8102E] transition-colors">Weather Forecast</a>
+			<a href="/solusi/{solutionSlug}" class="hover:text-[#C8102E] transition-colors">{solutionName}</a>
 			<ChevronRight size={11} />
 			<span style="color: #6366F1;" class="font-medium">ARR</span>
 		</nav>
@@ -129,7 +131,7 @@
 		<div class="grid lg:grid-cols-2 gap-12 items-center">
 			<div class="space-y-6">
 				<div class="flex items-center gap-2">
-					<span class="text-xs font-semibold uppercase tracking-widest" style="color: #6366F1;">Weather Forecast</span>
+					<span class="text-xs font-semibold uppercase tracking-widest" style="color: #6366F1;">{solutionName}</span>
 					<span style="color: #E5E5E5;">·</span>
 					<span class="text-xs" style="color: #9A9A9A;">Rainfall Monitoring</span>
 				</div>
@@ -356,7 +358,7 @@
 					<MessageCircle size={18} />
 					Konsultasi ARR
 				</a>
-				<a href="/solusi/weather-forecast" class="w-full sm:w-auto inline-flex justify-center items-center gap-2 px-8 py-4 rounded-full text-sm font-bold text-white transition-all hover:bg-zinc-800 btn-tactile" style="border: 1px solid rgba(255,255,255,0.15);">
+				<a href="/solusi/{solutionSlug}" class="w-full sm:w-auto inline-flex justify-center items-center gap-2 px-8 py-4 rounded-full text-sm font-bold text-white transition-all hover:bg-zinc-800 btn-tactile" style="border: 1px solid rgba(255,255,255,0.15);">
 					<ArrowRight size={18} />
 					Jelajahi Produk Lain
 				</a>

@@ -11,6 +11,8 @@
 	import { weatherForecastProducts as fallbackProducts } from "$lib/data/solutions";
 
 	let { data } = $props();
+	let solutionName = $derived(data.solutionDetail?.solution?.name ?? 'Weather & Climate Intelligence');
+	let solutionSlug = $derived(data.solutionDetail?.solution?.slug ?? 'weather-climate-intelligence');
 
 	const products = $derived(
 		data.solutionDetail?.sub_solutions &&
@@ -36,7 +38,7 @@
 </script>
 
 <svelte:head>
-	<title>Weather Forecast — Beacon Engineering</title>
+	<title>{solutionName} — Beacon Engineering</title>
 	<meta
 		name="description"
 		content="Stasiun cuaca otomatis AWR dan ARR dari Beacon Engineering untuk prediksi cuaca presisi tinggi di Indonesia."
@@ -77,7 +79,7 @@
 					style="background: #EEF2FF; color: #6366F1; border: 1px solid rgba(99,102,241,0.15);"
 				>
 					<Cloud size={12} />
-					Weather Forecast
+					{solutionName}
 				</div>
 
 				<h1
@@ -186,14 +188,14 @@
 	<Ornaments variant="dense" />
 	<div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 		<div class="max-w-2xl mb-14 space-y-3">
-			<span class="text-xs font-semibold uppercase tracking-widest" style="color: #6366F1;">Produk Weather Forecast</span>
+			<span class="text-xs font-semibold uppercase tracking-widest" style="color: #6366F1;">Produk {solutionName}</span>
 			<h2 class="font-heading text-3xl sm:text-4xl font-bold leading-[1.1]" style="color: #1A1A1A; letter-spacing: -0.025em;">Stasiun Cuaca & Curah Hujan Otomatis</h2>
 		</div>
 
 		<div class="grid md:grid-cols-2 gap-6">
 			{#each products as product, i}
 				<a
-					href="/solusi/weather-forecast/{product.slug}"
+					href="/solusi/{solutionSlug}/{product.slug}"
 					class="group relative rounded-[28px] overflow-hidden min-h-[480px] flex flex-col justify-end bg-black transition-transform duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(99,102,241,0.3)]"
 					style="border: 1px solid rgba(0,0,0,0.1);"
 				>

@@ -5,13 +5,15 @@
 	import ProductSpecs from '$lib/components/ProductSpecs.svelte';
 
 	let { data } = $props();
+	let solutionName = $derived(data.subSolutionDetail?.sub_solution?.solution?.name ?? 'Digital Monitoring Platform');
+	let solutionSlug = $derived(data.subSolutionDetail?.sub_solution?.solution?.slug ?? 'digital-monitoring-platform');
 
 	let mounted = $state(false);
 	onMount(() => { mounted = true; });
 
 	let activeVariant = $state(0);
 
-	const fallbackVariants = [
+	const fallbackVariants: any[] = [
 		{ name: 'Smart Telemetry System', subtitle: 'Platform Monitoring Terpadu', desc: 'Platform monitoring real-time yang menyatukan semua perangkat telemetri Beacon dalam satu dashboard. Akses dari smartphone, tablet, atau desktop.', use: 'BBWS, BWS, BPBD, Dinas SDA, Operator Bendungan' ,
 		specs: [
 		{ label: 'Akses', value: 'Web Browser + Mobile App' },
@@ -98,7 +100,7 @@
 			<ChevronRight size={11} />
 			<a href="/solusi" class="hover:text-[#C8102E] transition-colors">Solusi</a>
 			<ChevronRight size={11} />
-			<a href="/solusi/stesy" class="hover:text-[#C8102E] transition-colors">STESY</a>
+			<a href="/solusi/{solutionSlug}" class="hover:text-[#C8102E] transition-colors">{solutionName}</a>
 			<ChevronRight size={11} />
 			<span style="color: #C8102E;" class="font-medium">Smart Telemetry System</span>
 		</nav>
@@ -112,7 +114,7 @@
 		<div class="grid lg:grid-cols-2 gap-12 items-center">
 			<div class="space-y-6">
 				<div class="flex items-center gap-2">
-					<span class="text-xs font-semibold uppercase tracking-widest" style="color: #C8102E;">STESY Application</span>
+					<span class="text-xs font-semibold uppercase tracking-widest" style="color: #C8102E;">{solutionName}</span>
 					<span style="color: #E5E5E5;">·</span>
 					<span class="text-xs" style="color: #9A9A9A;">Monitoring Platform</span>
 				</div>
@@ -326,7 +328,7 @@
 					<MessageCircle size={18} />
 					Minta Demo
 				</a>
-				<a href="/solusi/stesy" class="w-full sm:w-auto inline-flex justify-center items-center gap-2 px-8 py-4 rounded-full text-sm font-bold text-white transition-all hover:bg-zinc-800 btn-tactile" style="border: 1px solid rgba(255,255,255,0.15);">
+				<a href="/solusi/{solutionSlug}" class="w-full sm:w-auto inline-flex justify-center items-center gap-2 px-8 py-4 rounded-full text-sm font-bold text-white transition-all hover:bg-zinc-800 btn-tactile" style="border: 1px solid rgba(255,255,255,0.15);">
 					<ArrowRight size={18} />
 					Kembali ke STESY
 				</a>

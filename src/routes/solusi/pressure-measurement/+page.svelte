@@ -10,6 +10,8 @@
 	import { pressureMeasurementProducts as fallbackProducts } from "$lib/data/solutions";
 
 	let { data } = $props();
+	let solutionName = $derived(data.solutionDetail?.solution?.name ?? 'Infrastructure Security');
+	let solutionSlug = $derived(data.solutionDetail?.solution?.slug ?? 'infrastructure-security');
 
 	const products = $derived(
 		data.solutionDetail?.sub_solutions &&
@@ -35,7 +37,7 @@
 </script>
 
 <svelte:head>
-	<title>Pressure Measurement — Beacon Engineering</title>
+	<title>{solutionName} — Beacon Engineering</title>
 	<meta
 		name="description"
 		content="APLR Beacon Engineering: pengukuran tekanan presisi tinggi untuk geothermal, well testing, dan infrastruktur kritis."
@@ -76,7 +78,7 @@
 					style="background: #D1FAE5; color: #059669; border: 1px solid rgba(5,150,105,0.15);"
 				>
 					<Gauge size={12} />
-					Pressure Measurement
+					{solutionName}
 				</div>
 
 				<h1
@@ -170,7 +172,7 @@
 				>
 					<img
 						src="/ilustrasi_pressure_measurement.webp"
-						alt="Ilustrasi sistem pengukuran tekanan Pressure Measurement Beacon Engineering"
+						alt="Ilustrasi sistem pengukuran tekanan {solutionName} Beacon Engineering"
 						class="w-full h-auto object-contain select-none"
 						draggable="false"
 					/>
@@ -184,14 +186,14 @@
 	<Ornaments variant="dense" />
 	<div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 		<div class="max-w-2xl mb-14 space-y-3">
-			<span class="text-xs font-semibold uppercase tracking-widest" style="color: #059669;">Produk Pressure Measurement</span>
+			<span class="text-xs font-semibold uppercase tracking-widest" style="color: #059669;">Produk {solutionName}</span>
 			<h2 class="font-heading text-3xl sm:text-4xl font-bold leading-[1.1]" style="color: #1A1A1A; letter-spacing: -0.025em;">Pengukuran Tekanan Presisi Tinggi</h2>
 		</div>
 
 		<div class="grid md:grid-cols-2 gap-6">
 			{#each products as product, i}
 				<a
-					href="/solusi/pressure-measurement/{product.slug}"
+					href="/solusi/{solutionSlug}/{product.slug}"
 					class="group relative rounded-[28px] overflow-hidden min-h-[480px] flex flex-col justify-end bg-black transition-transform duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(5,150,105,0.3)]"
 					style="border: 1px solid rgba(0,0,0,0.1);"
 				>
