@@ -2,6 +2,11 @@
 	import { onMount } from "svelte";
 	import { Plus, Cpu } from "@lucide/svelte";
 	import { fly, fade, slide } from "svelte/transition";
+	import type { HomepageDataLogger } from "$lib/api";
+
+	let {
+		dataLoggers = undefined,
+	}: { dataLoggers?: HomepageDataLogger[] | null } = $props();
 
 	// Svelte 5 state
 	let visible = $state(false);
@@ -13,13 +18,14 @@
 	let innerWidth = $state(0);
 	let sectionRef: HTMLElement | undefined = $state();
 
-	const products = [
+	const fallbackProducts: HomepageDataLogger[] = [
 		{
 			id: "bl-2000",
 			name: "BL-2000",
 			tagline: "Pro beyond limits.",
 			desc: "Flagship telemetry dengan edge computing, multi-channel, dan redundansi satelit. Dirancang untuk infrastruktur kritis yang membutuhkan keandalan absolut.",
 			features: ["QUAD-CHANNEL", "EDGE AI", "SATELIT READY"],
+			image: null,
 		},
 		{
 			id: "bl-1100",
@@ -27,6 +33,7 @@
 			tagline: "The industrial standard.",
 			desc: "Reliabilitas industrial untuk lingkungan ekstrem. Integrasi mulus dengan ratusan sensor dengan konsumsi daya minimal berkat teknologi solar-first.",
 			features: ["IP68 RUGGED", "DUAL COMMS", "SOLAR READY"],
+			image: null,
 		},
 		{
 			id: "bl-110",
@@ -34,6 +41,7 @@
 			tagline: "Compact yet powerful.",
 			desc: "Solusi kompak dan terjangkau untuk pemantauan presisi. Pilihan paling logis untuk jaringan pengamatan padat tanpa mengorbankan akurasi data.",
 			features: ["COMPACT", "LOW POWER", "PLUG & PLAY"],
+			image: null,
 		},
 		{
 			id: "bl-11",
@@ -41,8 +49,15 @@
 			tagline: "Micro monitoring.",
 			desc: "Spesialis pemantauan titik tunggal. Ukuran sekecil kotak korek api, namun ditenagai konektivitas NB-IoT dengan baterai tahan hingga 5 tahun.",
 			features: ["NBIOT", "5YR BATTERY", "NANO SIZE"],
+			image: null,
 		},
 	];
+
+	const products = $derived(
+		dataLoggers === null || dataLoggers === undefined
+			? fallbackProducts
+			: dataLoggers,
+	);
 
 	// Action untuk efek tilt 3D khusus di dalam container Apple-style ini
 	function tilt(node: HTMLElement, enabled: boolean = true) {
@@ -99,12 +114,20 @@
 		return () => observer.disconnect();
 	});
 
+	$effect(() => {
+		if (!products.length) return;
+		if (!products.some((product) => product.id === activeId)) {
+			activeId = products[0].id;
+		}
+	});
+
 	// Sticky Scroll Logic
 	$effect(() => {
 		// Only run sticky logic on desktop viewports
 		if (innerWidth < 1024) return;
+		if (!products.length) return;
 
-		let currentScroll = scrollY; // register dependency
+		scrollY; // register dependency
 		if (!sectionRef) return;
 
 		const rect = sectionRef.getBoundingClientRect();
@@ -124,9 +147,12 @@
 	});
 
 	function scrollToProduct(index: number) {
+		const product = products[index];
+		if (!product) return;
+
 		// On mobile, just change the state instantly
 		if (innerWidth < 1024) {
-			activeId = products[index].id;
+			activeId = product.id;
 			return;
 		}
 
@@ -144,12 +170,18 @@
 	}
 
 	let activeProduct = $derived(
-		products.find((p) => p.id === activeId) || products[0],
+		products.find((p) => p.id === activeId) ||
+			products[0] ||
+			fallbackProducts[0],
+	);
+	let shouldAnimateMockup = $derived(
+		!activeProduct.image && activeProduct.id !== "bl-1100",
 	);
 </script>
 
 <svelte:window bind:scrollY bind:innerHeight bind:innerWidth />
 
+{#if products.length > 0}
 <section id="data-loggers-section" class="relative w-full py-24 bg-[#F9FAFB]">
 	<!-- Background Mesh Gradient Simulation (Whole Section) -->
 	<div
@@ -309,10 +341,13 @@
 												<p
 													class="text-[15px] text-zinc-400 leading-relaxed font-medium relative z-10"
 												>
-													<strong
-														class="text-white font-semibold"
-														>{product.tagline}</strong
-													>
+													{#if product.tagline}
+														<strong
+															class="text-white font-semibold"
+															>{product.tagline}</strong
+														>
+														{" "}
+													{/if}
 													{product.desc}
 												</p>
 												<!-- Feature Badges -->
@@ -357,17 +392,29 @@
 									<!-- Large 3D Mockup Container with tilt -->
 									<div
 										class="w-full h-full flex flex-col items-center justify-center relative z-10"
-										use:tilt={activeProduct.id !==
-											"bl-1100"}
+										use:tilt={shouldAnimateMockup}
 									>
 										<!-- Floating infinite animation wrapper -->
 										<div
-											class="relative w-full max-w-[450px] aspect-square flex items-center justify-center {activeProduct.id !==
-											'bl-1100'
+											class="relative w-full max-w-[450px] aspect-square flex items-center justify-center {shouldAnimateMockup
 												? 'animate-float'
 												: ''}"
 										>
-											{#if activeProduct.id === "bl-2000"}
+											{#if activeProduct.image}
+												<div
+													class="relative w-[340px] h-[380px] bg-black rounded-[2.5rem] flex items-center justify-center p-8 shadow-[0_40px_80px_rgba(0,0,0,0.8)] border border-zinc-800/50 overflow-hidden"
+												>
+													<div
+														class="absolute inset-0 bg-gradient-to-t from-zinc-900/50 to-transparent pointer-events-none"
+													></div>
+													<img
+														src={activeProduct.image}
+														alt={`${activeProduct.name} Data Logger`}
+														class="w-full h-full object-contain relative z-10 drop-shadow-[0_20px_30px_rgba(0,0,0,0.8)]"
+														draggable="false"
+													/>
+												</div>
+											{:else if activeProduct.id === "bl-2000"}
 												<!-- Pro Hardware Mockup (Large) -->
 												<div
 													class="relative w-[360px] h-[250px] rounded-[3rem] bg-[#111111] shadow-[0_40px_80px_rgba(0,0,0,0.8)] border-t border-x border-zinc-700/50 flex flex-col justify-end p-8 overflow-hidden"
@@ -494,6 +541,7 @@
 		</div>
 	</div>
 </section>
+{/if}
 
 <style>
 	@keyframes float {

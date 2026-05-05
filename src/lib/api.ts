@@ -87,10 +87,20 @@ export interface ArticleSummary {
 	published_at: string | null;
 }
 
+export interface HomepageDataLogger {
+	id: string;
+	name: string;
+	tagline: string | null;
+	desc: string | null;
+	features: string[];
+	image: string | null;
+}
+
 export interface HomepageData {
 	hero: Record<string, string>;
 	stats: Record<string, string>;
 	solutions: SolutionSummary[];
+	data_loggers: HomepageDataLogger[];
 	featured_projects: FeaturedProject[];
 	clients: ClientSummary[];
 	testimonials: TestimonialSummary[];
@@ -115,4 +125,3 @@ export interface SearchResponse {
 	count: number;
 	results: SearchResult[];
 }
-

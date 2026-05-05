@@ -12,7 +12,7 @@
 	import CtaSection from '$lib/components/sections/CtaSection.svelte';
 
 	let { data } = $props();
-	const hp = data.homepage;
+	let hp = $derived(data.homepage);
 </script>
 
 <svelte:head>
@@ -24,7 +24,7 @@
 <WhyBeaconSection />
 <PillarSection solutions={hp?.solutions} />
 <StesySection />
-<DataLoggersSection />
+<DataLoggersSection dataLoggers={hp?.data_loggers} />
 <ProjectsSection featuredProjects={hp?.featured_projects} />
 <ClientLogosSection clients={hp?.clients} />
 <TestimonialsSection testimonials={hp?.testimonials} />
