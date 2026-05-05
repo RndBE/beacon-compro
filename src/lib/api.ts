@@ -76,6 +76,17 @@ export interface TestimonialSummary {
 	project_slug: string | null;
 }
 
+export interface ArticleSummary {
+	title: string;
+	slug: string;
+	excerpt: string | null;
+	category: string | null;
+	category_color: string;
+	read_time: string | null;
+	thumbnail: string | null;
+	published_at: string | null;
+}
+
 export interface HomepageData {
 	hero: Record<string, string>;
 	stats: Record<string, string>;
@@ -83,6 +94,7 @@ export interface HomepageData {
 	featured_projects: FeaturedProject[];
 	clients: ClientSummary[];
 	testimonials: TestimonialSummary[];
+	recent_articles: ArticleSummary[];
 }
 
 // ─── Search Types ─────────────────────────────

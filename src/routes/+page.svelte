@@ -29,5 +29,5 @@
 <ClientLogosSection clients={hp?.clients} />
 <TestimonialsSection testimonials={hp?.testimonials} />
 <ServicesSection />
-<InsightsSection />
+<InsightsSection articles={hp?.recent_articles ?? []} />
 <CtaSection />
