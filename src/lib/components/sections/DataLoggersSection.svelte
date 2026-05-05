@@ -26,6 +26,7 @@
 			desc: "Flagship telemetry dengan edge computing, multi-channel, dan redundansi satelit. Dirancang untuk infrastruktur kritis yang membutuhkan keandalan absolut.",
 			features: ["QUAD-CHANNEL", "EDGE AI", "SATELIT READY"],
 			image: null,
+			media_type: null,
 		},
 		{
 			id: "bl-1100",
@@ -34,6 +35,7 @@
 			desc: "Reliabilitas industrial untuk lingkungan ekstrem. Integrasi mulus dengan ratusan sensor dengan konsumsi daya minimal berkat teknologi solar-first.",
 			features: ["IP68 RUGGED", "DUAL COMMS", "SOLAR READY"],
 			image: null,
+			media_type: null,
 		},
 		{
 			id: "bl-110",
@@ -42,6 +44,7 @@
 			desc: "Solusi kompak dan terjangkau untuk pemantauan presisi. Pilihan paling logis untuk jaringan pengamatan padat tanpa mengorbankan akurasi data.",
 			features: ["COMPACT", "LOW POWER", "PLUG & PLAY"],
 			image: null,
+			media_type: null,
 		},
 		{
 			id: "bl-11",
@@ -50,6 +53,7 @@
 			desc: "Spesialis pemantauan titik tunggal. Ukuran sekecil kotak korek api, namun ditenagai konektivitas NB-IoT dengan baterai tahan hingga 5 tahun.",
 			features: ["NBIOT", "5YR BATTERY", "NANO SIZE"],
 			image: null,
+			media_type: null,
 		},
 	];
 
@@ -177,6 +181,7 @@
 	let shouldAnimateMockup = $derived(
 		!activeProduct.image && activeProduct.id !== "bl-1100",
 	);
+	let isVideoMedia = $derived(activeProduct.media_type === "video");
 </script>
 
 <svelte:window bind:scrollY bind:innerHeight bind:innerWidth />
@@ -402,17 +407,27 @@
 										>
 											{#if activeProduct.image}
 												<div
-													class="relative w-[340px] h-[380px] bg-black rounded-[2.5rem] flex items-center justify-center p-8 shadow-[0_40px_80px_rgba(0,0,0,0.8)] border border-zinc-800/50 overflow-hidden"
+													class="relative flex h-full w-full max-w-[620px] items-center justify-center overflow-visible p-2 lg:p-4"
 												>
-													<div
-														class="absolute inset-0 bg-gradient-to-t from-zinc-900/50 to-transparent pointer-events-none"
-													></div>
-													<img
-														src={activeProduct.image}
-														alt={`${activeProduct.name} Data Logger`}
-														class="w-full h-full object-contain relative z-10 drop-shadow-[0_20px_30px_rgba(0,0,0,0.8)]"
-														draggable="false"
-													/>
+													{#if isVideoMedia}
+														<video
+															src={activeProduct.image}
+															class="relative z-10 h-full max-h-[520px] w-full object-contain drop-shadow-[0_28px_48px_rgba(0,0,0,0.85)]"
+															autoplay
+															muted
+															loop
+															playsinline
+															preload="metadata"
+															aria-label={`${activeProduct.name} Data Logger`}
+														></video>
+													{:else}
+														<img
+															src={activeProduct.image}
+															alt={`${activeProduct.name} Data Logger`}
+															class="relative z-10 h-full max-h-[520px] w-full object-contain drop-shadow-[0_28px_48px_rgba(0,0,0,0.85)]"
+															draggable="false"
+														/>
+													{/if}
 												</div>
 											{:else if activeProduct.id === "bl-2000"}
 												<!-- Pro Hardware Mockup (Large) -->

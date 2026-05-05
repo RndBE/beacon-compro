@@ -15,7 +15,6 @@
 	import { PUBLIC_API_BASE } from "$env/static/public";
 
 	let isOpen = $state(false);
-	let isHovered = $state(false);
 	let message = $state("");
 	let isLoading = $state(false);
 	let sessionToken = $state<string | null>(null);
@@ -373,43 +372,69 @@
 </script>
 
 <!-- FAB -->
-<button
-	class="fixed bottom-[84px] lg:bottom-6 right-6 z-[999] w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-500 hover:scale-105 active:scale-95 group shadow-2xl"
-	style="
-		background: {isOpen
-		? '#18181B'
-		: 'linear-gradient(135deg, #C8102E 0%, #910B20 100%)'};
-		border: 1px solid {isOpen ? '#27272A' : '#E11D48'};
-		box-shadow: {isOpen
-		? 'none'
-		: '0 10px 30px -10px rgba(200,16,46,0.6), inset 0 2px 4px rgba(255,255,255,0.2)'};
-	"
-	onclick={toggleChat}
-	onmouseenter={() => (isHovered = true)}
-	onmouseleave={() => (isHovered = false)}
-	aria-label="Toggle AI Assistant"
+<div
+	class="fixed bottom-[84px] lg:bottom-6 right-6 z-[999] flex max-w-[calc(100vw-3rem)] items-center gap-3"
 >
 	{#if !isOpen}
-		<div
-			class="absolute inset-0 rounded-2xl bg-[#C8102E] opacity-50 animate-ping"
-			style="animation-duration: 3s;"
-		></div>
+		<button
+			type="button"
+			class="group flex max-w-[180px] items-center gap-3 rounded-2xl border border-white/70 bg-white/95 px-3 py-3 text-left shadow-[0_18px_40px_-18px_rgba(0,0,0,0.35)] backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:border-[#C8102E]/30 hover:shadow-[0_20px_44px_-18px_rgba(200,16,46,0.35)] sm:max-w-[220px] sm:px-4"
+			onclick={toggleChat}
+			aria-label="Buka chat otomatis Beacon"
+		>
+			<span
+				class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#FBE9EC] text-[#C8102E] transition-transform duration-300 group-hover:scale-105"
+			>
+				<Sparkles size={15} />
+			</span>
+			<span class="min-w-0">
+				<span
+					class="block text-[10px] font-mono font-bold uppercase tracking-[0.16em] text-[#C8102E]"
+					>Chat Otomatis</span
+				>
+				<span class="block truncate text-xs font-semibold text-zinc-700"
+					>Tanya Beacon AI di sini</span
+				>
+			</span>
+		</button>
 	{/if}
-	<div
-		class="absolute inset-0 flex items-center justify-center text-white transition-transform duration-300 {isOpen
-			? 'rotate-90 scale-0 opacity-0'
-			: 'rotate-0 scale-100 opacity-100'}"
+
+	<button
+		class="relative w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-500 hover:scale-105 active:scale-95 group shadow-2xl"
+		style="
+			background: {isOpen
+			? '#18181B'
+			: 'linear-gradient(135deg, #C8102E 0%, #910B20 100%)'};
+			border: 1px solid {isOpen ? '#27272A' : '#E11D48'};
+			box-shadow: {isOpen
+			? 'none'
+			: '0 10px 30px -10px rgba(200,16,46,0.6), inset 0 2px 4px rgba(255,255,255,0.2)'};
+		"
+		onclick={toggleChat}
+		aria-label="Toggle AI Assistant"
 	>
-		<Bot size={24} />
-	</div>
-	<div
-		class="absolute inset-0 flex items-center justify-center text-white transition-transform duration-300 {isOpen
-			? 'rotate-0 scale-100 opacity-100'
-			: '-rotate-90 scale-0 opacity-0'}"
-	>
-		<X size={24} />
-	</div>
-</button>
+		{#if !isOpen}
+			<div
+				class="absolute inset-0 rounded-2xl bg-[#C8102E] opacity-50 animate-ping"
+				style="animation-duration: 3s;"
+			></div>
+		{/if}
+		<div
+			class="absolute inset-0 flex items-center justify-center text-white transition-transform duration-300 {isOpen
+				? 'rotate-90 scale-0 opacity-0'
+				: 'rotate-0 scale-100 opacity-100'}"
+		>
+			<Bot size={24} />
+		</div>
+		<div
+			class="absolute inset-0 flex items-center justify-center text-white transition-transform duration-300 {isOpen
+				? 'rotate-0 scale-100 opacity-100'
+				: '-rotate-90 scale-0 opacity-0'}"
+		>
+			<X size={24} />
+		</div>
+	</button>
+</div>
 
 <!-- Chatbot Window -->
 <div

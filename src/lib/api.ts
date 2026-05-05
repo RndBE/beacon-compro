@@ -94,6 +94,7 @@ export interface HomepageDataLogger {
 	desc: string | null;
 	features: string[];
 	image: string | null;
+	media_type: 'image' | 'video' | null;
 }
 
 export interface HomepageData {
