@@ -124,7 +124,7 @@
 								<div class="mt-4 border-t border-[#C8102E]/10 pt-4">
 									<p class="text-sm leading-relaxed text-zinc-600">{service.detail}</p>
 									<a
-										href="https://wa.me/628112850986?text=Halo%20Beacon%2C%20saya%20tertarik%20dengan%20layanan%20{encodeURIComponent(service.title)}."
+										href="https://wa.me/628112632151?text=Halo%20CS%20Marketing%20Beacon%2C%20saya%20tertarik%20dengan%20layanan%20{encodeURIComponent(service.title)}."
 										class="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-[#C8102E] px-5 py-3 text-sm font-bold text-white transition active:scale-[0.98]"
 										target="_blank"
 										rel="noopener"
@@ -216,7 +216,7 @@
 
 							<div class="pt-8">
 								<a
-									href="https://wa.me/628112850986?text=Halo%20Beacon%2C%20saya%20tertarik%20dengan%20layanan%20{encodeURIComponent(service.title)}."
+									href="https://wa.me/628112632151?text=Halo%20CS%20Marketing%20Beacon%2C%20saya%20tertarik%20dengan%20layanan%20{encodeURIComponent(service.title)}."
 									class="group relative inline-flex items-center gap-3 px-8 py-4 rounded-2xl text-sm font-bold text-white overflow-hidden transition-transform active:scale-95"
 									style="background: #C8102E; box-shadow: 0 12px 24px -8px rgba(200,16,46,0.4);"
 									target="_blank"

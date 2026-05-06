@@ -22,9 +22,9 @@ top_bar_old = """<!-- Top Utility Bar -->
 					<Phone size={11} />
 					<span class="hidden md:inline">(0274) 4986899</span>
 				</a>
-				<a href="https://wa.me/628112850986" class="flex items-center gap-1 hover:opacity-80 transition-opacity">
+				<a href="https://wa.me/628112632151" class="flex items-center gap-1 hover:opacity-80 transition-opacity">
 					<MessageCircle size={11} />
-					<span>WA 0811-2850-9986</span>
+					<span>WA +62 811 2632 151</span>
 				</a>
 				<a href="mailto:info@bejogja.com" class="hidden lg:flex items-center gap-1 hover:opacity-80 transition-opacity">
 					<Mail size={11} />
@@ -46,9 +46,9 @@ top_bar_new = """<!-- Top Utility Bar — SKILL: Cockpit Mode & Liquid Glass -->
 				<Phone size={12} class="text-[#C8102E]" />
 				<span class="hidden md:inline tabular-nums">(0274) 4986899</span>
 			</a>
-			<a href="https://wa.me/628112850986" class="flex items-center gap-1.5 hover:text-white transition-colors">
+			<a href="https://wa.me/628112632151" class="flex items-center gap-1.5 hover:text-white transition-colors">
 				<MessageCircle size={12} class="text-[#C8102E]" />
-				<span class="tabular-nums">WA 0811-2850-9986</span>
+				<span class="tabular-nums">WA +62 811 2632 151</span>
 			</a>
 			<a href="mailto:info@bejogja.com" class="hidden lg:flex items-center gap-1.5 hover:text-white transition-colors">
 				<Mail size={12} class="text-[#C8102E]" />
@@ -172,7 +172,7 @@ content = content.replace(
 
 # Update Right Actions - Konsultasi Gratis Button
 old_btn = """<a
-					href="https://wa.me/628112850986?text=Halo%20Beacon%2C%20saya%20tertarik%20dengan%20solusi%20telemetri%20Anda."
+					href="https://wa.me/628112632151?text=Halo%20CS%20Marketing%20Beacon%2C%20saya%20tertarik%20dengan%20solusi%20telemetri%20Anda."
 					class="hidden lg:inline-flex items-center gap-2 px-5 py-2.5 rounded-[10px] text-sm font-semibold text-white transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
 					style="
 						background: #C8102E;
@@ -184,7 +184,7 @@ old_btn = """<a
 				>"""
 
 new_btn = """<a
-					href="https://wa.me/628112850986?text=Halo%20Beacon%2C%20saya%20tertarik%20dengan%20solusi%20telemetri%20Anda."
+					href="https://wa.me/628112632151?text=Halo%20CS%20Marketing%20Beacon%2C%20saya%20tertarik%20dengan%20solusi%20telemetri%20Anda."
 					class="hidden lg:inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 btn-tactile"
 					style="
 						background: linear-gradient(135deg, #C8102E 0%, #A50D25 100%);

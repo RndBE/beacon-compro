@@ -6,6 +6,7 @@
 	import logoBeacon from '$lib/assets/logo_be.png';
 	import {
 		storageUrl,
+		type ArticleSummary,
 		type SearchResult,
 		type SearchResponse,
 		type SolutionSummary
@@ -45,7 +46,13 @@
 	let searchOpen = $state(false);
 	let searchQuery = $state('');
 	let currentLang = $state('ID');
-	let { solutions = null }: { solutions?: SolutionSummary[] | null } = $props();
+	let {
+		solutions = null,
+		latestArticle = null
+	}: {
+		solutions?: SolutionSummary[] | null;
+		latestArticle?: ArticleSummary | null;
+	} = $props();
 
 	// Live search state
 	let searchResults = $state<SearchResult[]>([]);
@@ -309,11 +316,23 @@
 		{ name: 'Berita Produk', desc: 'Update produk & fitur', icon: Newspaper, href: '/wawasan?kategori=berita-produk', color: '#8B5CF6' }
 	];
 
-	const latestArticle = {
+	const fallbackLatestArticle = {
 		title: 'ADR Menyelamatkan Bendungan Ciawi',
 		category: 'Studi Kasus',
-		href: '/wawasan/adr-bendungan-ciawi'
+		href: '/wawasan/adr-bendungan-ciawi',
+		color: '#C8102E'
 	};
+
+	const headerLatestArticle = $derived(
+		latestArticle
+			? {
+					title: latestArticle.title,
+					category: latestArticle.category ?? 'Wawasan',
+					href: `/wawasan/${latestArticle.slug}`,
+					color: latestArticle.category_color || '#C8102E'
+				}
+			: fallbackLatestArticle
+	);
 
 	let mobileAccordion = $state<string | null>(null);
 
@@ -336,9 +355,9 @@
 				<Phone size={12} class="text-[#C8102E]" />
 				<span class="hidden md:inline tabular-nums">(0274) 4986899</span>
 			</a>
-			<a href="https://wa.me/628112850986" class="flex items-center gap-1.5 hover:text-white transition-colors">
+			<a href="https://wa.me/628112632151" class="flex items-center gap-1.5 hover:text-white transition-colors">
 				<MessageCircle size={12} class="text-[#C8102E]" />
-				<span class="tabular-nums">WA 0811-2850-9986</span>
+				<span class="tabular-nums">CS Marketing +62 811 2632 151</span>
 			</a>
 			<a href="mailto:info@bejogja.com" class="hidden lg:flex items-center gap-1.5 hover:text-white transition-colors">
 				<Mail size={12} class="text-[#C8102E]" />
@@ -416,11 +435,11 @@
 								<div class="text-right">
 									<p class="text-xs text-[#5C5C5C] mb-2">Butuh konsultasi?</p>
 									<a
-										href="https://wa.me/628112850986"
+										href="https://wa.me/628112632151"
 										class="inline-flex items-center gap-1 text-xs font-semibold text-[#C8102E] hover:underline"
 									>
 										<MessageCircle size={12} />
-										Chat WhatsApp
+										CS Marketing
 									</a>
 								</div>
 							</div>
@@ -507,9 +526,9 @@
 
 							<div class="border-t border-[#E5E5E5] pt-3">
 								<p class="text-[10px] font-semibold text-[#C8102E] uppercase tracking-wider mb-2">Terbaru</p>
-								<a href={latestArticle.href} onclick={closeMegaMenu} class="group block p-2.5 rounded-lg hover:bg-[#FBE9EC] transition-colors">
-									<span class="text-[10px] uppercase tracking-wider" style="color: #C8102E;">{latestArticle.category}</span>
-									<span class="block text-sm font-medium text-[#1A1A1A] group-hover:text-[#C8102E] transition-colors mt-0.5">{latestArticle.title}</span>
+								<a href={headerLatestArticle.href} onclick={closeMegaMenu} class="group block p-2.5 rounded-lg hover:bg-[#FBE9EC] transition-colors">
+									<span class="text-[10px] uppercase tracking-wider" style="color: {headerLatestArticle.color};">{headerLatestArticle.category}</span>
+									<span class="block text-sm font-medium text-[#1A1A1A] group-hover:text-[#C8102E] transition-colors mt-0.5">{headerLatestArticle.title}</span>
 								</a>
 								<a href="/wawasan" onclick={closeMegaMenu} class="inline-flex items-center gap-1 mt-2 text-xs font-semibold text-[#C8102E] hover:underline">
 									Lihat Semua Wawasan <ArrowRight size={11} />
@@ -548,7 +567,7 @@
 				</button>
 
 				<a
-					href="https://wa.me/628112850986?text=Halo%20Beacon%2C%20saya%20tertarik%20dengan%20solusi%20telemetri%20Anda."
+					href="https://wa.me/628112632151?text=Halo%20CS%20Marketing%20Beacon%2C%20saya%20tertarik%20dengan%20solusi%20telemetri%20Anda."
 					class="hidden lg:inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 btn-tactile"
 					style="
 						background: linear-gradient(135deg, #C8102E 0%, #A50D25 100%);
@@ -809,6 +828,10 @@
 									{cat.name}
 								</a>
 							{/each}
+							<a href={headerLatestArticle.href} onclick={closeMobileMenu} class="block px-4 py-2 rounded-lg hover:bg-[#FBE9EC] transition-colors">
+								<span class="block text-[10px] uppercase tracking-wider" style="color: {headerLatestArticle.color};">{headerLatestArticle.category}</span>
+								<span class="block text-sm font-semibold text-[#1A1A1A]">{headerLatestArticle.title}</span>
+							</a>
 							<a href="/wawasan" onclick={closeMobileMenu} class="block px-4 py-2 text-sm font-semibold hover:bg-[#FBE9EC] rounded-lg transition-colors" style="color: #C8102E;">
 								Semua Wawasan →
 							</a>
@@ -827,9 +850,9 @@
 					<Phone size={16} class="text-[#C8102E]" />
 					(0274) 4986899
 				</a>
-				<a href="https://wa.me/628112850986" class="flex items-center gap-3 text-sm text-[#5C5C5C]">
+				<a href="https://wa.me/628112632151" class="flex items-center gap-3 text-sm text-[#5C5C5C]">
 					<MessageCircle size={16} class="text-[#C8102E]" />
-					WA 0811-2850-9986
+					CS Marketing +62 811 2632 151
 				</a>
 				<a href="mailto:info@bejogja.com" class="flex items-center gap-3 text-sm text-[#5C5C5C]">
 					<Mail size={16} class="text-[#C8102E]" />
@@ -840,7 +863,7 @@
 			<!-- Mobile CTA -->
 			<div class="mt-6">
 				<a
-					href="https://wa.me/628112850986?text=Halo%20Beacon%2C%20saya%20tertarik%20dengan%20solusi%20telemetri%20Anda."
+					href="https://wa.me/628112632151?text=Halo%20CS%20Marketing%20Beacon%2C%20saya%20tertarik%20dengan%20solusi%20telemetri%20Anda."
 					class="block w-full text-center py-3.5 rounded-xl text-white font-semibold text-sm transition-all"
 					style="background: #C8102E; box-shadow: 0 4px 12px rgba(200,16,46,0.2);"
 					target="_blank"

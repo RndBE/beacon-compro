@@ -188,7 +188,7 @@
 
 				<div class="flex flex-col sm:flex-row gap-3 mb-10">
 					<a
-						href="https://wa.me/628112850986?text=Halo%20Beacon%2C%20saya%20ingin%20minta%20demo%20STESY%20dengan%20fitur%20AI%20analysis."
+						href="https://wa.me/628112632151?text=Halo%20CS%20Marketing%20Beacon%2C%20saya%20ingin%20minta%20demo%20STESY%20dengan%20fitur%20AI%20analysis."
 						target="_blank"
 						rel="noopener"
 						class="btn-tactile inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-[14px] text-sm font-semibold text-white"
@@ -433,7 +433,7 @@
 					Strukturnya mengikuti kebutuhan operasional lapangan: lihat status pos, buka peta, analisis data, ekspor laporan, lalu tindak lanjuti alarm.
 				</p>
 				<a
-					href="https://wa.me/628112850986?text=Halo%20Beacon%2C%20saya%20ingin%20melihat%20demo%20dashboard%20STESY."
+					href="https://wa.me/628112632151?text=Halo%20CS%20Marketing%20Beacon%2C%20saya%20ingin%20melihat%20demo%20dashboard%20STESY."
 					target="_blank"
 					rel="noopener"
 					class="btn-tactile inline-flex items-center gap-2 rounded-[14px] px-6 py-3 text-sm font-semibold text-white"
@@ -541,7 +541,7 @@
 				</div>
 				<div class="lg:col-span-5 flex flex-col sm:flex-row lg:flex-col gap-3">
 					<a
-						href="https://wa.me/628112850986?text=Halo%20Beacon%2C%20saya%20ingin%20setup%20STESY%20untuk%20monitoring%20telemetri."
+						href="https://wa.me/628112632151?text=Halo%20CS%20Marketing%20Beacon%2C%20saya%20ingin%20setup%20STESY%20untuk%20monitoring%20telemetri."
 						target="_blank"
 						rel="noopener"
 						class="btn-tactile inline-flex items-center justify-center gap-2 rounded-[14px] bg-white px-7 py-4 text-sm font-bold"

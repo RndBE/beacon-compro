@@ -23,7 +23,7 @@
 	});
 
 	const partnershipWhatsAppUrl =
-		"https://wa.me/628112850986?text=Halo%20Beacon%2C%20saya%20ingin%20berdiskusi%20tentang%20kemitraan%20dengan%20Beacon%20Engineering.";
+		"https://wa.me/628112632151?text=Halo%20CS%20Marketing%20Beacon%2C%20saya%20ingin%20berdiskusi%20tentang%20kemitraan%20dengan%20Beacon%20Engineering.";
 
 	const partnershipModels = [
 		{
@@ -51,8 +51,8 @@
 
 	function handleSubmit(e: Event) {
 		e.preventDefault();
-		const msg = `Halo Beacon,%0A%0ANama: ${formData.name}%0AEmail: ${formData.email}%0ATelepon: ${formData.phone}%0APerusahaan: ${formData.company}%0ASubjek: ${formData.subject}%0APesan: ${formData.message}`;
-		window.open(`https://wa.me/628112850986?text=${msg}`, "_blank");
+		const msg = `Halo CS Marketing Beacon,%0A%0ANama: ${formData.name}%0AEmail: ${formData.email}%0ATelepon: ${formData.phone}%0APerusahaan: ${formData.company}%0ASubjek: ${formData.subject}%0APesan: ${formData.message}`;
+		window.open(`https://wa.me/628112632151?text=${msg}`, "_blank");
 	}
 </script>
 
@@ -255,7 +255,7 @@
 							</div>
 						{/each}
 
-						<!-- WhatsApp numbers -->
+						<!-- WhatsApp contact -->
 						<div class="flex items-start gap-4">
 							<div
 								class="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
@@ -269,12 +269,7 @@
 							<div>
 								<span
 									class="text-sm font-semibold block"
-									style="color: #1A1A1A;">WhatsApp</span
-								>
-								<a
-									href="https://wa.me/628112850986"
-									class="text-sm hover:text-[#C8102E] transition-colors block"
-									style="color: #5C5C5C;">0811-2850-9986</a
+									style="color: #1A1A1A;">CS Marketing</span
 								>
 								<a
 									href="https://wa.me/628112632151"
@@ -288,7 +283,7 @@
 
 				<!-- Quick CTA — SKILL: btn-tactile -->
 				<a
-					href="https://wa.me/628112850986?text=Halo%20Beacon%2C%20saya%20ingin%20konsultasi%20tentang%20solusi%20telemetri."
+					href="https://wa.me/628112632151?text=Halo%20CS%20Marketing%20Beacon%2C%20saya%20ingin%20konsultasi%20tentang%20solusi%20telemetri."
 					target="_blank"
 					rel="noopener"
 					class="group flex items-center gap-4 p-5 rounded-[20px] btn-tactile"
@@ -302,7 +297,7 @@
 					</div>
 					<div>
 						<span class="text-sm font-semibold block text-white"
-							>Langsung Chat WhatsApp</span
+							>Chat CS Marketing</span
 						>
 						<span
 							class="text-xs"

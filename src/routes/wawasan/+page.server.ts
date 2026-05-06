@@ -18,7 +18,16 @@ export const load: PageServerLoad = async ({ url, fetch }) => {
 	} catch (error) {
 		console.error('Failed to load articles:', error);
 		return {
-			articlesResponse: { data: [], current_page: 1, last_page: 1, total: 0 }
+			articlesResponse: {
+				data: [],
+				current_page: 1,
+				last_page: 1,
+				total: 0,
+				stats: {
+					total: 0,
+					categories: {}
+				}
+			}
 		};
 	}
 };

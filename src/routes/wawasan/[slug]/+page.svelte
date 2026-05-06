@@ -48,7 +48,7 @@
 		ctaTitle="Punya Kebutuhan Serupa?"
 		ctaDesc="Bicara dengan tim engineer kami untuk merancang solusi yang tepat untuk proyek Anda."
 		ctaButtonLabel="Konsultasi Sekarang"
-		ctaWhatsApp={`https://wa.me/628112850986?text=Halo%20Beacon%2C%20saya%20tertarik%20setelah%20membaca%20artikel%20${article.title}.`}
+		ctaWhatsApp={`https://wa.me/628112632151?text=Halo%20CS%20Marketing%20Beacon%2C%20saya%20tertarik%20setelah%20membaca%20artikel%20${article.title}.`}
 		ctaSecondary={{ href: '/solusi', label: 'Lihat Semua Solusi' }}
 		relatedArticles={formattedRelated}
 	>

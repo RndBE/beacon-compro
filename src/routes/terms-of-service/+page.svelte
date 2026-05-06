@@ -75,7 +75,7 @@
 					Untuk klarifikasi penggunaan situs atau layanan, hubungi
 					<a class="font-semibold text-[#C8102E] hover:text-zinc-950" href="mailto:info@bejogja.com">info@bejogja.com</a>
 					atau WhatsApp
-					<a class="font-semibold text-[#C8102E] hover:text-zinc-950" href="https://wa.me/628112850986">0811-2850-9986</a>.
+					<a class="font-semibold text-[#C8102E] hover:text-zinc-950" href="https://wa.me/628112632151">+62 811 2632 151</a>.
 				</p>
 			</div>
 		</div>

@@ -22,7 +22,7 @@
 		ctaTitle = 'Punya Kebutuhan Serupa?',
 		ctaDesc = 'Bicara dengan tim engineer kami untuk solusi yang tepat.',
 		ctaButtonLabel = 'Konsultasi',
-		ctaWhatsApp = 'https://wa.me/628112850986',
+		ctaWhatsApp = 'https://wa.me/628112632151',
 		ctaSecondary = { href: '/solusi', label: 'Lihat Solusi' },
 		relatedArticles = [] as RelatedArticle[],
 		children

@@ -3,6 +3,7 @@
 	import { ArrowRight, Check, MessageCircle, Download, ChevronRight, Siren, Bell, Radio, ShieldCheck, Zap, Wifi } from '@lucide/svelte';
 	import Ornaments from '$lib/components/Ornaments.svelte';
 	import ProductSpecs from '$lib/components/ProductSpecs.svelte';
+	import { mapTrackRecords } from '$lib/loaders/sub-solution';
 
 	let { data } = $props();
 
@@ -65,13 +66,7 @@
 
 	// API data wins: use track records from DB, fallback to static
 	const projects = $derived(
-		data.subSolutionDetail?.track_records && data.subSolutionDetail.track_records.length > 0
-			? data.subSolutionDetail.track_records.map((tr: any) => ({
-				name: tr.project_name,
-				client: tr.client,
-				year: tr.year
-			}))
-			: fallbackProjects
+		mapTrackRecords(data.subSolutionDetail?.track_records, fallbackProjects)
 	);
 
 
@@ -131,7 +126,7 @@
 					Sirene 117 dB yang menyala otomatis saat air naik ke level bahaya. 4 level peringatan progresif, siaga 24 jam, tidak butuh operator — karena bencana tidak pernah menunggu.
 				</p>
 				<div class="flex flex-wrap gap-3">
-					<a href="https://wa.me/628112850986?text=Halo%20Beacon%2C%20saya%20ingin%20konsultasi%20tentang%20EWS." target="_blank" rel="noopener"
+					<a href="https://wa.me/628112632151?text=Halo%20CS%20Marketing%20Beacon%2C%20saya%20ingin%20konsultasi%20tentang%20EWS." target="_blank" rel="noopener"
 						class="inline-flex items-center gap-2 px-6 py-3 rounded-[12px] text-sm font-semibold text-white transition-all hover:scale-[1.02]"
 						style="background: linear-gradient(135deg, #C8102E, #A50D25); box-shadow: 0 4px 12px rgba(200,16,46,0.25);">
 						<MessageCircle size={15} />
@@ -309,6 +304,9 @@
 					</div>
 					<h3 class="font-heading text-sm font-bold" style="color: #1A1A1A;">{proj.name}</h3>
 					<p class="text-xs mt-1" style="color: #5C5C5C;">{proj.client}</p>
+					{#if proj.location}
+						<p class="text-[11px] mt-1" style="color: #8A8A8A;">{proj.location}</p>
+					{/if}
 				</div>
 			{/each}
 		</div>
@@ -333,7 +331,7 @@
 			</div>
 
 			<div class="relative z-10 flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto shrink-0">
-				<a href="https://wa.me/628112850986?text=Halo%20Beacon%2C%20saya%20ingin%20konsultasi%20tentang%20EWS%20untuk%20proyek%20saya." target="_blank" rel="noopener"
+				<a href="https://wa.me/628112632151?text=Halo%20CS%20Marketing%20Beacon%2C%20saya%20ingin%20konsultasi%20tentang%20EWS%20untuk%20proyek%20saya." target="_blank" rel="noopener"
 					class="w-full sm:w-auto inline-flex justify-center items-center gap-2 px-8 py-4 rounded-full text-sm font-bold text-zinc-950 bg-white transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(255,255,255,0.1)] btn-tactile">
 					<MessageCircle size={18} />
 					Konsultasi EWS

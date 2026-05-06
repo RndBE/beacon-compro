@@ -44,6 +44,13 @@ export interface TrackRecordItem {
 	location: string | null;
 }
 
+export interface TrackRecordDisplayItem {
+	name: string;
+	client: string;
+	year: string;
+	location?: string | null;
+}
+
 export interface SubSolutionDetailResponse {
 	sub_solution: {
 		id: number;
@@ -80,4 +87,20 @@ export async function loadSubSolutionDetail(slug: string, fetchFn: typeof fetch)
 		console.error(`[SubSolution/${slug}] Failed to load:`, err);
 		return null;
 	}
+}
+
+export function mapTrackRecords(
+	trackRecords: TrackRecordItem[] | null | undefined,
+	fallbackRecords: TrackRecordDisplayItem[]
+): TrackRecordDisplayItem[] {
+	if (!trackRecords?.length) {
+		return fallbackRecords;
+	}
+
+	return trackRecords.map((record) => ({
+		name: record.project_name,
+		client: record.client,
+		year: record.year,
+		location: record.location
+	}));
 }

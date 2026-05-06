@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { MessageCircle } from '@lucide/svelte';
 
-	let { contextMessage = 'Halo Beacon, saya tertarik dengan solusi telemetri Anda.' } : { contextMessage?: string } = $props();
+	let { contextMessage = 'Halo CS Marketing Beacon, saya tertarik dengan solusi telemetri Anda.' } : { contextMessage?: string } = $props();
 
-	const waUrl = `https://wa.me/628112850986?text=${encodeURIComponent(contextMessage)}`;
+	const waUrl = `https://wa.me/628112632151?text=${encodeURIComponent(contextMessage)}`;
 </script>
 
 <!-- Mobile Sticky CTA Strip -->
@@ -17,7 +17,7 @@
 			style="background: #C8102E;"
 		>
 			<MessageCircle size={16} />
-			WhatsApp
+			CS Marketing
 		</a>
 		<a
 			href="tel:02744986899"

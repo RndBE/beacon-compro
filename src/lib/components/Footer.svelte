@@ -219,12 +219,12 @@
 						<div class="pt-1">
 							<span
 								class="block text-[10px] uppercase tracking-widest text-zinc-600 font-bold mb-1"
-								>WhatsApp</span
+								>CS Marketing</span
 							>
 							<a
-								href="https://wa.me/628112850986"
+								href="https://wa.me/628112632151"
 								class="text-sm font-medium text-zinc-400 hover:text-white transition-colors tabular-nums"
-								>0811-2850-9986</a
+								>+62 811 2632 151</a
 							>
 						</div>
 					</li>
@@ -260,7 +260,10 @@
 								class="block text-[10px] uppercase tracking-widest text-zinc-600 font-bold mb-1"
 								>Jam Kerja</span
 							>
-							<span class="text-sm font-medium text-zinc-400"
+							<span class="block text-sm font-medium text-zinc-400"
+								>Senin - Sabtu</span
+							>
+							<span class="text-sm font-medium text-zinc-500"
 								>08:00 - 17:00 WIB</span
 							>
 						</div>

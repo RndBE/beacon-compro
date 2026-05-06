@@ -6,10 +6,23 @@
 		ArrowRight,
 		SearchX,
 		Inbox,
+		ZoomIn,
 	} from "@lucide/svelte";
+	import Lightbox from '$lib/components/Lightbox.svelte';
 	import type { ProjectListItem } from "./+page.server";
 
 	let { data } = $props();
+
+	// Lightbox state
+	let lightboxOpen = $state(false);
+	let lightboxSrc = $state('');
+	let lightboxAlt = $state('');
+
+	function openLightbox(src: string, alt: string) {
+		lightboxSrc = src;
+		lightboxAlt = alt;
+		lightboxOpen = true;
+	}
 
 	let activeFilter = $state("semua");
 
@@ -320,6 +333,15 @@
 								<div
 									class="absolute inset-0 bg-gradient-to-r from-zinc-950/95 via-zinc-950/80 to-transparent group-hover:from-zinc-950/90 transition-colors duration-500"
 								></div>
+								<!-- Lightbox trigger for featured card -->
+								<button
+									class="absolute top-5 right-5 z-30 w-10 h-10 rounded-xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 cursor-zoom-in"
+									style="background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.18); backdrop-filter: blur(8px);"
+									onclick={(e) => { e.stopPropagation(); openLightbox(project.image, project.name); }}
+									aria-label="Perbesar gambar proyek"
+								>
+									<ZoomIn size={16} class="text-white" />
+								</button>
 
 								<!-- Inner Glass Refraction Border -->
 								<div
@@ -381,9 +403,11 @@
 								class="group p-3 rounded-[24px] bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-zinc-200/50 flex flex-col stagger-item"
 								style="border: 1px solid #E5E5E5; --stagger-index: {i};"
 							>
-								<!-- Image Block -->
-								<div
-									class="relative w-full h-48 rounded-[16px] overflow-hidden mb-5 bg-zinc-100"
+								<!-- Image Block — clickable for lightbox -->
+								<button
+									class="relative w-full h-48 rounded-[16px] overflow-hidden mb-5 bg-zinc-100 cursor-zoom-in block"
+									onclick={(e) => { e.stopPropagation(); openLightbox(project.image, project.name); }}
+									aria-label="Perbesar gambar {project.name}"
 								>
 									<div
 										class="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-110"
@@ -392,7 +416,14 @@
 									<div
 										class="absolute inset-0 bg-zinc-950/5 group-hover:bg-transparent transition-colors duration-300"
 									></div>
-								</div>
+									<!-- Zoom hint icon -->
+									<div
+										class="absolute top-3 right-3 z-10 w-8 h-8 rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300"
+										style="background: rgba(255,255,255,0.85); box-shadow: 0 2px 8px rgba(0,0,0,0.08);"
+									>
+										<ZoomIn size={14} style="color: #1A1A1A;" />
+									</div>
+								</button>
 
 								<div class="px-3 pb-3 flex-1 flex flex-col">
 									<!-- Year Badge + Location -->
@@ -444,6 +475,9 @@
 		{/if}
 	</div>
 </section>
+
+<!-- Lightbox -->
+<Lightbox src={lightboxSrc} alt={lightboxAlt} bind:open={lightboxOpen} />
 
 <style>
 	/* SKILL Section 4: Staggered Orchestration — CSS cascade animation-delay */

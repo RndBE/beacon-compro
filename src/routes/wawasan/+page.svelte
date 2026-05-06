@@ -45,6 +45,11 @@
 		products: string[];
 	};
 
+	type ArticleStatsResponse = {
+		total?: number;
+		categories?: Record<string, number | string>;
+	};
+
 	function setupObserver() {
 		if (cardObserver) cardObserver.disconnect();
 		visibleCards = new Set();
@@ -109,6 +114,23 @@
 		'Berita Produk': '#1B7F3A'
 	};
 
+	const statLabels = ['Studi Kasus', 'Artikel Teknis', 'Berita Produk'] as const;
+
+	let articleStats = $derived(
+		statLabels.map((label) => {
+			const stats = data.articlesResponse?.stats as ArticleStatsResponse | undefined;
+			const apiValue = stats?.categories?.[label];
+			const fallbackValue = articles.filter((article) => article.category === label).length;
+			const value = Number(apiValue ?? fallbackValue);
+
+			return {
+				value: Number.isFinite(value) ? value : fallbackValue,
+				label,
+				color: categoryColors[label]
+			};
+		})
+	);
+
 	const categoryIcons: Record<string, string> = {
 		'Studi Kasus': 'SK',
 		'Artikel Teknis': 'AT',
@@ -157,11 +179,7 @@
 
 				<!-- Stats Row — Bento Data Pills -->
 				<div class="flex flex-wrap gap-4 sm:gap-6">
-					{#each [
-						{ value: '4', label: 'Studi Kasus', color: '#C8102E' },
-						{ value: '3', label: 'Artikel Teknis', color: '#0EA5E9' },
-						{ value: '2', label: 'Berita Produk', color: '#1B7F3A' }
-					] as stat, i}
+					{#each articleStats as stat, i}
 						<div 
 							class="flex items-center gap-4 bg-white/60 border border-white px-5 py-3.5 rounded-2xl shadow-sm backdrop-blur-md hover:-translate-y-1 transition-transform"
 							style="opacity: {mounted ? 1 : 0}; transform: translateY({mounted ? 0 : 16}px); transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1) {0.3 + i * 0.1}s, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1) {0.3 + i * 0.1}s;"

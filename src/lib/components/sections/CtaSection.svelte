@@ -77,7 +77,7 @@
 			>
 				<!-- WhatsApp CTA — primary (Perpetual Shimmer & Liquid Glass) -->
 				<a
-					href="https://wa.me/628112850986?text=Halo%20Beacon%2C%20saya%20tertarik%20dengan%20solusi%20telemetri%20Anda."
+					href="https://wa.me/628112632151?text=Halo%20CS%20Marketing%20Beacon%2C%20saya%20tertarik%20dengan%20solusi%20telemetri%20Anda."
 					target="_blank" rel="noopener"
 					class="group relative flex items-center gap-6 p-7 rounded-[2rem] overflow-hidden transition-all duration-500 active:scale-95"
 					style="background: #C8102E; box-shadow: 0 20px 40px -10px rgba(200,16,46,0.3);"

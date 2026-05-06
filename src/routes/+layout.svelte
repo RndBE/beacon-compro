@@ -13,7 +13,7 @@
 </svelte:head>
 
 <div class="min-h-screen flex flex-col">
-	<Header solutions={data.solutions} />
+	<Header solutions={data.solutions} latestArticle={data.latestArticle} />
 	<main class="flex-1">
 		{@render children()}
 	</main>
