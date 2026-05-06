@@ -374,15 +374,90 @@
 													{/each}
 												</div>
 											</div>
+
+											<!-- Mobile-only: Inline product image right after description -->
+											<div class="mt-6 lg:hidden">
+												<div
+													class="relative w-full aspect-square max-w-[320px] mx-auto rounded-[2rem] overflow-hidden flex items-center justify-center"
+													style="background: rgba(255,255,255,0.015); border: 1px solid rgba(255,255,255,0.05);"
+												>
+													{#if product.image}
+														{#if product.media_type === 'video'}
+															<video
+																src={product.image}
+																class="w-full h-full object-contain p-4"
+																autoplay
+																muted
+																loop
+																playsinline
+															></video>
+														{:else}
+															<img
+																src={product.image}
+																srcset={product.image_srcset ?? undefined}
+																sizes="320px"
+																alt="{product.name}"
+																class="w-full h-full object-contain p-4"
+																draggable="false"
+																loading="lazy"
+																decoding="async"
+															/>
+														{/if}
+													{:else if product.id === 'bl-2000'}
+														<!-- Compact BL-2000 mockup for mobile -->
+														<div class="relative w-[240px] h-[170px] rounded-[2rem] bg-[#111111] shadow-xl border-t border-x border-zinc-700/50 flex flex-col justify-end p-5 overflow-hidden">
+															<div class="absolute inset-0 opacity-40 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-zinc-500 via-[#111] to-[#050505] pointer-events-none"></div>
+															<div class="w-full h-16 bg-black rounded-xl border border-zinc-800 p-3 flex items-center gap-3 shadow-[inset_0_2px_10px_rgba(0,0,0,0.8)] relative overflow-hidden">
+																<div class="w-2.5 h-2.5 bg-[#C8102E] rounded-full animate-pulse shadow-[0_0_10px_#C8102E]"></div>
+																<div class="text-[11px] font-mono text-zinc-400 flex-1 leading-tight relative z-10">
+																	SYS_OK / 99.9%<br/>CH_01: ACTIVE
+																</div>
+															</div>
+															<div class="flex justify-between px-2 mt-3">
+																{#each Array(4) as _}
+																	<div class="w-7 h-7 rounded-full bg-black border border-zinc-800 shadow-[inset_0_2px_6px_rgba(0,0,0,0.9)]"></div>
+																{/each}
+															</div>
+														</div>
+													{:else if product.id === 'bl-1100'}
+														<div class="relative w-[220px] h-[260px] bg-black rounded-[2rem] flex items-center justify-center p-6 shadow-xl border border-zinc-800/50 overflow-hidden">
+															<div class="absolute inset-0 bg-gradient-to-t from-zinc-900/50 to-transparent pointer-events-none"></div>
+															<img
+																src="/images/bl-1100.webp"
+																alt="BL-1100"
+																class="w-full h-full object-contain relative z-10"
+																draggable="false"
+																loading="lazy"
+															/>
+														</div>
+													{:else if product.id === 'bl-110'}
+														<div class="relative w-[180px] h-[180px] rounded-full bg-zinc-100 shadow-xl border-[3px] border-white flex items-center justify-center">
+															<div class="absolute w-full h-full rounded-full border-[8px] border-zinc-300/50 pointer-events-none"></div>
+															<div class="w-[100px] h-[100px] rounded-full bg-white shadow-[inset_0_6px_12px_rgba(0,0,0,0.1)] flex items-center justify-center border border-zinc-200">
+																<div class="w-4 h-4 bg-[#1B7F3A] rounded-full animate-pulse shadow-[0_0_15px_#1B7F3A]"></div>
+															</div>
+														</div>
+													{:else}
+														<!-- BL-11 micro -->
+														<div class="relative w-[110px] h-[180px] rounded-[1.2rem] bg-[#111] shadow-xl border-t border-zinc-700 flex flex-col items-center pt-6">
+															<div class="w-16 h-16 rounded-xl bg-black border border-zinc-800 shadow-[inset_0_2px_10px_rgba(0,0,0,0.8)] flex items-center justify-center">
+																<Cpu size={32} class="text-zinc-600" strokeWidth={1} />
+															</div>
+															<div class="w-10 h-1.5 bg-[#27C93F] mt-6 rounded-full shadow-[0_0_10px_#27C93F] opacity-90"></div>
+															<div class="mt-auto mb-5 text-[9px] font-mono text-zinc-500 tracking-widest">NBIOT_LINK</div>
+														</div>
+													{/if}
+												</div>
+											</div>
 										</div>
 									{/if}
 								</div>
 							{/each}
 						</div>
 
-						<!-- Right: 3D Asset Stage (8 cols) -->
+						<!-- Right: 3D Asset Stage (8 cols) — desktop only -->
 						<div
-							class="lg:col-span-8 relative h-[450px] lg:h-full lg:min-h-[500px] w-full mt-10 lg:mt-0 flex items-center justify-center"
+							class="lg:col-span-8 relative hidden lg:flex h-full lg:min-h-[500px] w-full items-center justify-center"
 						>
 							{#each products as stageProduct, idx}
 								{@const isActiveStage = activeId === stageProduct.id}
