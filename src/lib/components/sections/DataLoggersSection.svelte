@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { onMount } from "svelte";
 	import { Plus, Cpu } from "@lucide/svelte";
-	import { fly, fade, slide } from "svelte/transition";
 	import type { HomepageDataLogger } from "$lib/api";
 
 	let {
@@ -16,7 +15,6 @@
 	let innerHeight = $state(0);
 	let innerWidth = $state(0);
 	let sectionRef: HTMLElement | undefined = $state();
-	const mediaPreloads: HTMLImageElement[] = [];
 
 	const fallbackProducts: HomepageDataLogger[] = [
 		{
@@ -62,26 +60,6 @@
 			? fallbackProducts
 			: dataLoggers,
 	);
-
-	function isImageMedia(product: HomepageDataLogger) {
-		return product.image && product.media_type !== "video";
-	}
-
-	function preloadProductImages() {
-		if (typeof Image === "undefined") return;
-
-		const images = products.filter(isImageMedia);
-		mediaPreloads.length = 0;
-		images.forEach((product) => {
-			const image = new Image();
-			image.decoding = "async";
-			image.src = product.image as string;
-			image.decode?.().catch(() => {
-				// The browser can still use the image cache even if decode is interrupted.
-			});
-			mediaPreloads.push(image);
-		});
-	}
 
 	function updateActiveFromScroll() {
 		if (innerWidth < 1024) return;
@@ -148,7 +126,6 @@
 			(entries) => {
 				if (entries[0].isIntersecting) {
 					visible = true;
-					preloadProductImages();
 					observer.disconnect();
 				}
 			},
@@ -176,7 +153,6 @@
 			window.removeEventListener("scroll", requestScrollUpdate);
 			window.removeEventListener("resize", requestScrollUpdate);
 			if (frame) cancelAnimationFrame(frame);
-			mediaPreloads.length = 0;
 		};
 	});
 
@@ -217,15 +193,6 @@
 		window.scrollTo({ top: targetScrollY, behavior: "smooth" });
 	}
 
-	let activeProduct = $derived(
-		products.find((p) => p.id === activeId) ||
-			products[0] ||
-			fallbackProducts[0],
-	);
-	let shouldAnimateMockup = $derived(
-		!activeProduct.image && activeProduct.id !== "bl-1100",
-	);
-	let isVideoMedia = $derived(activeProduct.media_type === "video");
 </script>
 
 <svelte:window bind:innerHeight bind:innerWidth />
@@ -297,12 +264,8 @@
 						transition: opacity 1s cubic-bezier(0.16,1,0.3,1) 0.2s, transform 1s cubic-bezier(0.16,1,0.3,1) 0.2s;
 					"
 				>
-					<!-- Deep Glassmorphism Blurs inside Container -->
 					<div
-						class="absolute top-0 right-0 w-[600px] h-[600px] bg-[#C8102E]/10 rounded-full blur-[100px] pointer-events-none -translate-y-1/3 translate-x-1/3"
-					></div>
-					<div
-						class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-indigo-500/10 rounded-full blur-[100px] pointer-events-none translate-y-1/3 -translate-x-1/4"
+						class="absolute inset-0 pointer-events-none opacity-80 data-logger-panel-bg"
 					></div>
 
 					<!-- Split Layout -->
@@ -376,11 +339,10 @@
 									<!-- The Expanded Content (Liquid Glass) -->
 									{#if activeId === product.id}
 										<div
-											transition:slide={{ duration: 400 }}
 											class="mt-4 ml-2 overflow-hidden w-full"
 										>
 											<div
-												class="p-6 rounded-3xl bg-zinc-900/40 backdrop-blur-2xl border border-white/10 shadow-[0_20px_40px_rgba(0,0,0,0.4)] relative"
+												class="p-6 rounded-3xl bg-zinc-900/85 border border-white/10 shadow-[0_20px_40px_rgba(0,0,0,0.35)] relative"
 											>
 												<!-- Inner Refraction -->
 												<div
@@ -422,60 +384,67 @@
 						<div
 							class="lg:col-span-8 relative h-[450px] lg:h-full lg:min-h-[500px] w-full mt-10 lg:mt-0 flex items-center justify-center"
 						>
-							{#key activeId}
+							{#each products as stageProduct, idx}
+								{@const isActiveStage = activeId === stageProduct.id}
+								{@const shouldFloatStage = !stageProduct.image && stageProduct.id !== "bl-1100"}
+								{@const isVideoStage = stageProduct.media_type === "video"}
 								<!-- Subtle Inner Container for 3D Asset -->
 								<div
-									class="absolute inset-0 w-full h-full rounded-[2.5rem] overflow-hidden group will-change-transform flex flex-col items-center justify-center"
+									class="absolute inset-0 w-full h-full rounded-[2.5rem] overflow-hidden group flex flex-col items-center justify-center transition-all duration-700 ease-out {isActiveStage
+										? 'opacity-100 translate-y-0 scale-100'
+										: 'opacity-0 translate-y-8 scale-[0.98]'}"
 									style="
 										background: rgba(255,255,255,0.015);
 										border: 1px solid rgba(255,255,255,0.03);
 										box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+										pointer-events: {isActiveStage ? 'auto' : 'none'};
+										contain: layout paint;
 									"
-									in:fly={{
-										y: 30,
-										duration: 600,
-										delay: 150,
-									}}
-									out:fade={{ duration: 250 }}
 								>
 									<!-- Large 3D Mockup Container with tilt -->
 									<div
 										class="w-full h-full flex flex-col items-center justify-center relative z-10"
-										use:tilt={shouldAnimateMockup}
+										use:tilt={shouldFloatStage && isActiveStage}
 									>
 										<!-- Floating infinite animation wrapper -->
 										<div
-											class="relative w-full max-w-[450px] aspect-square flex items-center justify-center {shouldAnimateMockup
+											class="relative w-full max-w-[450px] aspect-square flex items-center justify-center {shouldFloatStage && isActiveStage
 												? 'animate-float'
 												: ''}"
 										>
-											{#if activeProduct.image}
+											{#if stageProduct.image}
 												<div
 													class="relative flex h-full w-full max-w-[620px] items-center justify-center overflow-visible p-2 lg:p-4"
 												>
-													{#if isVideoMedia}
+													{#if isVideoStage}
 														<video
-															src={activeProduct.image}
-															class="relative z-10 h-full max-h-[520px] w-full object-contain drop-shadow-[0_28px_48px_rgba(0,0,0,0.85)]"
-															autoplay
+															src={stageProduct.image}
+															class="relative z-10 h-full max-h-[520px] w-full object-contain"
+															autoplay={isActiveStage}
 															muted
 															loop
 															playsinline
 															preload="metadata"
-															aria-label={`${activeProduct.name} Data Logger`}
+															aria-label={`${stageProduct.name} Data Logger`}
 														></video>
 													{:else}
 														<img
-															src={activeProduct.image}
-															alt={`${activeProduct.name} Data Logger`}
-															class="relative z-10 h-full max-h-[520px] w-full object-contain drop-shadow-[0_28px_48px_rgba(0,0,0,0.85)]"
+															src={stageProduct.image}
+															srcset={stageProduct.image_srcset ?? undefined}
+															sizes="(min-width: 1024px) 520px, 90vw"
+															alt={`${stageProduct.name} Data Logger`}
+															class="relative z-10 h-full max-h-[520px] w-full object-contain"
 															draggable="false"
 															loading="eager"
 															decoding="async"
+															fetchpriority={idx === 0 ? "high" : "low"}
 														/>
 													{/if}
+													<div
+														class="pointer-events-none absolute bottom-8 left-1/2 z-0 h-12 w-2/3 -translate-x-1/2 rounded-full bg-black/45 blur-xl"
+													></div>
 												</div>
-											{:else if activeProduct.id === "bl-2000"}
+											{:else if stageProduct.id === "bl-2000"}
 												<!-- Pro Hardware Mockup (Large) -->
 												<div
 													class="relative w-[360px] h-[250px] rounded-[3rem] bg-[#111111] shadow-[0_40px_80px_rgba(0,0,0,0.8)] border-t border-x border-zinc-700/50 flex flex-col justify-end p-8 overflow-hidden"
@@ -535,7 +504,7 @@
 														{/each}
 													</div>
 												</div>
-											{:else if activeProduct.id === "bl-1100"}
+											{:else if stageProduct.id === "bl-1100"}
 												<!-- Single Image Viewer for BL-1100 -->
 												<div
 													class="relative w-[340px] h-[380px] bg-black rounded-[2.5rem] flex items-center justify-center p-8 shadow-[0_40px_80px_rgba(0,0,0,0.8)] border border-zinc-800/50 overflow-hidden"
@@ -547,13 +516,13 @@
 													<img
 														src="/images/bl-1100.webp"
 														alt="BL-1100 Data Logger"
-														class="w-full h-full object-contain relative z-10 drop-shadow-[0_20px_30px_rgba(0,0,0,0.8)]"
+														class="w-full h-full object-contain relative z-10"
 														draggable="false"
 														loading="eager"
 														decoding="async"
 													/>
 												</div>
-											{:else if activeProduct.id === "bl-110"}
+											{:else if stageProduct.id === "bl-110"}
 												<!-- Compact Hardware Mockup (Large) -->
 												<div
 													class="relative w-[280px] h-[280px] rounded-full bg-zinc-100 shadow-[0_40px_80px_rgba(0,0,0,0.3)] border-[3px] border-white flex items-center justify-center"
@@ -596,7 +565,7 @@
 										</div>
 									</div>
 								</div>
-							{/key}
+							{/each}
 						</div>
 					</div>
 				</div>
@@ -620,5 +589,11 @@
 	}
 	.animate-float {
 		animation: float 6s ease-in-out infinite;
+	}
+
+	.data-logger-panel-bg {
+		background:
+			radial-gradient(circle at 85% 10%, rgba(200, 16, 46, 0.12), transparent 38%),
+			radial-gradient(circle at 8% 92%, rgba(255, 255, 255, 0.06), transparent 34%);
 	}
 </style>

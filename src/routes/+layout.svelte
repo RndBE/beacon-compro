@@ -17,7 +17,7 @@
 	<main class="flex-1">
 		{@render children()}
 	</main>
-	<Footer />
+	<Footer solutions={data.solutions} />
 	<WhatsAppFloat />
 	<Chatbot />
 </div>

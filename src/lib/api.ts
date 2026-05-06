@@ -102,6 +102,7 @@ export interface HomepageDataLogger {
 	desc: string | null;
 	features: string[];
 	image: string | null;
+	image_srcset?: string | null;
 	media_type: 'image' | 'video' | null;
 }
 

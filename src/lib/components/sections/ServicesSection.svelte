@@ -57,11 +57,11 @@
 	];
 </script>
 
-<section id="layanan-beyond" class="relative py-24 lg:py-32 bg-white overflow-hidden">
+<section id="layanan-beyond" class="relative py-16 sm:py-20 lg:py-32 bg-white overflow-hidden">
 	<Ornaments />
-	<div class="relative z-10 max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-12">
+	<div class="relative z-10 max-w-[1400px] mx-auto px-4 sm:px-8 lg:px-12">
 		<!-- Grid layout: Left copy + Right interactive cards -->
-		<div class="grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+		<div class="grid lg:grid-cols-12 gap-8 sm:gap-10 lg:gap-16 items-start lg:items-center">
 			
 			<!-- Left: Header and service selectors — 5 cols -->
 			<div
@@ -72,23 +72,75 @@
 					transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1);
 				"
 			>
-				<div class="mb-10">
-					<div class="flex items-center gap-3 mb-6">
-						<div class="w-8 h-[1px] bg-[#C8102E]"></div>
-						<span class="text-xs font-mono font-semibold uppercase tracking-[0.2em] text-[#C8102E]">
+				<div class="mb-8 lg:mb-10">
+					<div class="flex items-center gap-3 mb-4 sm:mb-6">
+						<div class="w-7 sm:w-8 h-[1px] bg-[#C8102E]"></div>
+						<span class="text-[11px] sm:text-xs font-mono font-semibold uppercase tracking-[0.16em] sm:tracking-[0.2em] text-[#C8102E]">
 							Layanan Berkelanjutan
 						</span>
 					</div>
-					<h2 class="font-heading text-4xl sm:text-5xl lg:text-[56px] font-bold text-zinc-950 leading-[1.05] tracking-tight mb-4">
-						Kami Tidak Berhenti Setelah <span class="text-transparent bg-clip-text" style="background-image: linear-gradient(135deg, #1A1A1A 0%, #737373 100%);">Perangkat Terpasang.</span>
+					<h2 class="font-heading text-3xl sm:text-5xl lg:text-[56px] font-bold text-zinc-950 leading-[1.08] tracking-tight mb-4">
+						Kami Tidak Berhenti Setelah <span class="text-[#C8102E]">Perangkat Terpasang.</span>
 					</h2>
-					<p class="text-base text-zinc-500 leading-relaxed max-w-[45ch] font-medium">
+					<p class="text-sm sm:text-base text-zinc-500 leading-relaxed max-w-[45ch] font-medium">
 						Setiap instalasi didukung oleh ekosistem layanan menyeluruh — dari rancangan awal hingga pemeliharaan puluhan tahun ke depan.
 					</p>
 				</div>
 
+				<!-- Mobile service accordion -->
+				<div class="grid gap-3 lg:hidden">
+					{#each services as service, i}
+						{@const ServiceIcon = service.icon}
+						<div
+							class="w-full rounded-3xl border p-4 shadow-[0_16px_34px_-28px_rgba(24,24,27,0.35)] transition {activeService === i
+								? 'border-[#C8102E]/30 bg-[#FFF8F9]'
+								: 'border-zinc-200/70 bg-white'}"
+						>
+							<button
+								type="button"
+								class="w-full text-left transition active:scale-[0.99]"
+								onclick={() => activeService = i}
+							>
+								<div class="flex items-start gap-3">
+								<div
+									class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border transition-colors {activeService === i
+										? 'border-transparent bg-[#C8102E]'
+										: 'border-zinc-200 bg-white'}"
+								>
+									<ServiceIcon size={19} style="color: {activeService === i ? '#FFFFFF' : '#71717A'};" />
+								</div>
+								<div class="min-w-0 flex-1">
+									<div class="flex items-center justify-between gap-3">
+										<span class="text-[11px] font-mono font-semibold text-[#C8102E]">{service.number}</span>
+										<span class="h-2 w-2 rounded-full bg-[#C8102E]" style="opacity: {activeService === i ? 1 : 0.2};"></span>
+									</div>
+									<h3 class="mt-1 text-base font-bold leading-snug text-zinc-950">{service.title}</h3>
+									<p class="mt-1 text-sm font-medium leading-relaxed text-zinc-500">{service.desc}</p>
+								</div>
+							</div>
+							</button>
+
+							{#if activeService === i}
+								<div class="mt-4 border-t border-[#C8102E]/10 pt-4">
+									<p class="text-sm leading-relaxed text-zinc-600">{service.detail}</p>
+									<a
+										href="https://wa.me/628112850986?text=Halo%20Beacon%2C%20saya%20tertarik%20dengan%20layanan%20{encodeURIComponent(service.title)}."
+										class="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-[#C8102E] px-5 py-3 text-sm font-bold text-white transition active:scale-[0.98]"
+										target="_blank"
+										rel="noopener"
+										onclick={(event) => event.stopPropagation()}
+									>
+										Konsultasi Layanan
+										<ArrowUpRight size={17} />
+									</a>
+								</div>
+							{/if}
+						</div>
+					{/each}
+				</div>
+
 				<!-- Service tabs / selectors -->
-				<div class="flex flex-col gap-2 relative" onmouseenter={() => autoRotate = false} onmouseleave={() => autoRotate = true} role="group">
+				<div class="hidden lg:flex flex-col gap-2 relative" onmouseenter={() => autoRotate = false} onmouseleave={() => autoRotate = true} role="group">
 					<!-- Animated Highlight Background -->
 					<div 
 						class="absolute left-0 right-0 h-[88px] bg-zinc-50 rounded-[16px] border border-zinc-200/50 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-none"
@@ -99,6 +151,7 @@
 					</div>
 
 					{#each services as service, i}
+						{@const ServiceIcon = service.icon}
 						<!-- svelte-ignore a11y_click_events_have_key_events -->
 						<!-- svelte-ignore a11y_no_static_element_interactions -->
 						<div
@@ -113,7 +166,7 @@
 									box-shadow: {activeService === i ? '0 8px 16px -4px rgba(200,16,46,0.3)' : '0 2px 4px rgba(0,0,0,0.02)'};
 								"
 							>
-								<svelte:component this={service.icon} size={20} style="color: {activeService === i ? '#FFFFFF' : '#71717A'};" class="transition-colors duration-300" />
+								<ServiceIcon size={20} style="color: {activeService === i ? '#FFFFFF' : '#71717A'};" class="transition-colors duration-300" />
 							</div>
 							<div class="min-w-0 flex-1">
 								<span class="block text-base font-bold transition-colors duration-300" style="color: {activeService === i ? '#18181B' : '#52525B'};">{service.title}</span>
@@ -125,8 +178,9 @@
 			</div>
 
 			<!-- Right: Active service detail card — 7 cols -->
-			<div class="lg:col-span-7 relative h-[500px] sm:h-[450px] lg:h-[600px] w-full">
+			<div class="hidden lg:block lg:col-span-7 relative lg:h-[600px] w-full">
 				{#each services as service, i}
+					{@const ServiceIcon = service.icon}
 					<div
 						class="absolute inset-0 rounded-[2.5rem] p-8 sm:p-10 lg:p-14 transition-all duration-[800ms] ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden"
 						style="
@@ -147,13 +201,10 @@
 							{service.number}
 						</span>
 
-						<!-- Decorative gradient orb -->
-						<div class="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-[#FBE9EC] to-transparent rounded-full blur-3xl opacity-60 pointer-events-none"></div>
-
 						<div class="relative z-10 flex flex-col h-full justify-between">
 							<div>
 								<div class="w-16 h-16 rounded-[20px] flex items-center justify-center mb-8" style="background: white; border: 1px solid rgba(200,16,46,0.1); box-shadow: 0 10px 20px -5px rgba(200,16,46,0.05);">
-									<svelte:component this={service.icon} size={28} style="color: #C8102E;" />
+									<ServiceIcon size={28} style="color: #C8102E;" />
 								</div>
 
 								<h3 class="font-heading text-3xl lg:text-[40px] font-bold text-zinc-900 leading-[1.1] mb-5 tracking-tight">{service.title}</h3>

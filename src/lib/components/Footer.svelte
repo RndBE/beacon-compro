@@ -2,6 +2,26 @@
 	import { Phone, Mail, MessageCircle, MapPin, Clock, ArrowUpRight } from '@lucide/svelte';
 	import logoBeacon from '$lib/assets/logo_be.png';
 	import InstagramFeed from './InstagramFeed.svelte';
+	import type { SolutionSummary } from '$lib/api';
+
+	let { solutions = null }: { solutions?: SolutionSummary[] | null } = $props();
+
+	const fallbackSolutions = [
+		{ name: 'Water Security', slug: 'water-security' },
+		{ name: 'Weather Forecast', slug: 'weather-forecast' },
+		{ name: 'Early Warning', slug: 'early-warning' },
+		{ name: 'Pressure Measurement', slug: 'pressure-measurement' },
+		{ name: 'STESY', slug: 'stesy' }
+	];
+
+	const footerSolutions = $derived(
+		solutions && solutions.length > 0
+			? solutions.slice(0, 6).map((solution) => ({
+					name: solution.name,
+					slug: solution.slug
+				}))
+			: fallbackSolutions
+	);
 </script>
 
 <footer
@@ -121,15 +141,13 @@
 					Solusi Kami
 				</h3>
 				<ul class="space-y-4">
-					{#each ["Water Security", "Weather Forecast", "Early Warning", "Pressure Measurement", "STESY Application"] as item}
+					{#each footerSolutions as item}
 						<li>
 							<a
-								href="/solusi/{item
-									.toLowerCase()
-									.replace(/ /g, '-')}"
+								href="/solusi/{item.slug}"
 								class="group inline-flex items-center text-sm font-medium text-zinc-500 transition-colors hover:text-white"
 							>
-								{item}
+								{item.name}
 								<ArrowUpRight
 									size={14}
 									class="ml-1 opacity-0 -translate-y-1 translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all text-[#C8102E]"
@@ -270,13 +288,13 @@
 
 			<div class="flex items-center gap-6">
 				<a
-					href="/privacy"
+					href="/privacy-policy"
 					class="text-xs font-medium text-zinc-600 hover:text-zinc-300 transition-colors"
 					>Privacy Policy</a
 				>
 				<span class="w-1 h-1 rounded-full bg-white/10"></span>
 				<a
-					href="/terms"
+					href="/terms-of-service"
 					class="text-xs font-medium text-zinc-600 hover:text-zinc-300 transition-colors"
 					>Terms of Service</a
 				>
