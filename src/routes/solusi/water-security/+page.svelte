@@ -88,12 +88,19 @@
 					<div class="w-[85%] h-[85%] rounded-full opacity-[0.07]" style="border: 1.5px dashed #C8102E;"></div>
 				</div>
 				<!-- Illustration -->
-				<div class="ws-hero-float w-full max-w-[700px] lg:max-w-none lg:w-[145%] xl:w-[160%] lg:translate-x-12">
+				<div class="ws-hero-float w-full max-w-[760px] lg:max-w-none lg:w-[165%] xl:w-[185%] lg:translate-x-16 xl:translate-x-20">
 					<img
 						src="/ilustrasi_water_security.webp"
+						srcset="/images/hero-solutions/water_security-960.webp 960w, /images/hero-solutions/water_security-1280.webp 1280w, /ilustrasi_water_security.webp 1672w"
+						sizes="(min-width: 1280px) 980px, (min-width: 1024px) 860px, 92vw"
 						alt="Ilustrasi sistem monitoring Water Security Beacon Engineering"
 						class="w-full h-auto object-contain select-none"
+						width="1672"
+						height="941"
 						draggable="false"
+						loading="eager"
+						decoding="async"
+						fetchpriority="high"
 					/>
 				</div>
 			</div>
@@ -120,7 +127,7 @@
 					style="border: 1px solid rgba(0,0,0,0.1);"
 				>
 					<!-- Full Image Background -->
-					<img src={product.thumbnail} alt={product.name} class="absolute inset-0 w-full h-full object-cover opacity-70 group-hover:opacity-90 transition-all duration-1000 group-hover:scale-110" />
+					<img src={product.thumbnail} alt={product.name} class="absolute inset-0 w-full h-full object-cover opacity-70 group-hover:opacity-90 transition-all duration-1000 group-hover:scale-110" loading="lazy" decoding="async" />
 					
 					<!-- Darkening Gradient for Readability -->
 					<div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent pointer-events-none"></div>

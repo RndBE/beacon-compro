@@ -164,7 +164,7 @@
 	<div class="relative max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16 lg:pt-32 lg:pb-24">
 		<div class="grid lg:grid-cols-12 gap-10 lg:gap-12 items-center">
 			<div
-				class="lg:col-span-5"
+				class="lg:col-span-4"
 				style="opacity: {mounted ? 1 : 0}; transform: translateY({mounted ? 0 : 22}px); transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);"
 			>
 				<div
@@ -219,7 +219,7 @@
 			</div>
 
 			<div
-				class="lg:col-span-7"
+				class="lg:col-span-8"
 				style="opacity: {mounted ? 1 : 0}; transform: translateX({mounted ? 0 : 34}px); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1) 0.12s, transform 0.8s cubic-bezier(0.16,1,0.3,1) 0.12s;"
 			>
 				<div class="relative rounded-[2rem] lg:rounded-[2.5rem] bg-[#1A1A1A] p-3 sm:p-4 shadow-[0_24px_60px_-28px_rgba(26,26,26,0.45)]">
@@ -245,13 +245,17 @@
 							</div>
 						</div>
 
-						<div class="grid lg:grid-cols-[1.35fr_0.65fr] min-h-[500px] bg-[#FAFAFA]">
+						<div class="grid lg:grid-cols-[1.4fr_0.6fr] min-h-[560px] bg-[#FAFAFA]">
 							<div class="relative min-h-[360px] overflow-hidden">
 								<img
 									src={systemPreviewImage}
 									alt="Tampilan sistem STESY sementara"
 									class="absolute inset-0 h-full w-full object-cover opacity-75 grayscale"
+									width="1400"
+									height="900"
 									loading="eager"
+									decoding="async"
+									fetchpriority="high"
 								/>
 								<div class="absolute inset-0 bg-gradient-to-br from-white via-white/82 to-white/48"></div>
 								<div class="relative h-full p-5 sm:p-7 lg:p-8">
