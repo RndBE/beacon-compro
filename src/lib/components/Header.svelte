@@ -4,6 +4,7 @@
 	import { goto } from '$app/navigation';
 	import { PUBLIC_API_BASE } from '$env/static/public';
 	import logoBeacon from '$lib/assets/logo_be.png';
+	import { locale, translations as tr } from '$lib/i18n';
 	import {
 		storageUrl,
 		type ArticleSummary,
@@ -45,7 +46,7 @@
 	
 	let searchOpen = $state(false);
 	let searchQuery = $state('');
-	let currentLang = $state('ID');
+	let currentLang = $derived($locale);
 	let {
 		solutions = null,
 		latestArticle = null
@@ -348,7 +349,7 @@
 <div class="relative z-50 transition-all duration-300 border-b border-white/5" style="background: {scrollY > 50 ? 'rgba(26,26,26,0.85)' : 'linear-gradient(90deg, #1A1A1A 0%, #2D0A10 100%)'}; backdrop-filter: {scrollY > 50 ? 'blur(12px)' : 'none'};">
 	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-9">
 		<span class="hidden sm:inline font-mono font-bold tracking-[0.15em] text-[10px] text-zinc-400 uppercase">
-			Sistem Telemetri Buatan Indonesia · Sejak 2013
+			{tr['topbar.tagline'][$locale]}
 		</span>
 		<div class="flex items-center gap-5 text-[11px] font-medium text-zinc-300 ml-auto sm:ml-0">
 			<a href="tel:02744986899" class="flex items-center gap-1.5 hover:text-white transition-colors">
@@ -387,7 +388,7 @@
 			<!-- Desktop Navigation -->
 			<nav class="hidden lg:flex items-center gap-0.5">
 				<a href="/" class="px-4 py-2.5 rounded-full text-sm font-semibold transition-all {$page.url.pathname === '/' ? 'bg-zinc-100 text-zinc-950' : 'text-zinc-600 hover:text-zinc-950 hover:bg-zinc-100/80'}">
-					Beranda
+					{tr['nav.home'][$locale]}
 				</a>
 
 				<!-- Solusi Mega Menu -->
@@ -396,7 +397,7 @@
 						class="px-4 py-2.5 rounded-full text-sm font-semibold transition-all flex items-center gap-1.5 {$page.url.pathname.startsWith('/solusi') || activeMegaMenu === 'solusi' ? 'bg-zinc-100 text-zinc-950' : 'text-zinc-600 hover:text-zinc-950 hover:bg-zinc-100/80'}"
 						onclick={() => toggleMegaMenu('solusi')}
 					>
-						Solusi
+						{tr['nav.solutions'][$locale]}
 						<ChevronDown size={14} class="transition-transform duration-300 {activeMegaMenu === 'solusi' ? 'rotate-180 text-zinc-900' : 'text-zinc-400'}" />
 					</button>
 
@@ -448,7 +449,7 @@
 				</div>
 
 				<a href="/proyek" class="px-4 py-2.5 rounded-full text-sm font-semibold transition-all {$page.url.pathname.startsWith('/proyek') ? 'bg-zinc-100 text-zinc-950' : 'text-zinc-600 hover:text-zinc-950 hover:bg-zinc-100/80'}">
-					Proyek
+					{tr['nav.projects'][$locale]}
 				</a>
 
 				<!-- Tentang Kami -->
@@ -457,7 +458,7 @@
 						class="px-4 py-2.5 rounded-full text-sm font-semibold transition-all flex items-center gap-1.5 {$page.url.pathname.startsWith('/tentang') || activeMegaMenu === 'tentang' ? 'bg-zinc-100 text-zinc-950' : 'text-zinc-600 hover:text-zinc-950 hover:bg-zinc-100/80'}"
 						onclick={() => toggleMegaMenu('tentang')}
 					>
-						Tentang Kami
+						{tr['nav.about'][$locale]}
 						<ChevronDown size={14} class="transition-transform duration-300 {activeMegaMenu === 'tentang' ? 'rotate-180 text-zinc-900' : 'text-zinc-400'}" />
 					</button>
 
@@ -498,7 +499,7 @@
 						class="px-4 py-2.5 rounded-full text-sm font-semibold transition-all flex items-center gap-1.5 {$page.url.pathname.startsWith('/wawasan') || activeMegaMenu === 'wawasan' ? 'bg-zinc-100 text-zinc-950' : 'text-zinc-600 hover:text-zinc-950 hover:bg-zinc-100/80'}"
 						onclick={() => toggleMegaMenu('wawasan')}
 					>
-						Wawasan
+						{tr['nav.insights'][$locale]}
 						<ChevronDown size={14} class="transition-transform duration-300 {activeMegaMenu === 'wawasan' ? 'rotate-180 text-zinc-900' : 'text-zinc-400'}" />
 					</button>
 
@@ -539,7 +540,7 @@
 				</div>
 
 				<a href="/kontak" class="px-4 py-2.5 rounded-full text-sm font-semibold transition-all {$page.url.pathname.startsWith('/kontak') ? 'bg-zinc-100 text-zinc-950' : 'text-zinc-600 hover:text-zinc-950 hover:bg-zinc-100/80'}">
-					Kontak
+					{tr['nav.contact'][$locale]}
 				</a>
 			</nav>
 
@@ -550,8 +551,8 @@
 					<!-- Active Indicator -->
 					<div class="absolute inset-y-[3px] left-[3px] w-[26px] rounded-[8px] bg-white shadow-sm border border-zinc-200/50 transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]" style="transform: translateX({currentLang === 'EN' ? '26px' : '0'});"></div>
 					
-					<button onclick={() => currentLang = 'ID'} class="relative z-10 w-[26px] h-[22px] flex items-center justify-center text-[10px] font-bold font-mono transition-colors {currentLang === 'ID' ? 'text-[#C8102E]' : 'text-zinc-400 hover:text-zinc-600'}">ID</button>
-					<button onclick={() => currentLang = 'EN'} class="relative z-10 w-[26px] h-[22px] flex items-center justify-center text-[10px] font-bold font-mono transition-colors {currentLang === 'EN' ? 'text-[#C8102E]' : 'text-zinc-400 hover:text-zinc-600'}">EN</button>
+					<button onclick={() => $locale = 'ID'} class="relative z-10 w-[26px] h-[22px] flex items-center justify-center text-[10px] font-bold font-mono transition-colors {$locale === 'ID' ? 'text-[#C8102E]' : 'text-zinc-400 hover:text-zinc-600'}">ID</button>
+					<button onclick={() => $locale = 'EN'} class="relative z-10 w-[26px] h-[22px] flex items-center justify-center text-[10px] font-bold font-mono transition-colors {$locale === 'EN' ? 'text-[#C8102E]' : 'text-zinc-400 hover:text-zinc-600'}">EN</button>
 				</div>
 
 				<button 
@@ -560,7 +561,7 @@
 					onclick={openSearch}
 				>
 					<Search size={16} />
-					<span class="text-xs font-medium mr-2">Cari...</span>
+					<span class="text-xs font-medium mr-2">{tr['nav.search'][$locale]}</span>
 					<kbd class="hidden xl:inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-mono font-semibold bg-white border border-zinc-200 text-zinc-400">
 						<Command size={10} /> K
 					</kbd>
@@ -578,7 +579,7 @@
 					target="_blank"
 					rel="noopener"
 				>
-					Konsultasi Gratis
+					{tr['nav.cta'][$locale]}
 				</a>
 
 				<!-- Mobile Menu Button -->
