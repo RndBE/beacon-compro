@@ -26,33 +26,33 @@
 		return () => { observer.disconnect(); clearInterval(interval); };
 	});
 
-	const services = [
+	const services = $derived([
 		{
 			icon: BrainCircuit,
-			title: 'Telemetri Berbasis AI',
-			desc: 'Pengumpulan, analisa, dan komparasi data otomatis untuk insight yang lebih dalam.',
-			detail: 'Machine learning menganalisis pola data historis, memprediksi anomali, dan mengoptimalkan threshold alarm secara otomatis. Menghapus kebutuhan monitoring manual 24/7.',
+			title: $locale === 'EN' ? 'AI-Based Telemetry' : 'Telemetri Berbasis AI',
+			desc: $locale === 'EN' ? 'Automated data collection, analysis, and comparison for deeper insights.' : 'Pengumpulan, analisa, dan komparasi data otomatis untuk insight yang lebih dalam.',
+			detail: $locale === 'EN' ? 'Machine learning analyzes historical data patterns, predicts anomalies, and auto-optimizes alarm thresholds. Eliminates the need for 24/7 manual monitoring.' : 'Machine learning menganalisis pola data historis, memprediksi anomali, dan mengoptimalkan threshold alarm secara otomatis. Menghapus kebutuhan monitoring manual 24/7.',
 			number: '01'
 		},
 		{
 			icon: Wrench,
 			title: 'Garansi & Maintenance',
-			desc: 'Pengecekan teknis, kebersihan, penggantian suku cadang, kalibrasi, uji fungsional.',
-			detail: 'Tim teknis terlatih hadir langsung ke lokasi. Dukungan sepanjang tahun dengan SLA response time yang ketat untuk memastikan tidak ada data yang hilang.',
+			desc: $locale === 'EN' ? 'Technical checks, cleaning, spare parts replacement, calibration, functional testing.' : 'Pengecekan teknis, kebersihan, penggantian suku cadang, kalibrasi, uji fungsional.',
+			detail: $locale === 'EN' ? 'Trained technical team comes directly to the site. Year-round support with strict SLA response times to ensure no data is lost.' : 'Tim teknis terlatih hadir langsung ke lokasi. Dukungan sepanjang tahun dengan SLA response time yang ketat untuk memastikan tidak ada data yang hilang.',
 			number: '02'
 		},
 		{
 			icon: MonitorSmartphone,
-			title: 'Monitoring Terintegrasi',
-			desc: 'Akses lewat satu aplikasi STESY, tidak peduli berapa banyak perangkat.',
-			detail: 'Dashboard tunggal menampilkan seluruh stasiun secara real-time. Mendukung multi-tenant untuk berbagai instansi dengan sistem manajemen role yang aman.',
+			title: $locale === 'EN' ? 'Integrated Monitoring' : 'Monitoring Terintegrasi',
+			desc: $locale === 'EN' ? 'Access via one STESY app, regardless of how many devices.' : 'Akses lewat satu aplikasi STESY, tidak peduli berapa banyak perangkat.',
+			detail: $locale === 'EN' ? 'A single dashboard displays all stations in real-time. Supports multi-tenant for various institutions with secure role management.' : 'Dashboard tunggal menampilkan seluruh stasiun secara real-time. Mendukung multi-tenant untuk berbagai instansi dengan sistem manajemen role yang aman.',
 			number: '03'
 		},
 		{
 			icon: Users,
-			title: 'Konsultasi Teknis',
-			desc: 'Tim engineer kami membantu sejak fase desain sampai operasional.',
-			detail: 'Dari site survey, desain teknis, hingga training operator — kami mendampingi setiap tahap implementasi. Memastikan solusi tepat guna untuk medan ekstrem.',
+			title: $locale === 'EN' ? 'Technical Consultation' : 'Konsultasi Teknis',
+			desc: $locale === 'EN' ? 'Our engineering team helps from design phase to operations.' : 'Tim engineer kami membantu sejak fase desain sampai operasional.',
+			detail: $locale === 'EN' ? 'From site surveys, technical design, to operator training — we accompany every implementation phase. Ensuring fit-for-purpose solutions for extreme terrain.' : 'Dari site survey, desain teknis, hingga training operator — kami mendampingi setiap tahap implementasi. Memastikan solusi tepat guna untuk medan ekstrem.',
 			number: '04'
 		}
 	];
@@ -81,7 +81,7 @@
 						</span>
 					</div>
 					<h2 class="font-heading text-3xl sm:text-5xl lg:text-[56px] font-bold text-zinc-950 leading-[1.08] tracking-tight mb-4">
-						Kami Tidak Berhenti Setelah <span class="text-[#C8102E]">Perangkat Terpasang.</span>
+						{$locale === 'EN' ? 'We Don\'t Stop After' : 'Kami Tidak Berhenti Setelah'} <span class="text-[#C8102E]">{$locale === 'EN' ? 'Devices Are Installed.' : 'Perangkat Terpasang.'}</span>
 					</h2>
 					<p class="text-sm sm:text-base text-zinc-500 leading-relaxed max-w-[45ch] font-medium">
 						Setiap instalasi didukung oleh ekosistem layanan menyeluruh — dari rancangan awal hingga pemeliharaan puluhan tahun ke depan.

@@ -85,7 +85,7 @@
 					name: s.name,
 					hook: hookMap[s.slug] ?? s.description,
 					products: productLabelsMap[s.slug] ?? [],
-					cta: s.slug === 'stesy' ? 'Pelajari' : 'Eksplorasi',
+					cta: s.slug === 'stesy' ? ($locale === 'EN' ? 'Learn More' : 'Pelajari') : ($locale === 'EN' ? 'Explore' : 'Eksplorasi'),
 					href: `/solusi/${s.slug}`,
 					image: s.thumbnail ?? `https://picsum.photos/seed/${s.slug}/1200/800`
 				}))

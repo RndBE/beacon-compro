@@ -15,12 +15,12 @@
 		return () => observer.disconnect();
 	});
 
-	const features = [
-		'Cross-platform: Windows, macOS, iOS, Android',
-		'Grafik historis & analytics',
-		'Integrasi monitoring CCTV',
-		'Alarm otomatis untuk threshold kritis'
-	];
+	const features = $derived([
+		$locale === 'EN' ? 'Cross-platform: Windows, macOS, iOS, Android' : 'Cross-platform: Windows, macOS, iOS, Android',
+		$locale === 'EN' ? 'Historical charts & analytics' : 'Grafik historis & analytics',
+		$locale === 'EN' ? 'CCTV monitoring integration' : 'Integrasi monitoring CCTV',
+		$locale === 'EN' ? 'Automatic alarms for critical thresholds' : 'Alarm otomatis untuk threshold kritis'
+	]);
 </script>
 
 <section id="stesy-spotlight" class="relative py-20 lg:py-28 overflow-hidden" style="background: linear-gradient(180deg, #FAFAFA 0%, #FFF5F6 50%, #FBE9EC 100%);">
@@ -129,7 +129,7 @@
 							<!-- Chart mock -->
 							<div class="rounded-xl p-3 bg-white" style="border: 1px solid #E5E5E5;">
 								<div class="flex items-center justify-between mb-2">
-									<span class="text-[10px] font-medium" style="color: #5C5C5C;">Water Level — Bendungan Ciawi</span>
+									<span class="text-[10px] font-medium" style="color: #5C5C5C;">{$locale === 'EN' ? 'Water Level — Ciawi Dam' : 'Water Level — Bendungan Ciawi'}</span>
 									<span class="text-[9px]" style="color: #9A9A9A;">Last 24h</span>
 								</div>
 								<svg class="w-full h-16" viewBox="0 0 300 60" fill="none">
@@ -172,7 +172,7 @@
 							<span class="text-sm font-mono font-bold" style="color: #1A1A1A;">86.4m</span>
 						</div>
 						<div class="rounded-lg p-2 bg-white" style="border: 1px solid #E5E5E5;">
-							<span class="text-[8px] block" style="color: #9A9A9A;">Curah Hujan</span>
+							<span class="text-[8px] block" style="color: #9A9A9A;">{$locale === 'EN' ? 'Rainfall' : 'Curah Hujan'}</span>
 							<span class="text-sm font-mono font-bold" style="color: #1A1A1A;">5.2mm</span>
 						</div>
 					</div>
@@ -193,13 +193,13 @@
 					{$locale === 'EN' ? 'Monitoring Platform' : 'Platform Monitoring'}
 				</div>
 				<h2 class="font-heading text-4xl sm:text-5xl lg:text-[56px] font-extrabold text-zinc-950 leading-[1.05] tracking-tighter">
-					Satu Layar untuk Memantau <br /> <span class="text-transparent bg-clip-text" style="background-image: linear-gradient(135deg, #FF5F56 0%, #C8102E 50%, #8A0B1F 100%);">Semua Aset Anda</span>
+					{$locale === 'EN' ? 'One Screen to Monitor' : 'Satu Layar untuk Memantau'} <br /> <span class="text-transparent bg-clip-text" style="background-image: linear-gradient(135deg, #FF5F56 0%, #C8102E 50%, #8A0B1F 100%);">{$locale === 'EN' ? 'All Your Assets' : 'Semua Aset Anda'}</span>
 				</h2>
 				<div>
 					<span class="font-heading text-lg font-semibold" style="color: #1A1A1A;">STESY — Smart Telemetry System</span>
 				</div>
 				<p class="text-base leading-relaxed" style="color: #5C5C5C;">
-					Bayangkan: ketinggian air Bendungan A, curah hujan Stasiun B, deformasi Lereng C, status pintu air Bendung D — semua di satu dashboard. Real-time. Dari mana saja.
+					{$locale === 'EN' ? 'Imagine: water level at Dam A, rainfall at Station B, slope deformation at C, gate status at D — all in one dashboard. Real-time. From anywhere.' : 'Bayangkan: ketinggian air Bendungan A, curah hujan Stasiun B, deformasi Lereng C, status pintu air Bendung D — semua di satu dashboard. Real-time. Dari mana saja.'}
 				</p>
 
 				<ul class="space-y-3">
@@ -219,7 +219,7 @@
 						class="btn-tactile inline-flex items-center justify-center gap-2 px-6 py-3 rounded-[12px] text-sm font-semibold text-white"
 						style="background: linear-gradient(135deg, #C8102E 0%, #A50D25 100%); box-shadow: 0 4px 12px rgba(200,16,46,0.25);"
 					>
-						Lihat Demo STESY
+						{$locale === 'EN' ? 'View STESY Demo' : 'Lihat Demo STESY'}
 						<ArrowRight size={14} />
 					</a>
 					<a
@@ -227,7 +227,7 @@
 						class="btn-tactile inline-flex items-center justify-center gap-2 px-6 py-3 rounded-[12px] text-sm font-semibold transition-all duration-200 hover:bg-[#FBE9EC]"
 						style="border: 1.5px solid #E5E5E5; color: #1A1A1A;"
 					>
-						Pelajari Lebih Lanjut
+						{$locale === 'EN' ? 'Learn More' : 'Pelajari Lebih Lanjut'}
 					</a>
 				</div>
 			</div>

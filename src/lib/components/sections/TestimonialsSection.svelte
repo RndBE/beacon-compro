@@ -268,18 +268,28 @@
 						class="w-1.5 h-1.5 rounded-full"
 						style="background: #C8102E;"
 					></span>
-					Testimoni
+					{$locale === 'EN' ? 'Testimonials' : 'Testimoni'}
 				</div>
 				<h2
 					class="font-heading text-4xl sm:text-5xl lg:text-[56px] font-extrabold leading-[1.05] tracking-tighter text-zinc-950"
 				>
-					<span class="text-zinc-300">"</span>Mitra yang Berkomitmen
-					Terhadap
-					<span
-						class="text-transparent bg-clip-text"
-						style="background-image: linear-gradient(135deg, #FF5F56 0%, #C8102E 50%, #8A0B1F 100%)"
-						>Kualitas Buatan Anak Negeri."</span
-					>
+					{#if $locale === 'EN'}
+						<span class="text-zinc-300">"</span>A Partner Committed
+						to
+						<span
+							class="text-transparent bg-clip-text"
+							style="background-image: linear-gradient(135deg, #FF5F56 0%, #C8102E 50%, #8A0B1F 100%)"
+							>Homegrown Quality."</span
+						>
+					{:else}
+						<span class="text-zinc-300">"</span>Mitra yang Berkomitmen
+						Terhadap
+						<span
+							class="text-transparent bg-clip-text"
+							style="background-image: linear-gradient(135deg, #FF5F56 0%, #C8102E 50%, #8A0B1F 100%)"
+							>Kualitas Buatan Anak Negeri."</span
+						>
+					{/if}
 				</h2>
 			</div>
 			<!-- Navigation arrows — desktop only -->
@@ -426,7 +436,7 @@
 					class="inline-flex items-center gap-2 text-sm font-semibold mt-4 transition-colors hover:gap-3 pl-4"
 					style="color: #C8102E;"
 				>
-					Lihat semua testimoni
+					{$locale === 'EN' ? 'View all testimonials' : 'Lihat semua testimoni'}
 					<ArrowRight size={14} />
 				</a>
 			</div>

@@ -170,14 +170,14 @@
 			<div class="flex items-center gap-3 mb-6">
 				<div class="w-8 h-[1px] bg-[#C8102E]"></div>
 				<span class="text-xs font-mono font-semibold uppercase tracking-[0.2em] text-[#C8102E]">
-					Portfolio Proyek
+					{$locale === 'EN' ? 'Project Portfolio' : 'Portfolio Proyek'}
 				</span>
 			</div>
 			<h2 class="font-heading text-4xl sm:text-5xl md:text-6xl font-extrabold text-zinc-950 leading-[1.05] tracking-tight mb-4">
 				Kami Sudah di Sana, Kami <span class="text-transparent bg-clip-text" style="background-image: linear-gradient(135deg, #FF5F56 0%, #C8102E 50%, #8A0B1F 100%);">Tetap di Sana.</span>
 			</h2>
 			<p class="text-lg text-zinc-500 leading-relaxed max-w-[55ch] font-medium">
-				Tiga ratus lebih pos telemetri tersebar dari Aceh sampai Papua. Setiap titik merah di peta adalah perangkat Beacon yang beroperasi 24 jam non-stop.
+				{$locale === 'EN' ? 'Over three hundred telemetry stations spread from Aceh to Papua. Every red dot on the map is a Beacon device operating 24/7 non-stop.' : 'Tiga ratus lebih pos telemetri tersebar dari Aceh sampai Papua. Setiap titik merah di peta adalah perangkat Beacon yang beroperasi 24 jam non-stop.'}
 			</p>
 		</div>
 
@@ -273,7 +273,7 @@
 						<div class="absolute inset-0 rounded-2xl border border-white/20 pointer-events-none shadow-[inset_0_1px_0_rgba(255,255,255,0.3)]"></div>
 						
 						<span class="relative z-10 flex items-center gap-2">
-							Jelajahi Semua Proyek
+							{$locale === 'EN' ? 'Explore All Projects' : 'Jelajahi Semua Proyek'}
 							<ArrowRight size={18} class="group-hover:translate-x-1 transition-transform" />
 						</span>
 					</a>
