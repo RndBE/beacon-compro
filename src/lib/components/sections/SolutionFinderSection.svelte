@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { ArrowRight, Droplets, CloudSun, Siren, Gauge, MonitorPlay, HelpCircle } from '@lucide/svelte';
 	import Ornaments from '$lib/components/Ornaments.svelte';
+	import { locale, translations as tr } from '$lib/i18n';
 
 	let visible = $state(false);
 	let activeNeed = $state(0);
@@ -18,77 +19,39 @@
 		return () => observer.disconnect();
 	});
 
-	interface NeedItem {
-		question: string;
-		shortLabel: string;
-		solution: string;
-		solutionSlug: string;
-		icon: typeof Droplets;
-		color: string;
-		description: string;
-		products: string[];
-		stat: { value: string; label: string };
-	}
 
-	const needs: NeedItem[] = [
-		{
-			question: 'Saya perlu memantau ketinggian air, debit, atau kualitas air sungai dan bendungan secara real-time',
-			shortLabel: 'Monitoring Air',
-			solution: 'Water Security',
-			solutionSlug: 'water-security',
-			icon: Droplets,
-			color: '#0EA5E9',
-			description: 'Enam perangkat telemetri presisi tinggi untuk memantau level air, debit, kualitas air, deformasi bendungan, dan kontrol pintu air — terhubung 24/7 ke dashboard STESY.',
-			products: ['AWLR', 'AWGC', 'AFMR', 'ADR', 'AWQR', 'AVWR'],
-			stat: { value: '6', label: 'Perangkat' },
-		},
-		{
-			question: 'Saya butuh data curah hujan dan cuaca otomatis untuk peringatan dini atau riset iklim',
-			shortLabel: 'Cuaca & Iklim',
-			solution: 'Weather & Climate Intelligence',
-			solutionSlug: 'weather-forecast',
-			icon: CloudSun,
-			color: '#6366F1',
-			description: 'Stasiun cuaca otomatis dan pencatat hujan digital yang mengirim data langsung ke pusat kendali. Ideal untuk BMKG, BWS, dan institusi riset klimatologi.',
-			products: ['ARR', 'AWR'],
-			stat: { value: '2', label: 'Perangkat' },
-		},
-		{
-			question: 'Saya ingin membangun sistem peringatan dini banjir, longsor, atau erupsi untuk masyarakat',
-			shortLabel: 'Peringatan Dini',
-			solution: 'Early Warning System',
-			solutionSlug: 'early-warning',
-			icon: Siren,
-			color: '#DC2626',
-			description: 'Sistem peringatan dini terintegrasi yang menggabungkan sensor lapangan, logika threshold otomatis, dan sirine peringatan — menyelamatkan nyawa sebelum bencana terjadi.',
-			products: ['EWS'],
-			stat: { value: '< 3s', label: 'Waktu Respons' },
-		},
-		{
-			question: 'Saya perlu mengukur tekanan pipa, tekanan pori tanah, atau tekanan di struktur bangunan',
-			shortLabel: 'Tekanan & Pori',
-			solution: 'Pressure Measurement',
-			solutionSlug: 'pressure-measurement',
-			icon: Gauge,
-			color: '#059669',
-			description: 'Perangkat pencatat tekanan otomatis untuk monitoring piezometer, manometer, dan sensor tekanan industrial — mendeteksi anomali struktural sebelum menjadi kegagalan.',
-			products: ['APLR'],
-			stat: { value: 'IP67', label: 'Rating' },
-		},
-		{
-			question: 'Saya ingin satu dashboard untuk melihat semua data telemetri dari lapangan',
-			shortLabel: 'Dashboard',
-			solution: 'STESY Platform',
-			solutionSlug: 'stesy',
-			icon: MonitorPlay,
-			color: '#1A1A1A',
-			description: 'Smart Telemetry System — dashboard berbasis web yang menampilkan data real-time dari seluruh perangkat Beacon. Dilengkapi alarm threshold, grafik historis, dan laporan otomatis.',
-			products: ['STESY Web', 'STESY Mobile'],
-			stat: { value: '24/7', label: 'Real-time' },
-		},
+	const needsData: Record<string, { question: string; shortLabel: string; description: string; statLabel: string }[]> = {
+		ID: [
+			{ question: 'Saya perlu memantau ketinggian air, debit, atau kualitas air sungai dan bendungan secara real-time', shortLabel: 'Monitoring Air', description: 'Enam perangkat telemetri presisi tinggi untuk memantau level air, debit, kualitas air, deformasi bendungan, dan kontrol pintu air — terhubung 24/7 ke dashboard STESY.', statLabel: 'Perangkat' },
+			{ question: 'Saya butuh data curah hujan dan cuaca otomatis untuk peringatan dini atau riset iklim', shortLabel: 'Cuaca & Iklim', description: 'Stasiun cuaca otomatis dan pencatat hujan digital yang mengirim data langsung ke pusat kendali. Ideal untuk BMKG, BWS, dan institusi riset klimatologi.', statLabel: 'Perangkat' },
+			{ question: 'Saya ingin membangun sistem peringatan dini banjir, longsor, atau erupsi untuk masyarakat', shortLabel: 'Peringatan Dini', description: 'Sistem peringatan dini terintegrasi yang menggabungkan sensor lapangan, logika threshold otomatis, dan sirine peringatan — menyelamatkan nyawa sebelum bencana terjadi.', statLabel: 'Waktu Respons' },
+			{ question: 'Saya perlu mengukur tekanan pipa, tekanan pori tanah, atau tekanan di struktur bangunan', shortLabel: 'Tekanan & Pori', description: 'Perangkat pencatat tekanan otomatis untuk monitoring piezometer, manometer, dan sensor tekanan industrial — mendeteksi anomali struktural sebelum menjadi kegagalan.', statLabel: 'Rating' },
+			{ question: 'Saya ingin satu dashboard untuk melihat semua data telemetri dari lapangan', shortLabel: 'Dashboard', description: 'Smart Telemetry System — dashboard berbasis web yang menampilkan data real-time dari seluruh perangkat Beacon. Dilengkapi alarm threshold, grafik historis, dan laporan otomatis.', statLabel: 'Real-time' },
+		],
+		EN: [
+			{ question: 'I need to monitor water levels, flow rates, or water quality of rivers and dams in real-time', shortLabel: 'Water Monitoring', description: 'Six high-precision telemetry devices for monitoring water levels, flow rates, water quality, dam deformation, and gate control — connected 24/7 to the STESY dashboard.', statLabel: 'Devices' },
+			{ question: 'I need automatic rainfall and weather data for early warning or climate research', shortLabel: 'Weather & Climate', description: 'Automatic weather stations and digital rain gauges that send data directly to the control center. Ideal for meteorological agencies and climate research institutions.', statLabel: 'Devices' },
+			{ question: 'I want to build an early warning system for floods, landslides, or eruptions', shortLabel: 'Early Warning', description: 'An integrated early warning system combining field sensors, automatic threshold logic, and warning sirens — saving lives before disaster strikes.', statLabel: 'Response Time' },
+			{ question: 'I need to measure pipe pressure, pore water pressure, or structural pressure', shortLabel: 'Pressure & Pore', description: 'Automatic pressure recording devices for piezometer, manometer, and industrial pressure sensor monitoring — detecting structural anomalies before they become failures.', statLabel: 'Rating' },
+			{ question: 'I want a single dashboard to view all telemetry data from the field', shortLabel: 'Dashboard', description: 'Smart Telemetry System — a web-based dashboard displaying real-time data from all Beacon devices. Equipped with threshold alarms, historical charts, and automated reports.', statLabel: 'Real-time' },
+		],
+	};
+
+	const needsBase = [
+		{ solution: 'Water Security', solutionSlug: 'water-security', icon: Droplets, color: '#0EA5E9', products: ['AWLR', 'AWGC', 'AFMR', 'ADR', 'AWQR', 'AVWR'], statValue: '6' },
+		{ solution: 'Weather & Climate Intelligence', solutionSlug: 'weather-forecast', icon: CloudSun, color: '#6366F1', products: ['ARR', 'AWR'], statValue: '2' },
+		{ solution: 'Early Warning System', solutionSlug: 'early-warning', icon: Siren, color: '#DC2626', products: ['EWS'], statValue: '< 3s' },
+		{ solution: 'Pressure Measurement', solutionSlug: 'pressure-measurement', icon: Gauge, color: '#059669', products: ['APLR'], statValue: 'IP67' },
+		{ solution: 'STESY Platform', solutionSlug: 'stesy', icon: MonitorPlay, color: '#1A1A1A', products: ['STESY Web', 'STESY Mobile'], statValue: '24/7' },
 	];
 
-	let activeItem = $derived(needs[activeNeed]);
+	const needs = $derived(
+		needsBase.map((base, i) => {
+			const lang = needsData[$locale]?.[i] ?? needsData['ID'][i];
+			return { ...base, ...lang };
+		})
+	);
+
 
 	// Auto-cycle setiap 6 detik saat tidak ada interaksi
 	let autoTimer: ReturnType<typeof setInterval> | null = null;
@@ -130,13 +93,13 @@
 		>
 			<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest mb-5" style="background: #FBE9EC; color: #C8102E; border: 1px solid rgba(200,16,46,0.12);">
 				<HelpCircle size={12} />
-				Panduan Solusi
+				{tr['finder.badge'][$locale]}
 			</div>
 			<h2 class="font-heading text-3xl sm:text-4xl lg:text-[44px] font-extrabold tracking-tighter leading-[1.08]" style="color: #1A1A1A;">
-				Pilih Berdasarkan <span style="color: #C8102E;">Kebutuhan Anda</span>
+				{tr['finder.title'][$locale]} <span style="color: #C8102E;">{tr['finder.title.accent'][$locale]}</span>
 			</h2>
 			<p class="mt-4 text-base text-zinc-500 leading-relaxed max-w-[52ch]">
-				Klik masalah atau kebutuhan yang paling sesuai — kami tunjukkan solusi dan perangkat yang tepat.
+				{tr['finder.desc'][$locale]}
 			</p>
 		</div>
 
@@ -226,7 +189,7 @@
 										<h3 class="font-heading text-xl sm:text-2xl font-bold tracking-tight" style="color: #1A1A1A;">
 											{need.solution}
 										</h3>
-										<span class="text-xs font-medium text-zinc-400 uppercase tracking-wider">Solusi Beacon</span>
+										<span class="text-xs font-medium text-zinc-400 uppercase tracking-wider">{tr['finder.solution.label'][$locale]}</span>
 									</div>
 								</div>
 
@@ -237,7 +200,7 @@
 
 								<!-- Product badges -->
 								<div class="mb-7">
-									<span class="text-[10px] font-bold uppercase tracking-widest text-zinc-400 block mb-3">Perangkat Tersedia</span>
+									<span class="text-[10px] font-bold uppercase tracking-widest text-zinc-400 block mb-3">{tr['finder.devices'][$locale]}</span>
 									<div class="flex flex-wrap gap-2">
 										{#each need.products as product}
 											<span
@@ -253,15 +216,15 @@
 								<!-- Bottom: stat + CTA -->
 								<div class="flex items-center justify-between pt-6" style="border-top: 1px solid #F4F4F5;">
 									<div class="flex items-center gap-3">
-										<span class="font-heading text-3xl font-extrabold tabular-nums tracking-tighter" style="color: {need.color};">{need.stat.value}</span>
-										<span class="text-xs font-medium text-zinc-400 uppercase tracking-wider">{need.stat.label}</span>
+										<span class="font-heading text-3xl font-extrabold tabular-nums tracking-tighter" style="color: {need.color};">{need.statValue}</span>
+										<span class="text-xs font-medium text-zinc-400 uppercase tracking-wider">{need.statLabel}</span>
 									</div>
 									<a
 										href="/solusi/{need.solutionSlug}"
 										class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold text-white transition-all duration-300 hover:gap-3 active:scale-[0.97]"
 										style="background: {need.color}; box-shadow: 0 4px 12px -2px {need.color}40;"
 									>
-										Lihat Solusi
+										{tr['finder.cta'][$locale]}
 										<ArrowRight size={14} />
 									</a>
 								</div>

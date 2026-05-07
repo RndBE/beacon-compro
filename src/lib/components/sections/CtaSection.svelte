@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { MessageCircle, Mail, MapPin, Clock, ArrowRight } from '@lucide/svelte';
+	import { locale } from '$lib/i18n';
 
 	let visible = $state(false);
 
@@ -43,14 +44,18 @@
 				<div class="inline-flex items-center gap-3 px-4 py-2 rounded-full mb-8 relative overflow-hidden" style="background: rgba(200,16,46,0.1); border: 1px solid rgba(200,16,46,0.2);">
 					<div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full animate-shimmer pointer-events-none"></div>
 					<span class="w-2 h-2 rounded-full" style="background: #C8102E; box-shadow: 0 0 10px rgba(200,16,46,0.8);"></span>
-					<span class="text-[11px] font-mono font-bold uppercase tracking-[0.2em] text-white">Mulai Sekarang</span>
+					<span class="text-[11px] font-mono font-bold uppercase tracking-[0.2em] text-white">{$locale === 'EN' ? 'Get Started' : 'Mulai Sekarang'}</span>
 				</div>
 
 				<h2 class="font-heading text-4xl sm:text-5xl lg:text-[60px] font-extrabold text-white leading-[1.05] tracking-tighter mb-6">
-					Punya Bendungan, Sungai, atau <span class="text-transparent bg-clip-text" style="background-image: linear-gradient(135deg, #FF5F56 0%, #C8102E 50%, #8A0B1F 100%);">Stasiun Cuaca</span> yang Perlu Dipantau?
+					{#if $locale === 'EN'}
+						Have a Dam, River, or <span class="text-transparent bg-clip-text" style="background-image: linear-gradient(135deg, #FF5F56 0%, #C8102E 50%, #8A0B1F 100%);">Weather Station</span> That Needs Monitoring?
+					{:else}
+						Punya Bendungan, Sungai, atau <span class="text-transparent bg-clip-text" style="background-image: linear-gradient(135deg, #FF5F56 0%, #C8102E 50%, #8A0B1F 100%);">Stasiun Cuaca</span> yang Perlu Dipantau?
+					{/if}
 				</h2>
 				<p class="text-lg sm:text-xl font-medium max-w-[50ch] mb-12 leading-relaxed text-zinc-400">
-					Bicara langsung dengan engineer kami. Konsultasi pertama selalu gratis — kami akan bantu memetakan kebutuhan, menyarankan konfigurasi, dan memberikan estimasi.
+					{$locale === 'EN' ? 'Talk directly with our engineers. First consultation is always free — we\'ll help map your needs, suggest configurations, and provide estimates.' : 'Bicara langsung dengan engineer kami. Konsultasi pertama selalu gratis — kami akan bantu memetakan kebutuhan, menyarankan konfigurasi, dan memberikan estimasi.'}
 				</p>
 
 				<!-- Office info (Bento Mono Style) -->
@@ -61,7 +66,7 @@
 					</div>
 					<div class="flex items-center gap-3 bg-white/5 border border-white/10 px-5 py-3.5 rounded-2xl backdrop-blur-md">
 						<Clock size={16} style="color: #C8102E;" />
-						<span class="text-xs font-mono font-semibold tracking-wide text-zinc-300">Senin–Jumat, 08:00–17:00 WIB</span>
+						<span class="text-xs font-mono font-semibold tracking-wide text-zinc-300">{$locale === 'EN' ? 'Mon–Fri, 08:00–17:00 WIB' : 'Senin–Jumat, 08:00–17:00 WIB'}</span>
 					</div>
 				</div>
 			</div>
@@ -91,8 +96,8 @@
 						<MessageCircle size={26} class="text-white" />
 					</div>
 					<div class="flex-1 relative z-10">
-						<span class="block text-xl font-bold text-white tracking-tight">Chat WhatsApp</span>
-						<span class="block text-xs font-medium mt-1 text-white/70">Respons dalam waktu kurang dari 1 jam</span>
+						<span class="block text-xl font-bold text-white tracking-tight">{$locale === 'EN' ? 'WhatsApp Chat' : 'Chat WhatsApp'}</span>
+						<span class="block text-xs font-medium mt-1 text-white/70">{$locale === 'EN' ? 'Response in under 1 hour' : 'Respons dalam waktu kurang dari 1 jam'}</span>
 					</div>
 					<ArrowRight size={22} class="text-white relative z-10 group-hover:translate-x-2 transition-transform duration-500" />
 				</a>
@@ -107,7 +112,7 @@
 						<Mail size={24} style="color: #E8384F;" />
 					</div>
 					<div class="flex-1">
-						<span class="block text-xl font-bold text-white tracking-tight">Kirim Email</span>
+						<span class="block text-xl font-bold text-white tracking-tight">{$locale === 'EN' ? 'Send Email' : 'Kirim Email'}</span>
 						<span class="block text-xs font-medium mt-1 text-zinc-400">info@bejogja.com</span>
 					</div>
 					<ArrowRight size={20} class="text-zinc-500 group-hover:text-white group-hover:translate-x-1 transition-all duration-500" />

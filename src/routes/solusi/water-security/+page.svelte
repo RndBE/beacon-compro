@@ -123,21 +123,21 @@
 			{#each products as product, i}
 				<a
 					href="/solusi/water-security/{product.slug}"
-					class="group relative rounded-[28px] overflow-hidden min-h-[480px] flex flex-col justify-end bg-black transition-transform duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(200,16,46,0.3)]"
+					class="group relative rounded-[28px] overflow-hidden min-h-[480px] flex flex-col justify-end bg-zinc-100 transition-transform duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(200,16,46,0.3)]"
 					style="border: 1px solid rgba(0,0,0,0.1);"
 				>
 					<!-- Full Image Background -->
-					<img src={product.thumbnail} alt={product.name} class="absolute inset-0 w-full h-full object-cover opacity-70 group-hover:opacity-90 transition-all duration-1000 group-hover:scale-110" loading="lazy" decoding="async" />
+					<img src={product.thumbnail} alt={product.name} class="absolute inset-0 w-full h-full object-cover opacity-[0.82] group-hover:opacity-[0.95] transition-all duration-1000 group-hover:scale-110" loading="lazy" decoding="async" />
 					
 					<!-- Darkening Gradient for Readability -->
-					<div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent pointer-events-none"></div>
+					<div class="absolute inset-0 bg-gradient-to-t from-black/78 via-black/32 to-black/18 pointer-events-none"></div>
 
 					<!-- Red Top Accent -->
 					<div class="absolute top-0 left-0 right-0 h-[3px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20" style="background: linear-gradient(90deg, #C8102E, transparent);"></div>
 
 					<!-- Liquid Glass Content Panel -->
 					<div class="relative z-10 m-4 p-7 rounded-[22px] transition-all duration-500 transform group-hover:-translate-y-1"
-						 style="background: rgba(20, 20, 20, 0.45); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.12); box-shadow: inset 0 1px 0 rgba(255,255,255,0.15), 0 10px 30px rgba(0,0,0,0.2);">
+						 style="background: linear-gradient(180deg, rgba(52,52,52,0.78) 0%, rgba(14,14,14,0.94) 48%, rgba(0,0,0,0.98) 100%); backdrop-filter: blur(18px); border: 1px solid rgba(255,255,255,0.12); box-shadow: inset 0 1px 0 rgba(255,255,255,0.18), 0 18px 38px rgba(0,0,0,0.34);">
 						
 						<div class="flex items-center gap-4 mb-5">
 							<div class="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 transition-transform duration-500 group-hover:scale-110" style="background: rgba(200,16,46,0.2); border: 1px solid rgba(200,16,46,0.3);">
@@ -154,7 +154,7 @@
 						<!-- Mini specs -->
 						<div class="flex flex-wrap gap-1.5 mb-5 mt-auto">
 							{#each product.specs as spec}
-								<span class="text-[10px] px-2.5 py-1 rounded-full font-medium" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.8);">{spec}</span>
+								<span class="text-[10px] px-2.5 py-1 rounded-full font-medium" style="background: rgba(255,255,255,0.09); border: 1px solid rgba(255,255,255,0.18); color: rgba(255,255,255,0.88);">{spec}</span>
 							{/each}
 						</div>
 

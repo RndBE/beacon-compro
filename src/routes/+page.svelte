@@ -11,14 +11,15 @@
 	import ServicesSection from '$lib/components/sections/ServicesSection.svelte';
 	import InsightsSection from '$lib/components/sections/InsightsSection.svelte';
 	import CtaSection from '$lib/components/sections/CtaSection.svelte';
+	import { locale, translations as tr } from '$lib/i18n';
 
 	let { data } = $props();
 	let hp = $derived(data.homepage);
 </script>
 
 <svelte:head>
-	<title>Beacon Engineering — Pantau Setiap Tetes, Setiap Getaran, Setiap Awan</title>
-	<meta name="description" content="Sistem telemetri pintar buatan Indonesia untuk infrastruktur paling strategis negeri ini. 300+ proyek, 200+ partner, 14 tahun pengalaman." />
+	<title>{tr['meta.home.title'][$locale]}</title>
+	<meta name="description" content={tr['meta.home.desc'][$locale]} />
 </svelte:head>
 
 <HeroSection />
