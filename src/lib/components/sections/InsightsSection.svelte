@@ -44,12 +44,12 @@
 						class="w-1.5 h-1.5 rounded-full"
 						style="background: #C8102E;"
 					></span>
-					Wawasan
+					{$locale === 'EN' ? 'Insights' : 'Wawasan'}
 				</div>
 				<h2
 					class="font-heading text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-[1.05] tracking-tighter text-zinc-950"
 				>
-					Wawasan <span
+					{$locale === 'EN' ? 'Insights' : 'Wawasan'} <span
 						class="text-transparent bg-clip-text"
 						style="background-image: linear-gradient(135deg, #FF5F56 0%, #C8102E 50%, #8A0B1F 100%)"
 						>Terbaru</span
@@ -61,7 +61,7 @@
 				class="hidden sm:inline-flex items-center gap-2 text-sm font-semibold transition-colors hover:gap-3"
 				style="color: #C8102E;"
 			>
-				Baca Wawasan Lainnya
+				{$locale === 'EN' ? 'Read More Insights' : 'Baca Wawasan Lainnya'}
 				<ArrowRight size={14} />
 			</a>
 		</div>
@@ -179,7 +179,7 @@
 				class="inline-flex items-center gap-2 text-sm font-semibold"
 				style="color: #C8102E;"
 			>
-				Baca Wawasan Lainnya
+				{$locale === 'EN' ? 'Read More Insights' : 'Baca Wawasan Lainnya'}
 				<ArrowRight size={14} />
 			</a>
 		</div>

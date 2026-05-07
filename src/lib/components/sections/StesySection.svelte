@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { locale } from '$lib/i18n';
 	import { onMount } from 'svelte';
 	import { Check, ArrowRight } from '@lucide/svelte';
 
@@ -189,7 +190,7 @@
 			>
 				<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest" style="background: rgba(200,16,46,0.08); color: #C8102E; border: 1px solid rgba(200,16,46,0.15);">
 					<span class="w-1.5 h-1.5 rounded-full" style="background: #C8102E;"></span>
-					Platform Monitoring
+					{$locale === 'EN' ? 'Monitoring Platform' : 'Platform Monitoring'}
 				</div>
 				<h2 class="font-heading text-4xl sm:text-5xl lg:text-[56px] font-extrabold text-zinc-950 leading-[1.05] tracking-tighter">
 					Satu Layar untuk Memantau <br /> <span class="text-transparent bg-clip-text" style="background-image: linear-gradient(135deg, #FF5F56 0%, #C8102E 50%, #8A0B1F 100%);">Semua Aset Anda</span>

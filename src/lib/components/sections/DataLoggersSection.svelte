@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from "svelte";
 	import { Plus, Cpu } from "@lucide/svelte";
+	import { locale } from "$lib/i18n";
 	import type { HomepageDataLogger } from "$lib/api";
 
 	let {
@@ -235,12 +236,12 @@
 							class="w-1.5 h-1.5 rounded-full animate-pulse"
 							style="background: #C8102E;"
 						></span>
-						Hardware Ecosystem
+						{$locale === "EN" ? "Hardware Ecosystem" : "Hardware Ecosystem"}
 					</div>
 					<h2
 						class="font-heading text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tighter text-zinc-950 leading-none"
 					>
-						Data Logger <span
+						{$locale === "EN" ? "Data Logger" : "Data Logger"} <span
 							class="text-transparent bg-clip-text"
 							style="background-image: linear-gradient(135deg, #1A1A1A 0%, #737373 100%);"
 							>Series.</span

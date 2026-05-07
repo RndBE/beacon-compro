@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { ArrowRight, MapPin, Radio } from '@lucide/svelte';
 	import Ornaments from '$lib/components/Ornaments.svelte';
+	import { locale } from '$lib/i18n';
 	import type { FeaturedProject } from '$lib/api';
 
 	let { featuredProjects = undefined }: { featuredProjects?: FeaturedProject[] | null } = $props();

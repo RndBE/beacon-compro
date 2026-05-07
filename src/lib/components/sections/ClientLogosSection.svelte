@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { locale } from '$lib/i18n';
 	import { onMount } from "svelte";
 	import Ornaments from "$lib/components/Ornaments.svelte";
 	import type { ClientSummary } from "$lib/api";
@@ -119,7 +120,7 @@
 			<h2
 				class="font-heading text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-[1.05] tracking-tighter text-zinc-950"
 			>
-				Dipercaya Lembaga & Korporasi yang Memegang <span
+				{$locale === 'EN' ? 'Trusted by Institutions & Corporations Holding' : 'Dipercaya Lembaga & Korporasi yang Memegang'} <span
 					class="text-transparent bg-clip-text"
 					style="background-image: linear-gradient(135deg, #1A1A1A 0%, #737373 100%)"
 					>Tanggung Jawab Besar</span

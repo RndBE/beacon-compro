@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { locale } from '$lib/i18n';
 	import { onMount } from "svelte";
 	import {
 		Quote,

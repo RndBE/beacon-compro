@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { BrainCircuit, Wrench, MonitorSmartphone, Users, ArrowUpRight } from '@lucide/svelte';
 	import Ornaments from '$lib/components/Ornaments.svelte';
+	import { locale } from '$lib/i18n';
 
 	let visible = $state(false);
 	let activeService = $state(0);
@@ -76,7 +77,7 @@
 					<div class="flex items-center gap-3 mb-4 sm:mb-6">
 						<div class="w-7 sm:w-8 h-[1px] bg-[#C8102E]"></div>
 						<span class="text-[11px] sm:text-xs font-mono font-semibold uppercase tracking-[0.16em] sm:tracking-[0.2em] text-[#C8102E]">
-							Layanan Berkelanjutan
+							{$locale === 'EN' ? 'Ongoing Services' : 'Layanan Berkelanjutan'}
 						</span>
 					</div>
 					<h2 class="font-heading text-3xl sm:text-5xl lg:text-[56px] font-bold text-zinc-950 leading-[1.08] tracking-tight mb-4">
@@ -130,7 +131,7 @@
 										rel="noopener"
 										onclick={(event) => event.stopPropagation()}
 									>
-										Konsultasi Layanan
+										{$locale === 'EN' ? 'Consult Services' : 'Konsultasi Layanan'}
 										<ArrowUpRight size={17} />
 									</a>
 								</div>

@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { ArrowUpRight, Droplets, CloudSun, Siren, Activity, MonitorPlay } from '@lucide/svelte';
 	import Ornaments from '$lib/components/Ornaments.svelte';
+	import { locale } from '$lib/i18n';
 	import type { SolutionSummary } from '$lib/api';
 
 	let { solutions = undefined }: { solutions?: SolutionSummary[] | null } = $props();
@@ -74,7 +75,7 @@
 		{ icon: CloudSun, name: 'Weather Forecast', hook: hookMap['weather-forecast'], products: productLabelsMap['weather-forecast'], cta: 'Eksplorasi', href: '/solusi/weather-forecast', image: 'https://picsum.photos/seed/weather2/1200/800' },
 		{ icon: Siren, name: 'Early Warning', hook: hookMap['early-warning'], products: productLabelsMap['early-warning'], cta: 'Eksplorasi', href: '/solusi/early-warning', image: 'https://picsum.photos/seed/warning3/1200/800' },
 		{ icon: Activity, name: 'Pressure Measure', hook: hookMap['pressure-measurement'], products: productLabelsMap['pressure-measurement'], cta: 'Eksplorasi', href: '/solusi/pressure-measurement', image: 'https://picsum.photos/seed/pressure4/1200/800' },
-		{ icon: MonitorPlay, name: 'STESY Platform', hook: hookMap['stesy'], products: productLabelsMap['stesy'], cta: 'Pelajari', href: '/solusi/stesy', image: 'https://picsum.photos/seed/dashboard5/1200/800' }
+		{ icon: MonitorPlay, name: 'STESY Platform', hook: hookMap['stesy'], products: productLabelsMap['stesy'], cta: $locale === 'EN' ? 'Learn More' : 'Pelajari', href: '/solusi/stesy', image: 'https://picsum.photos/seed/dashboard5/1200/800' }
 	];
 
 	const pillars = $derived(
@@ -121,7 +122,7 @@
 							</span>
 						</div>
 						<h2 class="font-heading text-4xl md:text-5xl lg:text-[56px] font-bold text-zinc-950 leading-[1.05] tracking-tight">
-							Lima Pilar Keamanan <br/><span class="text-transparent bg-clip-text" style="background-image: linear-gradient(135deg, #1A1A1A 0%, #737373 100%);">Untuk Nusantara.</span>
+							{$locale === 'EN' ? 'Five Security Pillars' : 'Lima Pilar Keamanan'} <br/><span class="text-transparent bg-clip-text" style="background-image: linear-gradient(135deg, #1A1A1A 0%, #737373 100%);">{$locale === 'EN' ? 'For the Nation.' : 'Untuk Nusantara.'}</span>
 						</h2>
 					</div>
 					<div class="max-w-md pb-2">

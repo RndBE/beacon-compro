@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { Wrench, ShieldCheck, Network } from '@lucide/svelte';
 	import Ornaments from '$lib/components/Ornaments.svelte';
+	import { locale } from '$lib/i18n';
 
 	let visible = $state(false);
 
@@ -17,32 +18,32 @@
 		return () => observer.disconnect();
 	});
 
-	const propositions = [
+	const propositions = $derived([
 		{
 			icon: Wrench,
-			title: 'Dimengerti oleh Tangan Indonesia',
-			desc: 'Hak cipta sendiri. R&D di Yogyakarta. Tim teknis yang bisa datang ke lokasi proyek dalam hitungan hari, bukan bulan.',
+			title: $locale === 'EN' ? 'Understood by Indonesian Hands' : 'Dimengerti oleh Tangan Indonesia',
+			desc: $locale === 'EN' ? 'Our own IP. R&D in Yogyakarta. A technical team that can reach project sites in days, not months.' : 'Hak cipta sendiri. R&D di Yogyakarta. Tim teknis yang bisa datang ke lokasi proyek dalam hitungan hari, bukan bulan.',
 			metric: '14',
-			metricLabel: 'Tahun R&D',
+			metricLabel: $locale === 'EN' ? 'Years R&D' : 'Tahun R&D',
 			image: 'https://picsum.photos/seed/beacon-rd/800/1000'
 		},
 		{
 			icon: ShieldCheck,
-			title: 'Terbukti di Infrastruktur Strategis',
-			desc: 'Dipasang di Bendungan IKN, Ciawi-Sukamahi, Cipanas, Keureuto, Kawah Ijen, dan ratusan titik lainnya. Bertahan di iklim tropis, banjir, dan suhu ekstrem.',
+			title: $locale === 'EN' ? 'Proven in Strategic Infrastructure' : 'Terbukti di Infrastruktur Strategis',
+			desc: $locale === 'EN' ? 'Installed at IKN Dam, Ciawi-Sukamahi, Cipanas, Keureuto, Kawah Ijen, and hundreds more. Withstands tropical climate, floods, and extreme temperatures.' : 'Dipasang di Bendungan IKN, Ciawi-Sukamahi, Cipanas, Keureuto, Kawah Ijen, dan ratusan titik lainnya. Bertahan di iklim tropis, banjir, dan suhu ekstrem.',
 			metric: '300+',
-			metricLabel: 'Titik Proyek',
+			metricLabel: $locale === 'EN' ? 'Project Sites' : 'Titik Proyek',
 			image: 'https://picsum.photos/seed/beacon-infra/800/1000'
 		},
 		{
 			icon: Network,
-			title: 'Satu Ekosistem, Real-time',
-			desc: 'Semua perangkat tersambung ke STESY — platform monitoring tunggal, lintas Windows, macOS, iOS, Android. Plus integrasi CCTV.',
+			title: $locale === 'EN' ? 'One Ecosystem, Real-time' : 'Satu Ekosistem, Real-time',
+			desc: $locale === 'EN' ? 'All devices connect to STESY — a single monitoring platform across Windows, macOS, iOS, Android. Plus CCTV integration.' : 'Semua perangkat tersambung ke STESY — platform monitoring tunggal, lintas Windows, macOS, iOS, Android. Plus integrasi CCTV.',
 			metric: '98.7%',
 			metricLabel: 'Avg Uptime',
 			image: 'https://picsum.photos/seed/beacon-network/800/1000'
 		}
-	];
+	]);
 </script>
 
 <section id="mengapa-beacon" class="relative py-24 lg:py-32 bg-[#FAFAFA] overflow-hidden">
@@ -54,12 +55,12 @@
 			<div class="flex items-center gap-3 mb-6">
 				<div class="w-8 h-[1px] bg-[#C8102E]"></div>
 				<span class="text-xs font-mono font-semibold uppercase tracking-[0.2em] text-[#C8102E]">
-					Mengapa Beacon
+					{$locale === 'EN' ? 'Why Beacon' : 'Mengapa Beacon'}
 				</span>
 			</div>
 			<h2 class="font-heading text-4xl sm:text-5xl lg:text-[56px] font-extrabold text-zinc-950 leading-[1.05] tracking-tight">
-				Bukan Sekedar Pilihan Lokal.<br/>
-				<span class="text-transparent bg-clip-text" style="background-image: linear-gradient(135deg, #FF5F56 0%, #C8102E 50%, #8A0B1F 100%);">Pilihan yang Lebih Tepat</span> untuk Indonesia.
+				{$locale === 'EN' ? 'Not Just a Local Choice.' : 'Bukan Sekedar Pilihan Lokal.'}<br/>
+				<span class="text-transparent bg-clip-text" style="background-image: linear-gradient(135deg, #FF5F56 0%, #C8102E 50%, #8A0B1F 100%);">{$locale === 'EN' ? 'The Right Choice' : 'Pilihan yang Lebih Tepat'}</span> {$locale === 'EN' ? 'for Indonesia.' : 'untuk Indonesia.'}
 			</h2>
 		</div>
 

@@ -14,6 +14,7 @@
 		ShieldAlert,
 	} from "@lucide/svelte";
 	import Ornaments from "$lib/components/Ornaments.svelte";
+	import { locale } from "$lib/i18n";
 	import { tweened } from "svelte/motion";
 	import { cubicOut } from "svelte/easing";
 
@@ -227,7 +228,7 @@
 						<span
 							class="text-[11px] font-mono font-semibold uppercase tracking-[0.15em] text-zinc-600"
 						>
-							Sistem Telemetri Pintar
+							{$locale === "EN" ? "Smart Telemetry System" : "Sistem Telemetri Pintar"}
 						</span>
 					</div>
 				</div>
@@ -241,22 +242,19 @@
 					<h1
 						class="font-heading text-5xl sm:text-6xl lg:text-[72px] font-extrabold text-zinc-950 leading-[1.05] tracking-tighter"
 					>
-						Pantau Setiap Tetes. <br />
-						Setiap Getaran. <br />
+						{$locale === "EN" ? "Monitor Every Drop." : "Pantau Setiap Tetes."} <br />
+						{$locale === "EN" ? "Every Vibration." : "Setiap Getaran."} <br />
 						<span
 							class="text-transparent bg-clip-text"
 							style="background-image: linear-gradient(135deg, #1A1A1A 0%, #737373 100%);"
-							>Setiap Awan.</span
+							>{$locale === "EN" ? "Every Cloud." : "Setiap Awan."}</span
 						>
 					</h1>
 					<p
 						class="text-lg sm:text-xl text-zinc-500 leading-relaxed max-w-[500px] font-medium"
 					>
-						Arsitektur telemetri industri buatan Indonesia.
-						Melindungi infrastruktur paling strategis negeri dengan <span
-							class="text-zinc-900 border-b border-[#C8102E]/30 pb-0.5"
-							>akurasi milidetik</span
-						>.
+						{$locale === "EN" ? "Industrial telemetry architecture built in Indonesia." : "Arsitektur telemetri industri buatan Indonesia."}
+						{#if $locale === "EN"}Protecting the nation's most strategic infrastructure with <span class="text-zinc-900 border-b border-[#C8102E]/30 pb-0.5">millisecond accuracy</span>.{:else}Melindungi infrastruktur paling strategis negeri dengan <span class="text-zinc-900 border-b border-[#C8102E]/30 pb-0.5">akurasi milidetik</span>.{/if}
 					</p>
 				</div>
 
@@ -284,7 +282,7 @@
 						></div>
 
 						<span class="relative z-10 flex items-center gap-2">
-							Mulai Konsultasi
+							{$locale === "EN" ? "Start Consultation" : "Mulai Konsultasi"}
 							<ArrowRight
 								size={16}
 								class="group-hover:translate-x-1 transition-transform"
@@ -295,7 +293,7 @@
 						href="#pilar-solusi"
 						class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl text-sm font-semibold text-zinc-700 bg-white border border-zinc-200/60 shadow-sm transition-all duration-300 hover:bg-zinc-50 hover:text-zinc-950 hover:-translate-y-0.5 hover:shadow-md"
 					>
-						Lihat Pilar Solusi
+						{$locale === "EN" ? "View Solution Pillars" : "Lihat Pilar Solusi"}
 					</a>
 				</div>
 
@@ -326,9 +324,7 @@
 						</div>
 					</div>
 					<p class="text-xs font-medium text-zinc-500">
-						Dipercaya oleh <span class="text-zinc-900 font-semibold"
-							>BBWS & BUMN</span
-						> se-Indonesia
+						{#if $locale === "EN"}Trusted by <span class="text-zinc-900 font-semibold">BBWS & SOEs</span> across Indonesia{:else}Dipercaya oleh <span class="text-zinc-900 font-semibold">BBWS & BUMN</span> se-Indonesia{/if}
 					</p>
 				</div>
 			</div>
