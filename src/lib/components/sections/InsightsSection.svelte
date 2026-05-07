@@ -2,6 +2,7 @@
 	import { ArrowRight, Clock, TrendingUp } from "@lucide/svelte";
 	import { onMount } from "svelte";
 	import Ornaments from "$lib/components/Ornaments.svelte";
+	import { locale } from "$lib/i18n";
 	import type { ArticleSummary } from "$lib/api";
 
 	let { articles = [] }: { articles: ArticleSummary[] } = $props();
