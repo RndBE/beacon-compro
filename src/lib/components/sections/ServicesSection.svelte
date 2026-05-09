@@ -36,7 +36,7 @@
 		},
 		{
 			icon: Wrench,
-			title: 'Garansi & Maintenance',
+			title: $locale === 'EN' ? 'Warranty & Maintenance' : 'Garansi & Maintenance',
 			desc: $locale === 'EN' ? 'Technical checks, cleaning, spare parts replacement, calibration, functional testing.' : 'Pengecekan teknis, kebersihan, penggantian suku cadang, kalibrasi, uji fungsional.',
 			detail: $locale === 'EN' ? 'Trained technical team comes directly to the site. Year-round support with strict SLA response times to ensure no data is lost.' : 'Tim teknis terlatih hadir langsung ke lokasi. Dukungan sepanjang tahun dengan SLA response time yang ketat untuk memastikan tidak ada data yang hilang.',
 			number: '02'
@@ -55,7 +55,7 @@
 			detail: $locale === 'EN' ? 'From site surveys, technical design, to operator training — we accompany every implementation phase. Ensuring fit-for-purpose solutions for extreme terrain.' : 'Dari site survey, desain teknis, hingga training operator — kami mendampingi setiap tahap implementasi. Memastikan solusi tepat guna untuk medan ekstrem.',
 			number: '04'
 		}
-	];
+	]);
 </script>
 
 <section id="layanan-beyond" class="relative py-16 sm:py-20 lg:py-32 bg-white overflow-hidden">
@@ -84,7 +84,7 @@
 						{$locale === 'EN' ? 'We Don\'t Stop After' : 'Kami Tidak Berhenti Setelah'} <span class="text-[#C8102E]">{$locale === 'EN' ? 'Devices Are Installed.' : 'Perangkat Terpasang.'}</span>
 					</h2>
 					<p class="text-sm sm:text-base text-zinc-500 leading-relaxed max-w-[45ch] font-medium">
-						Setiap instalasi didukung oleh ekosistem layanan menyeluruh — dari rancangan awal hingga pemeliharaan puluhan tahun ke depan.
+						{$locale === 'EN' ? 'Every installation is supported by a complete service ecosystem, from initial design to maintenance for decades ahead.' : 'Setiap instalasi didukung oleh ekosistem layanan menyeluruh — dari rancangan awal hingga pemeliharaan puluhan tahun ke depan.'}
 					</p>
 				</div>
 
@@ -125,7 +125,9 @@
 								<div class="mt-4 border-t border-[#C8102E]/10 pt-4">
 									<p class="text-sm leading-relaxed text-zinc-600">{service.detail}</p>
 									<a
-										href="https://wa.me/628112632151?text=Halo%20CS%20Marketing%20Beacon%2C%20saya%20tertarik%20dengan%20layanan%20{encodeURIComponent(service.title)}."
+										href={$locale === 'EN'
+											? `https://wa.me/628112632151?text=${encodeURIComponent(`Hello Beacon Marketing CS, I am interested in the ${service.title} service.`)}`
+											: `https://wa.me/628112632151?text=${encodeURIComponent(`Halo CS Marketing Beacon, saya tertarik dengan layanan ${service.title}.`)}`}
 										class="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-[#C8102E] px-5 py-3 text-sm font-bold text-white transition active:scale-[0.98]"
 										target="_blank"
 										rel="noopener"
@@ -217,7 +219,9 @@
 
 							<div class="pt-8">
 								<a
-									href="https://wa.me/628112632151?text=Halo%20CS%20Marketing%20Beacon%2C%20saya%20tertarik%20dengan%20layanan%20{encodeURIComponent(service.title)}."
+									href={$locale === 'EN'
+										? `https://wa.me/628112632151?text=${encodeURIComponent(`Hello Beacon Marketing CS, I am interested in the ${service.title} service.`)}`
+										: `https://wa.me/628112632151?text=${encodeURIComponent(`Halo CS Marketing Beacon, saya tertarik dengan layanan ${service.title}.`)}`}
 									class="group relative inline-flex items-center gap-3 px-8 py-4 rounded-2xl text-sm font-bold text-white overflow-hidden transition-transform active:scale-95"
 									style="background: #C8102E; box-shadow: 0 12px 24px -8px rgba(200,16,46,0.4);"
 									target="_blank"
@@ -228,7 +232,7 @@
 									<div class="absolute inset-0 rounded-2xl border border-white/20 pointer-events-none shadow-[inset_0_1px_0_rgba(255,255,255,0.3)]"></div>
 									
 									<span class="relative z-10 flex items-center gap-2">
-										Tanya Soal {service.title}
+										{$locale === 'EN' ? `Ask About ${service.title}` : `Tanya Soal ${service.title}`}
 										<ArrowUpRight size={18} class="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
 									</span>
 								</a>

@@ -424,8 +424,8 @@
 								<option value="Weather Forecast"
 									>Weather Forecast</option
 								>
-								<option value="Pressure"
-									>Pressure Measurement</option
+								<option value="Infrastructure Security"
+									>Infrastructure Security</option
 								>
 								<option value="Lainnya">Lainnya</option>
 							</select>

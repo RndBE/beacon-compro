@@ -33,9 +33,12 @@ const translations = {
 
 	// ─── Hero Section ────────────────────────────────
 	'hero.badge': { ID: 'Infrastruktur Kritis Indonesia', EN: 'Critical Infrastructure of Indonesia' },
-	'hero.title.line1': { ID: 'Pantau Setiap Tetes,', EN: 'Monitor Every Drop,' },
-	'hero.title.line2': { ID: 'Setiap Getaran,', EN: 'Every Vibration,' },
-	'hero.title.line3': { ID: 'Setiap Awan.', EN: 'Every Cloud.' },
+	'hero.title.line1.top': { ID: 'Pantau Setiap Tetes,', EN: 'Monitor Every Drop,' },
+	'hero.title.line1.bottom': { ID: 'Arah Angin, Getaran, dan Tekanan.', EN: 'Wind, Vibration, and Pressure.' },
+	'hero.title.line2.top': { ID: 'Pantau Air, Cuaca,', EN: 'Monitor Water, Weather,' },
+	'hero.title.line2.bottom': { ID: 'Struktur, dan Energi.', EN: 'Structure, and Energy.' },
+	'hero.title.line3.top': { ID: 'Pantau Setiap Perubahan,', EN: 'Monitor Every Change,' },
+	'hero.title.line3.bottom': { ID: 'Sebelum Menjadi Risiko.', EN: 'Before It Becomes Risk.' },
 	'hero.desc': { ID: 'Sistem telemetri presisi buatan Indonesia untuk infrastruktur paling strategis negeri ini.', EN: 'Precision telemetry systems built in Indonesia for the nation\'s most strategic infrastructure.' },
 	'hero.cta.primary': { ID: 'Konsultasi Beacon', EN: 'Consult Beacon' },
 	'hero.cta.secondary': { ID: 'Lihat Solusi', EN: 'View Solutions' },

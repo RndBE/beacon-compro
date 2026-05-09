@@ -17,7 +17,7 @@
 
 	const features = $derived([
 		$locale === 'EN' ? 'Cross-platform: Windows, macOS, iOS, Android' : 'Cross-platform: Windows, macOS, iOS, Android',
-		$locale === 'EN' ? 'Historical charts & analytics' : 'Grafik historis & analytics',
+		$locale === 'EN' ? 'Historical charts & analytics' : 'Grafik historis & analitik',
 		$locale === 'EN' ? 'CCTV monitoring integration' : 'Integrasi monitoring CCTV',
 		$locale === 'EN' ? 'Automatic alarms for critical thresholds' : 'Alarm otomatis untuk threshold kritis'
 	]);
@@ -129,8 +129,8 @@
 							<!-- Chart mock -->
 							<div class="rounded-xl p-3 bg-white" style="border: 1px solid #E5E5E5;">
 								<div class="flex items-center justify-between mb-2">
-									<span class="text-[10px] font-medium" style="color: #5C5C5C;">{$locale === 'EN' ? 'Water Level — Ciawi Dam' : 'Water Level — Bendungan Ciawi'}</span>
-									<span class="text-[9px]" style="color: #9A9A9A;">Last 24h</span>
+									<span class="text-[10px] font-medium" style="color: #5C5C5C;">{$locale === 'EN' ? 'Water Level — Ciawi Dam' : 'Tinggi Muka Air — Bendungan Ciawi'}</span>
+									<span class="text-[9px]" style="color: #9A9A9A;">{$locale === 'EN' ? 'Last 24h' : '24 jam terakhir'}</span>
 								</div>
 								<svg class="w-full h-16" viewBox="0 0 300 60" fill="none">
 									<defs>
@@ -168,7 +168,7 @@
 				<div class="absolute -bottom-4 -right-4 w-32 rounded-[16px] overflow-hidden hidden md:block bg-white" style="border: 1px solid #E5E5E5; box-shadow: 0 12px 40px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.3);">
 					<div class="p-2 space-y-1.5" style="background: #FAFAFA;">
 						<div class="rounded-lg p-2 bg-white" style="border: 1px solid #E5E5E5;">
-							<span class="text-[8px] block" style="color: #9A9A9A;">Bendungan IKN</span>
+							<span class="text-[8px] block" style="color: #9A9A9A;">{$locale === 'EN' ? 'IKN Dam' : 'Bendungan IKN'}</span>
 							<span class="text-sm font-mono font-bold" style="color: #1A1A1A;">86.4m</span>
 						</div>
 						<div class="rounded-lg p-2 bg-white" style="border: 1px solid #E5E5E5;">

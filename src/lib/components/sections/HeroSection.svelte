@@ -3,7 +3,6 @@
 	import {
 		ArrowRight,
 		Activity,
-		Zap,
 		Terminal,
 		Radio,
 		CloudRain,
@@ -19,18 +18,40 @@
 	import { cubicOut } from "svelte/easing";
 
 	let mounted = $state(false);
+
+	// ─── Rotating Hero Taglines ─────────────────────
+	const heroTaglines = $derived(
+		$locale === "EN"
+			? [
+					{ top: "Monitor Every Drop,", bottom: "Wind, Vibration, and Pressure." },
+					{ top: "Monitor Water, Weather,", bottom: "Structure, and Energy." },
+					{ top: "Monitor Every Change,", bottom: "Before It Becomes Risk." },
+				]
+			: [
+					{ top: "Pantau Setiap Tetes,", bottom: "Arah Angin, Getaran, dan Tekanan." },
+					{ top: "Pantau Air, Cuaca,", bottom: "Struktur, dan Energi." },
+					{ top: "Pantau Setiap Perubahan,", bottom: "Sebelum Menjadi Risiko." },
+				]
+	);
+
+	let taglineIndex = $state(0);
+	// 'visible' = showing text, 'exit' = sliding out, 'enter' = sliding in
+	let slidePhase: 'visible' | 'exit' | 'enter' = $state('visible');
+	let activeTagline = $derived(heroTaglines[taglineIndex]);
+
 	let cursorX = $state(50);
 	let cursorY = $state(50);
 
 	// Field atlas telemetry tickers with smooth hardware-friendly motion.
-	let levelValue = tweened(142.3, { duration: 1000, easing: cubicOut });
+	let waterLevelValue = tweened(2.43, { duration: 1000, easing: cubicOut });
 	let rainfallValue = tweened(12.8, { duration: 1000, easing: cubicOut });
+	let debitValue = tweened(84.6, { duration: 1000, easing: cubicOut });
 	let uptimeValue = tweened(98.7, { duration: 1000, easing: cubicOut });
 
-	const fieldNodes = [
+	const fieldNodes = $derived([
 		{
-			id: "ikn",
-			name: "Bendungan IKN",
+			id: "awlr",
+			name: $locale === "EN" ? "AWLR Station" : "Stasiun AWLR",
 			code: "AWLR-17",
 			metric: "TMA +0.18 m",
 			kind: "water",
@@ -40,8 +61,8 @@
 			delay: 0,
 		},
 		{
-			id: "ijen",
-			name: "Kawah Ijen",
+			id: "aplr",
+			name: $locale === "EN" ? "APLR Sensor" : "Sensor APLR",
 			code: "APLR-04",
 			metric: "Thermal +2.7 C",
 			kind: "pressure",
@@ -51,8 +72,8 @@
 			delay: 180,
 		},
 		{
-			id: "ciawi",
-			name: "ADR Ciawi",
+			id: "adr",
+			name: $locale === "EN" ? "ADR Sensor" : "Sensor ADR",
 			code: "VW-32",
 			metric: "0.021 mm",
 			kind: "strain",
@@ -63,7 +84,7 @@
 		},
 		{
 			id: "cuaca",
-			name: "Stasiun Cuaca",
+			name: $locale === "EN" ? "Weather Station" : "Stasiun Cuaca",
 			code: "ARR-09",
 			metric: "12.8 mm/h",
 			kind: "rain",
@@ -73,17 +94,17 @@
 			delay: 540,
 		},
 		{
-			id: "keureuto",
-			name: "Keureuto",
+			id: "ews",
+			name: $locale === "EN" ? "EWS Node" : "Node EWS",
 			code: "EWS-21",
-			metric: "sirene armed",
+			metric: $locale === "EN" ? "siren armed" : "sirene armed",
 			kind: "radio",
 			status: "stable",
 			x: 23,
 			y: 76,
 			delay: 720,
 		},
-	] as const;
+	]);
 
 	const signalRoutes = [
 		{ id: "r1", d: "M 334 276 C 374 238, 410 185, 438 143", duration: 6.8, delay: "0s" },
@@ -93,32 +114,32 @@
 		{ id: "r5", d: "M 334 276 C 260 333, 194 388, 148 446", duration: 8.9, delay: "2.2s" },
 	] as const;
 
-	const fieldEvents = [
+	const fieldEvents = $derived([
 		{
-			station: "Kawah Ijen",
-			line: "Thermal pressure melewati baseline",
+			station: $locale === "EN" ? "APLR Sensor" : "Sensor APLR",
+			line: $locale === "EN" ? "Thermal anomaly above baseline" : "Anomali thermal melewati baseline",
 			value: "+2.7 C",
 			tone: "critical",
 		},
 		{
-			station: "ADR Ciawi",
-			line: "Deformasi mikro terkunci stabil",
+			station: $locale === "EN" ? "ADR Sensor" : "Sensor ADR",
+			line: $locale === "EN" ? "Micro deformation locked stable" : "Deformasi mikro terkunci stabil",
 			value: "0.021 mm",
 			tone: "watch",
 		},
 		{
-			station: "Bendungan IKN",
-			line: "Paket AWLR tersinkron ke STESY",
+			station: $locale === "EN" ? "AWLR Station" : "Stasiun AWLR",
+			line: $locale === "EN" ? "AWLR packet synced to STESY" : "Paket AWLR tersinkron ke STESY",
 			value: "18 ms",
 			tone: "stable",
 		},
 		{
-			station: "Stasiun Cuaca",
-			line: "Intensitas hujan terukur realtime",
+			station: $locale === "EN" ? "Weather Station" : "Stasiun Cuaca",
+			line: $locale === "EN" ? "Rainfall intensity measured in real time" : "Intensitas hujan terukur realtime",
 			value: "12.8 mm/h",
 			tone: "stable",
 		},
-	] as const;
+	]);
 
 	const telemetryBars = [42, 66, 51, 78, 63, 88, 57, 74, 69, 81];
 	let eventIndex = $state(0);
@@ -127,21 +148,63 @@
 	// Typewriter state
 	let promptText = $state("");
 	let isProcessing = $state(false);
-	const prompts = [
-		"Menggabungkan sinyal AWLR, ADR, ARR, dan APLR...",
-		"Menandai korelasi hujan terhadap deformasi Ciawi...",
-		"Mengirim ringkasan anomali ke operator BBWS...",
-		"Menyusun prioritas alert dari 47 stasiun aktif...",
-	];
+	const prompts = $derived(
+		$locale === "EN"
+			? [
+					"Merging AWLR, ADR, ARR, and APLR signals...",
+					"Flagging rainfall correlation with structural deformation...",
+					"Sending anomaly summary to field operators...",
+					"Prioritizing alerts from 47 active stations..."
+				]
+			: [
+					"Menggabungkan sinyal AWLR, ADR, ARR, dan APLR...",
+					"Menandai korelasi hujan terhadap deformasi struktur...",
+					"Mengirim ringkasan anomali ke operator lapangan...",
+					"Menyusun prioritas alert dari 47 stasiun aktif..."
+				]
+	);
 	let promptIndex = 0;
 
 	onMount(() => {
 		mounted = true;
 
+		// ─── Tagline rotation with vertical slide ─────
+		let taglineTimeout: ReturnType<typeof setTimeout> | undefined;
+		const wait = (ms: number) => new Promise<void>((r) => (taglineTimeout = setTimeout(r, ms)));
+
+		const runTaglineRotation = async () => {
+			if (!mounted) return;
+
+			// Hold current tagline
+			await wait(4200);
+			if (!mounted) return;
+
+			// Slide out
+			slidePhase = 'exit';
+			await wait(600);
+			if (!mounted) return;
+
+			// Switch tagline while off-screen
+			taglineIndex = (taglineIndex + 1) % heroTaglines.length;
+
+			// Slide in
+			slidePhase = 'enter';
+			await wait(700);
+			if (!mounted) return;
+
+			// Settle
+			slidePhase = 'visible';
+
+			if (mounted) runTaglineRotation();
+		};
+
+		runTaglineRotation();
+
 		// Number tweens
 		const numInterval = setInterval(() => {
-			levelValue.set(142 + Math.random() * 0.8);
+			waterLevelValue.set(2.2 + Math.random() * 0.5);
 			rainfallValue.set(12 + Math.random() * 2);
+			debitValue.set(82 + Math.random() * 6);
 			uptimeValue.set(98 + Math.random() * 1.2);
 		}, 3000);
 
@@ -177,6 +240,7 @@
 			clearInterval(numInterval);
 			clearInterval(eventInterval);
 			if (typeTimeout) clearTimeout(typeTimeout);
+			if (taglineTimeout) clearTimeout(taglineTimeout);
 		};
 	});
 
@@ -240,15 +304,38 @@
 					style="animation-delay: 100ms;"
 				>
 					<h1
-						class="font-heading text-5xl sm:text-6xl lg:text-[72px] font-extrabold text-zinc-950 leading-[1.05] tracking-tighter"
+						class="font-heading text-4xl sm:text-5xl lg:text-[64px] font-extrabold text-zinc-950 leading-[1.08] tracking-tighter"
 					>
-						{$locale === "EN" ? "Monitor Every Drop." : "Pantau Setiap Tetes."} <br />
-						{$locale === "EN" ? "Every Vibration." : "Setiap Getaran."} <br />
-						<span
-							class="text-transparent bg-clip-text"
-							style="background-image: linear-gradient(135deg, #1A1A1A 0%, #737373 100%);"
-							>{$locale === "EN" ? "Every Cloud." : "Setiap Awan."}</span
-						>
+						<span class="hero-tagline-wrapper block overflow-hidden">
+							<!-- Line 1 — slides vertically -->
+							<span
+								class="hero-slide-line block"
+								class:hero-slide-exit={slidePhase === 'exit'}
+								class:hero-slide-enter={slidePhase === 'enter'}
+								class:hero-slide-visible={slidePhase === 'visible'}
+							>{activeTagline.top}</span>
+							<!-- Line 2 — staggered 120ms, gradient text -->
+							<span
+								class="hero-slide-line hero-slide-line-2 block text-transparent bg-clip-text"
+								class:hero-slide-exit={slidePhase === 'exit'}
+								class:hero-slide-enter={slidePhase === 'enter'}
+								class:hero-slide-visible={slidePhase === 'visible'}
+								style="background-image: linear-gradient(135deg, #C8102E 0%, #8B0A1F 100%);"
+							>{activeTagline.bottom}</span>
+						</span>
+						<!-- Tagline progress indicator -->
+						<span class="flex items-center gap-2 mt-5">
+							{#each heroTaglines as _, i}
+								<span
+									class="hero-tagline-dot rounded-full transition-all duration-500 ease-out"
+									class:bg-[#C8102E]={taglineIndex === i}
+									class:w-7={taglineIndex === i}
+									class:bg-zinc-300={taglineIndex !== i}
+									class:w-2={taglineIndex !== i}
+									style="height: 4px;"
+								></span>
+							{/each}
+						</span>
 					</h1>
 					<p
 						class="text-lg sm:text-xl text-zinc-500 leading-relaxed max-w-[500px] font-medium"
@@ -310,7 +397,7 @@
 							>
 								<img
 									src="https://picsum.photos/seed/partner{i}/100/100"
-									alt="Partner {i}"
+									alt={$locale === "EN" ? `Beacon Engineering partner ${i}` : `Mitra Beacon Engineering ${i}`}
 									class="w-full h-full object-cover grayscale opacity-80"
 								/>
 							</div>
@@ -324,7 +411,7 @@
 						</div>
 					</div>
 					<p class="text-xs font-medium text-zinc-500">
-						{#if $locale === "EN"}Trusted by <span class="text-zinc-900 font-semibold">BBWS & SOEs</span> across Indonesia{:else}Dipercaya oleh <span class="text-zinc-900 font-semibold">BBWS & BUMN</span> se-Indonesia{/if}
+						{#if $locale === "EN"}Built for <span class="text-zinc-900 font-semibold">field monitoring teams</span> across Indonesia{:else}Dibangun untuk <span class="text-zinc-900 font-semibold">tim monitoring lapangan</span> di seluruh Indonesia{/if}
 					</p>
 				</div>
 			</div>
@@ -408,7 +495,7 @@
 								<Terminal size={14} class="text-zinc-400" strokeWidth={1.8} />
 								<span
 									class="text-[10px] uppercase tracking-widest font-semibold text-zinc-500"
-									>Field Network Atlas</span
+									>Field Telemetry Atlas</span
 								>
 							</div>
 							<div class="min-h-5 font-mono text-[12px] leading-relaxed text-zinc-800">
@@ -546,16 +633,16 @@
 							class="rounded-[1.35rem] border border-white/70 bg-white/85 px-4 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] backdrop-blur-md"
 						>
 							<div class="mb-2 flex items-center gap-2">
-								<Activity size={13} class="text-zinc-400" strokeWidth={1.8} />
+								<Waves size={13} class="text-zinc-400" strokeWidth={1.8} />
 								<span class="text-[9px] font-semibold uppercase tracking-widest text-zinc-400">
-									Network
+									Water Level
 								</span>
 							</div>
 							<div class="flex items-baseline gap-1">
 								<span class="font-mono text-2xl font-bold tabular-nums tracking-tighter text-zinc-950">
-									{$uptimeValue.toFixed(2)}
+									{$waterLevelValue.toFixed(2)}
 								</span>
-								<span class="text-xs font-semibold text-zinc-400">%</span>
+								<span class="text-xs font-semibold text-zinc-400">m</span>
 							</div>
 						</div>
 
@@ -580,16 +667,16 @@
 							class="rounded-[1.35rem] border border-white/70 bg-white/85 px-4 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] backdrop-blur-md"
 						>
 							<div class="mb-2 flex items-center gap-2">
-								<Zap size={13} class="text-[#C8102E]" strokeWidth={1.8} />
+								<Gauge size={13} class="text-[#C8102E]" strokeWidth={1.8} />
 								<span class="text-[9px] font-semibold uppercase tracking-widest text-zinc-400">
-									Latency
+									Debit
 								</span>
 							</div>
 							<div class="flex items-baseline gap-1">
 								<span class="font-mono text-2xl font-bold tabular-nums tracking-tighter text-[#C8102E]">
-									{$levelValue.toFixed(1)}
+									{$debitValue.toFixed(1)}
 								</span>
-								<span class="text-xs font-semibold text-zinc-400">ms</span>
+								<span class="text-xs font-semibold text-zinc-400">m3/s</span>
 							</div>
 						</div>
 					</div>
@@ -880,6 +967,64 @@
 		}
 	}
 
+	/* ─── Hero Tagline Vertical Slide ─── */
+	.hero-tagline-wrapper {
+		min-height: 2.4em;
+		position: relative;
+	}
+
+	.hero-slide-line {
+		will-change: transform, opacity;
+		transform: translateY(0);
+		opacity: 1;
+		transition:
+			transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+			opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+	}
+
+	/* Stagger the second line by 120ms */
+	.hero-slide-line-2 {
+		transition-delay: 120ms;
+	}
+
+	/* Phase: slide out — text slides up and fades */
+	.hero-slide-exit {
+		transform: translateY(-100%);
+		opacity: 0;
+	}
+
+	/* Phase: enter — start from below, animate up */
+	.hero-slide-enter {
+		transform: translateY(0);
+		opacity: 1;
+		animation: heroSlideIn 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+	}
+
+	.hero-slide-line-2.hero-slide-enter {
+		animation-delay: 120ms;
+	}
+
+	/* Phase: visible — resting state */
+	.hero-slide-visible {
+		transform: translateY(0);
+		opacity: 1;
+	}
+
+	@keyframes heroSlideIn {
+		0% {
+			transform: translateY(60%);
+			opacity: 0;
+		}
+		100% {
+			transform: translateY(0);
+			opacity: 1;
+		}
+	}
+
+	.hero-tagline-dot {
+		border-radius: 100px;
+	}
+
 	@media (prefers-reduced-motion: reduce) {
 		.atlas-topo-line,
 		.atlas-route-pulse,
@@ -889,8 +1034,10 @@
 		.atlas-live-dot,
 		.atlas-caret,
 		.atlas-core-bar,
-		.atlas-corridor span {
+		.atlas-corridor span,
+		.hero-tagline-wrapper {
 			animation: none !important;
+			transition: none !important;
 		}
 	}
 </style>

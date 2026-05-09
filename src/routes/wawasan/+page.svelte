@@ -147,6 +147,12 @@
 	});
 
 	let featuredArticles = $derived(articles.filter((a) => a.featured));
+	let heroArticles = $derived(
+		[
+			...featuredArticles,
+			...articles.filter((article) => !featuredArticles.some((featured) => featured.href === article.href))
+		].slice(0, 2)
+	);
 </script>
 
 <svelte:head>
@@ -197,7 +203,7 @@
 					<!-- Glow effect -->
 					<div class="absolute inset-0 bg-gradient-to-tr from-[#C8102E]/20 to-transparent blur-[60px] rounded-full pointer-events-none"></div>
 					
-					{#each featuredArticles.slice(0, 2) as article, i}
+					{#each heroArticles as article, i}
 						<a href={article.href}
 							class="absolute group block p-6 sm:p-8 rounded-[2rem] w-full sm:w-[420px] transition-all duration-500 hover:-translate-y-2 hover:scale-[1.02] cursor-pointer"
 							style="

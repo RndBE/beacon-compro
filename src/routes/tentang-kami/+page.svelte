@@ -116,7 +116,7 @@
 		{
 			icon: Building2,
 			title: "Structure Monitoring",
-			desc: "Pengawasan tekanan, getaran, dan pergerakan struktur kritis termasuk geothermal dan infrastruktur BUMN.",
+			desc: "Pengawasan kondisi aset, getaran, akses lapangan, dan pergerakan struktur kritis untuk infrastruktur BUMN.",
 			metric: "30+",
 			metricLabel: "Struktur Kritis",
 		},

@@ -7,6 +7,7 @@
 		ChevronLeft,
 		ChevronRight,
 	} from "@lucide/svelte";
+	import { testimonialQuote, testimonialTitle } from "$lib/homepage-copy";
 	import type { TestimonialSummary } from "$lib/api";
 
 	type TestimonialCard = {
@@ -55,13 +56,17 @@
 		testimonials && testimonials.length > 0
 			? testimonials.map((item) => ({
 					name: item.name,
-					title: item.position ?? "",
-					quote: item.quote,
+					title: testimonialTitle(item, $locale),
+					quote: testimonialQuote(item, $locale),
 					initials: item.initials,
 					org: item.organization ?? item.client_name ?? "",
 					photo: item.photo,
 				}))
-			: fallbackTestimonials,
+			: fallbackTestimonials.map((item) => ({
+					...item,
+					title: testimonialTitle(item, $locale),
+					quote: testimonialQuote(item, $locale),
+				})),
 	);
 
 	onMount(() => {
@@ -295,16 +300,20 @@
 			<!-- Navigation arrows — desktop only -->
 			<div class="hidden md:flex items-center gap-2">
 				<button
+					type="button"
 					onclick={prevSlide}
 					class="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200 hover:bg-[#C8102E] hover:text-white btn-tactile"
 					style="border: 1.5px solid #E5E5E5; color: #5C5C5C; background: white;"
+					aria-label={$locale === 'EN' ? 'Previous testimonial' : 'Testimoni sebelumnya'}
 				>
 					<ChevronLeft size={18} />
 				</button>
 				<button
+					type="button"
 					onclick={nextSlide}
 					class="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200 hover:bg-[#C8102E] hover:text-white btn-tactile"
 					style="border: 1.5px solid #E5E5E5; color: #5C5C5C; background: white;"
+					aria-label={$locale === 'EN' ? 'Next testimonial' : 'Testimoni berikutnya'}
 				>
 					<ChevronRight size={18} />
 				</button>
@@ -354,7 +363,7 @@
 							{#if test.photo}
 								<img
 									src={test.photo}
-									alt={test.name}
+									alt={$locale === 'EN' ? `Photo of ${test.name}` : `Foto ${test.name}`}
 									class="w-12 h-12 rounded-full object-cover"
 									style="box-shadow: 0 4px 12px rgba(200,16,46,0.2);"
 								/>
@@ -389,6 +398,7 @@
 			<div class="lg:col-span-4 space-y-3">
 				{#each displayTestimonials as test, i}
 					<button
+						type="button"
 						class="w-full text-left p-4 rounded-[16px] transition-all duration-300 cursor-pointer"
 						style="
 							background: {activeIndex === i ? 'white' : 'transparent'};
@@ -396,12 +406,14 @@
 							box-shadow: {activeIndex === i ? '0 4px 16px rgba(200,16,46,0.08)' : 'none'};
 						"
 						onclick={() => (activeIndex = i)}
+						aria-pressed={activeIndex === i}
+						aria-label={$locale === 'EN' ? `Show testimonial from ${test.name} at ${test.org}` : `Tampilkan testimoni ${test.name} dari ${test.org}`}
 					>
 						<div class="flex items-center gap-3">
 							{#if test.photo}
 								<img
 									src={test.photo}
-									alt={test.name}
+									alt={$locale === 'EN' ? `Photo of ${test.name}` : `Foto ${test.name}`}
 									class="w-9 h-9 rounded-full object-cover shrink-0"
 								/>
 							{:else}
@@ -446,6 +458,7 @@
 		<div class="flex justify-center gap-2 mt-6 lg:hidden">
 			{#each displayTestimonials as _, i}
 				<button
+					type="button"
 					class="w-2.5 h-2.5 rounded-full transition-all duration-300"
 					style="background: {activeIndex === i
 						? '#C8102E'
@@ -453,6 +466,8 @@
 						? 1.2
 						: 1});"
 					onclick={() => (activeIndex = i)}
+					aria-label={$locale === 'EN' ? `Show testimonial ${i + 1}` : `Tampilkan testimoni ke-${i + 1}`}
+					aria-pressed={activeIndex === i}
 				></button>
 			{/each}
 		</div>

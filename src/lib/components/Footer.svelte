@@ -2,6 +2,7 @@
 	import { Phone, Mail, MessageCircle, MapPin, Clock, ArrowUpRight } from '@lucide/svelte';
 	import logoBeacon from '$lib/assets/logo_be.png';
 	import InstagramFeed from './InstagramFeed.svelte';
+	import { locale, translations as tr } from '$lib/i18n';
 	import type { SolutionSummary } from '$lib/api';
 
 	let { solutions = null }: { solutions?: SolutionSummary[] | null } = $props();
@@ -10,7 +11,7 @@
 		{ name: 'Water Security', slug: 'water-security' },
 		{ name: 'Weather Forecast', slug: 'weather-forecast' },
 		{ name: 'Early Warning', slug: 'early-warning' },
-		{ name: 'Pressure Measurement', slug: 'pressure-measurement' },
+		{ name: 'Infrastructure Security', slug: 'infrastructure-security' },
 		{ name: 'STESY', slug: 'stesy' }
 	];
 
@@ -22,6 +23,13 @@
 				}))
 			: fallbackSolutions
 	);
+
+	const companyLinks = $derived([
+		{ name: $locale === 'EN' ? 'About Us' : 'Tentang Kami', href: '/tentang-kami' },
+		{ name: $locale === 'EN' ? 'Projects' : 'Proyek', href: '/proyek' },
+		{ name: $locale === 'EN' ? 'Certifications' : 'Sertifikasi', href: '/tentang-kami#sertifikasi' },
+		{ name: $locale === 'EN' ? 'Insights' : 'Wawasan', href: '/wawasan' }
+	]);
 </script>
 
 <footer
@@ -56,9 +64,9 @@
 					<p
 						class="text-sm leading-relaxed text-zinc-500 font-medium max-w-[40ch]"
 					>
-						Pionir Sistem Telemetri Pintar di Indonesia.
-						Menghadirkan solusi instrumentasi cerdas untuk efisiensi
-						dan keamanan infrastruktur nasional.
+						{$locale === 'EN'
+							? 'A pioneer of smart telemetry systems in Indonesia. Delivering intelligent instrumentation for national infrastructure efficiency and safety.'
+							: 'Pionir Sistem Telemetri Pintar di Indonesia. Menghadirkan solusi instrumentasi cerdas untuk efisiensi dan keamanan infrastruktur nasional.'}
 					</p>
 				</div>
 
@@ -72,9 +80,9 @@
 						<MapPin size={14} class="text-zinc-300" />
 					</div>
 					<div class="text-xs leading-relaxed text-zinc-400">
-						<span class="block text-zinc-200 font-semibold mb-0.5"
-							>Headquarters</span
-						>
+						<span class="block text-zinc-200 font-semibold mb-0.5">
+							{tr['footer.hq'][$locale]}
+						</span>
 						Kadirojo I, Purwomartani, Kalasan,<br />Sleman, DIY
 						55571
 					</div>
@@ -138,7 +146,7 @@
 				<h3
 					class="text-xs font-bold text-white mb-6 uppercase tracking-widest opacity-80"
 				>
-					Solusi Kami
+					{tr['footer.solutions'][$locale]}
 				</h3>
 				<ul class="space-y-4">
 					{#each footerSolutions as item}
@@ -163,10 +171,10 @@
 				<h3
 					class="text-xs font-bold text-white mb-6 uppercase tracking-widest opacity-80"
 				>
-					Perusahaan
+					{tr['footer.company'][$locale]}
 				</h3>
 				<ul class="space-y-4">
-					{#each [{ name: "Tentang Kami", href: "/tentang-kami" }, { name: "Proyek", href: "/proyek" }, { name: "Sertifikasi", href: "/tentang-kami#sertifikasi" }, { name: "Wawasan", href: "/wawasan" }] as item}
+					{#each companyLinks as item}
 						<li>
 							<a
 								href={item.href}
@@ -183,7 +191,7 @@
 				<h3
 					class="text-xs font-bold text-white mb-6 uppercase tracking-widest opacity-80"
 				>
-					Kontak
+					{tr['footer.contact'][$locale]}
 				</h3>
 				<ul class="space-y-4">
 					<li class="flex items-start gap-3 group">
@@ -198,7 +206,7 @@
 						<div class="pt-1">
 							<span
 								class="block text-[10px] uppercase tracking-widest text-zinc-600 font-bold mb-1"
-								>Telepon</span
+								>{$locale === 'EN' ? 'Phone' : 'Telepon'}</span
 							>
 							<a
 								href="tel:02744986899"
@@ -258,10 +266,10 @@
 						<div class="pt-1">
 							<span
 								class="block text-[10px] uppercase tracking-widest text-zinc-600 font-bold mb-1"
-								>Jam Kerja</span
+								>{tr['footer.hours'][$locale]}</span
 							>
 							<span class="block text-sm font-medium text-zinc-400"
-								>Senin - Sabtu</span
+								>{$locale === 'EN' ? 'Monday - Saturday' : 'Senin - Sabtu'}</span
 							>
 							<span class="text-sm font-medium text-zinc-500"
 								>08:00 - 17:00 WIB</span
@@ -310,7 +318,7 @@
 				<p
 					class="text-[11px] font-bold uppercase tracking-widest text-zinc-500"
 				>
-					All Systems Operational
+					{$locale === 'EN' ? 'All Systems Operational' : 'Semua Sistem Operasional'}
 				</p>
 			</div>
 		</div>

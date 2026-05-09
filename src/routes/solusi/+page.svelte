@@ -49,7 +49,7 @@
 
 <svelte:head>
 	<title>Solusi — Beacon Engineering</title>
-	<meta name="description" content="Lima pilar solusi telemetri Beacon Engineering: Water Security, Weather Forecast, Early Warning, Pressure Measurement, dan STESY." />
+	<meta name="description" content="Lima pilar solusi telemetri Beacon Engineering: Water Security, Weather Forecast, Early Warning, Infrastructure Security, dan STESY." />
 </svelte:head>
 
 <!-- Hero — SKILL: Asymmetric, gradient text, animated ornaments -->

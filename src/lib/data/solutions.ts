@@ -37,8 +37,8 @@ export const solutions = [
 	},
 	{
 		icon: Gauge, name: 'Infrastructure Security',
-		tagline: 'Tekanan presisi tinggi',
-		desc: 'Akurasi tinggi untuk medan ekstrem — geothermal, well testing, infrastruktur kritis. Terbukti di Kawah Ijen.',
+		tagline: 'Proteksi aset kritis',
+		desc: 'Instrumentasi keamanan untuk aset strategis: pemantauan kondisi struktur, anomali lapangan, dan status perangkat dari satu ekosistem telemetri.',
 		products: ['APLR'],
 		href: '/solusi/infrastructure-security',
 		color: '#10B981',
@@ -160,11 +160,11 @@ export const pressureMeasurementProducts = [
 	{
 		slug: 'aplr',
 		name: 'APLR',
-		full: 'Automatic Pressure Level Recorder',
-		hook: 'Akurasi tinggi untuk medan ekstrem — geothermal, well testing, infrastruktur kritis.',
+		full: 'Automatic Protection Logging Recorder',
+		hook: 'Proteksi infrastruktur kritis dengan pencatatan kondisi aset, alarm anomali, dan telemetri lapangan yang tahan medan ekstrem.',
 		icon: Flame,
-		desc: 'Pencatatan tekanan otomatis menggunakan pressure transducer presisi tinggi. Tahan suhu dan tekanan ekstrem untuk aplikasi geothermal dan monitoring sumur. Terbukti di Kawah Ijen bersama PT Medco Energi.',
-		specs: ['High Pressure Range', 'Extreme Temperature', 'Corrosion Resistant', 'Auto-logging', 'STESY Integration', 'Data Redundancy'],
+		desc: 'Pencatatan kondisi aset otomatis untuk area utilitas, energi, bendungan, dan fasilitas strategis. Sistem membaca sensor keamanan lapangan, mengirim alarm, dan menjaga rekam data tetap tersedia melalui STESY.',
+		specs: ['Asset Condition Logging', 'Anomaly Alert', 'Tamper-resistant Enclosure', 'Auto-logging', 'STESY Integration', 'Data Redundancy'],
 		thumbnail: 'https://picsum.photos/seed/aplr1/800/600'
 	}
 ];

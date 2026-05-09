@@ -54,7 +54,7 @@
 			client: "PT Medco Energi",
 			location: "Banyuwangi, Jawa Timur",
 			products: ["APLR"],
-			category: "Pressure",
+			category: "Infrastructure Security",
 			highlight: "",
 			image: "https://picsum.photos/seed/p3/800/600",
 		},

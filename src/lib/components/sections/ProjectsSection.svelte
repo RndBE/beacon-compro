@@ -3,6 +3,7 @@
 	import { ArrowRight, MapPin, Radio } from '@lucide/svelte';
 	import Ornaments from '$lib/components/Ornaments.svelte';
 	import { locale } from '$lib/i18n';
+	import { projectCategory, projectLocation, projectName } from '$lib/homepage-copy';
 	import type { FeaturedProject } from '$lib/api';
 
 	let { featuredProjects = undefined }: { featuredProjects?: FeaturedProject[] | null } = $props();
@@ -136,7 +137,7 @@
 				.addTo(mapInstance!)
 				.bindPopup(
 					`<div style="font-family: 'Outfit', sans-serif; padding: 2px 0;">
-						<strong style="font-size: 13px; color: #C8102E;">${project.name}</strong><br/>
+						<strong style="font-size: 13px; color: #C8102E;">${projectName(project, $locale)}</strong><br/>
 						<span style="font-size: 11px; color: #5C5C5C;">${project.client}</span>
 					</div>`,
 					{ closeButton: false }
@@ -174,7 +175,11 @@
 				</span>
 			</div>
 			<h2 class="font-heading text-4xl sm:text-5xl md:text-6xl font-extrabold text-zinc-950 leading-[1.05] tracking-tight mb-4">
-				Kami Sudah di Sana, Kami <span class="text-transparent bg-clip-text" style="background-image: linear-gradient(135deg, #FF5F56 0%, #C8102E 50%, #8A0B1F 100%);">Tetap di Sana.</span>
+				{#if $locale === 'EN'}
+					We Have Been There, and We <span class="text-transparent bg-clip-text" style="background-image: linear-gradient(135deg, #FF5F56 0%, #C8102E 50%, #8A0B1F 100%);">Remain There.</span>
+				{:else}
+					Kami Sudah di Sana, Kami <span class="text-transparent bg-clip-text" style="background-image: linear-gradient(135deg, #FF5F56 0%, #C8102E 50%, #8A0B1F 100%);">Tetap di Sana.</span>
+				{/if}
 			</h2>
 			<p class="text-lg text-zinc-500 leading-relaxed max-w-[55ch] font-medium">
 				{$locale === 'EN' ? 'Over three hundred telemetry stations spread from Aceh to Papua. Every red dot on the map is a Beacon device operating 24/7 non-stop.' : 'Tiga ratus lebih pos telemetri tersebar dari Aceh sampai Papua. Setiap titik merah di peta adalah perangkat Beacon yang beroperasi 24 jam non-stop.'}
@@ -210,7 +215,9 @@
 							</div>
 							<div>
 								<span class="block text-3xl font-mono font-extrabold tabular-nums leading-none tracking-tight text-zinc-900">{stationCount}</span>
-								<span class="block text-[11px] uppercase tracking-[0.15em] font-bold text-zinc-500 mt-1">Pos Telemetri Aktif</span>
+								<span class="block text-[11px] uppercase tracking-[0.15em] font-bold text-zinc-500 mt-1">
+									{$locale === 'EN' ? 'Active Telemetry Posts' : 'Pos Telemetri Aktif'}
+								</span>
 							</div>
 						</div>
 					</div>
@@ -232,6 +239,7 @@
 								transition: opacity 0.6s cubic-bezier(0.16,1,0.3,1) {i * 0.1}s, transform 0.6s cubic-bezier(0.16,1,0.3,1) {i * 0.1}s, background 0.3s, border-color 0.3s, box-shadow 0.3s;
 							"
 							onclick={() => flyToProject(i)}
+							aria-label={$locale === 'EN' ? `Show project ${projectName(project, $locale)}` : `Tampilkan proyek ${projectName(project, $locale)}`}
 						>
 							<!-- Left Accent Line for Active State -->
 							{#if activeProject === i}
@@ -244,17 +252,17 @@
 										<span class="text-xs font-mono font-bold px-2.5 py-0.5 rounded-md text-white tabular-nums" style="background: #C8102E;">{project.year}</span>
 										<span class="text-xs font-medium text-zinc-500 flex items-center gap-1.5">
 											<MapPin size={12} class="text-zinc-400" />
-											{project.location}
+											{projectLocation(project, $locale)}
 										</span>
 									</div>
 									<h3 class="font-heading text-[17px] font-bold text-zinc-900 mb-1.5 group-hover:text-[#C8102E] transition-colors">
-										{project.name}
+										{projectName(project, $locale)}
 									</h3>
 									<p class="text-[13px] font-medium text-zinc-500">{project.client}</p>
 								</div>
 								<div class="flex flex-wrap gap-1.5 ml-4 justify-end w-20">
 									{#each project.products as prod}
-										<span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full tracking-wide" style="background: #FBE9EC; color: #C8102E;">{prod}</span>
+										<span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full tracking-wide" style="background: #FBE9EC; color: #C8102E;">{projectCategory(prod, $locale)}</span>
 									{/each}
 								</div>
 							</div>

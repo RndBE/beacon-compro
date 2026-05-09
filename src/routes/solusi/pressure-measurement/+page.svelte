@@ -2,9 +2,7 @@
 	import {
 		ArrowRight,
 		MessageCircle,
-		Gauge,
-		Thermometer,
-		Flame,
+		ShieldCheck,
 	} from "@lucide/svelte";
 	import Ornaments from "$lib/components/Ornaments.svelte";
 	import { pressureMeasurementProducts as fallbackProducts } from "$lib/data/solutions";
@@ -23,9 +21,9 @@
 					return {
 						slug: s.slug,
 						name: s.abbreviation || editorial?.name || s.name,
-						full: s.name,
+						full: editorial?.full ?? s.name,
 						hook: editorial?.hook ?? "",
-						icon: editorial?.icon ?? Gauge,
+						icon: editorial?.icon ?? ShieldCheck,
 						desc: editorial?.desc ?? "",
 						specs: editorial?.specs ?? [],
 						thumbnail:
@@ -40,7 +38,7 @@
 	<title>{solutionName} — Beacon Engineering</title>
 	<meta
 		name="description"
-		content="APLR Beacon Engineering: pengukuran tekanan presisi tinggi untuk geothermal, well testing, dan infrastruktur kritis."
+		content="Infrastructure Security Beacon Engineering: proteksi aset kritis melalui instrumentasi keamanan, alarm anomali, dan telemetri lapangan terintegrasi STESY."
 	/>
 </svelte:head>
 
@@ -77,7 +75,7 @@
 					class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-semibold uppercase tracking-widest mb-6 w-fit"
 					style="background: #D1FAE5; color: #059669; border: 1px solid rgba(5,150,105,0.15);"
 				>
-					<Gauge size={12} />
+					<ShieldCheck size={12} />
 					{solutionName}
 				</div>
 
@@ -85,21 +83,21 @@
 					class="font-heading text-4xl md:text-5xl lg:text-[52px] xl:text-[60px] font-extrabold tracking-tighter leading-[1.06] mb-6"
 					style="color: #1A1A1A;"
 				>
-					Akurasi Tinggi untuk <br />
-					<span style="color: #059669;">Medan Ekstrem.</span>
+					Proteksi Lapangan untuk <br />
+					<span style="color: #059669;">Aset Kritis.</span>
 				</h1>
 
 				<p
 					class="text-base md:text-lg text-gray-600 leading-relaxed max-w-[52ch] mb-4"
 				>
-					Pengukuran tekanan untuk sumur geothermal, well testing, dan
-					infrastruktur kritis.
+					Instrumentasi keamanan untuk fasilitas energi, bendungan,
+					utilitas, dan infrastruktur strategis yang harus tetap terpantau.
 				</p>
 				<p
 					class="text-base md:text-lg font-semibold"
 					style="color: #059669;"
 				>
-					Spesifikasi setara impor, lead time 1/3-nya, dari Indonesia.
+					Alarm anomali, logging kondisi aset, dan integrasi STESY dari Indonesia.
 				</p>
 
 				<!-- Stat strip -->
@@ -117,7 +115,7 @@
 							class="text-xs font-medium mt-0.5"
 							style="color: #7A7A7A;"
 						>
-							Precision Sensor
+							Field Reliability
 						</p>
 					</div>
 					<div class="w-px h-8 bg-[#E5E5E5]"></div>
@@ -132,7 +130,7 @@
 							class="text-xs font-medium mt-0.5"
 							style="color: #7A7A7A;"
 						>
-							Lead Time Impor
+							Lead Time Integrasi
 						</p>
 					</div>
 					<div class="w-px h-8 bg-[#E5E5E5]"></div>
@@ -147,7 +145,7 @@
 							class="text-xs font-medium mt-0.5"
 							style="color: #7A7A7A;"
 						>
-							Lokal Support
+							Local Support
 						</p>
 					</div>
 				</div>
@@ -174,7 +172,7 @@
 						src="/ilustrasi_pressure_measurement.webp"
 						srcset="/images/hero-solutions/pressure_measurement-960.webp 960w, /images/hero-solutions/pressure_measurement-1280.webp 1280w, /ilustrasi_pressure_measurement.webp 1672w"
 						sizes="(min-width: 1280px) 980px, (min-width: 1024px) 860px, 92vw"
-						alt="Ilustrasi sistem pengukuran tekanan {solutionName} Beacon Engineering"
+						alt="Ilustrasi sistem proteksi infrastruktur {solutionName} Beacon Engineering"
 						class="w-full h-auto object-contain select-none"
 						width="1672"
 						height="941"
@@ -194,7 +192,7 @@
 	<div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 		<div class="max-w-2xl mb-14 space-y-3">
 			<span class="text-xs font-semibold uppercase tracking-widest" style="color: #059669;">Produk {solutionName}</span>
-			<h2 class="font-heading text-3xl sm:text-4xl font-bold leading-[1.1]" style="color: #1A1A1A; letter-spacing: -0.025em;">Pengukuran Tekanan Presisi Tinggi</h2>
+			<h2 class="font-heading text-3xl sm:text-4xl font-bold leading-[1.1]" style="color: #1A1A1A; letter-spacing: -0.025em;">Proteksi Aset Infrastruktur</h2>
 		</div>
 
 		<div class="grid md:grid-cols-2 gap-6">

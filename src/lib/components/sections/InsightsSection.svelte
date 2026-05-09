@@ -3,6 +3,7 @@
 	import { onMount } from "svelte";
 	import Ornaments from "$lib/components/Ornaments.svelte";
 	import { locale } from "$lib/i18n";
+	import { articleCategory, articleExcerpt, articleTitle } from "$lib/homepage-copy";
 	import type { ArticleSummary } from "$lib/api";
 
 	let { articles = [] }: { articles: ArticleSummary[] } = $props();
@@ -53,7 +54,7 @@
 					{$locale === 'EN' ? 'Insights' : 'Wawasan'} <span
 						class="text-transparent bg-clip-text"
 						style="background-image: linear-gradient(135deg, #FF5F56 0%, #C8102E 50%, #8A0B1F 100%)"
-						>Terbaru</span
+						>{$locale === 'EN' ? 'Latest' : 'Terbaru'}</span
 					>
 				</h2>
 			</div>
@@ -84,7 +85,7 @@
 				<!-- Large thumbnail area -->
 				<div class="relative h-64 sm:h-72 overflow-hidden">
 					{#if featured.thumbnail}
-						<img src={featured.thumbnail} alt={featured.title} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+						<img src={featured.thumbnail} alt={articleTitle(featured, $locale)} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
 						<div class="absolute inset-0" style="background: linear-gradient(to top, rgba(0,0,0,0.3) 0%, transparent 60%);"></div>
 					{:else}
 						<div class="absolute inset-0 flex items-center justify-center" style="background: linear-gradient(135deg, #FBE9EC 0%, #FFF5F6 50%, #FAFAFA 100%);">
@@ -96,7 +97,7 @@
 					<!-- Category badge -->
 					<div class="absolute top-4 left-4">
 						<span class="text-[11px] font-semibold uppercase tracking-wider px-3 py-1.5 rounded-lg text-white" style="background: {featured.category_color};">
-							{featured.category}
+							{articleCategory(featured, $locale)}
 						</span>
 					</div>
 					<!-- Hover arrow -->
@@ -107,10 +108,10 @@
 
 				<div class="p-7">
 					<h3 class="font-heading text-xl sm:text-2xl font-bold text-[#1A1A1A] mb-3 group-hover:text-[#C8102E] transition-colors leading-snug">
-						{featured.title}
+						{articleTitle(featured, $locale)}
 					</h3>
 					<p class="text-sm text-[#5C5C5C] leading-relaxed mb-5 max-w-[55ch]">
-						{featured.excerpt}
+						{articleExcerpt(featured, $locale)}
 					</p>
 					<div class="flex items-center gap-4">
 						<span class="text-xs text-[#5C5C5C]">{featured.published_at}</span>
@@ -139,25 +140,25 @@
 						<!-- Compact thumbnail -->
 						<div class="relative h-32 overflow-hidden">
 							{#if article.thumbnail}
-								<img src={article.thumbnail} alt={article.title} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+								<img src={article.thumbnail} alt={articleTitle(article, $locale)} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
 								<div class="absolute inset-0" style="background: linear-gradient(to top, rgba(0,0,0,0.2), transparent);"></div>
 							{:else}
 								<div class="absolute inset-0 flex items-center justify-center" style="background: linear-gradient(135deg, {article.category_color}08, {article.category_color}15);">
 									<div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background: {article.category_color}12;">
-										<span class="text-lg font-heading font-bold" style="color: {article.category_color};">{article.category?.charAt(0)}</span>
+										<span class="text-lg font-heading font-bold" style="color: {article.category_color};">{articleCategory(article, $locale)?.charAt(0)}</span>
 									</div>
 								</div>
 							{/if}
 							<div class="absolute top-3 left-3">
 								<span class="text-[10px] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-md text-white" style="background: {article.category_color};">
-									{article.category}
+									{articleCategory(article, $locale)}
 								</span>
 							</div>
 						</div>
 
 						<div class="p-5 flex-1 flex flex-col justify-between">
 							<h3 class="font-heading text-base font-bold text-[#1A1A1A] mb-3 group-hover:text-[#C8102E] transition-colors leading-snug">
-								{article.title}
+								{articleTitle(article, $locale)}
 							</h3>
 							<div class="flex items-center justify-between">
 								<span class="text-xs text-[#5C5C5C]">{article.published_at}</span>

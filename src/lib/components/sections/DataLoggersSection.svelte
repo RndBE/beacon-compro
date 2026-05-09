@@ -2,6 +2,7 @@
 	import { onMount } from "svelte";
 	import { Plus, Cpu } from "@lucide/svelte";
 	import { locale } from "$lib/i18n";
+	import { dataLoggerDescription, dataLoggerFeature } from "$lib/homepage-copy";
 	import type { HomepageDataLogger } from "$lib/api";
 
 	let {
@@ -250,9 +251,9 @@
 					<p
 						class="mt-4 lg:mt-6 text-lg md:text-xl text-zinc-500 max-w-2xl leading-relaxed"
 					>
-						Dirancang dari nol untuk stabilitas tanpa kompromi.
-						Dibuat dari material kelas industri dengan presisi
-						tinggi.
+						{$locale === "EN"
+							? "Designed from scratch for uncompromising stability. Built with industrial-grade materials and high precision."
+							: "Dirancang dari nol untuk stabilitas tanpa kompromi. Dibuat dari material kelas industri dengan presisi tinggi."}
 					</p>
 				</div>
 
@@ -279,7 +280,9 @@
 								<div class="flex flex-col items-start">
 									<!-- The Pill Button -->
 									<button
+										type="button"
 										class="inline-flex items-center gap-3 px-5 py-3 rounded-full transition-all duration-300 backdrop-blur-md border outline-none cursor-pointer"
+										aria-label={$locale === "EN" ? `Show ${product.name}` : `Tampilkan ${product.name}`}
 										style="
 											background: {activeId === product.id
 											? 'rgba(255,255,255,0.1)'
@@ -360,7 +363,7 @@
 														>
 														{" "}
 													{/if}
-													{product.desc}
+													{dataLoggerDescription(product, $locale)}
 												</p>
 												<!-- Feature Badges -->
 												<div
@@ -370,7 +373,7 @@
 														<span
 															class="px-3 py-1.5 rounded-full text-[10px] font-mono font-bold tracking-wider uppercase bg-white/10 text-zinc-200 border border-white/10 shadow-sm"
 														>
-															{feature}
+															{dataLoggerFeature(feature, $locale)}
 														</span>
 													{/each}
 												</div>

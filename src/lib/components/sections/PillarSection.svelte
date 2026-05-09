@@ -3,6 +3,7 @@
 	import { ArrowUpRight, Droplets, CloudSun, Siren, Activity, MonitorPlay } from '@lucide/svelte';
 	import Ornaments from '$lib/components/Ornaments.svelte';
 	import { locale } from '$lib/i18n';
+	import { solutionHook } from '$lib/homepage-copy';
 	import type { SolutionSummary } from '$lib/api';
 
 	let { solutions = undefined }: { solutions?: SolutionSummary[] | null } = $props();
@@ -14,6 +15,13 @@
 	let scrollY = $state(0);
 	let innerHeight = $state(0);
 	let innerWidth = $state(0);
+
+	function handlePillarKeydown(event: KeyboardEvent, index: number) {
+		if (event.key === 'Enter' || event.key === ' ') {
+			event.preventDefault();
+			activePillar = index;
+		}
+	}
 
 	$effect(() => {
 		// Reactive dependency to trigger re-calculation
@@ -47,17 +55,9 @@
 		'water-security': Droplets,
 		'weather-forecast': CloudSun,
 		'early-warning': Siren,
+		'infrastructure-security': Activity,
 		'pressure-measurement': Activity,
 		'stesy': MonitorPlay
-	};
-
-	// Hardcoded hooks per slug (editorial copy — not from DB)
-	const hookMap: Record<string, string> = {
-		'water-security': 'Amankan setiap meter kubik air. Dari ketinggian, debit, kualitas, hingga deformasi struktur penampungnya.',
-		'weather-forecast': 'Cuaca tidak bisa dilawan, tapi bisa diprediksi. Stasiun cuaca otomatis untuk pertanian, bendungan, dan aviasi.',
-		'early-warning': 'Detik pertama menentukan nyawa. Sistem peringatan dini multi-level untuk wilayah rawan.',
-		'pressure-measurement': 'Akurasi tinggi untuk medan ekstrem — geothermal, well testing, infrastruktur kritis.',
-		'stesy': 'Platform tunggal yang mengikat semua perangkat menjadi satu dashboard real-time.'
 	};
 
 	// Sub-solution abbreviation labels per solution
@@ -65,25 +65,26 @@
 		'water-security': ['AWLR', 'AWGC', 'AFMR', 'ADR', 'AWQR', 'AVWR'],
 		'weather-forecast': ['AWR', 'ARR'],
 		'early-warning': ['EWS'],
+		'infrastructure-security': ['APLR'],
 		'pressure-measurement': ['APLR'],
 		'stesy': ['Smart Telemetry']
 	};
 
 	// Fallback hardcoded data
-	const fallbackPillars = [
-		{ icon: Droplets, name: 'Water Security', hook: hookMap['water-security'], products: productLabelsMap['water-security'], cta: 'Eksplorasi', href: '/solusi/water-security', image: 'https://picsum.photos/seed/hydro1/1200/800' },
-		{ icon: CloudSun, name: 'Weather Forecast', hook: hookMap['weather-forecast'], products: productLabelsMap['weather-forecast'], cta: 'Eksplorasi', href: '/solusi/weather-forecast', image: 'https://picsum.photos/seed/weather2/1200/800' },
-		{ icon: Siren, name: 'Early Warning', hook: hookMap['early-warning'], products: productLabelsMap['early-warning'], cta: 'Eksplorasi', href: '/solusi/early-warning', image: 'https://picsum.photos/seed/warning3/1200/800' },
-		{ icon: Activity, name: 'Pressure Measure', hook: hookMap['pressure-measurement'], products: productLabelsMap['pressure-measurement'], cta: 'Eksplorasi', href: '/solusi/pressure-measurement', image: 'https://picsum.photos/seed/pressure4/1200/800' },
-		{ icon: MonitorPlay, name: 'STESY Platform', hook: hookMap['stesy'], products: productLabelsMap['stesy'], cta: $locale === 'EN' ? 'Learn More' : 'Pelajari', href: '/solusi/stesy', image: 'https://picsum.photos/seed/dashboard5/1200/800' }
-	];
+	const fallbackPillars = $derived([
+		{ icon: Droplets, name: 'Water Security', hook: solutionHook('water-security', '', $locale), products: productLabelsMap['water-security'], cta: $locale === 'EN' ? 'Explore' : 'Eksplorasi', href: '/solusi/water-security', image: 'https://picsum.photos/seed/hydro1/1200/800' },
+		{ icon: CloudSun, name: 'Weather Forecast', hook: solutionHook('weather-forecast', '', $locale), products: productLabelsMap['weather-forecast'], cta: $locale === 'EN' ? 'Explore' : 'Eksplorasi', href: '/solusi/weather-forecast', image: 'https://picsum.photos/seed/weather2/1200/800' },
+		{ icon: Siren, name: 'Early Warning', hook: solutionHook('early-warning', '', $locale), products: productLabelsMap['early-warning'], cta: $locale === 'EN' ? 'Explore' : 'Eksplorasi', href: '/solusi/early-warning', image: 'https://picsum.photos/seed/warning3/1200/800' },
+		{ icon: Activity, name: 'Infrastructure Security', hook: solutionHook('infrastructure-security', '', $locale), products: productLabelsMap['infrastructure-security'], cta: $locale === 'EN' ? 'Explore' : 'Eksplorasi', href: '/solusi/infrastructure-security', image: 'https://picsum.photos/seed/infrastructure-security/1200/800' },
+		{ icon: MonitorPlay, name: 'STESY Platform', hook: solutionHook('stesy', '', $locale), products: productLabelsMap['stesy'], cta: $locale === 'EN' ? 'Learn More' : 'Pelajari', href: '/solusi/stesy', image: 'https://picsum.photos/seed/dashboard5/1200/800' }
+	]);
 
 	const pillars = $derived(
 		solutions && solutions.length > 0
 			? solutions.map((s) => ({
 					icon: iconMap[s.slug] ?? Activity,
 					name: s.name,
-					hook: hookMap[s.slug] ?? s.description,
+					hook: solutionHook(s.slug, s.description, $locale),
 					products: productLabelsMap[s.slug] ?? [],
 					cta: s.slug === 'stesy' ? ($locale === 'EN' ? 'Learn More' : 'Pelajari') : ($locale === 'EN' ? 'Explore' : 'Eksplorasi'),
 					href: `/solusi/${s.slug}`,
@@ -127,7 +128,7 @@
 					</div>
 					<div class="max-w-md pb-2">
 						<p class="text-base text-zinc-600 leading-relaxed font-medium">
-							Dari pemantauan debit air ekstrem hingga peringatan dini presisi tinggi — arsitektur telemetri kami dirancang untuk memitigasi risiko tanpa kompromi.
+							{$locale === 'EN' ? 'From extreme water discharge monitoring to high-precision early warnings, our telemetry architecture is designed to reduce risk without compromise.' : 'Dari pemantauan debit air ekstrem hingga peringatan dini presisi tinggi — arsitektur telemetri kami dirancang untuk memitigasi risiko tanpa kompromi.'}
 						</p>
 					</div>
 				</div>
@@ -148,18 +149,23 @@
 							"
 							onmouseenter={() => activePillar = i}
 							onclick={() => activePillar = i}
+							onkeydown={(event) => handlePillarKeydown(event, i)}
+							role="button"
+							tabindex="0"
+							aria-label={$locale === 'EN' ? `Show solution pillar ${pillar.name}` : `Tampilkan pilar solusi ${pillar.name}`}
+							aria-pressed={activePillar === i}
 						>
 							<!-- Background Image -->
 							<div class="absolute inset-0 bg-zinc-900">
 								<img 
 									src={pillar.image} 
-									alt={pillar.name} 
+									alt={$locale === 'EN' ? `Solution illustration for ${pillar.name}` : `Ilustrasi solusi ${pillar.name}`}
 									class="w-full h-full object-cover transition-all duration-[1200ms] ease-out {activePillar === i ? 'opacity-90 scale-105' : 'opacity-40 scale-100 grayscale'}"
 								/>
 							</div>
 
 							<!-- Gradients & Overlays -->
-							<div class="absolute inset-0 bg-gradient-to-b from-transparent via-zinc-900/20 to-zinc-950/90 transition-opacity duration-700 {activePillar === i ? 'opacity-100' : 'opacity-80'}"></div>
+							<div class="absolute inset-0 bg-gradient-to-b from-transparent via-zinc-900/35 to-zinc-950/95 transition-opacity duration-700 {activePillar === i ? 'opacity-100' : 'opacity-90'}"></div>
 							<div class="absolute inset-0 bg-[#C8102E]/20 mix-blend-multiply transition-opacity duration-700 {activePillar === i ? 'opacity-0' : 'opacity-100'}"></div>
 
 							<!-- Collapsed State (Vertical Text) -->
@@ -186,7 +192,7 @@
 										<h3 class="font-heading text-3xl font-bold text-white tracking-tight">{pillar.name}</h3>
 									</div>
 									
-									<p class="text-lg text-zinc-300 leading-relaxed mb-8 font-medium">
+									<p class="text-lg text-white leading-relaxed mb-8 font-medium [text-shadow:0_1px_2px_rgba(0,0,0,0.45)]">
 										{pillar.hook}
 									</p>
 									
@@ -233,7 +239,7 @@
 							<div class="absolute inset-0">
 								<img 
 									src={pillar.image} 
-									alt={pillar.name} 
+									alt={$locale === 'EN' ? `Solution illustration for ${pillar.name}` : `Ilustrasi solusi ${pillar.name}`}
 									class="w-full h-full object-cover opacity-50 group-hover:opacity-70 group-hover:scale-105 transition-all duration-700 ease-out"
 								/>
 							</div>
@@ -245,7 +251,7 @@
 									<Icon size={20} />
 								</div>
 								<h3 class="font-heading text-2xl font-bold text-white mb-2">{pillar.name}</h3>
-								<p class="text-sm text-zinc-300 line-clamp-2 mb-4 font-medium">{pillar.hook}</p>
+								<p class="text-sm text-white line-clamp-2 mb-4 font-medium [text-shadow:0_1px_2px_rgba(0,0,0,0.45)]">{pillar.hook}</p>
 								
 								<div class="flex flex-wrap gap-1.5">
 									{#each pillar.products.slice(0, 3) as prod}

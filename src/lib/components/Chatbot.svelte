@@ -13,6 +13,7 @@
 		RotateCcw,
 	} from "@lucide/svelte";
 	import { PUBLIC_API_BASE } from "$env/static/public";
+	import { locale } from "$lib/i18n";
 
 	let isOpen = $state(false);
 	let message = $state("");
@@ -39,6 +40,10 @@
 		timestamp: string;
 	}
 
+	function copy(id: string, en: string): string {
+		return $locale === "EN" ? en : id;
+	}
+
 	function getCurrentTime(): string {
 		return new Date().toLocaleTimeString("id-ID", {
 			hour: "2-digit",
@@ -50,15 +55,31 @@
 		return {
 			role: "assistant",
 			senderType: "ai",
-			content:
+			content: copy(
 				"Halo! Saya engineer virtual Beacon. Ada pertanyaan mengenai spesifikasi, instalasi, atau kalibrasi perangkat kami?",
+				"Hello! I am Beacon's virtual engineer. Do you have questions about our device specifications, installation, or calibration?",
+			),
 			timestamp: getCurrentTime(),
 		};
 	}
 
 	let messages = $state<ChatMessage[]>([createWelcomeMessage()]);
+	let welcomeLocale = $state($locale);
 
 	let chatAreaRef: HTMLDivElement;
+
+	$effect(() => {
+		const activeLocale = $locale;
+		if (
+			activeLocale !== welcomeLocale &&
+			messages.length === 1 &&
+			messages[0]?.senderType === "ai" &&
+			!sessionToken
+		) {
+			welcomeLocale = activeLocale;
+			messages = [createWelcomeMessage()];
+		}
+	});
 
 	function toggleChat() {
 		isOpen = !isOpen;
@@ -245,8 +266,10 @@
 			const errorMsg: ChatMessage = {
 				role: "assistant",
 				senderType: "ai",
-				content:
+				content: copy(
 					"Koneksi terputus. Pastikan koneksi internet Anda stabil.",
+					"Connection lost. Please make sure your internet connection is stable.",
+				),
 				timestamp: getCurrentTime(),
 			};
 			messages = [...messages, errorMsg];
@@ -258,12 +281,12 @@
 
 	function validateForm(): boolean {
 		const errors: Record<string, string> = {};
-		if (!formName.trim()) errors.name = "Nama wajib diisi";
+		if (!formName.trim()) errors.name = copy("Nama wajib diisi", "Name is required");
 		if (!formOrganization.trim())
-			errors.organization = "Instansi wajib diisi";
-		if (!formPhone.trim()) errors.phone = "Nomor telepon wajib diisi";
+			errors.organization = copy("Instansi wajib diisi", "Organization is required");
+		if (!formPhone.trim()) errors.phone = copy("Nomor telepon wajib diisi", "Phone number is required");
 		else if (formPhone.trim().length < 8)
-			errors.phone = "Nomor telepon tidak valid";
+			errors.phone = copy("Nomor telepon tidak valid", "Phone number is invalid");
 		formErrors = errors;
 		return Object.keys(errors).length === 0;
 	}
@@ -321,11 +344,11 @@
 				scrollToBottom();
 			} else {
 				formErrors = {
-					general: data.error || "Gagal mengirim data. Coba lagi.",
+					general: data.error || copy("Gagal mengirim data. Coba lagi.", "Failed to send data. Please try again."),
 				};
 			}
 		} catch {
-			formErrors = { general: "Koneksi terputus. Coba lagi." };
+			formErrors = { general: copy("Koneksi terputus. Coba lagi.", "Connection lost. Please try again.") };
 		} finally {
 			formSubmitting = false;
 		}
@@ -336,24 +359,24 @@
 		sendMessage();
 	}
 
-	const predefinedQuestions = [
-		"Apa saja produk Beacon untuk bendungan?",
-		"Bagaimana cara kerja sensor AWLR?",
-		"Saya ingin dihubungkan dengan sales",
-	];
+	const predefinedQuestions = $derived([
+		copy("Apa saja produk Beacon untuk bendungan?", "What Beacon products are available for dams?"),
+		copy("Bagaimana cara kerja sensor AWLR?", "How does the AWLR sensor work?"),
+		copy("Saya ingin dihubungkan dengan sales", "I want to be connected with sales"),
+	]);
 
 	let showSuggestions = $derived(messages.length <= 1);
 
 	function getModeLabel(): string {
 		switch (chatMode) {
 			case "escalated":
-				return "Menghubungkan ke CS...";
+				return copy("Menghubungkan ke CS...", "Connecting to CS...");
 			case "live":
-				return "Terhubung ke CS";
+				return copy("Terhubung ke CS", "Connected to CS");
 			case "closed":
-				return "Sesi berakhir";
+				return copy("Sesi berakhir", "Session ended");
 			default:
-				return isLoading ? "Mengetik..." : "Online";
+				return isLoading ? copy("Mengetik...", "Typing...") : "Online";
 		}
 	}
 
@@ -380,7 +403,7 @@
 			type="button"
 			class="group flex max-w-[180px] items-center gap-3 rounded-2xl border border-white/70 bg-white/95 px-3 py-3 text-left shadow-[0_18px_40px_-18px_rgba(0,0,0,0.35)] backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:border-[#C8102E]/30 hover:shadow-[0_20px_44px_-18px_rgba(200,16,46,0.35)] sm:max-w-[220px] sm:px-4"
 			onclick={toggleChat}
-			aria-label="Buka chat otomatis Beacon"
+			aria-label={copy("Buka chat otomatis Beacon", "Open Beacon automated chat")}
 		>
 			<span
 				class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#FBE9EC] text-[#C8102E] transition-transform duration-300 group-hover:scale-105"
@@ -390,16 +413,17 @@
 			<span class="min-w-0">
 				<span
 					class="block text-[10px] font-mono font-bold uppercase tracking-[0.16em] text-[#C8102E]"
-					>Chat Otomatis</span
+					>{copy("Chat Otomatis", "Automated Chat")}</span
 				>
 				<span class="block truncate text-xs font-semibold text-zinc-700"
-					>Tanya Beacon AI di sini</span
+					>{copy("Tanya Beacon AI di sini", "Ask Beacon AI here")}</span
 				>
 			</span>
 		</button>
 	{/if}
 
 	<button
+		type="button"
 		class="relative w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-500 hover:scale-105 active:scale-95 group shadow-2xl"
 		style="
 			background: {isOpen
@@ -411,7 +435,8 @@
 			: '0 10px 30px -10px rgba(200,16,46,0.6), inset 0 2px 4px rgba(255,255,255,0.2)'};
 		"
 		onclick={toggleChat}
-		aria-label="Toggle AI Assistant"
+		aria-label={isOpen ? copy("Tutup chat AI", "Close AI chat") : copy("Buka chat AI", "Open AI chat")}
+		aria-expanded={isOpen}
 	>
 		{#if !isOpen}
 			<div
@@ -537,8 +562,8 @@
 					<Loader size={14} class="text-[#C8102E] animate-spin" />
 					<span class="text-xs text-zinc-500 font-medium">
 						{isLiveMode()
-							? "Mengirim pesan..."
-							: "Beacon sedang mengetik..."}
+							? copy("Mengirim pesan...", "Sending message...")
+							: copy("Beacon sedang mengetik...", "Beacon is typing...")}
 					</span>
 				</div>
 			</div>
@@ -554,12 +579,14 @@
 						<UserCheck size={14} class="text-[#C8102E]" />
 						<span
 							class="text-xs font-bold text-white uppercase tracking-wider"
-							>Data Kontak</span
+							>{copy("Data Kontak", "Contact Details")}</span
 						>
 					</div>
 					<p class="text-[11px] text-zinc-500 leading-relaxed">
-						Lengkapi data berikut agar tim kami bisa segera membantu
-						Anda.
+						{copy(
+							"Lengkapi data berikut agar tim kami bisa segera membantu Anda.",
+							"Complete the details below so our team can help you quickly.",
+						)}
 					</p>
 
 					{#if formErrors.general}
@@ -576,12 +603,13 @@
 							class="text-[10px] font-mono font-bold text-zinc-500 uppercase tracking-widest flex items-center gap-1.5"
 						>
 							<User size={10} />
-							Nama Lengkap
+							{copy("Nama Lengkap", "Full Name")}
 						</label>
 						<input
 							type="text"
 							bind:value={formName}
-							placeholder="Masukkan nama Anda"
+							placeholder={copy("Masukkan nama Anda", "Enter your name")}
+							aria-label={copy("Nama lengkap", "Full name")}
 							class="w-full px-3 py-2 bg-zinc-800 border rounded-lg text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-[#C8102E]/50 transition-colors
 								{formErrors.name ? 'border-red-500/50' : 'border-white/10'}"
 						/>
@@ -598,12 +626,13 @@
 							class="text-[10px] font-mono font-bold text-zinc-500 uppercase tracking-widest flex items-center gap-1.5"
 						>
 							<Building2 size={10} />
-							Instansi / Perusahaan
+							{copy("Instansi / Perusahaan", "Organization / Company")}
 						</label>
 						<input
 							type="text"
 							bind:value={formOrganization}
 							placeholder="BBWS, Dinas SDA, PT..."
+							aria-label={copy("Instansi atau perusahaan", "Organization or company")}
 							class="w-full px-3 py-2 bg-zinc-800 border rounded-lg text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-[#C8102E]/50 transition-colors
 								{formErrors.organization ? 'border-red-500/50' : 'border-white/10'}"
 						/>
@@ -620,12 +649,13 @@
 							class="text-[10px] font-mono font-bold text-zinc-500 uppercase tracking-widest flex items-center gap-1.5"
 						>
 							<Phone size={10} />
-							No. HP / WhatsApp
+							{copy("No. HP / WhatsApp", "Mobile / WhatsApp")}
 						</label>
 						<input
 							type="tel"
 							bind:value={formPhone}
 							placeholder="0812-xxxx-xxxx"
+							aria-label={copy("Nomor HP atau WhatsApp", "Mobile phone or WhatsApp number")}
 							class="w-full px-3 py-2 bg-zinc-800 border rounded-lg text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-[#C8102E]/50 transition-colors
 								{formErrors.phone ? 'border-red-500/50' : 'border-white/10'}"
 						/>
@@ -638,6 +668,7 @@
 
 					<!-- Submit -->
 					<button
+						type="button"
 						onclick={submitContactForm}
 						disabled={formSubmitting}
 						class="w-full py-2.5 rounded-xl text-sm font-semibold text-white transition-all duration-300 active:scale-[0.98] disabled:opacity-50"
@@ -648,10 +679,10 @@
 								class="flex items-center justify-center gap-2"
 							>
 								<Loader size={14} class="animate-spin" />
-								Menghubungkan...
+								{copy("Menghubungkan...", "Connecting...")}
 							</span>
 						{:else}
-							Hubungkan dengan CS
+							{copy("Hubungkan dengan CS", "Connect with CS")}
 						{/if}
 					</button>
 				</div>
@@ -665,7 +696,7 @@
 			>
 				<Loader size={14} class="text-amber-500 animate-spin" />
 				<span class="text-xs text-amber-400 font-medium"
-					>Menunggu CS tersedia...</span
+					>{copy("Menunggu CS tersedia...", "Waiting for CS availability...")}</span
 				>
 			</div>
 		{/if}
@@ -674,10 +705,11 @@
 			<div class="flex flex-col gap-2 mt-2">
 				<span
 					class="text-[10px] font-mono font-bold text-zinc-500 uppercase tracking-widest pl-1 mb-1"
-					>Saran Topik</span
+					>{copy("Saran Topik", "Suggested Topics")}</span
 				>
 				{#each predefinedQuestions as q}
 					<button
+						type="button"
 						class="text-left px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 hover:border-[#C8102E]/30 text-xs font-medium text-zinc-400 hover:text-white transition-all duration-300 hover:translate-x-1 group"
 						onclick={() => handleSuggestion(q)}
 					>
@@ -698,7 +730,7 @@
 		{#if chatMode === "closed"}
 			<div class="flex flex-col items-center gap-3 py-2">
 				<span class="text-xs text-zinc-500"
-					>Sesi telah berakhir. Terima kasih!</span
+					>{copy("Sesi telah berakhir. Terima kasih!", "The session has ended. Thank you!")}</span
 				>
 				<button
 					type="button"
@@ -706,13 +738,13 @@
 					class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-white/10 hover:bg-white/15 border border-white/10 hover:border-[#C8102E]/40 text-xs font-semibold text-white transition-colors"
 				>
 					<RotateCcw size={13} />
-					Mulai chat baru
+					{copy("Mulai chat baru", "Start a new chat")}
 				</button>
 			</div>
 		{:else if showContactForm}
 			<div class="text-center py-2">
 				<span class="text-xs text-zinc-500"
-					>Lengkapi form di atas untuk terhubung dengan CS</span
+					>{copy("Lengkapi form di atas untuk terhubung dengan CS", "Complete the form above to connect with CS")}</span
 				>
 			</div>
 		{:else}
@@ -736,11 +768,12 @@
 						type="text"
 						bind:value={message}
 						placeholder={isLoading
-							? "Menunggu..."
+							? copy("Menunggu...", "Waiting...")
 							: isLiveMode()
-								? "Ketik pesan ke CS..."
-								: "Ketik pertanyaan..."}
+								? copy("Ketik pesan ke CS...", "Type a message to CS...")
+								: copy("Ketik pertanyaan...", "Type your question...")}
 						disabled={isLoading}
+						aria-label={copy("Pesan chat", "Chat message")}
 						class="w-full bg-transparent text-sm text-white placeholder:text-zinc-600 focus:outline-none py-3 disabled:opacity-50"
 					/>
 					<button
@@ -750,6 +783,7 @@
 						!isLoading
 							? 'bg-[#C8102E] text-white hover:bg-[#910B20]'
 							: 'bg-transparent text-zinc-600'}"
+						aria-label={copy("Kirim pesan chat", "Send chat message")}
 					>
 						<Send size={14} />
 					</button>

@@ -1,9 +1,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { ArrowRight, Check, MessageCircle, Download, ChevronRight, Gauge, Thermometer, Wifi, ShieldCheck, Zap, BarChart3 } from '@lucide/svelte';
+	import { ArrowRight, MessageCircle, Download, ChevronRight, ShieldCheck, LockKeyhole, Wifi, Siren, Zap, BarChart3 } from '@lucide/svelte';
 	import Ornaments from '$lib/components/Ornaments.svelte';
 	import ProductSpecs from '$lib/components/ProductSpecs.svelte';
-	import { mapTrackRecords } from '$lib/loaders/sub-solution';
 
 	let { data } = $props();
 	let solutionName = $derived(data.subSolutionDetail?.sub_solution?.solution?.name ?? 'Infrastructure Security');
@@ -15,11 +14,11 @@
 	let activeVariant = $state(0);
 
 	const fallbackVariants: any[] = [
-		{ name: 'BE PLR-1000', subtitle: 'Pressure Level Recorder', desc: 'Pemantauan tekanan otomatis untuk aplikasi geothermal, well testing, dan infrastruktur kritis. Sensitivitas tinggi hingga 3000 psi.', use: 'Geothermal, well testing, pipa tekanan' ,
+		{ name: 'BE APLR-1000', subtitle: 'Protection Logging Recorder', desc: 'Pencatatan kondisi aset, alarm anomali, dan telemetri keamanan untuk fasilitas strategis. Dirancang untuk area utilitas, energi, bendungan, dan titik akses kritis.', use: 'Utilitas, energi, bendungan, fasilitas strategis' ,
 		specs: [
-		{ label: 'Range Tekanan', value: 'Hingga 3000 psi' },
-		{ label: 'Pengukuran', value: 'Otomatis tanpa intervensi manual' },
-		{ label: 'Sensitivitas', value: 'Deteksi fluktuasi kecil' },
+		{ label: 'Mode Proteksi', value: 'Asset condition logging' },
+		{ label: 'Pencatatan', value: 'Otomatis tanpa intervensi manual' },
+		{ label: 'Alarm', value: 'Deteksi anomali dan tamper event' },
 		{ label: 'Proteksi', value: 'IP67' },
 		{ label: 'Komunikasi', value: '4G/LTE, GSM' },
 		{ label: 'Power Supply', value: 'Solar Panel + Battery' },
@@ -33,58 +32,60 @@
 	}
 	];
 
-	// API data wins: use products from DB, fallback to static when DB has no products
+	// Keep product media from API, but use local editorial copy for Infrastructure Security.
 	const variants = $derived(
 		data.subSolutionDetail?.products && data.subSolutionDetail.products.length > 0
-			? data.subSolutionDetail.products.map((p: any) => ({
-				name: p.name,
-				subtitle: p.use_case ?? '',
-				desc: p.description ?? '',
-				use: p.use_case ?? '',
+			? data.subSolutionDetail.products.map((p: any, i: number) => {
+				const editorial = fallbackVariants[i] ?? fallbackVariants[0];
+				return {
+				name: editorial.name,
+				subtitle: editorial.subtitle,
+				desc: editorial.desc,
+				use: editorial.use,
 				image: p.main_image ?? p.thumbnail ?? null,
 				brochure_pdf: p.brochure_pdf ?? null,
-				specs: Array.isArray(p.highlight_points)
+				specs: editorial.specs?.length
+					? editorial.specs
+					: Array.isArray(p.highlight_points)
 					? p.highlight_points.map((pt: string, i: number) => ({ label: `Fitur ${i + 1}`, value: pt }))
 					: [],
 				components: Array.isArray(p.components) ? p.components : []
-			}))
+			};
+			})
 			: fallbackVariants
 	);
 
 	const useCases = [
-		'Eksplorasi dan monitoring sumur geothermal',
-		'Well testing pada sumur minyak dan gas',
-		'Pemantauan tekanan pipa distribusi PDAM',
-		'Monitoring tekanan grouting di bendungan',
-		'Riset hidrogeologi dan akuifer dalam'
+		'Pemantauan fasilitas energi dan utilitas kritis',
+		'Proteksi area bendungan, intake, dan rumah pompa',
+		'Pencatatan kondisi aset di lokasi terpencil',
+		'Alarm anomali untuk titik akses infrastruktur',
+		'Integrasi sensor keamanan lapangan ke dashboard STESY'
 	];
 
 	const fallbackProjects = [
-		{ name: 'PLTP Dieng', client: 'Geo Dipa Energi', year: '2024' },
-		{ name: 'Sumur Eksplorasi Kamojang', client: 'Pertamina Geothermal', year: '2023' },
-		{ name: 'Monitoring Pipa PDAM', client: 'PDAM Tirta Marta', year: '2023' },
-		{ name: 'Grouting Bendungan', client: 'BWS Kalimantan II', year: '2022' }
+		{ name: 'Area Utilitas Energi', client: 'Operator Infrastruktur Nasional', year: '2024', location: null },
+		{ name: 'Rumah Pompa Bendungan', client: 'Balai Wilayah Sungai', year: '2023', location: null },
+		{ name: 'Koridor Pipa Distribusi', client: 'BUMD Air Minum', year: '2023', location: null },
+		{ name: 'Aset Remote Monitoring', client: 'Kontraktor EPC', year: '2022', location: null }
 	];
 
-	// API data wins: use track records from DB, fallback to static
-	const projects = $derived(
-		mapTrackRecords(data.subSolutionDetail?.track_records, fallbackProjects)
-	);
+	const projects = $derived(fallbackProjects);
 
 
 	const features = [
-		{ title: 'Presisi 3000 psi', desc: 'Sensor tekanan presisi tinggi mampu mengukur hingga 3000 psi dengan deteksi fluktuasi sub-psi.', icon: Gauge },
-		{ title: 'Fully Automatic', desc: 'Pengukuran dan perekaman tekanan berjalan otomatis 24/7 tanpa intervensi manual.', icon: Zap },
-		{ title: 'Real-time Monitoring', desc: 'Data tekanan dikirim real-time ke dashboard STESY. Anomali terdeteksi sejak dini.', icon: BarChart3 },
-		{ title: 'Multi-Depth', desc: 'Dapat dipasang di berbagai kedalaman sumur untuk profiling tekanan vertikal.', icon: Thermometer },
-		{ title: 'STESY Integration', desc: 'Terhubung langsung ke platform STESY untuk analisis tren dan pelaporan otomatis.', icon: Wifi },
-		{ title: 'Industrial Grade', desc: 'Material stainless steel 316L, tahan korosi, dirancang untuk lingkungan ekstrem.', icon: ShieldCheck }
+		{ title: 'Asset Condition Logging', desc: 'Merekam kondisi sensor keamanan dan status perangkat secara otomatis untuk audit operasional.', icon: ShieldCheck },
+		{ title: 'Fully Automatic', desc: 'Pencatatan dan pengiriman data berjalan 24/7 tanpa intervensi manual di lokasi.', icon: Zap },
+		{ title: 'Real-time Alert', desc: 'Anomali lapangan dikirim ke dashboard STESY agar respons dapat dimulai lebih cepat.', icon: BarChart3 },
+		{ title: 'Tamper Awareness', desc: 'Event akses, gangguan enclosure, atau perubahan kondisi kritis dapat dicatat sebagai sinyal risiko.', icon: LockKeyhole },
+		{ title: 'STESY Integration', desc: 'Terhubung langsung ke platform STESY untuk analisis tren, alarm, dan pelaporan otomatis.', icon: Wifi },
+		{ title: 'Industrial Grade', desc: 'Enclosure IP67 dan material tahan korosi untuk lokasi terpencil dengan cuaca berat.', icon: Siren }
 	];
 </script>
 
 <svelte:head>
-	<title>APLR — Automatic Pressure Level Recorder — Beacon Engineering</title>
-	<meta name="description" content="APLR Beacon Engineering: pengukuran tekanan otomatis presisi tinggi untuk geothermal, well testing, dan infrastruktur kritis." />
+	<title>APLR — Automatic Protection Logging Recorder — Beacon Engineering</title>
+	<meta name="description" content="APLR Beacon Engineering: pencatatan kondisi aset, alarm anomali, dan telemetri keamanan untuk infrastruktur kritis." />
 </svelte:head>
 
 <!-- Breadcrumb -->
@@ -111,20 +112,20 @@
 				<div class="flex items-center gap-2">
 					<span class="text-xs font-semibold uppercase tracking-widest" style="color: #10B981;">{solutionName}</span>
 					<span style="color: #E5E5E5;">·</span>
-					<span class="text-xs" style="color: #9A9A9A;">Pressure Recording</span>
+					<span class="text-xs" style="color: #9A9A9A;">Infrastructure Protection</span>
 				</div>
 				<h1
 					class="font-heading text-3xl sm:text-4xl lg:text-[52px] font-extrabold leading-tight"
 					style="letter-spacing: -0.03em; color: #1A1A1A; opacity: {mounted ? 1 : 0}; transform: translateY({mounted ? 0 : 20}px); transition: all 0.8s cubic-bezier(0.16,1,0.3,1) 0.15s;"
 				>
-					Tekanan Tercatat <span style="color: #10B981;">Setiap Detik</span>
+					Aset Kritis Terpantau <span style="color: #10B981;">Setiap Detik</span>
 				</h1>
 				<div>
 					<span class="font-heading text-xl font-bold" style="color: #1A1A1A;">APLR</span>
-					<span class="text-sm ml-2" style="color: #5C5C5C;">— Automatic Pressure Level Recorder</span>
+					<span class="text-sm ml-2" style="color: #5C5C5C;">— Automatic Protection Logging Recorder</span>
 				</div>
 				<p class="text-base leading-relaxed" style="color: #5C5C5C;">
-					Dari kedalaman sumur geothermal hingga pipa distribusi — setiap perubahan tekanan tercatat, terkirim, dan teranalisis secara otomatis 24/7.
+					Dari rumah pompa hingga koridor utilitas, setiap kondisi kritis tercatat, terkirim, dan teranalisis otomatis 24/7.
 				</p>
 				<div class="flex flex-wrap gap-3">
 					<a href="https://wa.me/628112632151?text=Halo%20CS%20Marketing%20Beacon%2C%20saya%20ingin%20konsultasi%20tentang%20APLR." target="_blank" rel="noopener"
@@ -143,13 +144,13 @@
 			<div class="relative flex justify-center">
 				<div class="relative w-64 h-80 rounded-3xl overflow-hidden" style="background: linear-gradient(180deg, #10B981 0%, #059669 100%); box-shadow: 0 20px 60px rgba(16,185,129,0.2);">
 					<div class="absolute inset-0 flex flex-col items-center justify-center p-6 text-white">
-						<Gauge size={48} class="mb-4 opacity-80" />
+						<ShieldCheck size={48} class="mb-4 opacity-80" />
 						<span class="font-heading text-3xl font-extrabold">APLR</span>
-						<span class="text-xs mt-1 opacity-70 uppercase tracking-widest">BE PLR-1000</span>
+						<span class="text-xs mt-1 opacity-70 uppercase tracking-widest">BE APLR-1000</span>
 						<div class="mt-6 w-full space-y-2">
 							<div class="flex justify-between text-xs opacity-80">
-								<span>Pressure</span>
-								<span class="font-mono tabular-nums">847.3 psi</span>
+								<span>Security Index</span>
+								<span class="font-mono tabular-nums">87.3</span>
 							</div>
 							<div class="h-1 rounded-full bg-white/20">
 								<div class="h-full rounded-full bg-white/80" style="width: 28.2%;"></div>
@@ -162,7 +163,7 @@
 					</div>
 				</div>
 				<div class="absolute -bottom-3 -right-3 px-4 py-2 rounded-xl bg-white text-xs font-semibold" style="border: 1px solid #E5E5E5; box-shadow: 0 4px 12px rgba(0,0,0,0.06); color: #10B981;">
-					3000 psi Range
+					IP67 Field Unit
 				</div>
 			</div>
 		</div>

@@ -9,6 +9,13 @@
 
 	let visible = $state(false);
 
+	type ClientLogoItem = {
+		name: string;
+		initials: string;
+		color: string;
+		logo?: string | null;
+	};
+
 	onMount(() => {
 		const observer = new IntersectionObserver(
 			(entries) => {
@@ -22,7 +29,7 @@
 	});
 
 	// Row 1: Government agencies — all use Kementerian PUPR logo
-	const fallbackRow1 = [
+	const fallbackRow1: ClientLogoItem[] = [
 		{ name: "BBWS Ciliwung-Cisadane", initials: "CC", color: "1A56DB" },
 		{ name: "BBWS Serayu Opak", initials: "SO", color: "1A56DB" },
 		{ name: "BBWS Brantas", initials: "BR", color: "1A56DB" },
@@ -44,7 +51,7 @@
 	];
 
 	// Row 2: BUMN & Private sector
-	const fallbackRow2 = [
+	const fallbackRow2: ClientLogoItem[] = [
 		{ name: "Waskita Karya", initials: "WK", color: "C8102E" },
 		{ name: "Hutama Karya", initials: "HK", color: "1E40AF" },
 		{ name: "Brantas Abipraya", initials: "BA", color: "0E7490" },
@@ -98,6 +105,10 @@
 	function avatarUrl(initials: string, color: string): string {
 		return `https://ui-avatars.com/api/?name=${initials}&background=${color}&color=fff&size=80&bold=true&font-size=0.4&format=svg`;
 	}
+
+	function clientLogoSrc(client: ClientLogoItem): string {
+		return client.logo || avatarUrl(client.initials, client.color);
+	}
 </script>
 
 <section
@@ -115,7 +126,7 @@
 					class="w-1.5 h-1.5 rounded-full"
 					style="background: #C8102E;"
 				></span>
-				Mitra & Klien
+				{$locale === 'EN' ? 'Partners & Clients' : 'Mitra & Klien'}
 			</div>
 			<h2
 				class="font-heading text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-[1.05] tracking-tighter text-zinc-950"
@@ -123,7 +134,7 @@
 				{$locale === 'EN' ? 'Trusted by Institutions & Corporations Holding' : 'Dipercaya Lembaga & Korporasi yang Memegang'} <span
 					class="text-transparent bg-clip-text"
 					style="background-image: linear-gradient(135deg, #1A1A1A 0%, #737373 100%)"
-					>Tanggung Jawab Besar</span
+					>{$locale === 'EN' ? 'Critical Responsibility' : 'Tanggung Jawab Besar'}</span
 				>
 			</h2>
 		</div>
@@ -146,10 +157,8 @@
 						class="flex items-center gap-3 px-5 py-3 rounded-xl border border-[#E5E5E5] bg-[#FAFAFA] hover:border-[#C8102E] hover:bg-[#FBE9EC] transition-all duration-300 cursor-default group"
 					>
 						<img
-							src={"logo" in client && client.logo
-								? client.logo
-								: avatarUrl(client.initials, client.color)}
-							alt={client.name}
+							src={clientLogoSrc(client)}
+							alt={$locale === 'EN' ? `Logo of ${client.name}` : `Logo ${client.name}`}
 							class="w-7 h-7 rounded-lg shrink-0 object-contain"
 							loading="lazy"
 						/>
@@ -180,10 +189,8 @@
 						class="flex items-center gap-3 px-5 py-3 rounded-xl border border-[#E5E5E5] bg-[#FAFAFA] hover:border-[#C8102E] hover:bg-[#FBE9EC] transition-all duration-300 cursor-default group"
 					>
 						<img
-							src={"logo" in client && client.logo
-								? client.logo
-								: avatarUrl(client.initials, client.color)}
-							alt={client.name}
+							src={clientLogoSrc(client)}
+							alt={$locale === 'EN' ? `Logo of ${client.name}` : `Logo ${client.name}`}
 							class="w-7 h-7 rounded-lg shrink-0 object-contain"
 							loading="lazy"
 						/>

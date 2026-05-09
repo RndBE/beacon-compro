@@ -12,6 +12,7 @@
 		type SearchResponse,
 		type SolutionSummary
 	} from '$lib/api';
+	import { articleCategory, articleTitle, solutionHook } from '$lib/homepage-copy';
 	import {
 		Phone,
 		Mail,
@@ -102,7 +103,7 @@
 			searchResults = data.results;
 		} catch (err) {
 			console.error('[Search] Failed:', err);
-			searchError = 'Gagal memuat hasil pencarian.';
+			searchError = tr['nav.search.error'][$locale];
 			searchResults = [];
 		} finally {
 			searchLoading = false;
@@ -224,43 +225,43 @@
 		href: string;
 	};
 
-	const fallbackSolutionCategories: SolutionCategory[] = [
+	const fallbackSolutionCategories = $derived([
 		{
 			name: 'Water Security',
-			desc: 'Amankan air & bendungan',
+			desc: $locale === 'EN' ? 'Secure water & dams' : 'Amankan air & bendungan',
 			icon: Droplets,
 			items: ['AWLR', 'AWGC', 'AFMR', 'ADR', 'AWQR', 'AVWR'],
 			href: '/solusi/water-security'
 		},
 		{
 			name: 'Weather & Climate Intelligence',
-			desc: 'Pantau cuaca akurat',
+			desc: $locale === 'EN' ? 'Accurate weather monitoring' : 'Pantau cuaca akurat',
 			icon: Cloud,
 			items: ['AWR', 'ARR'],
 			href: '/solusi/weather-climate-intelligence'
 		},
 		{
 			name: 'Early Warning',
-			desc: 'Cegah bencana',
+			desc: $locale === 'EN' ? 'Reduce disaster risk' : 'Cegah bencana',
 			icon: AlertTriangle,
 			items: ['EWS'],
 			href: '/solusi/early-warning'
 		},
 		{
 			name: 'Infrastructure Security',
-			desc: 'Tekanan presisi tinggi',
+			desc: $locale === 'EN' ? 'Protect critical assets' : 'Proteksi aset kritis',
 			icon: Gauge,
 			items: ['APLR'],
 			href: '/solusi/infrastructure-security'
 		},
 		{
 			name: 'Digital Monitoring Platform',
-			desc: 'Platform monitoring 1-pintu',
+			desc: $locale === 'EN' ? 'One monitoring platform' : 'Platform monitoring 1-pintu',
 			icon: Monitor,
 			items: ['Smart Telemetry System'],
 			href: '/solusi/digital-monitoring-platform'
 		}
-	];
+	] satisfies SolutionCategory[]);
 
 	function getSolutionIcon(slug: string): typeof Droplets {
 		const iconMap: Record<string, typeof Droplets> = {
@@ -279,7 +280,7 @@
 
 	function shortText(value: string | null | undefined, max = 34): string {
 		const text = value?.trim();
-		if (!text) return 'Solusi telemetri Beacon';
+		if (!text) return $locale === 'EN' ? 'Beacon telemetry solution' : 'Solusi telemetri Beacon';
 		return text.length > max ? `${text.slice(0, max - 1)}...` : text;
 	}
 
@@ -287,7 +288,7 @@
 		solutions && solutions.length > 0
 			? solutions.map((solution) => ({
 					name: solution.name,
-					desc: shortText(solution.description),
+					desc: shortText(solutionHook(solution.slug, solution.description, $locale)),
 					icon: getSolutionIcon(solution.slug),
 					items: (solution.sub_solutions ?? [])
 						.map((item) => item.abbreviation || item.name)
@@ -301,39 +302,72 @@
 	const popularSolutions = $derived(
 		solutionCategories
 			.slice(0, 3)
-			.map((cat) => (cat.items[0] ? `${cat.items[0]} untuk ${cat.name}` : cat.name))
+			.map((cat) =>
+				cat.items[0]
+					? $locale === 'EN'
+						? `${cat.items[0]} for ${cat.name}`
+						: `${cat.items[0]} untuk ${cat.name}`
+					: cat.name
+			)
 	);
 
-	const aboutLinks = [
-		{ name: 'Profil Perusahaan', desc: 'Sejarah & identitas Beacon', icon: Building2, href: '/tentang-kami', color: '#C8102E' },
-		{ name: 'Visi & Misi', desc: 'Arah & tujuan perusahaan', icon: Target, href: '/tentang-kami#visi-misi', color: '#0EA5E9' },
-		{ name: 'Sertifikasi', desc: 'ISO, SNI & legalitas resmi', icon: Award, href: '/tentang-kami#sertifikasi', color: '#10B981' },
-		{ name: 'Klien & Mitra', desc: 'BBWS, BUMN & institusi', icon: Users, href: '/tentang-kami#klien', color: '#F59E0B' }
-	];
+	const aboutLinks = $derived([
+		{ name: tr['about.profile'][$locale], desc: tr['about.profile.desc'][$locale], icon: Building2, href: '/tentang-kami', color: '#C8102E' },
+		{ name: tr['about.vision'][$locale], desc: tr['about.vision.desc'][$locale], icon: Target, href: '/tentang-kami#visi-misi', color: '#0EA5E9' },
+		{ name: tr['about.cert'][$locale], desc: tr['about.cert.desc'][$locale], icon: Award, href: '/tentang-kami#sertifikasi', color: '#10B981' },
+		{ name: tr['about.clients'][$locale], desc: tr['about.clients.desc'][$locale], icon: Users, href: '/tentang-kami#klien', color: '#F59E0B' }
+	]);
 
-	const insightCategories = [
-		{ name: 'Studi Kasus', desc: 'Implementasi nyata di lapangan', icon: FileText, href: '/wawasan?kategori=studi-kasus', color: '#C8102E' },
-		{ name: 'Artikel Teknis', desc: 'Panduan & standar teknis', icon: BookOpen, href: '/wawasan?kategori=artikel-teknis', color: '#0EA5E9' },
-		{ name: 'Berita Produk', desc: 'Update produk & fitur', icon: Newspaper, href: '/wawasan?kategori=berita-produk', color: '#8B5CF6' }
-	];
+	const insightCategories = $derived([
+		{ name: tr['cat.case'][$locale], desc: tr['cat.case.desc'][$locale], icon: FileText, href: '/wawasan?kategori=studi-kasus', color: '#C8102E' },
+		{ name: tr['cat.tech'][$locale], desc: tr['cat.tech.desc'][$locale], icon: BookOpen, href: '/wawasan?kategori=artikel-teknis', color: '#0EA5E9' },
+		{ name: tr['cat.news'][$locale], desc: tr['cat.news.desc'][$locale], icon: Newspaper, href: '/wawasan?kategori=berita-produk', color: '#8B5CF6' }
+	]);
 
-	const fallbackLatestArticle = {
-		title: 'ADR Menyelamatkan Bendungan Ciawi',
-		category: 'Studi Kasus',
+	const fallbackLatestArticle = $derived({
+		title: $locale === 'EN' ? 'ADR Keeps Ciawi Dam Safer' : 'ADR Menyelamatkan Bendungan Ciawi',
+		category: $locale === 'EN' ? 'Case Study' : 'Studi Kasus',
 		href: '/wawasan/adr-bendungan-ciawi',
 		color: '#C8102E'
-	};
+	});
 
 	const headerLatestArticle = $derived(
 		latestArticle
 			? {
-					title: latestArticle.title,
-					category: latestArticle.category ?? 'Wawasan',
+					title: articleTitle(latestArticle, $locale),
+					category: articleCategory(latestArticle, $locale) || tr['nav.insights'][$locale],
 					href: `/wawasan/${latestArticle.slug}`,
 					color: latestArticle.category_color || '#C8102E'
 				}
 			: fallbackLatestArticle
 	);
+
+	const waConsultUrl = $derived(
+		`https://wa.me/628112632151?text=${encodeURIComponent(
+			$locale === 'EN'
+				? 'Hello Beacon Marketing CS, I am interested in your telemetry solutions.'
+				: 'Halo CS Marketing Beacon, saya tertarik dengan solusi telemetri Anda.'
+		)}`
+	);
+
+	function resultTypeLabel(type: string): string {
+		const labelMap: Record<string, string> = {
+			'Solusi': tr['nav.solutions'][$locale],
+			'Sub-Solusi': $locale === 'EN' ? 'Sub-Solutions' : 'Sub-Solusi',
+			'Produk': $locale === 'EN' ? 'Products' : 'Produk',
+			'Proyek': tr['nav.projects'][$locale],
+			'Wawasan': tr['nav.insights'][$locale]
+		};
+
+		return labelMap[type] ?? type;
+	}
+
+	const quickLinks = $derived([
+		{ type: 'Solusi', title: 'Water Security', href: '/solusi/water-security', icon: Droplets },
+		{ type: 'Solusi', title: 'Early Warning System', href: '/solusi/early-warning', icon: AlertTriangle },
+		{ type: 'Proyek', title: tr['projects.cta'][$locale], href: '/proyek', icon: MapPin },
+		{ type: 'Wawasan', title: $locale === 'EN' ? 'Latest Articles' : 'Artikel Terbaru', href: '/wawasan', icon: FileText }
+	]);
 
 	let mobileAccordion = $state<string | null>(null);
 
@@ -394,8 +428,11 @@
 				<!-- Solusi Mega Menu -->
 				<div class="relative" role="navigation" onmouseleave={closeMegaMenu} onmouseenter={() => openMegaMenu('solusi')}>
 					<button
+						type="button"
 						class="px-4 py-2.5 rounded-full text-sm font-semibold transition-all flex items-center gap-1.5 {$page.url.pathname.startsWith('/solusi') || activeMegaMenu === 'solusi' ? 'bg-zinc-100 text-zinc-950' : 'text-zinc-600 hover:text-zinc-950 hover:bg-zinc-100/80'}"
 						onclick={() => toggleMegaMenu('solusi')}
+						aria-expanded={activeMegaMenu === 'solusi'}
+						aria-controls="mega-menu-solusi"
 					>
 						{tr['nav.solutions'][$locale]}
 						<ChevronDown size={14} class="transition-transform duration-300 {activeMegaMenu === 'solusi' ? 'rotate-180 text-zinc-900' : 'text-zinc-400'}" />
@@ -403,12 +440,13 @@
 
 					{#if activeMegaMenu === 'solusi'}
 						<div
+							id="mega-menu-solusi"
 							class="absolute top-[calc(100%+0.5rem)] left-1/2 -translate-x-1/2 w-[760px] p-8 rounded-[2rem] origin-top animate-in fade-in slide-in-from-top-4 duration-300"
 							style="background: rgba(255,255,255,0.98); backdrop-filter: blur(24px); border: 1px solid rgba(229,229,229,0.8); box-shadow: 0 40px 80px -20px rgba(0,0,0,0.15), inset 0 2px 4px rgba(255,255,255,0.8);"
 							
 							role="menu"
 						>
-							<p class="text-xs font-semibold text-[#5C5C5C] uppercase tracking-widest mb-4">Cari Solusi Berdasarkan Kebutuhan Anda</p>
+							<p class="text-xs font-semibold text-[#5C5C5C] uppercase tracking-widest mb-4">{tr['mega.solutions.title'][$locale]}</p>
 							<div class="grid grid-cols-3 gap-4 mb-6">
 								{#each solutionCategories as cat}
 									<a href={cat.href} onclick={closeMegaMenu} class="group p-3 rounded-xl hover:bg-[#FBE9EC] transition-colors" role="menuitem">
@@ -428,15 +466,15 @@
 
 							<div class="border-t border-[#E5E5E5] pt-4 flex justify-between items-start">
 								<div>
-									<p class="text-xs font-semibold text-[#C8102E] uppercase tracking-wider mb-2">Paling Dicari</p>
+									<p class="text-xs font-semibold text-[#C8102E] uppercase tracking-wider mb-2">{tr['mega.solutions.popular'][$locale]}</p>
 									{#each popularSolutions as sol}
 										<p class="text-xs text-[#5C5C5C] mb-1">• {sol}</p>
 									{/each}
 								</div>
 								<div class="text-right">
-									<p class="text-xs text-[#5C5C5C] mb-2">Butuh konsultasi?</p>
+									<p class="text-xs text-[#5C5C5C] mb-2">{tr['mega.solutions.consult'][$locale]}</p>
 									<a
-										href="https://wa.me/628112632151"
+										href={waConsultUrl}
 										class="inline-flex items-center gap-1 text-xs font-semibold text-[#C8102E] hover:underline"
 									>
 										<MessageCircle size={12} />
@@ -455,8 +493,11 @@
 				<!-- Tentang Kami -->
 				<div class="relative" role="navigation" onmouseleave={closeMegaMenu} onmouseenter={() => openMegaMenu('tentang')}>
 					<button
+						type="button"
 						class="px-4 py-2.5 rounded-full text-sm font-semibold transition-all flex items-center gap-1.5 {$page.url.pathname.startsWith('/tentang') || activeMegaMenu === 'tentang' ? 'bg-zinc-100 text-zinc-950' : 'text-zinc-600 hover:text-zinc-950 hover:bg-zinc-100/80'}"
 						onclick={() => toggleMegaMenu('tentang')}
+						aria-expanded={activeMegaMenu === 'tentang'}
+						aria-controls="mega-menu-tentang"
 					>
 						{tr['nav.about'][$locale]}
 						<ChevronDown size={14} class="transition-transform duration-300 {activeMegaMenu === 'tentang' ? 'rotate-180 text-zinc-900' : 'text-zinc-400'}" />
@@ -464,12 +505,13 @@
 
 					{#if activeMegaMenu === 'tentang'}
 						<div
+							id="mega-menu-tentang"
 							class="absolute top-[calc(100%+0.5rem)] right-0 w-[360px] p-6 rounded-[2rem] origin-top-right animate-in fade-in slide-in-from-top-4 duration-300"
 							style="background: rgba(255,255,255,0.98); backdrop-filter: blur(24px); border: 1px solid rgba(229,229,229,0.8); box-shadow: 0 40px 80px -20px rgba(0,0,0,0.15), inset 0 2px 4px rgba(255,255,255,0.8);"
 							
 							role="menu"
 						>
-							<p class="text-xs font-semibold text-[#5C5C5C] uppercase tracking-widest mb-3">Perusahaan</p>
+							<p class="text-xs font-semibold text-[#5C5C5C] uppercase tracking-widest mb-3">{tr['mega.about.title'][$locale]}</p>
 							<div class="space-y-1 mb-4">
 								{#each aboutLinks as link}
 									<a href={link.href} onclick={closeMegaMenu} class="group flex items-center gap-3 p-2.5 rounded-xl hover:bg-[#FBE9EC] transition-colors" role="menuitem">
@@ -486,7 +528,7 @@
 
 							<div class="border-t border-[#E5E5E5] pt-3">
 								<a href="/tentang-kami" onclick={closeMegaMenu} class="inline-flex items-center gap-1 text-xs font-semibold text-[#C8102E] hover:underline">
-									Selengkapnya Tentang Beacon <ArrowRight size={11} />
+									{tr['mega.about.more'][$locale]} <ArrowRight size={11} />
 								</a>
 							</div>
 						</div>
@@ -496,8 +538,11 @@
 				<!-- Wawasan -->
 				<div class="relative" role="navigation" onmouseleave={closeMegaMenu} onmouseenter={() => openMegaMenu('wawasan')}>
 					<button
+						type="button"
 						class="px-4 py-2.5 rounded-full text-sm font-semibold transition-all flex items-center gap-1.5 {$page.url.pathname.startsWith('/wawasan') || activeMegaMenu === 'wawasan' ? 'bg-zinc-100 text-zinc-950' : 'text-zinc-600 hover:text-zinc-950 hover:bg-zinc-100/80'}"
 						onclick={() => toggleMegaMenu('wawasan')}
+						aria-expanded={activeMegaMenu === 'wawasan'}
+						aria-controls="mega-menu-wawasan"
 					>
 						{tr['nav.insights'][$locale]}
 						<ChevronDown size={14} class="transition-transform duration-300 {activeMegaMenu === 'wawasan' ? 'rotate-180 text-zinc-900' : 'text-zinc-400'}" />
@@ -505,12 +550,13 @@
 
 					{#if activeMegaMenu === 'wawasan'}
 						<div
+							id="mega-menu-wawasan"
 							class="absolute top-[calc(100%+0.5rem)] right-0 w-[360px] p-6 rounded-[2rem] origin-top-right animate-in fade-in slide-in-from-top-4 duration-300"
 							style="background: rgba(255,255,255,0.98); backdrop-filter: blur(24px); border: 1px solid rgba(229,229,229,0.8); box-shadow: 0 40px 80px -20px rgba(0,0,0,0.15), inset 0 2px 4px rgba(255,255,255,0.8);"
 							
 							role="menu"
 						>
-							<p class="text-xs font-semibold text-[#5C5C5C] uppercase tracking-widest mb-3">Kategori</p>
+							<p class="text-xs font-semibold text-[#5C5C5C] uppercase tracking-widest mb-3">{tr['mega.insights.title'][$locale]}</p>
 							<div class="space-y-1 mb-4">
 								{#each insightCategories as cat}
 									<a href={cat.href} onclick={closeMegaMenu} class="group flex items-center gap-3 p-2.5 rounded-xl hover:bg-[#FBE9EC] transition-colors" role="menuitem">
@@ -526,13 +572,13 @@
 							</div>
 
 							<div class="border-t border-[#E5E5E5] pt-3">
-								<p class="text-[10px] font-semibold text-[#C8102E] uppercase tracking-wider mb-2">Terbaru</p>
+								<p class="text-[10px] font-semibold text-[#C8102E] uppercase tracking-wider mb-2">{tr['mega.insights.latest'][$locale]}</p>
 								<a href={headerLatestArticle.href} onclick={closeMegaMenu} class="group block p-2.5 rounded-lg hover:bg-[#FBE9EC] transition-colors">
 									<span class="text-[10px] uppercase tracking-wider" style="color: {headerLatestArticle.color};">{headerLatestArticle.category}</span>
 									<span class="block text-sm font-medium text-[#1A1A1A] group-hover:text-[#C8102E] transition-colors mt-0.5">{headerLatestArticle.title}</span>
 								</a>
 								<a href="/wawasan" onclick={closeMegaMenu} class="inline-flex items-center gap-1 mt-2 text-xs font-semibold text-[#C8102E] hover:underline">
-									Lihat Semua Wawasan <ArrowRight size={11} />
+									{tr['mega.insights.all'][$locale]} <ArrowRight size={11} />
 								</a>
 							</div>
 						</div>
@@ -547,17 +593,18 @@
 			<!-- Right Actions -->
 			<div class="flex items-center gap-3">
 				<!-- Language Switcher -->
-				<div class="hidden lg:flex items-center p-[3px] rounded-xl bg-zinc-50 border border-zinc-200/80 shadow-[inset_0_1px_3px_rgba(0,0,0,0.02)] relative">
+				<div class="hidden lg:flex items-center p-[3px] rounded-xl bg-zinc-50 border border-zinc-200/80 shadow-[inset_0_1px_3px_rgba(0,0,0,0.02)] relative" role="group" aria-label={$locale === 'EN' ? 'Choose language' : 'Pilih bahasa'}>
 					<!-- Active Indicator -->
 					<div class="absolute inset-y-[3px] left-[3px] w-[26px] rounded-[8px] bg-white shadow-sm border border-zinc-200/50 transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]" style="transform: translateX({currentLang === 'EN' ? '26px' : '0'});"></div>
 					
-					<button onclick={() => $locale = 'ID'} class="relative z-10 w-[26px] h-[22px] flex items-center justify-center text-[10px] font-bold font-mono transition-colors {$locale === 'ID' ? 'text-[#C8102E]' : 'text-zinc-400 hover:text-zinc-600'}">ID</button>
-					<button onclick={() => $locale = 'EN'} class="relative z-10 w-[26px] h-[22px] flex items-center justify-center text-[10px] font-bold font-mono transition-colors {$locale === 'EN' ? 'text-[#C8102E]' : 'text-zinc-400 hover:text-zinc-600'}">EN</button>
+					<button type="button" onclick={() => $locale = 'ID'} class="relative z-10 w-[26px] h-[22px] flex items-center justify-center text-[10px] font-bold font-mono transition-colors {$locale === 'ID' ? 'text-[#C8102E]' : 'text-zinc-400 hover:text-zinc-600'}" aria-pressed={$locale === 'ID'} aria-label={$locale === 'EN' ? 'Use Indonesian language' : 'Gunakan bahasa Indonesia'}>ID</button>
+					<button type="button" onclick={() => $locale = 'EN'} class="relative z-10 w-[26px] h-[22px] flex items-center justify-center text-[10px] font-bold font-mono transition-colors {$locale === 'EN' ? 'text-[#C8102E]' : 'text-zinc-400 hover:text-zinc-600'}" aria-pressed={$locale === 'EN'} aria-label="Use English language">EN</button>
 				</div>
 
 				<button 
+					type="button"
 					class="hidden lg:flex items-center gap-2 px-3 py-2 text-zinc-500 hover:text-zinc-900 transition-colors rounded-xl bg-zinc-50 hover:bg-zinc-100 border border-zinc-200/80" 
-					aria-label="Search"
+					aria-label={$locale === 'EN' ? 'Open search' : 'Buka pencarian'}
 					onclick={openSearch}
 				>
 					<Search size={16} />
@@ -568,7 +615,7 @@
 				</button>
 
 				<a
-					href="https://wa.me/628112632151?text=Halo%20CS%20Marketing%20Beacon%2C%20saya%20tertarik%20dengan%20solusi%20telemetri%20Anda."
+					href={waConsultUrl}
 					class="hidden lg:inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 btn-tactile"
 					style="
 						background: linear-gradient(135deg, #C8102E 0%, #A50D25 100%);
@@ -584,9 +631,11 @@
 
 				<!-- Mobile Menu Button -->
 				<button
+					type="button"
 					class="lg:hidden p-2 text-[#1A1A1A] hover:text-[#C8102E] transition-colors"
 					onclick={toggleMobileMenu}
-					aria-label="Toggle menu"
+					aria-label={mobileMenuOpen ? ($locale === 'EN' ? 'Close navigation menu' : 'Tutup menu navigasi') : ($locale === 'EN' ? 'Open navigation menu' : 'Buka menu navigasi')}
+					aria-expanded={mobileMenuOpen}
 				>
 					{#if mobileMenuOpen}
 						<X size={24} />
@@ -625,13 +674,14 @@
 				<input 
 					type="text" 
 					class="flex-1 bg-transparent border-none outline-none px-4 text-lg font-heading font-medium text-zinc-900 placeholder:text-zinc-400 focus:ring-0"
-					placeholder="Cari solusi, proyek, atau wawasan..."
+					placeholder={tr['nav.search.placeholder'][$locale]}
+					aria-label={$locale === 'EN' ? 'Search keyword' : 'Kata kunci pencarian'}
 					bind:value={searchQuery}
 					oninput={() => debouncedSearch(searchQuery)}
 					onkeydown={handleSearchKeydown}
 					autofocus
 				/>
-				<button class="p-1.5 text-zinc-400 hover:text-zinc-900 transition-colors rounded-lg hover:bg-zinc-100 shrink-0" onclick={closeSearch}>
+				<button type="button" class="p-1.5 text-zinc-400 hover:text-zinc-900 transition-colors rounded-lg hover:bg-zinc-100 shrink-0" onclick={closeSearch} aria-label={$locale === 'EN' ? 'Close search' : 'Tutup pencarian'}>
 					<X size={20} />
 				</button>
 			</div>
@@ -646,10 +696,11 @@
 						</div>
 						<p class="text-sm font-medium text-zinc-900">{searchError}</p>
 						<button 
+							type="button"
 							class="mt-3 text-xs font-semibold text-[#C8102E] hover:underline"
 							onclick={() => performSearch(searchQuery)}
 						>
-							Coba lagi
+							{tr['nav.search.retry'][$locale]}
 						</button>
 					</div>
 				{:else if searchQuery.trim().length >= 2 && searchLoading && searchResults.length === 0}
@@ -671,8 +722,8 @@
 						<div class="w-12 h-12 rounded-full bg-zinc-100 flex items-center justify-center mx-auto mb-3">
 							<Search size={20} class="text-zinc-400" />
 						</div>
-						<p class="text-sm font-medium text-zinc-900">Tidak ditemukan hasil untuk "{searchQuery}"</p>
-						<p class="text-xs text-zinc-500 mt-1">Coba kata kunci lain seperti "AWLR", "bendungan", atau "EWS".</p>
+						<p class="text-sm font-medium text-zinc-900">{tr['nav.search.empty'][$locale]} "{searchQuery}"</p>
+						<p class="text-xs text-zinc-500 mt-1">{tr['nav.search.empty.hint'][$locale]}</p>
 					</div>
 				{:else if searchResults.length > 0}
 					<!-- Grouped Results -->
@@ -687,13 +738,14 @@
 									class="w-1.5 h-1.5 rounded-full" 
 									style="background: {typeColorMap[type] || '#71717A'};"
 								></span>
-								<span class="text-[10px] font-mono font-bold uppercase tracking-[0.15em] text-zinc-400">{type}</span>
+								<span class="text-[10px] font-mono font-bold uppercase tracking-[0.15em] text-zinc-400">{resultTypeLabel(type)}</span>
 							</div>
 							<div class="space-y-0.5">
 								{#each items as result, idx}
 									{@const globalIdx = searchResults.indexOf(result)}
 									{@const assetUrl = resultAssetUrl(result)}
 									<button 
+										type="button"
 										class="w-full flex items-center gap-4 p-3 rounded-xl border border-transparent transition-all text-left group {activeIndex === globalIdx ? 'bg-white shadow-sm border-zinc-200/60' : 'hover:bg-white hover:shadow-sm hover:border-zinc-200/60'}"
 										onclick={() => navigateToResult(result)}
 										onmouseenter={() => activeIndex = globalIdx}
@@ -723,22 +775,17 @@
 				{:else}
 					<!-- Default: Quick Links -->
 					<div class="px-2 mb-3 mt-1">
-						<span class="text-[10px] font-mono font-bold uppercase tracking-[0.15em] text-zinc-400">Akses Cepat</span>
+						<span class="text-[10px] font-mono font-bold uppercase tracking-[0.15em] text-zinc-400">{tr['nav.search.quick'][$locale]}</span>
 					</div>
 					<div class="space-y-0.5">
-						{#each [
-							{ type: 'Solusi', title: 'Water Security', href: '/solusi/water-security', icon: Droplets },
-							{ type: 'Solusi', title: 'Early Warning System', href: '/solusi/early-warning', icon: AlertTriangle },
-							{ type: 'Proyek', title: 'Lihat Semua Proyek', href: '/proyek', icon: MapPin },
-							{ type: 'Wawasan', title: 'Artikel Terbaru', href: '/wawasan', icon: FileText }
-						] as link}
+						{#each quickLinks as link}
 							<a href={link.href} onclick={closeSearch} class="w-full flex items-center gap-4 p-3 rounded-xl hover:bg-white hover:shadow-sm border border-transparent hover:border-zinc-200/60 transition-all text-left group">
 								<div class="w-10 h-10 rounded-[10px] bg-white border border-zinc-100 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform" style="color: {typeColorMap[link.type] || '#C8102E'};">
 									<svelte:component this={link.icon} size={18} />
 								</div>
 								<div class="flex-1">
 									<p class="text-sm font-bold text-zinc-900 group-hover:text-[#C8102E] transition-colors">{link.title}</p>
-									<p class="text-[11px] font-medium text-zinc-500 mt-0.5">{link.type}</p>
+									<p class="text-[11px] font-medium text-zinc-500 mt-0.5">{resultTypeLabel(link.type)}</p>
 								</div>
 								<ArrowRight size={14} class="text-zinc-300 group-hover:text-[#C8102E] group-hover:translate-x-1 transition-all" />
 							</a>
@@ -751,10 +798,10 @@
 
 			<div class="px-6 py-3 bg-zinc-100/50 border-t border-zinc-100 flex items-center justify-between text-[11px] font-medium text-zinc-500">
 				<div class="flex items-center gap-4">
-					<span class="flex items-center gap-1.5"><kbd class="px-1.5 py-0.5 rounded bg-white border border-zinc-200 font-mono text-[10px] text-zinc-700 shadow-sm">↑↓</kbd> Navigasi</span>
-					<span class="flex items-center gap-1.5"><kbd class="px-1.5 py-0.5 rounded bg-white border border-zinc-200 font-mono text-[10px] text-zinc-700 shadow-sm">Enter</kbd> Pilih</span>
+					<span class="flex items-center gap-1.5"><kbd class="px-1.5 py-0.5 rounded bg-white border border-zinc-200 font-mono text-[10px] text-zinc-700 shadow-sm">↑↓</kbd> {tr['nav.search.nav'][$locale]}</span>
+					<span class="flex items-center gap-1.5"><kbd class="px-1.5 py-0.5 rounded bg-white border border-zinc-200 font-mono text-[10px] text-zinc-700 shadow-sm">Enter</kbd> {tr['nav.search.select'][$locale]}</span>
 				</div>
-				<span class="flex items-center gap-1.5"><kbd class="px-1.5 py-0.5 rounded bg-white border border-zinc-200 font-mono text-[10px] text-zinc-700 shadow-sm">Esc</kbd> Tutup</span>
+				<span class="flex items-center gap-1.5"><kbd class="px-1.5 py-0.5 rounded bg-white border border-zinc-200 font-mono text-[10px] text-zinc-700 shadow-sm">Esc</kbd> {tr['nav.search.close'][$locale]}</span>
 			</div>
 		</div>
 	</div>
@@ -766,16 +813,18 @@
 		<div class="pt-[120px] pb-8 px-6">
 			<nav class="space-y-1">
 				<a href="/" onclick={closeMobileMenu} class="block px-4 py-3 text-base font-semibold text-[#1A1A1A] hover:text-[#C8102E] hover:bg-[#FBE9EC] rounded-xl transition-colors">
-					Beranda
+					{tr['nav.home'][$locale]}
 				</a>
 
 				<!-- Mobile: Solusi Accordion -->
 				<div>
 					<button
+						type="button"
 						class="w-full flex justify-between items-center px-4 py-3 text-base font-semibold text-[#1A1A1A] hover:text-[#C8102E] hover:bg-[#FBE9EC] rounded-xl transition-colors"
 						onclick={() => toggleMobileAccordion('solusi')}
+						aria-expanded={mobileAccordion === 'solusi'}
 					>
-						Solusi
+						{tr['nav.solutions'][$locale]}
 						<ChevronDown size={16} class="transition-transform duration-200 {mobileAccordion === 'solusi' ? 'rotate-180' : ''}" />
 					</button>
 					{#if mobileAccordion === 'solusi'}
@@ -790,16 +839,18 @@
 				</div>
 
 				<a href="/proyek" onclick={closeMobileMenu} class="block px-4 py-3 text-base font-semibold text-[#1A1A1A] hover:text-[#C8102E] hover:bg-[#FBE9EC] rounded-xl transition-colors">
-					Proyek
+					{tr['nav.projects'][$locale]}
 				</a>
 
 				<!-- Mobile: Tentang Kami Accordion -->
 				<div>
 					<button
+						type="button"
 						class="w-full flex justify-between items-center px-4 py-3 text-base font-semibold text-[#1A1A1A] hover:text-[#C8102E] hover:bg-[#FBE9EC] rounded-xl transition-colors"
 						onclick={() => toggleMobileAccordion('tentang')}
+						aria-expanded={mobileAccordion === 'tentang'}
 					>
-						Tentang Kami
+						{tr['nav.about'][$locale]}
 						<ChevronDown size={16} class="transition-transform duration-200 {mobileAccordion === 'tentang' ? 'rotate-180' : ''}" />
 					</button>
 					{#if mobileAccordion === 'tentang'}
@@ -816,10 +867,12 @@
 				<!-- Mobile: Wawasan Accordion -->
 				<div>
 					<button
+						type="button"
 						class="w-full flex justify-between items-center px-4 py-3 text-base font-semibold text-[#1A1A1A] hover:text-[#C8102E] hover:bg-[#FBE9EC] rounded-xl transition-colors"
 						onclick={() => toggleMobileAccordion('wawasan')}
+						aria-expanded={mobileAccordion === 'wawasan'}
 					>
-						Wawasan
+						{tr['nav.insights'][$locale]}
 						<ChevronDown size={16} class="transition-transform duration-200 {mobileAccordion === 'wawasan' ? 'rotate-180' : ''}" />
 					</button>
 					{#if mobileAccordion === 'wawasan'}
@@ -834,14 +887,14 @@
 								<span class="block text-sm font-semibold text-[#1A1A1A]">{headerLatestArticle.title}</span>
 							</a>
 							<a href="/wawasan" onclick={closeMobileMenu} class="block px-4 py-2 text-sm font-semibold hover:bg-[#FBE9EC] rounded-lg transition-colors" style="color: #C8102E;">
-								Semua Wawasan →
+								{tr['mobile.all.insights'][$locale]} →
 							</a>
 						</div>
 					{/if}
 				</div>
 
 				<a href="/kontak" onclick={closeMobileMenu} class="block px-4 py-3 text-base font-semibold text-[#1A1A1A] hover:text-[#C8102E] hover:bg-[#FBE9EC] rounded-xl transition-colors">
-					Kontak
+					{tr['nav.contact'][$locale]}
 				</a>
 			</nav>
 
@@ -864,13 +917,13 @@
 			<!-- Mobile CTA -->
 			<div class="mt-6">
 				<a
-					href="https://wa.me/628112632151?text=Halo%20CS%20Marketing%20Beacon%2C%20saya%20tertarik%20dengan%20solusi%20telemetri%20Anda."
+					href={waConsultUrl}
 					class="block w-full text-center py-3.5 rounded-xl text-white font-semibold text-sm transition-all"
 					style="background: #C8102E; box-shadow: 0 4px 12px rgba(200,16,46,0.2);"
 					target="_blank"
 					rel="noopener"
 				>
-					Konsultasi Gratis dengan Engineer Kami
+					{tr['mobile.cta'][$locale]}
 				</a>
 			</div>
 		</div>

@@ -2,7 +2,6 @@
 	import HeroSection from '$lib/components/sections/HeroSection.svelte';
 	import WhyBeaconSection from '$lib/components/sections/WhyBeaconSection.svelte';
 	import PillarSection from '$lib/components/sections/PillarSection.svelte';
-	import SolutionFinderSection from '$lib/components/sections/SolutionFinderSection.svelte';
 	import StesySection from '$lib/components/sections/StesySection.svelte';
 	import DataLoggersSection from '$lib/components/sections/DataLoggersSection.svelte';
 	import ProjectsSection from '$lib/components/sections/ProjectsSection.svelte';
@@ -25,7 +24,6 @@
 <HeroSection />
 <WhyBeaconSection />
 <PillarSection solutions={hp?.solutions} />
-<SolutionFinderSection />
 <StesySection />
 <DataLoggersSection dataLoggers={hp?.data_loggers} />
 <ProjectsSection featuredProjects={hp?.featured_projects} />

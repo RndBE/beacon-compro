@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { ArrowRight, Droplets, CloudSun, Siren, Gauge, MonitorPlay, HelpCircle } from '@lucide/svelte';
+	import { ArrowRight, Droplets, CloudSun, Siren, ShieldCheck, MonitorPlay, HelpCircle } from '@lucide/svelte';
 	import Ornaments from '$lib/components/Ornaments.svelte';
 	import { locale, translations as tr } from '$lib/i18n';
 
@@ -25,14 +25,14 @@
 			{ question: 'Saya perlu memantau ketinggian air, debit, atau kualitas air sungai dan bendungan secara real-time', shortLabel: 'Monitoring Air', description: 'Enam perangkat telemetri presisi tinggi untuk memantau level air, debit, kualitas air, deformasi bendungan, dan kontrol pintu air — terhubung 24/7 ke dashboard STESY.', statLabel: 'Perangkat' },
 			{ question: 'Saya butuh data curah hujan dan cuaca otomatis untuk peringatan dini atau riset iklim', shortLabel: 'Cuaca & Iklim', description: 'Stasiun cuaca otomatis dan pencatat hujan digital yang mengirim data langsung ke pusat kendali. Ideal untuk BMKG, BWS, dan institusi riset klimatologi.', statLabel: 'Perangkat' },
 			{ question: 'Saya ingin membangun sistem peringatan dini banjir, longsor, atau erupsi untuk masyarakat', shortLabel: 'Peringatan Dini', description: 'Sistem peringatan dini terintegrasi yang menggabungkan sensor lapangan, logika threshold otomatis, dan sirine peringatan — menyelamatkan nyawa sebelum bencana terjadi.', statLabel: 'Waktu Respons' },
-			{ question: 'Saya perlu mengukur tekanan pipa, tekanan pori tanah, atau tekanan di struktur bangunan', shortLabel: 'Tekanan & Pori', description: 'Perangkat pencatat tekanan otomatis untuk monitoring piezometer, manometer, dan sensor tekanan industrial — mendeteksi anomali struktural sebelum menjadi kegagalan.', statLabel: 'Rating' },
+			{ question: 'Saya perlu memantau keamanan aset, anomali lapangan, atau kondisi fasilitas strategis', shortLabel: 'Keamanan Aset', description: 'Perangkat logging dan telemetri keamanan untuk fasilitas energi, bendungan, utilitas, dan titik akses kritis — mendeteksi anomali sebelum menjadi gangguan operasi.', statLabel: 'Rating' },
 			{ question: 'Saya ingin satu dashboard untuk melihat semua data telemetri dari lapangan', shortLabel: 'Dashboard', description: 'Smart Telemetry System — dashboard berbasis web yang menampilkan data real-time dari seluruh perangkat Beacon. Dilengkapi alarm threshold, grafik historis, dan laporan otomatis.', statLabel: 'Real-time' },
 		],
 		EN: [
 			{ question: 'I need to monitor water levels, flow rates, or water quality of rivers and dams in real-time', shortLabel: 'Water Monitoring', description: 'Six high-precision telemetry devices for monitoring water levels, flow rates, water quality, dam deformation, and gate control — connected 24/7 to the STESY dashboard.', statLabel: 'Devices' },
 			{ question: 'I need automatic rainfall and weather data for early warning or climate research', shortLabel: 'Weather & Climate', description: 'Automatic weather stations and digital rain gauges that send data directly to the control center. Ideal for meteorological agencies and climate research institutions.', statLabel: 'Devices' },
 			{ question: 'I want to build an early warning system for floods, landslides, or eruptions', shortLabel: 'Early Warning', description: 'An integrated early warning system combining field sensors, automatic threshold logic, and warning sirens — saving lives before disaster strikes.', statLabel: 'Response Time' },
-			{ question: 'I need to measure pipe pressure, pore water pressure, or structural pressure', shortLabel: 'Pressure & Pore', description: 'Automatic pressure recording devices for piezometer, manometer, and industrial pressure sensor monitoring — detecting structural anomalies before they become failures.', statLabel: 'Rating' },
+			{ question: 'I need to monitor asset security, field anomalies, or strategic facility conditions', shortLabel: 'Asset Security', description: 'Security logging and telemetry devices for energy sites, dams, utilities, and critical access points — detecting anomalies before they become operational disruptions.', statLabel: 'Rating' },
 			{ question: 'I want a single dashboard to view all telemetry data from the field', shortLabel: 'Dashboard', description: 'Smart Telemetry System — a web-based dashboard displaying real-time data from all Beacon devices. Equipped with threshold alarms, historical charts, and automated reports.', statLabel: 'Real-time' },
 		],
 	};
@@ -41,7 +41,7 @@
 		{ solution: 'Water Security', solutionSlug: 'water-security', icon: Droplets, color: '#0EA5E9', products: ['AWLR', 'AWGC', 'AFMR', 'ADR', 'AWQR', 'AVWR'], statValue: '6' },
 		{ solution: 'Weather & Climate Intelligence', solutionSlug: 'weather-forecast', icon: CloudSun, color: '#6366F1', products: ['ARR', 'AWR'], statValue: '2' },
 		{ solution: 'Early Warning System', solutionSlug: 'early-warning', icon: Siren, color: '#DC2626', products: ['EWS'], statValue: '< 3s' },
-		{ solution: 'Pressure Measurement', solutionSlug: 'pressure-measurement', icon: Gauge, color: '#059669', products: ['APLR'], statValue: 'IP67' },
+		{ solution: 'Infrastructure Security', solutionSlug: 'infrastructure-security', icon: ShieldCheck, color: '#059669', products: ['APLR'], statValue: 'IP67' },
 		{ solution: 'STESY Platform', solutionSlug: 'stesy', icon: MonitorPlay, color: '#1A1A1A', products: ['STESY Web', 'STESY Mobile'], statValue: '24/7' },
 	];
 

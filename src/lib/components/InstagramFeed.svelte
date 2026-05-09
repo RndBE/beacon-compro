@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { ArrowUpRight, Camera, ImageOff, RefreshCw } from '@lucide/svelte';
 	import { onMount } from 'svelte';
+	import { locale } from '$lib/i18n';
 
 	type InstagramPost = {
 		id: string;
@@ -21,7 +22,7 @@
 
 	function summarizeCaption(caption: string) {
 		const firstLine = caption.trim().split('\n').find(Boolean);
-		return firstLine || 'Aktivitas lapangan Beacon Engineering';
+		return firstLine || ($locale === 'EN' ? 'Beacon Engineering field activity' : 'Aktivitas lapangan Beacon Engineering');
 	}
 
 	function formatDate(timestamp: string) {
@@ -31,7 +32,7 @@
 
 		if (Number.isNaN(date.getTime())) return 'Instagram';
 
-		return new Intl.DateTimeFormat('id-ID', {
+		return new Intl.DateTimeFormat($locale === 'EN' ? 'en-US' : 'id-ID', {
 			day: '2-digit',
 			month: 'short'
 		}).format(date);
@@ -57,7 +58,7 @@
 			posts = data.posts ?? [];
 		} catch (err) {
 			console.error(err);
-			error = 'Feed Instagram belum bisa dimuat.';
+			error = $locale === 'EN' ? 'Instagram feed could not be loaded yet.' : 'Feed Instagram belum bisa dimuat.';
 			posts = [];
 		} finally {
 			loading = false;
@@ -79,10 +80,12 @@
 
 			<div class="space-y-3">
 				<h3 class="font-heading text-2xl sm:text-3xl font-extrabold leading-tight tracking-tight text-white">
-					Cuplikan terbaru dari lapangan.
+					{$locale === 'EN' ? 'Latest glimpses from the field.' : 'Cuplikan terbaru dari lapangan.'}
 				</h3>
 				<p class="max-w-[36ch] text-sm font-medium leading-relaxed text-zinc-500">
-					Dokumentasi instalasi, inspeksi perangkat, dan aktivitas tim Beacon Engineering di berbagai titik telemetri.
+					{$locale === 'EN'
+						? 'Installation notes, device inspections, and Beacon Engineering team activity across telemetry sites.'
+						: 'Dokumentasi instalasi, inspeksi perangkat, dan aktivitas tim Beacon Engineering di berbagai titik telemetri.'}
 				</p>
 			</div>
 		</div>
@@ -93,7 +96,7 @@
 			rel="noopener"
 			class="btn-tactile group inline-flex w-fit items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-xs font-bold uppercase tracking-widest text-zinc-300 transition-colors hover:border-white/20 hover:bg-white/10 hover:text-white"
 		>
-			Lihat Profil
+			{$locale === 'EN' ? 'View Profile' : 'Lihat Profil'}
 			<ArrowUpRight size={14} class="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
 		</a>
 	</div>
@@ -119,9 +122,11 @@
 						<ImageOff size={18} class="text-zinc-300" />
 					</div>
 					<div class="space-y-2">
-						<h4 class="text-base font-bold text-white">Instagram belum tersambung</h4>
+						<h4 class="text-base font-bold text-white">{$locale === 'EN' ? 'Instagram is not connected yet' : 'Instagram belum tersambung'}</h4>
 						<p class="max-w-[46ch] text-sm leading-relaxed text-zinc-500">
-							{error} Tampilan ini sudah siap membaca post dari endpoint Meta ketika kredensial aktif.
+							{error} {$locale === 'EN'
+								? 'This view is ready to read posts from the Meta endpoint once credentials are active.'
+								: 'Tampilan ini sudah siap membaca post dari endpoint Meta ketika kredensial aktif.'}
 						</p>
 					</div>
 				</div>
@@ -131,7 +136,7 @@
 					onclick={loadPosts}
 				>
 					<RefreshCw size={14} />
-					Coba Lagi
+					{$locale === 'EN' ? 'Retry' : 'Coba Lagi'}
 				</button>
 			</div>
 		{:else if !configured}
@@ -141,9 +146,11 @@
 						<Camera size={18} class="text-zinc-300" />
 					</div>
 					<div class="space-y-2">
-						<h4 class="text-base font-bold text-white">Feed Instagram siap dipasang</h4>
+						<h4 class="text-base font-bold text-white">{$locale === 'EN' ? 'Instagram feed is ready to connect' : 'Feed Instagram siap dipasang'}</h4>
 						<p class="text-sm leading-relaxed text-zinc-500">
-							Setelah kredensial Meta Graph API diisi, post terbaru akan otomatis tampil di grid footer ini.
+							{$locale === 'EN'
+								? 'After the Meta Graph API credentials are added, the latest posts will appear automatically in this footer grid.'
+								: 'Setelah kredensial Meta Graph API diisi, post terbaru akan otomatis tampil di grid footer ini.'}
 						</p>
 					</div>
 				</div>
@@ -155,9 +162,11 @@
 						<ImageOff size={18} class="text-zinc-300" />
 					</div>
 					<div class="space-y-2">
-						<h4 class="text-base font-bold text-white">Belum ada post yang terbaca</h4>
+						<h4 class="text-base font-bold text-white">{$locale === 'EN' ? 'No readable posts yet' : 'Belum ada post yang terbaca'}</h4>
 						<p class="text-sm leading-relaxed text-zinc-500">
-							Endpoint Meta aktif, tetapi belum mengirim media yang bisa ditampilkan di footer.
+							{$locale === 'EN'
+								? 'The Meta endpoint is active, but it has not sent media that can be shown in the footer yet.'
+								: 'Endpoint Meta aktif, tetapi belum mengirim media yang bisa ditampilkan di footer.'}
 						</p>
 					</div>
 				</div>
@@ -171,7 +180,7 @@
 						rel="noopener"
 						class={`group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] transition-all duration-300 hover:-translate-y-1 hover:border-white/20 ${i === 0 ? 'col-span-2 row-span-2' : ''}`}
 						style={`animation-delay: ${i * 90}ms;`}
-						aria-label={`Buka post Instagram: ${summarizeCaption(post.caption)}`}
+						aria-label={`${$locale === 'EN' ? 'Open Instagram post' : 'Buka post Instagram'}: ${summarizeCaption(post.caption)}`}
 					>
 						{#if post.thumbnailUrl || post.mediaUrl}
 							<img
