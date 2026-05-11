@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
-	import { ArrowRight, Clock, BookOpen, FileText, Newspaper, Search, ChevronRight, ArrowUpRight } from '@lucide/svelte';
+	import { Clock, BookOpen, Newspaper, Search, ChevronLeft, ChevronRight, ArrowUpRight } from '@lucide/svelte';
 	import Ornaments from '$lib/components/Ornaments.svelte';
 
 	let { data } = $props();
 
-	let activeTab = $state('semua');
+	let activeTab = $state(data.activeCategory || 'semua');
 	let searchQuery = $state('');
 	let mounted = $state(false);
 	let visibleCards = $state<Set<number>>(new Set());
@@ -20,11 +20,7 @@
 
 	onMount(() => {
 		mounted = true;
-		const url = new URL(window.location.href);
-		const kategori = url.searchParams.get('kategori');
-		if (kategori && kategoriMap[kategori]) {
-			activeTab = kategoriMap[kategori];
-		}
+		activeTab = getActiveTabFromUrl(new URL(window.location.href));
 
 		setupObserver();
 		return () => { if (cardObserver) cardObserver.disconnect(); };
@@ -48,6 +44,14 @@
 	type ArticleStatsResponse = {
 		total?: number;
 		categories?: Record<string, number | string>;
+	};
+
+	type ArticlePagination = {
+		current_page?: number | string;
+		last_page?: number | string;
+		from?: number | string | null;
+		to?: number | string | null;
+		total?: number | string;
 	};
 
 	function setupObserver() {
@@ -74,13 +78,7 @@
 	}
 
 	$effect(() => {
-		const url = $page.url;
-		const kategori = url.searchParams.get('kategori');
-		if (kategori && kategoriMap[kategori]) {
-			activeTab = kategoriMap[kategori];
-		} else if (!kategori) {
-			activeTab = 'semua';
-		}
+		activeTab = getActiveTabFromUrl($page.url);
 	});
 
 	// Re-observe when filter changes
@@ -136,6 +134,68 @@
 		'Artikel Teknis': 'AT',
 		'Berita Produk': 'BP'
 	};
+
+	function toPositiveNumber(value: number | string | null | undefined, fallback: number) {
+		const parsed = Number(value);
+		return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
+	}
+
+	function getActiveTabFromUrl(url: URL) {
+		const category = url.searchParams.get('category');
+		const kategori = url.searchParams.get('kategori');
+
+		if (category && tabs.includes(category)) return category;
+		if (kategori && kategoriMap[kategori]) return kategoriMap[kategori];
+		return 'semua';
+	}
+
+	function buildPageHref(pageNumber: number, tab = activeTab) {
+		const params = new URLSearchParams();
+		if (tab !== 'semua') params.set('category', tab);
+		if (pageNumber > 1) params.set('page', String(pageNumber));
+
+		const query = params.toString();
+		return `/wawasan${query ? `?${query}` : ''}#artikel`;
+	}
+
+	function pageNumbers(currentPage: number, lastPage: number) {
+		if (lastPage <= 5) return Array.from({ length: lastPage }, (_, index) => index + 1);
+
+		let start = Math.max(1, currentPage - 2);
+		let end = Math.min(lastPage, currentPage + 2);
+
+		if (currentPage <= 3) {
+			start = 1;
+			end = 5;
+		}
+
+		if (currentPage >= lastPage - 2) {
+			start = lastPage - 4;
+			end = lastPage;
+		}
+
+		return Array.from({ length: end - start + 1 }, (_, index) => start + index);
+	}
+
+	let pagination = $derived(() => {
+		const response = data.articlesResponse as ArticlePagination | undefined;
+		const currentPage = toPositiveNumber(response?.current_page, 1);
+		const lastPage = Math.max(1, toPositiveNumber(response?.last_page, 1));
+		const total = Math.max(0, toPositiveNumber(response?.total, articles.length));
+		const from = Number(response?.from ?? 0);
+		const to = Number(response?.to ?? 0);
+
+		return {
+			currentPage,
+			lastPage,
+			total,
+			from: Number.isFinite(from) ? from : 0,
+			to: Number.isFinite(to) ? to : 0,
+			numbers: pageNumbers(currentPage, lastPage),
+			hasPrevious: currentPage > 1,
+			hasNext: currentPage < lastPage
+		};
+	});
 
 	let filtered = $derived(() => {
 		let result = activeTab === 'semua' ? articles : articles.filter((a) => a.category === activeTab);
@@ -245,7 +305,7 @@
 </section>
 
 <!-- Filter + Grid Section -->
-<section class="relative py-16 lg:py-24 overflow-hidden bg-white">
+<section id="artikel" class="relative py-16 lg:py-24 overflow-hidden bg-white">
 	<Ornaments variant="dense" />
 	<div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
@@ -264,13 +324,14 @@
 		<div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-10 p-4 rounded-2xl" style="background: #FAFAFA; border: 1px solid #F0F0F0;">
 			<div class="flex flex-wrap gap-2">
 				{#each tabs as tab}
-					<button
+					<a
+						href={buildPageHref(1, tab)}
 						class="px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 btn-tactile"
 						style="background: {activeTab === tab ? '#C8102E' : 'transparent'}; color: {activeTab === tab ? 'white' : '#5C5C5C'}; {activeTab === tab ? 'box-shadow: 0 4px 12px rgba(200,16,46,0.2);' : ''}"
-						onclick={() => activeTab = tab}
+						onclick={() => { activeTab = tab; searchQuery = ''; }}
 					>
 						{tab === 'semua' ? 'Semua' : tab}
-					</button>
+					</a>
 				{/each}
 			</div>
 
@@ -359,14 +420,79 @@
 				</div>
 				<span class="font-heading text-lg font-bold mb-2" style="color: #1A1A1A;">Tidak ada artikel ditemukan</span>
 				<p class="text-sm mb-6" style="color: #9A9A9A; max-width: 40ch;">Coba ubah filter kategori atau gunakan kata kunci yang berbeda</p>
-				<button
+				<a
+					href="/wawasan#artikel"
 					class="px-5 py-2.5 rounded-xl text-sm font-medium btn-tactile"
 					style="background: #FBE9EC; color: #C8102E; border: 1px solid rgba(200,16,46,0.1);"
 					onclick={() => { activeTab = 'semua'; searchQuery = ''; }}
 				>
 					Reset Filter
-				</button>
+				</a>
 			</div>
+		{/if}
+
+		{#if pagination().total > 0 && !searchQuery.trim()}
+			<nav
+				class="mt-12 flex flex-col gap-5 border-t pt-8 sm:flex-row sm:items-center sm:justify-between"
+				style="border-color: #E5E5E5;"
+				aria-label="Pagination artikel wawasan"
+			>
+				<p class="text-sm tabular-nums" style="color: #7A7A7A;">
+					Menampilkan {pagination().from || 1}-{pagination().to || filtered().length} dari {pagination().total} artikel
+				</p>
+
+				<div class="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0">
+					{#if pagination().hasPrevious}
+						<a
+							href={buildPageHref(pagination().currentPage - 1)}
+							class="inline-flex h-10 min-w-10 items-center justify-center rounded-xl px-3 text-sm font-semibold transition-all hover:-translate-y-0.5 btn-tactile"
+							style="border: 1px solid #E5E5E5; color: #1A1A1A; background: #FFFFFF;"
+							aria-label="Halaman sebelumnya"
+						>
+							<ChevronLeft size={16} />
+						</a>
+					{:else}
+						<span
+							class="inline-flex h-10 min-w-10 items-center justify-center rounded-xl px-3 text-sm font-semibold opacity-40"
+							style="border: 1px solid #E5E5E5; color: #7A7A7A; background: #FAFAFA;"
+							aria-hidden="true"
+						>
+							<ChevronLeft size={16} />
+						</span>
+					{/if}
+
+					{#each pagination().numbers as pageNumber}
+						<a
+							href={buildPageHref(pageNumber)}
+							class="inline-flex h-10 min-w-10 items-center justify-center rounded-xl px-3 text-sm font-bold tabular-nums transition-all hover:-translate-y-0.5 btn-tactile"
+							style="background: {pagination().currentPage === pageNumber ? '#1A1A1A' : '#FFFFFF'}; color: {pagination().currentPage === pageNumber ? '#FFFFFF' : '#5C5C5C'}; border: 1px solid {pagination().currentPage === pageNumber ? '#1A1A1A' : '#E5E5E5'};"
+							aria-current={pagination().currentPage === pageNumber ? 'page' : undefined}
+							aria-label="Halaman {pageNumber}"
+						>
+							{pageNumber}
+						</a>
+					{/each}
+
+					{#if pagination().hasNext}
+						<a
+							href={buildPageHref(pagination().currentPage + 1)}
+							class="inline-flex h-10 min-w-10 items-center justify-center rounded-xl px-3 text-sm font-semibold transition-all hover:-translate-y-0.5 btn-tactile"
+							style="border: 1px solid #E5E5E5; color: #1A1A1A; background: #FFFFFF;"
+							aria-label="Halaman berikutnya"
+						>
+							<ChevronRight size={16} />
+						</a>
+					{:else}
+						<span
+							class="inline-flex h-10 min-w-10 items-center justify-center rounded-xl px-3 text-sm font-semibold opacity-40"
+							style="border: 1px solid #E5E5E5; color: #7A7A7A; background: #FAFAFA;"
+							aria-hidden="true"
+						>
+							<ChevronRight size={16} />
+						</span>
+					{/if}
+				</div>
+			</nav>
 		{/if}
 	</div>
 </section>
