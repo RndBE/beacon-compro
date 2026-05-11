@@ -1,19 +1,36 @@
 <script lang="ts">
 	import { locale } from '$lib/i18n';
 	import { onMount } from 'svelte';
-	import { Check, ArrowRight } from '@lucide/svelte';
+	import { Activity, ArrowRight, CloudRain, RadioTower, ShieldAlert } from '@lucide/svelte';
 
 	let visible = $state(false);
 
 	onMount(() => {
 		const observer = new IntersectionObserver(
-			(entries) => { if (entries[0].isIntersecting) visible = true; },
+			(entries) => {
+				if (entries[0].isIntersecting) visible = true;
+			},
 			{ threshold: 0.2 }
 		);
 		const el = document.getElementById('stesy-spotlight');
 		if (el) observer.observe(el);
 		return () => observer.disconnect();
 	});
+
+	const stats = [
+		{ label: 'Active', value: '47', color: '#167A3A' },
+		{ label: 'Data Pts', value: '12.4K', color: '#C8102E' },
+		{ label: 'Uptime', value: '98.7%', color: '#A66B00' },
+		{ label: 'Alerts', value: '2', color: '#C8102E' }
+	];
+
+	const stations = [
+		{ name: 'AWLR Cipanas', value: '142.3m', tone: 'Normal' },
+		{ name: 'ADR Ciawi', value: '0.02mm', tone: 'Stabil' },
+		{ name: 'EWS Bogowonto', value: 'Level 1', tone: 'Siaga' }
+	];
+
+	const featureIcons = [RadioTower, Activity, CloudRain, ShieldAlert];
 
 	const features = $derived([
 		$locale === 'EN' ? 'Cross-platform: Windows, macOS, iOS, Android' : 'Cross-platform: Windows, macOS, iOS, Android',
@@ -23,140 +40,111 @@
 	]);
 </script>
 
-<section id="stesy-spotlight" class="relative py-20 lg:py-28 overflow-hidden" style="background: linear-gradient(180deg, #FAFAFA 0%, #FFF5F6 50%, #FBE9EC 100%);">
-	<!-- Decorative ornaments — SKILL: Asymmetric scatter for DESIGN_VARIANCE 8 -->
-	<div class="absolute -top-16 -left-16 w-64 h-64 rounded-full pointer-events-none opacity-[0.06]" style="border: 2px solid #C8102E;"></div>
-	<div class="absolute -top-8 -left-8 w-40 h-40 rounded-full pointer-events-none opacity-[0.04]" style="border: 1.5px solid #C8102E;"></div>
-	<div class="absolute -bottom-20 -right-20 w-72 h-72 rounded-full pointer-events-none opacity-[0.04]" style="border: 2px solid #C8102E;"></div>
+<section
+	id="stesy-spotlight"
+	class="relative overflow-hidden py-16 sm:py-20 lg:py-28"
+	style="background: linear-gradient(180deg, #FFFFFF 0%, #FFF7F8 48%, #FBE9EC 100%);"
+>
+	<div class="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(200,16,46,0.045)_1px,transparent_1px),linear-gradient(90deg,rgba(200,16,46,0.045)_1px,transparent_1px)] bg-[size:56px_56px] opacity-70"></div>
+	<div class="pointer-events-none absolute left-0 top-20 h-56 w-[34vw] rounded-r-full bg-white/80 blur-3xl"></div>
+	<div class="pointer-events-none absolute bottom-0 right-0 h-72 w-[42vw] rounded-l-full bg-[#f4cdd3]/55 blur-3xl"></div>
+	<div class="pointer-events-none absolute left-[5%] top-[18%] hidden h-24 w-24 rounded-full border border-[#C8102E]/10 lg:block"></div>
+	<div class="pointer-events-none absolute bottom-[14%] right-[8%] hidden h-3 w-3 rounded-full bg-[#C8102E]/30 lg:block"></div>
 
-	<!-- Floating diamonds -->
-	<div class="absolute top-10 right-[5%] w-8 h-8 rotate-45 rounded-sm pointer-events-none opacity-[0.06]" style="background: #C8102E;"></div>
-	<div class="absolute bottom-[20%] left-[4%] w-10 h-10 rotate-45 rounded-lg pointer-events-none opacity-[0.04] animate-float" style="background: #C8102E;"></div>
-	<div class="absolute top-[40%] right-[3%] w-5 h-5 rotate-45 pointer-events-none opacity-[0.04]" style="border: 1.5px solid #C8102E;"></div>
-
-	<!-- Concentric circles -->
-	<svg class="absolute bottom-10 left-[8%] w-12 h-12 opacity-[0.05] pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="#C8102E" stroke-width="1.5">
-		<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/>
-	</svg>
-
-	<!-- Plus signs -->
-	<svg class="absolute top-[25%] right-[8%] w-7 h-7 opacity-[0.05] pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="#C8102E" stroke-width="2">
-		<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
-	</svg>
-	<svg class="absolute bottom-[35%] left-[2%] w-6 h-6 opacity-[0.03] pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="#C8102E" stroke-width="2">
-		<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
-	</svg>
-
-	<!-- Dot grid cluster -->
-	<svg class="absolute top-[55%] right-[5%] w-14 h-14 opacity-[0.04] pointer-events-none" viewBox="0 0 40 40" fill="#C8102E">
-		<circle cx="5" cy="5" r="2"/><circle cx="15" cy="5" r="2"/><circle cx="25" cy="5" r="2"/><circle cx="35" cy="5" r="2"/>
-		<circle cx="5" cy="15" r="2"/><circle cx="15" cy="15" r="2"/><circle cx="25" cy="15" r="2"/><circle cx="35" cy="15" r="2"/>
-		<circle cx="5" cy="25" r="2"/><circle cx="15" cy="25" r="2"/><circle cx="25" cy="25" r="2"/><circle cx="35" cy="25" r="2"/>
-	</svg>
-
-	<!-- Wavy line -->
-	<svg class="absolute top-[70%] left-[1%] w-24 h-8 opacity-[0.04] pointer-events-none" viewBox="0 0 100 30" fill="none">
-		<path d="M0,15 Q25,0 50,15 T100,15" stroke="#C8102E" stroke-width="2" fill="none"/>
-	</svg>
-
-	<!-- Triangle -->
-	<svg class="absolute top-[15%] left-[6%] w-8 h-8 opacity-[0.04] pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="#C8102E" stroke-width="1.5">
-		<polygon points="12,3 22,21 2,21"/>
-	</svg>
-
-	<!-- Arc -->
-	<svg class="absolute bottom-[8%] right-[7%] w-14 h-14 opacity-[0.03] pointer-events-none" viewBox="0 0 50 50" fill="none">
-		<path d="M0,50 A50,50 0 0,1 50,0" stroke="#C8102E" stroke-width="2" fill="none"/>
-	</svg>
-
-	<!-- Hexagon -->
-	<svg class="absolute bottom-[25%] right-[14%] w-9 h-9 opacity-[0.03] pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="#C8102E" stroke-width="1.5">
-		<polygon points="12,2 21,7 21,17 12,22 3,17 3,7"/>
-	</svg>
-
-	<!-- Scattered small circles -->
-	<div class="absolute top-[30%] left-[14%] w-3 h-3 rounded-full pointer-events-none opacity-[0.05]" style="background: #C8102E;"></div>
-	<div class="absolute top-[65%] right-[12%] w-2 h-2 rounded-full pointer-events-none opacity-[0.04]" style="background: #C8102E;"></div>
-	<div class="absolute bottom-[15%] left-[18%] w-4 h-4 rounded-full pointer-events-none opacity-[0.03]" style="border: 1.5px solid #C8102E;"></div>
-
-	<!-- Dotted vertical line -->
-	<svg class="absolute top-[30%] right-[1.5%] w-1 h-24 opacity-[0.04] pointer-events-none" viewBox="0 0 4 100" fill="none">
-		<line x1="2" y1="0" x2="2" y2="100" stroke="#C8102E" stroke-width="2" stroke-dasharray="4 6"/>
-	</svg>
-
-	<div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-		<div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-			<!-- Left: Mock Dashboard -->
+	<div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+		<div class="grid items-center gap-12 lg:grid-cols-[1.08fr_0.92fr] lg:gap-16">
 			<div
+				class="relative order-2 lg:order-1"
 				style="
 					opacity: {visible ? 1 : 0};
-					transform: translateX({visible ? 0 : -40}px);
-					transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+					transform: translate3d({visible ? 0 : -32}px, {visible ? 0 : 16}px, 0);
+					transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1);
 				"
 			>
-				<!-- Laptop mockup with bright theme -->
-				<div class="relative rounded-[24px] overflow-hidden p-[2px]" style="background: linear-gradient(135deg, #C8102E 0%, #E5E5E5 50%, #C8102E 100%); box-shadow: 0 20px 60px rgba(0,0,0,0.08);">
-					<div class="rounded-[22px] overflow-hidden bg-white">
-						<!-- Top bar -->
-						<div class="flex items-center gap-2 px-4 py-2.5" style="background: #F5F5F5; border-bottom: 1px solid #E5E5E5;">
+				<div class="absolute -left-5 top-8 hidden h-20 w-20 rounded-full border border-[#C8102E]/15 md:block"></div>
+				<div class="absolute -bottom-7 left-14 hidden h-10 w-10 rotate-45 rounded-md bg-[#C8102E]/10 md:block"></div>
+
+				<div class="relative rounded-[26px] border border-[#C8102E]/20 bg-white/70 p-2 shadow-[0_28px_80px_-46px_rgba(111,12,28,0.55),inset_0_1px_0_rgba(255,255,255,0.9)] backdrop-blur-xl">
+					<div class="overflow-hidden rounded-[20px] border border-[#E7D8DA] bg-[#FBFBFB]">
+						<div class="flex items-center gap-3 border-b border-[#E7D8DA] bg-white/80 px-4 py-3">
 							<div class="flex gap-1.5">
-								<div class="w-2.5 h-2.5 rounded-full" style="background: #FF5F56;"></div>
-								<div class="w-2.5 h-2.5 rounded-full" style="background: #FFBD2E;"></div>
-								<div class="w-2.5 h-2.5 rounded-full" style="background: #27C93F;"></div>
+								<span class="h-2.5 w-2.5 rounded-full bg-[#E45D55]"></span>
+								<span class="h-2.5 w-2.5 rounded-full bg-[#DCA630]"></span>
+								<span class="h-2.5 w-2.5 rounded-full bg-[#2C9A4F]"></span>
 							</div>
-							<div class="flex-1 text-center">
-								<span class="text-[10px] font-mono" style="color: #9A9A9A;">stesy.bejogja.com</span>
+							<div class="flex flex-1 justify-center">
+								<span class="rounded-full border border-[#E7D8DA] bg-[#FAFAFA] px-3 py-1 font-mono text-[10px] text-[#777]">stesy.bejogja.com</span>
+							</div>
+							<div class="hidden items-center gap-1.5 rounded-full bg-[#ECF8EF] px-2.5 py-1 text-[10px] font-semibold text-[#167A3A] sm:flex">
+								<span class="h-1.5 w-1.5 rounded-full bg-[#167A3A] animate-pulse-dot"></span>
+								LIVE
 							</div>
 						</div>
 
-						<!-- Dashboard content -->
-						<div class="p-4 space-y-3" style="background: #FAFAFA;">
-							<!-- Stats row -->
-							<div class="grid grid-cols-4 gap-2">
-								{#each [
-									{ label: 'Active', value: '47', color: '#1B7F3A' },
-									{ label: 'Data Pts', value: '12.4K', color: '#C8102E' },
-									{ label: 'Uptime', value: '98.7%', color: '#F5A623' },
-									{ label: 'Alerts', value: '2', color: '#C8102E' }
-								] as stat}
-									<div class="rounded-xl p-2.5 bg-white" style="border: 1px solid #E5E5E5;">
-										<span class="block text-[9px] uppercase tracking-wider" style="color: #9A9A9A;">{stat.label}</span>
-										<span class="block text-lg font-mono font-bold mt-0.5 tabular-nums" style="color: {stat.color};">{stat.value}</span>
+						<div class="grid gap-3 p-3 sm:p-4">
+							<div class="grid grid-cols-2 gap-2 sm:grid-cols-4">
+								{#each stats as stat, index}
+									<div
+										class="rounded-2xl border border-[#E7D8DA] bg-white px-3 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.9)]"
+										style="animation: fadeInUp 0.55s cubic-bezier(0.16,1,0.3,1) both; animation-delay: {index * 80}ms;"
+									>
+										<span class="block text-[9px] font-semibold uppercase tracking-[0.14em] text-[#8B8586]">{stat.label}</span>
+										<span class="mt-1 block font-mono text-xl font-extrabold tabular-nums" style="color: {stat.color};">{stat.value}</span>
 									</div>
 								{/each}
 							</div>
 
-							<!-- Chart mock -->
-							<div class="rounded-xl p-3 bg-white" style="border: 1px solid #E5E5E5;">
-								<div class="flex items-center justify-between mb-2">
-									<span class="text-[10px] font-medium" style="color: #5C5C5C;">{$locale === 'EN' ? 'Water Level — Ciawi Dam' : 'Tinggi Muka Air — Bendungan Ciawi'}</span>
-									<span class="text-[9px]" style="color: #9A9A9A;">{$locale === 'EN' ? 'Last 24h' : '24 jam terakhir'}</span>
+							<div class="grid gap-3 lg:grid-cols-[1fr_150px]">
+								<div class="rounded-2xl border border-[#E7D8DA] bg-white p-4">
+									<div class="mb-3 flex items-start justify-between gap-4">
+										<div>
+											<p class="text-xs font-semibold text-[#272123]">{$locale === 'EN' ? 'Water Level - Ciawi Dam' : 'Tinggi Muka Air - Bendungan Ciawi'}</p>
+											<p class="mt-0.5 text-[10px] text-[#8B8586]">{$locale === 'EN' ? 'Last 24 hours telemetry' : 'Telemetri 24 jam terakhir'}</p>
+										</div>
+										<span class="rounded-full bg-[#FBE9EC] px-2.5 py-1 font-mono text-[10px] font-bold text-[#A50D25]">+8.2%</span>
+									</div>
+									<svg class="h-28 w-full" viewBox="0 0 420 130" fill="none" aria-hidden="true">
+										<defs>
+											<linearGradient id="stesyChartFill" x1="0" y1="0" x2="0" y2="1">
+												<stop offset="0%" stop-color="#C8102E" stop-opacity="0.18" />
+												<stop offset="100%" stop-color="#C8102E" stop-opacity="0" />
+											</linearGradient>
+										</defs>
+										{#each [25, 55, 85, 115] as y}
+											<path d="M0 {y}H420" stroke="#EEE4E6" stroke-width="1" />
+										{/each}
+										<path d="M0 88C37 73 57 77 90 80C128 84 150 54 190 58C230 62 236 34 278 42C323 51 341 82 382 62C399 54 409 48 420 43V130H0V88Z" fill="url(#stesyChartFill)" />
+										<path class="stesy-chart-line" d="M0 88C37 73 57 77 90 80C128 84 150 54 190 58C230 62 236 34 278 42C323 51 341 82 382 62C399 54 409 48 420 43" stroke="#C8102E" stroke-width="3" stroke-linecap="round" fill="none" />
+										<circle cx="420" cy="43" r="5" fill="#C8102E" />
+									</svg>
 								</div>
-								<svg class="w-full h-16" viewBox="0 0 300 60" fill="none">
-									<defs>
-										<linearGradient id="chartGradLight" x1="0" y1="0" x2="0" y2="1">
-											<stop offset="0%" style="stop-color: #C8102E; stop-opacity: 0.15;" />
-											<stop offset="100%" style="stop-color: #C8102E; stop-opacity: 0;" />
-										</linearGradient>
-									</defs>
-									<path d="M0,40 Q30,35 60,38 T120,30 T180,25 T240,32 T300,20" stroke="#C8102E" stroke-width="2" fill="none" style="stroke-dasharray: 400; stroke-dashoffset: 400; animation: chartDraw 4s ease-out infinite alternate;" />
-									<path d="M0,40 Q30,35 60,38 T120,30 T180,25 T240,32 T300,20 V60 H0 Z" fill="url(#chartGradLight)" style="opacity: 0; animation: fadeUp 4s ease-out infinite alternate;" />
-								</svg>
+
+								<div class="grid grid-cols-2 gap-3 lg:grid-cols-1">
+									<div class="rounded-2xl border border-[#E7D8DA] bg-[#21191B] p-3 text-white">
+										<span class="text-[10px] font-medium text-white/55">{$locale === 'EN' ? 'Gate Status' : 'Status Pintu'}</span>
+										<span class="mt-2 block font-mono text-xl font-extrabold tabular-nums">04/06</span>
+										<span class="mt-1 block text-[10px] text-white/60">{$locale === 'EN' ? 'open safely' : 'terbuka aman'}</span>
+									</div>
+									<div class="rounded-2xl border border-[#E7D8DA] bg-white p-3">
+										<span class="text-[10px] font-medium text-[#8B8586]">{$locale === 'EN' ? 'Rainfall' : 'Curah Hujan'}</span>
+										<span class="mt-2 block font-mono text-xl font-extrabold text-[#272123] tabular-nums">5.2mm</span>
+										<span class="mt-1 block text-[10px] text-[#8B8586]">AWS Sentul</span>
+									</div>
+								</div>
 							</div>
 
-							<!-- Station list -->
-							<div class="space-y-1.5">
-								{#each [
-									{ name: 'AWLR Cipanas', val: '142.3m' },
-									{ name: 'ADR Ciawi', val: '0.02mm' },
-									{ name: 'EWS Bogowonto', val: 'Level 1' }
-								] as station}
-									<div class="flex items-center justify-between rounded-xl px-3 py-2 bg-white" style="border: 1px solid #E5E5E5;">
-										<div class="flex items-center gap-2">
-											<div class="w-1.5 h-1.5 rounded-full bg-[#1B7F3A] animate-pulse-dot"></div>
-											<span class="text-xs font-medium" style="color: #1A1A1A;">{station.name}</span>
+							<div class="grid gap-2">
+								{#each stations as station, index}
+									<div
+										class="group grid grid-cols-[1fr_auto] items-center gap-3 rounded-2xl border border-[#E7D8DA] bg-white px-3 py-2.5 transition duration-300 hover:-translate-y-0.5 hover:border-[#C8102E]/30"
+										style="animation: fadeInUp 0.55s cubic-bezier(0.16,1,0.3,1) both; animation-delay: {260 + index * 90}ms;"
+									>
+										<div class="flex min-w-0 items-center gap-2.5">
+											<span class="h-2 w-2 shrink-0 rounded-full bg-[#167A3A] animate-pulse-dot"></span>
+											<span class="truncate text-xs font-semibold text-[#272123]">{station.name}</span>
+											<span class="hidden rounded-full bg-[#F6F2F3] px-2 py-0.5 text-[10px] text-[#777] sm:inline">{station.tone}</span>
 										</div>
-										<span class="text-xs font-mono tabular-nums" style="color: #5C5C5C;">{station.val}</span>
+										<span class="font-mono text-xs font-bold text-[#5C5557] tabular-nums">{station.value}</span>
 									</div>
 								{/each}
 							</div>
@@ -164,68 +152,71 @@
 					</div>
 				</div>
 
-				<!-- Floating phone mockup -->
-				<div class="absolute -bottom-4 -right-4 w-32 rounded-[16px] overflow-hidden hidden md:block bg-white" style="border: 1px solid #E5E5E5; box-shadow: 0 12px 40px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.3);">
-					<div class="p-2 space-y-1.5" style="background: #FAFAFA;">
-						<div class="rounded-lg p-2 bg-white" style="border: 1px solid #E5E5E5;">
-							<span class="text-[8px] block" style="color: #9A9A9A;">{$locale === 'EN' ? 'IKN Dam' : 'Bendungan IKN'}</span>
-							<span class="text-sm font-mono font-bold" style="color: #1A1A1A;">86.4m</span>
-						</div>
-						<div class="rounded-lg p-2 bg-white" style="border: 1px solid #E5E5E5;">
-							<span class="text-[8px] block" style="color: #9A9A9A;">{$locale === 'EN' ? 'Rainfall' : 'Curah Hujan'}</span>
-							<span class="text-sm font-mono font-bold" style="color: #1A1A1A;">5.2mm</span>
-						</div>
+				<div class="absolute -right-2 -top-7 hidden w-36 rounded-2xl border border-white/70 bg-white/85 p-3 shadow-[0_18px_42px_-28px_rgba(111,12,28,0.55),inset_0_1px_0_rgba(255,255,255,0.9)] backdrop-blur-xl md:block lg:-right-8">
+					<p class="text-[10px] font-semibold uppercase tracking-[0.12em] text-[#8B8586]">{$locale === 'EN' ? 'Latency' : 'Latensi'}</p>
+					<p class="mt-1 font-mono text-2xl font-extrabold text-[#272123] tabular-nums">1.4s</p>
+					<div class="mt-2 h-1.5 overflow-hidden rounded-full bg-[#F3E6E8]">
+						<div class="h-full w-[72%] rounded-full bg-[#C8102E]"></div>
 					</div>
+				</div>
+
+				<div class="absolute -bottom-6 right-4 hidden w-40 rounded-2xl border border-[#E7D8DA] bg-white p-3 shadow-[0_24px_52px_-32px_rgba(111,12,28,0.65)] md:block">
+					<div class="flex items-center justify-between">
+						<span class="text-[10px] font-semibold uppercase tracking-[0.12em] text-[#8B8586]">{$locale === 'EN' ? 'Alarm' : 'Alarm'}</span>
+						<span class="rounded-full bg-[#FBE9EC] px-2 py-0.5 font-mono text-[10px] font-bold text-[#A50D25]">2</span>
+					</div>
+					<p class="mt-2 text-xs font-semibold leading-snug text-[#272123]">{$locale === 'EN' ? 'Bogowonto threshold watch' : 'Pantau ambang Bogowonto'}</p>
 				</div>
 			</div>
 
-			<!-- Right: Copy -->
 			<div
-				class="space-y-8"
+				class="order-1 lg:order-2 lg:pl-2"
 				style="
 					opacity: {visible ? 1 : 0};
-					transform: translateX({visible ? 0 : 40}px);
-					transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1) 0.2s, transform 0.8s cubic-bezier(0.16,1,0.3,1) 0.2s;
+					transform: translate3d({visible ? 0 : 32}px, {visible ? 0 : 16}px, 0);
+					transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1) 0.12s, transform 0.8s cubic-bezier(0.16,1,0.3,1) 0.12s;
 				"
 			>
-				<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest" style="background: rgba(200,16,46,0.08); color: #C8102E; border: 1px solid rgba(200,16,46,0.15);">
-					<span class="w-1.5 h-1.5 rounded-full" style="background: #C8102E;"></span>
+				<div class="inline-flex items-center gap-2 rounded-full border border-[#C8102E]/15 bg-white/70 px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-[0.16em] text-[#C8102E] shadow-[inset_0_1px_0_rgba(255,255,255,0.9)] backdrop-blur">
+					<span class="h-1.5 w-1.5 rounded-full bg-[#C8102E]"></span>
 					{$locale === 'EN' ? 'Monitoring Platform' : 'Platform Monitoring'}
 				</div>
-				<h2 class="font-heading text-4xl sm:text-5xl lg:text-[56px] font-extrabold text-zinc-950 leading-[1.05] tracking-tighter">
-					{$locale === 'EN' ? 'One Screen to Monitor' : 'Satu Layar untuk Memantau'} <br /> <span class="text-transparent bg-clip-text" style="background-image: linear-gradient(135deg, #FF5F56 0%, #C8102E 50%, #8A0B1F 100%);">{$locale === 'EN' ? 'All Your Assets' : 'Semua Aset Anda'}</span>
-				</h2>
-				<div>
-					<span class="font-heading text-lg font-semibold" style="color: #1A1A1A;">STESY — Smart Telemetry System</span>
-				</div>
-				<p class="text-base leading-relaxed" style="color: #5C5C5C;">
-					{$locale === 'EN' ? 'Imagine: water level at Dam A, rainfall at Station B, slope deformation at C, gate status at D — all in one dashboard. Real-time. From anywhere.' : 'Bayangkan: ketinggian air Bendungan A, curah hujan Stasiun B, deformasi Lereng C, status pintu air Bendung D — semua di satu dashboard. Real-time. Dari mana saja.'}
-				</p>
 
-				<ul class="space-y-3">
-					{#each features as feature}
-						<li class="flex items-start gap-3">
-							<div class="w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5" style="background: #FBE9EC;">
-								<Check size={12} style="color: #C8102E;" />
+				<h2 class="mt-7 max-w-[11ch] font-heading text-4xl font-extrabold leading-[1.02] tracking-tighter text-[#181315] sm:text-5xl lg:text-[58px]">
+					{$locale === 'EN' ? 'One Screen to Monitor' : 'Satu Layar untuk Memantau'}
+					<span class="block text-[#C8102E]">{$locale === 'EN' ? 'All Your Assets' : 'Semua Aset Anda'}</span>
+				</h2>
+
+				<div class="mt-7 border-l-2 border-[#C8102E] pl-4">
+					<p class="font-heading text-lg font-bold text-[#272123]">STESY - Smart Telemetry System</p>
+					<p class="mt-4 max-w-[58ch] text-base leading-relaxed text-[#5C5557]">
+						{$locale === 'EN' ? 'Imagine: water level at Dam A, rainfall at Station B, slope deformation at C, gate status at D - all in one dashboard. Real-time. From anywhere.' : 'Bayangkan: ketinggian air Bendungan A, curah hujan Stasiun B, deformasi Lereng C, status pintu air Bendung D - semua di satu dashboard. Real-time. Dari mana saja.'}
+					</p>
+				</div>
+
+				<ul class="mt-8 grid gap-3 sm:grid-cols-2">
+					{#each features as feature, index}
+						{@const Icon = featureIcons[index]}
+						<li class="flex items-start gap-3 rounded-2xl border border-white/70 bg-white/55 p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.9)] backdrop-blur">
+							<div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#FBE9EC] text-[#C8102E]">
+								<Icon size={15} strokeWidth={2} />
 							</div>
-							<span class="text-sm" style="color: #3A3A3A;">{feature}</span>
+							<span class="pt-1 text-sm font-medium leading-snug text-[#3A3335]">{feature}</span>
 						</li>
 					{/each}
 				</ul>
 
-				<div class="flex flex-col sm:flex-row gap-3 pt-4">
+				<div class="mt-9 flex flex-col gap-3 sm:flex-row">
 					<a
 						href="/solusi/stesy"
-						class="btn-tactile inline-flex items-center justify-center gap-2 px-6 py-3 rounded-[12px] text-sm font-semibold text-white"
-						style="background: linear-gradient(135deg, #C8102E 0%, #A50D25 100%); box-shadow: 0 4px 12px rgba(200,16,46,0.25);"
+						class="btn-tactile inline-flex items-center justify-center gap-2 rounded-xl bg-[#C8102E] px-6 py-3 text-sm font-bold text-white shadow-[0_14px_28px_-18px_rgba(200,16,46,0.8)] hover:bg-[#A50D25]"
 					>
 						{$locale === 'EN' ? 'View STESY Demo' : 'Lihat Demo STESY'}
-						<ArrowRight size={14} />
+						<ArrowRight size={15} strokeWidth={2} />
 					</a>
 					<a
 						href="/solusi/stesy"
-						class="btn-tactile inline-flex items-center justify-center gap-2 px-6 py-3 rounded-[12px] text-sm font-semibold transition-all duration-200 hover:bg-[#FBE9EC]"
-						style="border: 1.5px solid #E5E5E5; color: #1A1A1A;"
+						class="btn-tactile inline-flex items-center justify-center gap-2 rounded-xl border border-[#E0D3D5] bg-white/60 px-6 py-3 text-sm font-bold text-[#272123] backdrop-blur transition-colors hover:bg-white"
 					>
 						{$locale === 'EN' ? 'Learn More' : 'Pelajari Lebih Lanjut'}
 					</a>
@@ -233,5 +224,25 @@
 			</div>
 		</div>
 	</div>
-
 </section>
+
+<style>
+	.stesy-chart-line {
+		stroke-dasharray: 620;
+		stroke-dashoffset: 620;
+		animation: stesy-chart-draw 4.8s cubic-bezier(0.16, 1, 0.3, 1) infinite alternate;
+	}
+
+	@keyframes stesy-chart-draw {
+		to {
+			stroke-dashoffset: 0;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.stesy-chart-line {
+			animation: none;
+			stroke-dashoffset: 0;
+		}
+	}
+</style>
