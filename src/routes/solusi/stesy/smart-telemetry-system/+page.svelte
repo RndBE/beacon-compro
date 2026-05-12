@@ -286,9 +286,9 @@
 			<span class="text-xs font-semibold uppercase tracking-widest" style="color: #C8102E;">Track Record</span>
 			<h2 class="font-heading text-3xl font-bold mt-3" style="color: #1A1A1A;">Sudah Digunakan Oleh</h2>
 		</div>
-		<div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+		<div class="flex flex-wrap justify-center gap-4">
 			{#each projects as proj}
-				<div class="p-5 rounded-2xl bg-[#FAFAFA] hover:bg-[#FBE9EC] transition-all" style="border: 1px solid #E5E5E5;">
+				<div class="w-full sm:w-[calc(50%-0.5rem)] lg:w-[calc(25%-0.75rem)] max-w-sm sm:max-w-[260px] p-5 rounded-2xl bg-[#FAFAFA] hover:bg-[#FBE9EC] transition-all" style="border: 1px solid #E5E5E5;">
 					<div class="flex items-center gap-2 mb-2">
 						<span class="text-[10px] font-semibold px-2 py-0.5 rounded-md text-white tabular-nums" style="background: #C8102E;">{proj.year}</span>
 						<div class="w-1.5 h-1.5 rounded-full bg-[#1B7F3A] animate-pulse-dot"></div>

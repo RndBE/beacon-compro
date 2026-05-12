@@ -3,6 +3,7 @@
 	import { ArrowRight, MessageCircle, Download, ChevronRight, ShieldCheck, LockKeyhole, Wifi, Siren, Zap, BarChart3 } from '@lucide/svelte';
 	import Ornaments from '$lib/components/Ornaments.svelte';
 	import ProductSpecs from '$lib/components/ProductSpecs.svelte';
+	import { mapTrackRecords } from '$lib/loaders/sub-solution';
 
 	let { data } = $props();
 	let solutionName = $derived(data.subSolutionDetail?.sub_solution?.solution?.name ?? 'Infrastructure Security');
@@ -70,7 +71,9 @@
 		{ name: 'Aset Remote Monitoring', client: 'Kontraktor EPC', year: '2022', location: null }
 	];
 
-	const projects = $derived(fallbackProjects);
+	const projects = $derived(
+		mapTrackRecords(data.subSolutionDetail?.track_records, fallbackProjects)
+	);
 
 
 	const features = [
@@ -287,9 +290,9 @@
 			<span class="text-xs font-semibold uppercase tracking-widest" style="color: #10B981;">Track Record</span>
 			<h2 class="font-heading text-3xl font-bold mt-3" style="color: #1A1A1A;">Sudah Terpasang Di</h2>
 		</div>
-		<div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+		<div class="flex flex-wrap justify-center gap-4">
 			{#each projects as proj}
-				<div class="p-5 rounded-2xl bg-[#FAFAFA] hover:bg-[#D1FAE5] transition-all" style="border: 1px solid #E5E5E5;">
+				<div class="w-full sm:w-[calc(50%-0.5rem)] lg:w-[calc(25%-0.75rem)] max-w-sm sm:max-w-[260px] p-5 rounded-2xl bg-[#FAFAFA] hover:bg-[#D1FAE5] transition-all" style="border: 1px solid #E5E5E5;">
 					<div class="flex items-center gap-2 mb-2">
 						<span class="text-[10px] font-semibold px-2 py-0.5 rounded-md text-white tabular-nums" style="background: #10B981;">{proj.year}</span>
 						<div class="w-1.5 h-1.5 rounded-full bg-[#1B7F3A] animate-pulse-dot"></div>
