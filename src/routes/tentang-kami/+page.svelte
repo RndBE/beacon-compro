@@ -1059,9 +1059,9 @@
 		</div>
 
 		{#if featuredTestimonial}
-			<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-stretch">
+			<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
 				<article
-					class="relative lg:col-span-7 min-h-[430px] rounded-[2rem] bg-white border border-[#E5E5E5] p-7 sm:p-10 lg:p-12 overflow-hidden shadow-[0_24px_60px_-32px_rgba(0,0,0,0.25)] transition-all duration-700"
+					class="relative lg:col-span-5 lg:sticky lg:top-28 min-h-[430px] rounded-[2rem] bg-white border border-[#E5E5E5] p-7 sm:p-10 lg:p-12 overflow-hidden shadow-[0_24px_60px_-32px_rgba(0,0,0,0.25)] transition-all duration-700"
 					style="
 						opacity: {testimoniVisible ? 1 : 0};
 						transform: translateY({testimoniVisible ? 0 : 28}px);
@@ -1075,7 +1075,7 @@
 						style="background: radial-gradient(circle, rgba(200,16,46,0.12) 0%, transparent 68%);"
 					></div>
 					<Quote size={44} class="mb-10 text-[#C8102E]/25" />
-					<p class="relative text-xl sm:text-2xl lg:text-[30px] leading-snug font-semibold tracking-tight text-zinc-950 max-w-[26ch]">
+					<p class="relative text-xl sm:text-2xl lg:text-[28px] leading-snug font-semibold tracking-tight text-zinc-950 max-w-[24ch]">
 						"{featuredTestimonial.quote}"
 					</p>
 					<div class="relative mt-12 flex items-center gap-4">
@@ -1108,18 +1108,17 @@
 					</div>
 				</article>
 
-				<div class="lg:col-span-5 grid gap-4 content-start">
-					<div class="hidden lg:block h-16"></div>
+				<div class="lg:col-span-7 grid gap-4 sm:grid-cols-2 content-start">
 					{#each visibleSupportingTestimonials as testimonial, i}
 						<article
-							class="group relative rounded-[1.5rem] border border-[#E5E5E5] bg-white/80 p-5 sm:p-6 transition-all duration-500 hover:-translate-y-1 hover:border-[#C8102E]/35 hover:bg-white hover:shadow-[0_18px_36px_-24px_rgba(200,16,46,0.35)]"
+							class="group relative h-full rounded-[1.5rem] border border-[#E5E5E5] bg-white/80 p-5 sm:p-6 transition-all duration-500 hover:-translate-y-1 hover:border-[#C8102E]/35 hover:bg-white hover:shadow-[0_18px_36px_-24px_rgba(200,16,46,0.35)]"
 							style="
 								opacity: {testimoniVisible ? 1 : 0};
 								transform: translateY({testimoniVisible ? 0 : 22}px);
 								transition-delay: {0.12 + i * 0.08}s;
 							"
 						>
-							<div class="flex gap-4">
+							<div class="flex h-full flex-col gap-4">
 								{#if testimonial.photo}
 									<img
 										src={testimonial.photo}
@@ -1135,8 +1134,8 @@
 										{testimonial.initials}
 									</div>
 								{/if}
-								<div class="min-w-0">
-									<p class="text-sm sm:text-base leading-relaxed text-zinc-700">
+								<div class="min-w-0 flex flex-1 flex-col">
+									<p class="text-sm sm:text-base leading-relaxed text-zinc-700 flex-1">
 										"{testimonial.quote}"
 									</p>
 									<div class="mt-4 border-t border-[#E5E5E5] pt-4">
@@ -1159,7 +1158,7 @@
 						<button
 							type="button"
 							onclick={() => (showAllTestimonials = !showAllTestimonials)}
-							class="mt-2 inline-flex items-center justify-center rounded-[1.25rem] border border-[#E5E5E5] bg-white px-5 py-4 text-sm font-bold text-zinc-800 transition-all duration-300 hover:-translate-y-1 hover:border-[#C8102E]/40 hover:text-[#C8102E] hover:shadow-[0_16px_32px_-24px_rgba(200,16,46,0.35)] active:scale-[0.98]"
+							class="mt-2 sm:col-span-2 inline-flex items-center justify-center rounded-[1.25rem] border border-[#E5E5E5] bg-white px-5 py-4 text-sm font-bold text-zinc-800 transition-all duration-300 hover:-translate-y-1 hover:border-[#C8102E]/40 hover:text-[#C8102E] hover:shadow-[0_16px_32px_-24px_rgba(200,16,46,0.35)] active:scale-[0.98]"
 						>
 							{showAllTestimonials
 								? "Tampilkan lebih ringkas"
