@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { ArrowRight, Check, MessageCircle, Download, ChevronRight, Siren, Bell, Radio, ShieldCheck, Zap, Wifi } from '@lucide/svelte';
 	import Ornaments from '$lib/components/Ornaments.svelte';
+	import { locale } from "$lib/i18n";
 	import ProductVariantDossier from '$lib/components/ProductVariantDossier.svelte';
 	import { mapTrackRecords } from '$lib/loaders/sub-solution';
 
@@ -89,9 +90,9 @@
 <div class="bg-[#FAFAFA] border-b" style="border-color: #E5E5E5;">
 	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
 		<nav class="flex items-center gap-1.5 text-xs" style="color: #9A9A9A;">
-			<a href="/" class="hover:text-[#C8102E] transition-colors">Beranda</a>
+			<a href="/" class="hover:text-[#C8102E] transition-colors">{$locale === "EN" ? "Home" : "Beranda"}</a>
 			<ChevronRight size={11} />
-			<a href="/solusi" class="hover:text-[#C8102E] transition-colors">Solusi</a>
+			<a href="/solusi" class="hover:text-[#C8102E] transition-colors">{$locale === "EN" ? "Solutions" : "Solusi"}</a>
 			<ChevronRight size={11} />
 			<a href="/solusi/early-warning" class="hover:text-[#D97706] transition-colors">Early Warning</a>
 			<ChevronRight size={11} />
@@ -130,7 +131,7 @@
 						class="inline-flex items-center gap-2 px-6 py-3 rounded-[12px] text-sm font-semibold text-white transition-all hover:scale-[1.02]"
 						style="background: linear-gradient(135deg, #C8102E, #A50D25); box-shadow: 0 4px 12px rgba(200,16,46,0.25);">
 						<MessageCircle size={15} />
-						Konsultasi EWS
+						{$locale === "EN" ? "Consult EWS" : "Konsultasi EWS"}
 					</a>
 					<button class="inline-flex items-center gap-2 px-6 py-3 rounded-[12px] text-sm font-semibold transition-all hover:bg-[#FEF9C3]" style="border: 1.5px solid #E5E5E5; color: #1A1A1A;">
 						<Download size={15} />
@@ -190,7 +191,7 @@
 	<div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 		<div class="text-center mb-12">
 			<span class="text-xs font-semibold uppercase tracking-widest" style="color: #D97706;">Keunggulan</span>
-			<h2 class="font-heading text-3xl sm:text-4xl font-bold mt-3" style="color: #1A1A1A;">Mengapa EWS Beacon</h2>
+			<h2 class="font-heading text-3xl sm:text-4xl font-bold mt-3" style="color: #1A1A1A;">{$locale === "EN" ? "Why EWS Beacon" : "Mengapa EWS Beacon"}</h2>
 		</div>
 		<div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
 			{#each features as feat, i}
@@ -258,11 +259,11 @@
 				<a href="https://wa.me/628112632151?text=Halo%20CS%20Marketing%20Beacon%2C%20saya%20ingin%20konsultasi%20tentang%20EWS%20untuk%20proyek%20saya." target="_blank" rel="noopener"
 					class="w-full sm:w-auto inline-flex justify-center items-center gap-2 px-8 py-4 rounded-full text-sm font-bold text-zinc-950 bg-white transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(255,255,255,0.1)] btn-tactile">
 					<MessageCircle size={18} />
-					Konsultasi EWS
+					{$locale === "EN" ? "Consult EWS" : "Konsultasi EWS"}
 				</a>
 				<a href="/solusi/early-warning" class="w-full sm:w-auto inline-flex justify-center items-center gap-2 px-8 py-4 rounded-full text-sm font-bold text-white transition-all hover:bg-zinc-800 btn-tactile" style="border: 1px solid rgba(255,255,255,0.15);">
 					<ArrowRight size={18} />
-					Jelajahi Produk Lain
+					{$locale === "EN" ? "Explore Other Products" : "Jelajahi Produk Lain"}
 				</a>
 			</div>
 		</div>

@@ -8,6 +8,7 @@
     Waves,
   } from "@lucide/svelte";
   import Ornaments from "$lib/components/Ornaments.svelte";
+	import { locale } from "$lib/i18n";
   import { mapTrackRecords } from "$lib/loaders/sub-solution";
   import productImage from "$lib/assets/product_awlr.webp";
 
@@ -194,9 +195,9 @@
 <div class="bg-[#FAFAFA] border-b" style="border-color: #E5E5E5;">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
     <nav class="flex items-center gap-1.5 text-xs" style="color: #9A9A9A;">
-      <a href="/" class="hover:text-[#C8102E] transition-colors">Beranda</a>
+      <a href="/" class="hover:text-[#C8102E] transition-colors">{$locale === "EN" ? "Home" : "Beranda"}</a>
       <ChevronRight size={11} />
-      <a href="/solusi" class="hover:text-[#C8102E] transition-colors">Solusi</a
+      <a href="/solusi" class="hover:text-[#C8102E] transition-colors">{$locale === "EN" ? "Solutions" : "Solusi"}</a
       >
       <ChevronRight size={11} />
       <a
@@ -264,7 +265,7 @@
             style="background: linear-gradient(135deg, #C8102E, #A50D25); box-shadow: 0 4px 12px rgba(200,16,46,0.25);"
           >
             <MessageCircle size={15} />
-            Konsultasi AWLR
+            {$locale === "EN" ? "Consult AWLR" : "Konsultasi AWLR"}
           </a>
           <button
             class="inline-flex items-center gap-2 px-6 py-3 rounded-[12px] text-sm font-semibold transition-all hover:bg-[#FBE9EC]"
@@ -361,7 +362,7 @@
         class="font-heading text-3xl sm:text-4xl font-bold mt-3"
         style="color: #1A1A1A;"
       >
-        Mengapa AWLR Beacon
+        {$locale === "EN" ? "Why AWLR Beacon" : "Mengapa AWLR Beacon"}
       </h2>
     </div>
     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -579,7 +580,7 @@
                     class="inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/10 bg-white px-6 py-3.5 text-sm font-extrabold text-zinc-950 transition-transform duration-300 hover:-translate-y-0.5 active:scale-[0.98]"
                   >
                     <Download size={16} />
-                    Download Brosur
+                    {$locale === "EN" ? "Download Brochure" : "Download Brosur"}
                   </a>
                 {/if}
               </aside>
@@ -665,7 +666,7 @@
                           <Waves size={48} class="mx-auto mb-3 text-zinc-700" />
                           <span
                             class="text-xs font-bold uppercase tracking-[0.28em] text-zinc-600"
-                            >Gambar Menyusul</span
+                            >{$locale === "EN" ? "Image Coming Soon" : "Gambar Menyusul"}</span
                           >
                         </div>
                       </div>
@@ -871,7 +872,7 @@
           class="w-full sm:w-auto inline-flex justify-center items-center gap-2 px-8 py-4 rounded-full text-sm font-bold text-zinc-950 bg-white transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(255,255,255,0.1)] btn-tactile"
         >
           <MessageCircle size={18} />
-          Konsultasi AWLR
+          {$locale === "EN" ? "Consult AWLR" : "Konsultasi AWLR"}
         </a>
         <a
           href="/solusi/water-security"
@@ -879,7 +880,7 @@
           style="border: 1px solid rgba(255,255,255,0.15);"
         >
           <ArrowRight size={18} />
-          Jelajahi Produk Lain
+          {$locale === "EN" ? "Explore Other Products" : "Jelajahi Produk Lain"}
         </a>
       </div>
     </div>

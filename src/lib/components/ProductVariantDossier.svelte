@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Check, Download, Package } from '@lucide/svelte';
+	import { locale } from '$lib/i18n';
 
 	let {
 		variants,
@@ -11,6 +12,53 @@
 
 	let activeVariant = $state(0);
 	let activeSpecComponent = $state(0);
+	const copy = $derived(
+		$locale === 'EN'
+			? {
+					product: 'Product',
+					variantSystem: 'Variant System',
+					fieldReady: 'Field Ready',
+					variantTitle: 'variants for every station profile',
+					variantDescription:
+						'Choose a configuration based on measurement needs, data interval, access conditions, and field characteristics.',
+					selectSensor: 'Select Logger / Sensor',
+					component: 'Component',
+					summary: 'Product Summary',
+					summaryDescription: 'Displaying product specification summary.',
+					suitableFor: 'Suitable For',
+					defaultUse: 'Various field requirements',
+					downloadBrochure: 'Download Brochure',
+					productBay: 'Product Bay',
+					imageAlt: 'Variant',
+					imageComingSoon: 'Image Coming Soon',
+					technicalSpecs: 'Technical Specifications',
+					category: 'category',
+					specsUnavailable: 'Specifications are not available in the CMS yet.',
+					specHighlights: 'Spec Highlights'
+				}
+			: {
+					product: 'Produk',
+					variantSystem: 'Variant System',
+					fieldReady: 'Field Ready',
+					variantTitle: 'untuk tiap karakter pos',
+					variantDescription:
+						'Pilih konfigurasi berdasarkan kebutuhan pengukuran, interval data, kondisi akses, dan karakter lapangan.',
+					selectSensor: 'Pilih Logger / Sensor',
+					component: 'Komponen',
+					summary: 'Ringkasan Produk',
+					summaryDescription: 'Menampilkan ringkasan spesifikasi produk.',
+					suitableFor: 'Cocok Untuk',
+					defaultUse: 'Berbagai kebutuhan lapangan',
+					downloadBrochure: 'Download Brosur',
+					productBay: 'Product Bay',
+					imageAlt: 'Varian',
+					imageComingSoon: 'Gambar Menyusul',
+					technicalSpecs: 'Spesifikasi Teknis',
+					category: 'kategori',
+					specsUnavailable: 'Spesifikasi belum tersedia di CMS.',
+					specHighlights: 'Highlight Spek'
+				}
+	);
 
 	const countComponentSpecs = (component: any) =>
 		(component.specs ?? []).reduce(
@@ -29,7 +77,7 @@
 		activeSpecs.length > 0
 			? [
 					{
-						category: 'Ringkasan Produk',
+						category: copy.summary,
 						items: activeSpecs.map((spec: any) => ({
 							name: spec.label,
 							value: spec.value
@@ -77,7 +125,7 @@
 					>
 						<span>Beacon Engineering</span>
 						<span class="h-1 w-1 rounded-full bg-zinc-700"></span>
-						<span>{productName} Variant System</span>
+						<span>{productName} {copy.variantSystem}</span>
 					</div>
 					<div
 						class="inline-flex w-fit items-center gap-3 rounded-full border border-white/10 bg-white/[0.035] px-5 py-3 text-xs font-bold uppercase tracking-[0.24em] text-zinc-300 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]"
@@ -88,7 +136,7 @@
 							></span>
 							<span class="relative inline-flex h-3 w-3 rounded-full bg-emerald-400"></span>
 						</span>
-						Field Ready
+						{copy.fieldReady}
 					</div>
 				</div>
 
@@ -99,11 +147,10 @@
 						<h2
 							class="font-heading text-4xl font-extrabold leading-none tracking-tight text-white sm:text-5xl lg:text-6xl"
 						>
-							Varian {productName} untuk tiap karakter pos
+							{productName} {copy.variantTitle}
 						</h2>
 						<p class="mt-5 max-w-[52ch] text-base font-medium leading-relaxed text-zinc-400">
-							Pilih konfigurasi berdasarkan kebutuhan pengukuran, interval data, kondisi akses,
-							dan karakter lapangan.
+							{copy.variantDescription}
 						</p>
 					</div>
 
@@ -166,7 +213,7 @@
 									<div class="mb-4 flex items-center justify-between gap-4">
 										<span
 											class="text-[11px] font-bold uppercase tracking-[0.24em] text-zinc-500"
-											>Pilih Logger / Sensor</span
+											>{copy.selectSensor}</span
 										>
 										<span class="font-mono text-[11px] font-bold text-zinc-600"
 											>{displaySpecs.length} item</span
@@ -190,7 +237,7 @@
 															>
 															<span
 																class="mt-1 block text-[10px] font-bold uppercase tracking-[0.18em] opacity-70"
-																>{component.type || 'Komponen'}</span
+																>{component.type || copy.component}</span
 															>
 														</span>
 														<span class="font-mono text-[11px] font-bold opacity-70"
@@ -204,17 +251,17 @@
 										<div
 											class="rounded-2xl border border-white/10 bg-[#080B10]/45 px-4 py-3 text-sm font-semibold text-zinc-500"
 										>
-											Menampilkan ringkasan spesifikasi produk.
+											{copy.summaryDescription}
 										</div>
 									{/if}
 								</div>
 
 								<div class="rounded-[1.5rem] border border-white/10 bg-white/[0.025] px-5 py-4">
 									<div class="mb-2 text-[11px] font-bold uppercase tracking-[0.24em] text-zinc-500">
-										Cocok Untuk
+										{copy.suitableFor}
 									</div>
 									<div class="text-sm font-extrabold text-white">
-										{activeProduct?.use || 'Berbagai kebutuhan lapangan'}
+										{activeProduct?.use || copy.defaultUse}
 									</div>
 								</div>
 
@@ -226,7 +273,7 @@
 										class="inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/10 bg-white px-6 py-3.5 text-sm font-extrabold text-zinc-950 transition-transform duration-300 hover:-translate-y-0.5 active:scale-[0.98]"
 									>
 										<Download size={16} />
-										Download Brosur
+										{copy.downloadBrochure}
 									</a>
 								{/if}
 							</aside>
@@ -247,7 +294,7 @@
 											<div
 												class="font-mono text-[11px] font-bold uppercase tracking-[0.3em] text-zinc-500"
 											>
-												Product Bay
+												{copy.productBay}
 											</div>
 											<div
 												class="mt-2 font-heading text-3xl font-extrabold tracking-tight text-white sm:text-4xl"
@@ -273,7 +320,7 @@
 															class="grid h-9 w-9 place-items-center rounded-full border border-[#C8102E] text-sm text-white"
 															>{ci + 1}</span
 														>
-														<span>{comp.type || 'Komponen'} · {comp.name}</span>
+														<span>{comp.type || copy.component} · {comp.name}</span>
 													</div>
 													{#if comp.image_1 || comp.image_2}
 														<img
@@ -294,7 +341,7 @@
 											>
 												<img
 													src={activeProduct.image}
-													alt="Varian {activeProduct.name}"
+													alt="{copy.imageAlt} {activeProduct.name}"
 													class="max-h-[390px] w-full object-contain drop-shadow-[0_38px_34px_rgba(0,0,0,0.48)] transition-transform duration-700 hover:scale-[1.035]"
 												/>
 											</div>
@@ -305,7 +352,7 @@
 												<div>
 													<Package size={48} class="mx-auto mb-3 text-zinc-700" />
 													<span class="text-xs font-bold uppercase tracking-[0.28em] text-zinc-600"
-														>Gambar Menyusul</span
+														>{copy.imageComingSoon}</span
 													>
 												</div>
 											</div>
@@ -323,7 +370,7 @@
 									<div
 										class="font-mono text-[11px] font-bold uppercase tracking-[0.28em] text-zinc-500"
 									>
-										Spesifikasi Teknis
+										{copy.technicalSpecs}
 									</div>
 									<h4
 										class="mt-1 font-heading text-3xl font-extrabold tracking-tight text-white sm:text-4xl"
@@ -340,7 +387,7 @@
 									<span
 										class="w-fit rounded-full border border-white/10 bg-white/[0.035] px-3 py-1.5 font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-zinc-500"
 									>
-										{displaySpecGroups.length} kategori
+										{displaySpecGroups.length} {copy.category}
 									</span>
 								</div>
 							</div>
@@ -377,14 +424,14 @@
 								<div
 									class="rounded-2xl border border-white/10 bg-white/[0.035] p-5 text-sm font-semibold text-zinc-500"
 								>
-									Spesifikasi belum tersedia di CMS.
+									{copy.specsUnavailable}
 								</div>
 							{/if}
 						</div>
 
 						<div>
 							<div class="mb-3 font-mono text-[11px] font-bold uppercase tracking-[0.26em] text-zinc-500">
-								Highlight Spek
+								{copy.specHighlights}
 							</div>
 							<div class="grid gap-3 lg:grid-cols-[1.25fr_0.8fr_1fr_0.95fr]">
 								{#each heroStats as spec}

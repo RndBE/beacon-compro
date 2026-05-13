@@ -9,10 +9,49 @@
 	} from "@lucide/svelte";
 	import Ornaments from "$lib/components/Ornaments.svelte";
 	import { weatherForecastProducts as fallbackProducts } from "$lib/data/solutions";
+	import { locale } from "$lib/i18n";
 
 	let { data } = $props();
 	let solutionName = $derived(data.solutionDetail?.solution?.name ?? 'Weather & Climate Intelligence');
 	let solutionSlug = $derived(data.solutionDetail?.solution?.slug ?? 'weather-climate-intelligence');
+	const pageCopy = {
+		ID: {
+			metaDesc: "Stasiun cuaca otomatis AWR dan ARR dari Beacon Engineering untuk prediksi cuaca presisi tinggi di Indonesia.",
+			title: 'Cuaca Tidak Bisa Dilawan, <br /><span style="color: #6366F1;">Tapi Bisa Diprediksi.</span>',
+			desc: "Banjir, kekeringan, hingga risiko penerbangan berawal dari ketidakpastian cuaca.",
+			emphasis: "Stasiun cuaca otomatis dari Beacon meresolusi prediksi menjadi presisi.",
+			stats: [{ value: "2", label: "Perangkat Utama" }, { value: "WMO", label: "Standard Compliant" }, { value: "24/7", label: "Data Transmisi" }],
+			heroAlt: "Ilustrasi sistem stasiun cuaca otomatis Beacon Engineering",
+			productBadge: "Produk",
+			productTitle: "Stasiun Cuaca & Curah Hujan Otomatis",
+			detail: "Lihat Detail",
+			ctaBadge: "Next Step",
+			ctaTitle: "Mulai Proyek dengan Beacon",
+			ctaDesc: "Tim engineer kami akan merancang arsitektur telemetri yang tepat dan menghitung kebutuhan riil proyek Anda.",
+			ctaPrimary: "Konsultasi Beacon",
+			ctaSecondary: "Jelajahi Produk Lain",
+			whatsappText: "Halo CS Marketing Beacon, saya ingin konsultasi tentang Beacon untuk proyek saya.",
+		},
+		EN: {
+			metaDesc: "Beacon Engineering automatic weather stations AWR and ARR for high-precision weather prediction in Indonesia.",
+			title: 'Weather Cannot Be Stopped, <br /><span style="color: #6366F1;">But It Can Be Predicted.</span>',
+			desc: "Floods, droughts, and aviation risks all begin with weather uncertainty.",
+			emphasis: "Beacon automatic weather stations turn prediction into precision.",
+			stats: [{ value: "2", label: "Core Devices" }, { value: "WMO", label: "Standard Compliant" }, { value: "24/7", label: "Data Transmission" }],
+			heroAlt: "Beacon Engineering automatic weather station system illustration",
+			productBadge: "Products",
+			productTitle: "Automatic Weather & Rainfall Stations",
+			detail: "View Details",
+			ctaBadge: "Next Step",
+			ctaTitle: "Start a Project with Beacon",
+			ctaDesc: "Our engineering team will design the right telemetry architecture and calculate your project’s real requirements.",
+			ctaPrimary: "Consult Beacon",
+			ctaSecondary: "Explore Other Products",
+			whatsappText: "Hello Beacon Marketing CS, I would like to consult about Beacon for my project.",
+		},
+	};
+	const copy = $derived(pageCopy[$locale]);
+	const consultationUrl = $derived(`https://wa.me/628112632151?text=${encodeURIComponent(copy.whatsappText)}`);
 
 	const products = $derived(
 		data.solutionDetail?.sub_solutions &&
@@ -41,7 +80,7 @@
 	<title>{solutionName} — Beacon Engineering</title>
 	<meta
 		name="description"
-		content="Stasiun cuaca otomatis AWR dan ARR dari Beacon Engineering untuk prediksi cuaca presisi tinggi di Indonesia."
+		content={copy.metaDesc}
 	/>
 </svelte:head>
 
@@ -86,22 +125,19 @@
 					class="font-heading text-4xl md:text-5xl lg:text-[52px] xl:text-[60px] font-extrabold tracking-tighter leading-[1.06] mb-6"
 					style="color: #1A1A1A;"
 				>
-					Cuaca Tidak Bisa Dilawan, <br />
-					<span style="color: #6366F1;">Tapi Bisa Diprediksi.</span>
+					{@html copy.title}
 				</h1>
 
 				<p
 					class="text-base md:text-lg text-gray-600 leading-relaxed max-w-[52ch] mb-4"
 				>
-					Banjir, kekeringan, hingga risiko penerbangan berawal dari
-					ketidakpastian cuaca.
+					{copy.desc}
 				</p>
 				<p
 					class="text-base md:text-lg font-semibold"
 					style="color: #6366F1;"
 				>
-					Stasiun cuaca otomatis dari Beacon meresolusi prediksi
-					menjadi presisi.
+					{copy.emphasis}
 				</p>
 
 				<!-- Stat strip -->
@@ -113,13 +149,13 @@
 							class="font-heading text-2xl font-extrabold tabular-nums"
 							style="color: #1A1A1A; letter-spacing: -0.03em;"
 						>
-							2
+							{copy.stats[0].value}
 						</p>
 						<p
 							class="text-xs font-medium mt-0.5"
 							style="color: #7A7A7A;"
 						>
-							Perangkat Utama
+							{copy.stats[0].label}
 						</p>
 					</div>
 					<div class="w-px h-8 bg-[#E5E5E5]"></div>
@@ -128,13 +164,13 @@
 							class="font-heading text-2xl font-extrabold tabular-nums"
 							style="color: #1A1A1A; letter-spacing: -0.03em;"
 						>
-							WMO
+							{copy.stats[1].value}
 						</p>
 						<p
 							class="text-xs font-medium mt-0.5"
 							style="color: #7A7A7A;"
 						>
-							Standard Compliant
+							{copy.stats[1].label}
 						</p>
 					</div>
 					<div class="w-px h-8 bg-[#E5E5E5]"></div>
@@ -143,13 +179,13 @@
 							class="font-heading text-2xl font-extrabold tabular-nums"
 							style="color: #1A1A1A; letter-spacing: -0.03em;"
 						>
-							24/7
+							{copy.stats[2].value}
 						</p>
 						<p
 							class="text-xs font-medium mt-0.5"
 							style="color: #7A7A7A;"
 						>
-							Data Transmisi
+							{copy.stats[2].label}
 						</p>
 					</div>
 				</div>
@@ -176,7 +212,7 @@
 						src="/ilustrasi_weather_forecast.webp"
 						srcset="/images/hero-solutions/weather_forecast-960.webp 960w, /images/hero-solutions/weather_forecast-1280.webp 1280w, /ilustrasi_weather_forecast.webp 1672w"
 						sizes="(min-width: 1280px) 980px, (min-width: 1024px) 860px, 92vw"
-						alt="Ilustrasi sistem stasiun cuaca otomatis Beacon Engineering"
+						alt={copy.heroAlt}
 						class="w-full h-auto object-contain select-none"
 						width="1672"
 						height="941"
@@ -195,8 +231,8 @@
 	<Ornaments variant="dense" />
 	<div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 		<div class="max-w-2xl mb-14 space-y-3">
-			<span class="text-xs font-semibold uppercase tracking-widest" style="color: #6366F1;">Produk {solutionName}</span>
-			<h2 class="font-heading text-3xl sm:text-4xl font-bold leading-[1.1]" style="color: #1A1A1A; letter-spacing: -0.025em;">Stasiun Cuaca & Curah Hujan Otomatis</h2>
+			<span class="text-xs font-semibold uppercase tracking-widest" style="color: #6366F1;">{copy.productBadge} {solutionName}</span>
+			<h2 class="font-heading text-3xl sm:text-4xl font-bold leading-[1.1]" style="color: #1A1A1A; letter-spacing: -0.025em;">{copy.productTitle}</h2>
 		</div>
 
 		<div class="grid md:grid-cols-2 gap-6">
@@ -237,7 +273,7 @@
 						</div>
 
 						<div class="flex items-center gap-2 text-sm font-semibold text-[#818CF8] group-hover:gap-3 transition-all mt-4">
-							Lihat Detail {product.name}
+							{copy.detail} {product.name}
 							<ArrowRight size={14} />
 						</div>
 					</div>
@@ -259,21 +295,21 @@
 			<div class="relative z-10 text-center lg:text-left flex-1 max-w-2xl">
 				<span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest mb-6" style="background: rgba(200,16,46,0.15); color: #FF4D6D; border: 1px solid rgba(200,16,46,0.3);">
 					<span class="w-1.5 h-1.5 rounded-full" style="background: #FF4D6D; box-shadow: 0 0 10px #FF4D6D;"></span>
-					Next Step
+					{copy.ctaBadge}
 				</span>
-				<h2 class="font-heading text-4xl sm:text-5xl font-extrabold text-white tracking-tighter mb-4">Mulai Proyek dengan Beacon</h2>
-				<p class="text-lg text-zinc-400 font-medium">Tim engineer kami akan merancang arsitektur telemetri yang tepat dan menghitung kebutuhan riil proyek Anda.</p>
+				<h2 class="font-heading text-4xl sm:text-5xl font-extrabold text-white tracking-tighter mb-4">{copy.ctaTitle}</h2>
+				<p class="text-lg text-zinc-400 font-medium">{copy.ctaDesc}</p>
 			</div>
 
 			<div class="relative z-10 flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto shrink-0">
-				<a href="https://wa.me/628112632151?text=Halo%20CS%20Marketing%20Beacon%2C%20saya%20ingin%20konsultasi%20tentang%20Beacon%20untuk%20proyek%20saya." target="_blank" rel="noopener"
+				<a href={consultationUrl} target="_blank" rel="noopener"
 					class="w-full sm:w-auto inline-flex justify-center items-center gap-2 px-8 py-4 rounded-full text-sm font-bold text-zinc-950 bg-white transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(255,255,255,0.1)] btn-tactile">
 					<MessageCircle size={18} />
-					Konsultasi Beacon
+					{copy.ctaPrimary}
 				</a>
 				<a href="/solusi" class="w-full sm:w-auto inline-flex justify-center items-center gap-2 px-8 py-4 rounded-full text-sm font-bold text-white transition-all hover:bg-zinc-800 btn-tactile" style="border: 1px solid rgba(255,255,255,0.15);">
 					<ArrowRight size={18} />
-					Jelajahi Produk Lain
+					{copy.ctaSecondary}
 				</a>
 			</div>
 		</div>

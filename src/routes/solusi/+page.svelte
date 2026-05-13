@@ -2,8 +2,51 @@
 	import { onMount } from 'svelte';
 	import { ArrowRight, ChevronRight, MessageCircle } from '@lucide/svelte';
 	import { solutions as fallbackSolutions } from '$lib/data/solutions';
+	import { locale } from '$lib/i18n';
 
 	let { data } = $props();
+	const pageCopy = {
+		ID: {
+			metaTitle: 'Solusi - Beacon Engineering',
+			metaDesc: 'Lima pilar solusi telemetri Beacon Engineering: Water Security, Weather Forecast, Early Warning, Infrastructure Security, dan STESY.',
+			heroBadge: 'Ekosistem Solusi',
+			heroTitle: 'Lima Pilar<br/>Pertahanan untuk<br/><span class="gradient-text-animated">Indonesia</span>',
+			heroDesc: 'Dari pemantauan ketinggian air bendungan hingga peringatan dini bencana — solusi Beacon dirancang untuk skenario nyata di lapangan.',
+			explore: 'Eksplor',
+			sectionBadge: 'Ekosistem Lengkap',
+			sectionTitle: 'Dari Sensor ke Dashboard,<br/>Semuanya Kami Tangani.',
+			sectionDesc: 'Setiap pilar saling terhubung dalam satu ekosistem. Pilih sesuai kebutuhan, integrasikan di satu platform.',
+			learn: 'Pelajari',
+			ctaBadge: 'Next Step',
+			ctaTitle: 'Mulai Proyek dengan Beacon',
+			ctaDesc: 'Tim engineer kami akan merancang arsitektur telemetri yang tepat dan menghitung kebutuhan riil proyek Anda.',
+			ctaPrimary: 'Konsultasi Beacon',
+			ctaSecondary: 'Jelajahi Produk Lain',
+			whatsappText: 'Halo CS Marketing Beacon, saya ingin konsultasi tentang Beacon untuk proyek saya.',
+			defaultStatLabel: 'Produk'
+		},
+		EN: {
+			metaTitle: 'Solutions - Beacon Engineering',
+			metaDesc: 'Beacon Engineering telemetry solution pillars: Water Security, Weather Forecast, Early Warning, Infrastructure Security, and STESY.',
+			heroBadge: 'Solution Ecosystem',
+			heroTitle: 'Five Defense<br/>Pillars for<br/><span class="gradient-text-animated">Indonesia</span>',
+			heroDesc: 'From dam water-level monitoring to disaster early warning, Beacon solutions are designed for real field scenarios.',
+			explore: 'Explore',
+			sectionBadge: 'Complete Ecosystem',
+			sectionTitle: 'From Sensors to Dashboards,<br/>We Handle Everything.',
+			sectionDesc: 'Every pillar is connected in one ecosystem. Choose what fits your needs and integrate it into one platform.',
+			learn: 'Learn More',
+			ctaBadge: 'Next Step',
+			ctaTitle: 'Start a Project with Beacon',
+			ctaDesc: 'Our engineering team will design the right telemetry architecture and calculate your project’s real requirements.',
+			ctaPrimary: 'Consult Beacon',
+			ctaSecondary: 'Explore Other Products',
+			whatsappText: 'Hello Beacon Marketing CS, I would like to consult about Beacon for my project.',
+			defaultStatLabel: 'Products'
+		}
+	};
+	const copy = $derived(pageCopy[$locale]);
+	const consultationUrl = $derived(`https://wa.me/628112632151?text=${encodeURIComponent(copy.whatsappText)}`);
 
 	// Merge API data with editorial metadata (icons, taglines, stats, colors)
 	const solutions = $derived(
@@ -19,7 +62,7 @@
 						href: `/solusi/${s.slug}`,
 						color: s.color || fallback?.color || '#0EA5E9',
 						stat: fallback?.stat ?? String(s.sub_solutions_count),
-						statLabel: fallback?.statLabel ?? 'Produk',
+						statLabel: fallback?.statLabel ?? copy.defaultStatLabel,
 						accent: fallback?.accent ?? 'from-sky-500/10 to-blue-500/5'
 					};
 				})
@@ -48,8 +91,8 @@
 </script>
 
 <svelte:head>
-	<title>Solusi — Beacon Engineering</title>
-	<meta name="description" content="Lima pilar solusi telemetri Beacon Engineering: Water Security, Weather Forecast, Early Warning, Infrastructure Security, dan STESY." />
+	<title>{copy.metaTitle}</title>
+	<meta name="description" content={copy.metaDesc} />
 </svelte:head>
 
 <!-- Hero — SKILL: Asymmetric, gradient text, animated ornaments -->
@@ -81,7 +124,7 @@
 					"
 				>
 					<span class="w-2 h-2 rounded-full bg-[#1B7F3A] animate-pulse-dot"></span>
-					Ekosistem Solusi
+					{copy.heroBadge}
 				</span>
 
 				<h1
@@ -93,7 +136,7 @@
 						transition: all 0.8s cubic-bezier(0.16,1,0.3,1) 0.2s;
 					"
 				>
-					Lima Pilar<br/>Pertahanan untuk<br/><span class="gradient-text-animated">Indonesia</span>
+					{@html copy.heroTitle}
 				</h1>
 
 				<p
@@ -105,7 +148,7 @@
 						transition: all 0.8s cubic-bezier(0.16,1,0.3,1) 0.35s;
 					"
 				>
-					Dari pemantauan ketinggian air bendungan hingga peringatan dini bencana — solusi Beacon dirancang untuk skenario nyata di lapangan.
+					{copy.heroDesc}
 				</p>
 
 				<!-- Quick nav pills -->
@@ -176,7 +219,7 @@
 										<span class="text-[11px] uppercase tracking-wider font-medium ml-1.5" style="color: #9A9A9A;">{sol.statLabel}</span>
 									</div>
 									<a href={sol.href} class="flex items-center gap-2 text-sm font-semibold btn-tactile px-4 py-2 rounded-[12px] transition-all" style="background: {sol.color}; color: white; box-shadow: 0 4px 12px {sol.color}30;">
-										Eksplor <ArrowRight size={14} />
+										{copy.explore} <ArrowRight size={14} />
 									</a>
 								</div>
 							</div>
@@ -197,12 +240,12 @@
 	<div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 		<!-- Section header -->
 		<div class="max-w-2xl mb-16">
-			<span class="text-xs font-semibold uppercase tracking-widest" style="color: #C8102E;">Ekosistem Lengkap</span>
+			<span class="text-xs font-semibold uppercase tracking-widest" style="color: #C8102E;">{copy.sectionBadge}</span>
 			<h2 class="font-heading text-3xl sm:text-4xl lg:text-[44px] font-bold mt-3 leading-[1.1]" style="letter-spacing: -0.03em; color: #1A1A1A;">
-				Dari Sensor ke Dashboard,<br/>Semuanya Kami Tangani.
+				{@html copy.sectionTitle}
 			</h2>
 			<p class="text-base leading-relaxed mt-4 max-w-[50ch]" style="color: #5C5C5C;">
-				Setiap pilar saling terhubung dalam satu ekosistem. Pilih sesuai kebutuhan, integrasikan di satu platform.
+				{copy.sectionDesc}
 			</p>
 		</div>
 
@@ -267,7 +310,7 @@
 							</div>
 
 							<span class="flex items-center gap-2 text-sm font-semibold btn-tactile px-5 py-2.5 rounded-xl transition-all" style="background: {sol.color}; color: white; box-shadow: 0 4px 14px {sol.color}40;">
-								Pelajari <ArrowRight size={16} />
+								{copy.learn} <ArrowRight size={16} />
 							</span>
 						</div>
 					</div>
@@ -288,21 +331,21 @@
 			<div class="relative z-10 text-center lg:text-left flex-1 max-w-2xl">
 				<span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest mb-6" style="background: rgba(200,16,46,0.15); color: #FF4D6D; border: 1px solid rgba(200,16,46,0.3);">
 					<span class="w-1.5 h-1.5 rounded-full" style="background: #FF4D6D; box-shadow: 0 0 10px #FF4D6D;"></span>
-					Next Step
+					{copy.ctaBadge}
 				</span>
-				<h2 class="font-heading text-4xl sm:text-5xl font-extrabold text-white tracking-tighter mb-4">Mulai Proyek dengan Beacon</h2>
-				<p class="text-lg text-zinc-400 font-medium">Tim engineer kami akan merancang arsitektur telemetri yang tepat dan menghitung kebutuhan riil proyek Anda.</p>
+				<h2 class="font-heading text-4xl sm:text-5xl font-extrabold text-white tracking-tighter mb-4">{copy.ctaTitle}</h2>
+				<p class="text-lg text-zinc-400 font-medium">{copy.ctaDesc}</p>
 			</div>
 
 			<div class="relative z-10 flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto shrink-0">
-				<a href="https://wa.me/628112632151?text=Halo%20CS%20Marketing%20Beacon%2C%20saya%20ingin%20konsultasi%20tentang%20Beacon%20untuk%20proyek%20saya." target="_blank" rel="noopener"
+				<a href={consultationUrl} target="_blank" rel="noopener"
 					class="w-full sm:w-auto inline-flex justify-center items-center gap-2 px-8 py-4 rounded-full text-sm font-bold text-zinc-950 bg-white transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(255,255,255,0.1)] btn-tactile">
 					<MessageCircle size={18} />
-					Konsultasi Beacon
+					{copy.ctaPrimary}
 				</a>
 				<a href="/solusi" class="w-full sm:w-auto inline-flex justify-center items-center gap-2 px-8 py-4 rounded-full text-sm font-bold text-white transition-all hover:bg-zinc-800 btn-tactile" style="border: 1px solid rgba(255,255,255,0.15);">
 					<ArrowRight size={18} />
-					Jelajahi Produk Lain
+					{copy.ctaSecondary}
 				</a>
 			</div>
 		</div>

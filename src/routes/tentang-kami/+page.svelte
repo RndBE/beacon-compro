@@ -14,11 +14,12 @@
 	} from "@lucide/svelte";
 	import Ornaments from "$lib/components/Ornaments.svelte";
 	import type { ClientSummary, TestimonialSummary } from "$lib/api";
+	import { locale } from "$lib/i18n";
 
 	let { data } = $props();
-	const clients: ClientSummary[] = data.clients ?? [];
-	const cmsTestimonials: TestimonialSummary[] = data.testimonials ?? [];
-	const aboutPage = data.aboutPage;
+	let clients = $derived((data.clients ?? []) as ClientSummary[]);
+	let cmsTestimonials = $derived((data.testimonials ?? []) as TestimonialSummary[]);
+	let aboutPage = $derived(data.aboutPage);
 
 	let timelineVisible = $state(false);
 	let contribVisible = $state(false);
@@ -54,100 +55,381 @@
 		return () => observer.disconnect();
 	});
 
-	// --- Fallback data ---
-	const fallbackTimeline = [
-		{
-			year: "2013",
-			title: "Beacon Didirikan",
-			desc: 'Berawal dari pertanyaan: "Kenapa monitoring infrastruktur strategis Indonesia harus bergantung pada perangkat impor?"',
+	const pageCopy = {
+		ID: {
+			metaTitle: "Tentang Kami — Beacon Engineering",
+			metaDesc:
+				"Beacon Engineering, didirikan 2013, adalah pionir sistem telemetri pintar buatan Indonesia dengan 300+ proyek infrastruktur strategis.",
+			heroBadge: "Tentang Kami",
+			heroTitleBefore: "Mulai dengan",
+			heroTitleAccent: "Satu Pertanyaan.",
+			heroQuestion:
+				'"Kenapa monitoring infrastruktur strategis Indonesia harus selalu bergantung pada perangkat impor?"',
+			heroTagline:
+				"Tiga belas tahun kemudian, jawaban itu terbentang di 300+ lokasi.",
+			heroAlt: "Ilustrasi tim Beacon Engineering",
+			stats: [
+				{ value: "2013", label: "Tahun Berdiri" },
+				{ value: "300+", label: "Sistem Aktif" },
+				{ value: "100%", label: "Riset Lokal" },
+			],
+			visionTitle: "Visi",
+			missionTitle: "Misi",
+			vision:
+				"Menjadi perusahaan teknologi telemetri terdepan di Indonesia yang memberikan solusi monitoring real-time terpercaya untuk infrastruktur strategis negara.",
+			missions: [
+				"Mengembangkan produk telemetri berkualitas tinggi dengan hak cipta lokal",
+				"Menyediakan after-sales support terbaik melalui tim teknis Indonesia",
+				"Mengintegrasikan AI dan IoT dalam ekosistem monitoring STESY",
+				"Mendukung program nasional pengelolaan sumber daya air dan bencana",
+			],
+			contributionBadge: "Bidang Kontribusi",
+			contributionTitle: "Tiga Pilar Kontribusi Beacon",
+			timelineBadge: "Perjalanan",
+			timelineTitle: "Timeline Beacon Engineering",
+			timelineDesc:
+				"Dari garasi kecil di Yogyakarta hingga mengamankan infrastruktur strategis nasional.",
+			certBadge: "Standar Kualitas",
+			certTitlePrefix: "Sertifikasi &",
+			certTitleAccent: "HAKI",
+			certDesc:
+				"Berkomitmen pada standar kualitas dan keamanan internasional dalam setiap lini produk telemetri kami.",
+			certifications: [
+				{
+					title: "ISO 9001:2025",
+					subtitle: "Manajemen Mutu",
+					desc: "Standar internasional untuk sistem manajemen mutu R&D dan manufaktur perangkat.",
+					status: "Certified",
+				},
+				{
+					title: "ISO 27001",
+					subtitle: "Keamanan Informasi",
+					desc: "Jaminan keamanan data tingkat tinggi untuk arsitektur STESY dan perlindungan data klien.",
+					status: "Certified",
+				},
+				{
+					title: "ISO 30141",
+					subtitle: "IoT Architecture",
+					desc: "Kepatuhan arsitektur standar sistem Internet of Things (IoT) berskala enterprise.",
+					status: "Certified",
+				},
+				{
+					title: "HAKI Terdaftar",
+					subtitle: "Kekayaan Intelektual",
+					desc: "Desain industri dan algoritma perangkat lunak kami telah terlindungi secara hukum nasional.",
+					status: "Registered",
+				},
+			],
+			clientsBadge: "Mitra & Klien",
+			clientsTitle: "Dipercaya Institusi",
+			clientsTitleMuted: "& Korporasi Strategis.",
+			clientsStat: "Mitra & Klien Aktif",
+			clientCategories: [
+				{ id: "semua", label: "Semua" },
+				{ id: "sda", label: "Instansi SDA" },
+				{ id: "bumn", label: "BUMN / Konstruksi" },
+				{ id: "swasta", label: "Swasta / Industri" },
+				{ id: "mitra", label: "Mitra / Distributor" },
+				{ id: "pendidikan", label: "Pendidikan / Riset" },
+			],
+			emptyClients: "Belum ada data untuk kategori ini.",
+			testimonialBadge: "Testimoni",
+			testimonialTitle: "Suara Mitra yang",
+			testimonialTitleMuted: "Bekerja di Lapangan.",
+			testimonialDesc:
+				"Testimoni ini merangkum hal yang paling penting bagi tim lapangan: data yang presisi, perangkat yang tahan kondisi ekstrem, dan dukungan teknis yang bisa dijangkau saat dibutuhkan.",
+			showLessTestimonials: "Tampilkan lebih ringkas",
+			showMoreTestimonials: (count: number) => `Lihat ${count} testimoni lainnya`,
+			officeBadge: "Kantor Kami",
+			officeTitle: "Dirancang & Dirakit",
+			officeTitleMuted: "di Yogyakarta",
+			officeDesc:
+				"Seluruh kegiatan R&D, produksi, dan support teknis kami berpusat secara mandiri di Daerah Istimewa Yogyakarta.",
+			hqLabel: "Alamat HQ",
 		},
-		{
-			year: "2015",
-			title: "Produk Pertama",
-			desc: "AWLR generasi pertama berhasil dipasang di pos hidrologi Jawa Tengah.",
+		EN: {
+			metaTitle: "About Us — Beacon Engineering",
+			metaDesc:
+				"Beacon Engineering, founded in 2013, is an Indonesian pioneer in smart telemetry systems with 300+ strategic infrastructure projects.",
+			heroBadge: "About Us",
+			heroTitleBefore: "It Started with",
+			heroTitleAccent: "One Question.",
+			heroQuestion:
+				'"Why should Indonesia\'s strategic infrastructure monitoring always depend on imported devices?"',
+			heroTagline:
+				"Thirteen years later, the answer now spans 300+ locations.",
+			heroAlt: "Beacon Engineering team illustration",
+			stats: [
+				{ value: "2013", label: "Founded" },
+				{ value: "300+", label: "Active Systems" },
+				{ value: "100%", label: "Local R&D" },
+			],
+			visionTitle: "Vision",
+			missionTitle: "Mission",
+			vision:
+				"To become Indonesia's leading telemetry technology company, delivering trusted real-time monitoring solutions for the nation's strategic infrastructure.",
+			missions: [
+				"Develop high-quality telemetry products backed by local intellectual property",
+				"Provide reliable after-sales support through Indonesia-based technical teams",
+				"Integrate AI and IoT into the STESY monitoring ecosystem",
+				"Support national water-resource management and disaster mitigation programs",
+			],
+			contributionBadge: "Contribution Areas",
+			contributionTitle: "Beacon's Three Contribution Pillars",
+			timelineBadge: "Journey",
+			timelineTitle: "Beacon Engineering Timeline",
+			timelineDesc:
+				"From a small garage in Yogyakarta to safeguarding national strategic infrastructure.",
+			certBadge: "Quality Standards",
+			certTitlePrefix: "Certifications &",
+			certTitleAccent: "IP Rights",
+			certDesc:
+				"Committed to international quality and security standards across every line of our telemetry products.",
+			certifications: [
+				{
+					title: "ISO 9001:2025",
+					subtitle: "Quality Management",
+					desc: "International standard for quality management in R&D and device manufacturing.",
+					status: "Certified",
+				},
+				{
+					title: "ISO 27001",
+					subtitle: "Information Security",
+					desc: "High-level data security assurance for STESY architecture and client data protection.",
+					status: "Certified",
+				},
+				{
+					title: "ISO 30141",
+					subtitle: "IoT Architecture",
+					desc: "Compliance with enterprise-scale Internet of Things (IoT) architecture standards.",
+					status: "Certified",
+				},
+				{
+					title: "Registered IP",
+					subtitle: "Intellectual Property",
+					desc: "Our industrial designs and software algorithms are protected under national law.",
+					status: "Registered",
+				},
+			],
+			clientsBadge: "Partners & Clients",
+			clientsTitle: "Trusted by Institutions",
+			clientsTitleMuted: "& Strategic Corporations.",
+			clientsStat: "Active Partners & Clients",
+			clientCategories: [
+				{ id: "semua", label: "All" },
+				{ id: "sda", label: "Water Agencies" },
+				{ id: "bumn", label: "SOEs / Construction" },
+				{ id: "swasta", label: "Private / Industry" },
+				{ id: "mitra", label: "Partners / Distributors" },
+				{ id: "pendidikan", label: "Education / Research" },
+			],
+			emptyClients: "No data is available for this category yet.",
+			testimonialBadge: "Testimonials",
+			testimonialTitle: "Voices from Partners",
+			testimonialTitleMuted: "Working in the Field.",
+			testimonialDesc:
+				"These testimonials capture what matters most to field teams: precise data, devices built for extreme conditions, and technical support that remains reachable when needed.",
+			showLessTestimonials: "Show fewer testimonials",
+			showMoreTestimonials: (count: number) => `View ${count} more testimonials`,
+			officeBadge: "Our Office",
+			officeTitle: "Designed & Assembled",
+			officeTitleMuted: "in Yogyakarta",
+			officeDesc:
+				"All of our R&D, production, and technical support activities are independently centered in the Special Region of Yogyakarta.",
+			hqLabel: "HQ Address",
 		},
-		{
-			year: "2017",
-			title: "Hak Cipta & Sertifikasi",
-			desc: "Mendapatkan hak cipta produk dan sertifikasi standar nasional.",
-		},
-		{
-			year: "2019",
-			title: "100 Proyek",
-			desc: "Milestone 100 proyek tercapai. Ekspansi ke Kalimantan dan Sulawesi.",
-		},
-		{
-			year: "2021",
-			title: "STESY Diluncurkan",
-			desc: "Platform Smart Telemetry System hadir untuk menyatukan seluruh perangkat dalam satu dashboard.",
-		},
-		{
-			year: "2023",
-			title: "Proyek IKN & Ijen",
-			desc: "Dipercaya untuk monitoring Bendungan IKN dan Kawah Ijen — bukti kematangan teknologi.",
-		},
-		{
-			year: "2024",
-			title: "300+ Proyek",
-			desc: "Tersebar dari Aceh sampai Papua, 200+ partner, 30+ BBWS & BUMN.",
-		},
-		{
-			year: "2026",
-			title: "STESY 3.0 & AI",
-			desc: "Mengintegrasikan AI analytics dan prediktif monitoring ke dalam ekosistem STESY.",
-		},
-	];
+	};
 
-	const fallbackContributions = [
-		{
-			icon: Target,
-			title: "Water Management",
-			desc: "Monitoring ketinggian muka air, debit, dan kualitas air sungai serta bendungan di seluruh Indonesia.",
-			metric: "200+",
-			metricLabel: "Stasiun Air",
-		},
-		{
-			icon: Eye,
-			title: "Dam Safety",
-			desc: "Sistem deformation recorder dan vibrating wire untuk memantau keamanan struktur bendungan 24/7.",
-			metric: "50+",
-			metricLabel: "Bendungan",
-		},
-		{
-			icon: Building2,
-			title: "Structure Monitoring",
-			desc: "Pengawasan kondisi aset, getaran, akses lapangan, dan pergerakan struktur kritis untuk infrastruktur BUMN.",
-			metric: "30+",
-			metricLabel: "Struktur Kritis",
-		},
-	];
+	const fallbackTimeline = {
+		ID: [
+			{
+				year: "2013",
+				title: "Beacon Didirikan",
+				desc: 'Berawal dari pertanyaan: "Kenapa monitoring infrastruktur strategis Indonesia harus bergantung pada perangkat impor?"',
+			},
+			{
+				year: "2015",
+				title: "Produk Pertama",
+				desc: "AWLR generasi pertama berhasil dipasang di pos hidrologi Jawa Tengah.",
+			},
+			{
+				year: "2017",
+				title: "Hak Cipta & Sertifikasi",
+				desc: "Mendapatkan hak cipta produk dan sertifikasi standar nasional.",
+			},
+			{
+				year: "2019",
+				title: "100 Proyek",
+				desc: "Milestone 100 proyek tercapai. Ekspansi ke Kalimantan dan Sulawesi.",
+			},
+			{
+				year: "2021",
+				title: "STESY Diluncurkan",
+				desc: "Platform Smart Telemetry System hadir untuk menyatukan seluruh perangkat dalam satu dashboard.",
+			},
+			{
+				year: "2023",
+				title: "Proyek IKN & Ijen",
+				desc: "Dipercaya untuk monitoring Bendungan IKN dan Kawah Ijen — bukti kematangan teknologi.",
+			},
+			{
+				year: "2024",
+				title: "300+ Proyek",
+				desc: "Tersebar dari Aceh sampai Papua, 200+ partner, 30+ BBWS & BUMN.",
+			},
+			{
+				year: "2026",
+				title: "STESY 3.0 & AI",
+				desc: "Mengintegrasikan AI analytics dan prediktif monitoring ke dalam ekosistem STESY.",
+			},
+		],
+		EN: [
+			{
+				year: "2013",
+				title: "Beacon Founded",
+				desc: 'Started with one question: "Why should Indonesia\'s strategic infrastructure monitoring depend on imported devices?"',
+			},
+			{
+				year: "2015",
+				title: "First Product",
+				desc: "The first-generation AWLR was successfully installed at a hydrology station in Central Java.",
+			},
+			{
+				year: "2017",
+				title: "Copyrights & Certification",
+				desc: "Received product copyrights and national standard certifications.",
+			},
+			{
+				year: "2019",
+				title: "100 Projects",
+				desc: "Reached the 100-project milestone, with expansion to Kalimantan and Sulawesi.",
+			},
+			{
+				year: "2021",
+				title: "STESY Launched",
+				desc: "The Smart Telemetry System platform was introduced to unify all devices in one dashboard.",
+			},
+			{
+				year: "2023",
+				title: "IKN & Ijen Projects",
+				desc: "Trusted for IKN Dam and Ijen Crater monitoring, proving the maturity of our technology.",
+			},
+			{
+				year: "2024",
+				title: "300+ Projects",
+				desc: "Deployed from Aceh to Papua, with 200+ partners and 30+ river basin agencies and SOEs.",
+			},
+			{
+				year: "2026",
+				title: "STESY 3.0 & AI",
+				desc: "Integrating AI analytics and predictive monitoring into the STESY ecosystem.",
+			},
+		],
+	};
 
-	const fallbackTestimonials = [
-		{
-			name: "Prahasdipta Bayu Adhi Koesoemo",
-			position: "Kepala Satuan Unit Pengelola Bendungan Ciawi-Sukamahi-Gintung",
-			organization: "BBWS Ciliwung-Cisadane",
-			quote: "Perangkat ADR dari Beacon memberikan presisi data deformasi yang sangat kami butuhkan untuk monitoring keamanan bendungan secara real-time. Respons tim teknis mereka terhadap kebutuhan di lapangan sangat cepat dan profesional.",
-			initials: "PB",
-			photo: null,
-		},
-		{
-			name: "Ali Sukali, S.Sos, S.T, M.Si",
-			position: "PPK Bendungan II",
-			organization: "Kementerian PUPR",
-			quote: "Mitra yang berkomitmen terhadap kualitas buatan anak negeri. Beacon membuktikan bahwa produk lokal mampu bersaing dengan impor, bahkan dalam hal after-sales support jauh lebih unggul karena tim teknisnya ada di Indonesia.",
-			initials: "AS",
-			photo: null,
-		},
-		{
-			name: "Seto Ariwibowo, ST. MT.",
-			position: "PPKom Operasi & Pemeliharaan Pos Hidrologi",
-			organization: "BBWS Serayu Opak",
-			quote: "Akurasi dan konektivitas perangkat Beacon sudah teruji di berbagai kondisi lapangan yang ekstrem. Data terkirim real-time 24 jam, dan ketika ada kendala, tim support selalu bisa diandalkan untuk penyelesaian cepat.",
-			initials: "SA",
-			photo: null,
-		},
-	];
+	const fallbackContributions = {
+		ID: [
+			{
+				icon: Target,
+				title: "Water Management",
+				desc: "Monitoring ketinggian muka air, debit, dan kualitas air sungai serta bendungan di seluruh Indonesia.",
+				metric: "200+",
+				metricLabel: "Stasiun Air",
+			},
+			{
+				icon: Eye,
+				title: "Dam Safety",
+				desc: "Sistem deformation recorder dan vibrating wire untuk memantau keamanan struktur bendungan 24/7.",
+				metric: "50+",
+				metricLabel: "Bendungan",
+			},
+			{
+				icon: Building2,
+				title: "Structure Monitoring",
+				desc: "Pengawasan kondisi aset, getaran, akses lapangan, dan pergerakan struktur kritis untuk infrastruktur BUMN.",
+				metric: "30+",
+				metricLabel: "Struktur Kritis",
+			},
+		],
+		EN: [
+			{
+				icon: Target,
+				title: "Water Management",
+				desc: "Monitoring water level, discharge, and water quality across rivers and dams throughout Indonesia.",
+				metric: "200+",
+				metricLabel: "Water Stations",
+			},
+			{
+				icon: Eye,
+				title: "Dam Safety",
+				desc: "Deformation recorder and vibrating wire systems for 24/7 monitoring of dam structure safety.",
+				metric: "50+",
+				metricLabel: "Dams",
+			},
+			{
+				icon: Building2,
+				title: "Structure Monitoring",
+				desc: "Monitoring asset condition, vibration, field access, and critical structural movement for SOE infrastructure.",
+				metric: "30+",
+				metricLabel: "Critical Structures",
+			},
+		],
+	};
+
+	const fallbackTestimonials = {
+		ID: [
+			{
+				name: "Prahasdipta Bayu Adhi Koesoemo",
+				position: "Kepala Satuan Unit Pengelola Bendungan Ciawi-Sukamahi-Gintung",
+				organization: "BBWS Ciliwung-Cisadane",
+				quote: "Perangkat ADR dari Beacon memberikan presisi data deformasi yang sangat kami butuhkan untuk monitoring keamanan bendungan secara real-time. Respons tim teknis mereka terhadap kebutuhan di lapangan sangat cepat dan profesional.",
+				initials: "PB",
+				photo: null,
+			},
+			{
+				name: "Ali Sukali, S.Sos, S.T, M.Si",
+				position: "PPK Bendungan II",
+				organization: "Kementerian PUPR",
+				quote: "Mitra yang berkomitmen terhadap kualitas buatan anak negeri. Beacon membuktikan bahwa produk lokal mampu bersaing dengan impor, bahkan dalam hal after-sales support jauh lebih unggul karena tim teknisnya ada di Indonesia.",
+				initials: "AS",
+				photo: null,
+			},
+			{
+				name: "Seto Ariwibowo, ST. MT.",
+				position: "PPKom Operasi & Pemeliharaan Pos Hidrologi",
+				organization: "BBWS Serayu Opak",
+				quote: "Akurasi dan konektivitas perangkat Beacon sudah teruji di berbagai kondisi lapangan yang ekstrem. Data terkirim real-time 24 jam, dan ketika ada kendala, tim support selalu bisa diandalkan untuk penyelesaian cepat.",
+				initials: "SA",
+				photo: null,
+			},
+		],
+		EN: [
+			{
+				name: "Prahasdipta Bayu Adhi Koesoemo",
+				position: "Head of Ciawi-Sukamahi-Gintung Dam Management Unit",
+				organization: "BBWS Ciliwung-Cisadane",
+				quote: "Beacon's ADR device delivers the deformation data precision we need for real-time dam safety monitoring. Their technical team's response to field requirements is fast and professional.",
+				initials: "PB",
+				photo: null,
+			},
+			{
+				name: "Ali Sukali, S.Sos, S.T, M.Si",
+				position: "Commitment-Making Officer for Dam II",
+				organization: "Ministry of Public Works and Housing",
+				quote: "A partner committed to the quality of Indonesian-made products. Beacon proves that local products can compete with imports, especially with stronger after-sales support because the technical team is based in Indonesia.",
+				initials: "AS",
+				photo: null,
+			},
+			{
+				name: "Seto Ariwibowo, ST. MT.",
+				position: "Commitment-Making Officer for Hydrology Station Operations & Maintenance",
+				organization: "BBWS Serayu Opak",
+				quote: "Beacon's device accuracy and connectivity have been proven across extreme field conditions. Data is transmitted in real time around the clock, and the support team can always be relied on for fast resolution.",
+				initials: "SA",
+				photo: null,
+			},
+		],
+	};
 
 	// Icon mapping for dynamic data
 	const iconMap: Record<string, any> = {
@@ -160,30 +442,29 @@
 	};
 
 	// --- Dynamic data with fallbacks ---
+	const copy = $derived(pageCopy[$locale]);
+	const useCmsContent = $derived($locale === "ID");
+
 	const timeline = $derived(
-		aboutPage?.milestones && aboutPage.milestones.length > 0
+		useCmsContent && aboutPage?.milestones && aboutPage.milestones.length > 0
 			? aboutPage.milestones
-			: fallbackTimeline
+			: fallbackTimeline[$locale]
 	);
 
 	const visiText = $derived(
-		aboutPage?.visi
-			?? 'Menjadi perusahaan teknologi telemetri terdepan di Indonesia yang memberikan solusi monitoring real-time terpercaya untuk infrastruktur strategis negara.'
+		useCmsContent && aboutPage?.visi
+			? aboutPage.visi
+			: copy.vision
 	);
 
 	const misiList = $derived(
-		aboutPage?.misi && aboutPage.misi.length > 0
+		useCmsContent && aboutPage?.misi && aboutPage.misi.length > 0
 			? aboutPage.misi
-			: [
-				"Mengembangkan produk telemetri berkualitas tinggi dengan hak cipta lokal",
-				"Menyediakan after-sales support terbaik melalui tim teknis Indonesia",
-				"Mengintegrasikan AI dan IoT dalam ekosistem monitoring STESY",
-				"Mendukung program nasional pengelolaan sumber daya air dan bencana"
-			]
+			: copy.missions
 	);
 
 	const contributions = $derived(
-		aboutPage?.contributions && aboutPage.contributions.length > 0
+		useCmsContent && aboutPage?.contributions && aboutPage.contributions.length > 0
 			? aboutPage.contributions.map((c: any) => ({
 				icon: iconMap[c.icon_name] ?? Target,
 				title: c.title,
@@ -191,18 +472,11 @@
 				metric: c.metric,
 				metricLabel: c.metric_label,
 			}))
-			: fallbackContributions
+			: fallbackContributions[$locale]
 	);
 
 	// Kategori client
-	const kategoriList = [
-		{ id: "semua", label: "Semua" },
-		{ id: "sda", label: "Instansi SDA" },
-		{ id: "bumn", label: "BUMN / Konstruksi" },
-		{ id: "swasta", label: "Swasta / Industri" },
-		{ id: "mitra", label: "Mitra / Distributor" },
-		{ id: "pendidikan", label: "Pendidikan / Riset" },
-	];
+	const kategoriList = $derived(copy.clientCategories);
 
 	function getKategori(name: string): string {
 		if (/^(BBWS|BWS|Dinas|Perum\.|SDA ESDM)/.test(name)) return "sda";
@@ -220,7 +494,7 @@
 	);
 
 	const testimonials = $derived(
-		cmsTestimonials.length > 0
+		useCmsContent && cmsTestimonials.length > 0
 			? cmsTestimonials.map((item) => ({
 					name: item.name,
 					position: item.position ?? "",
@@ -229,7 +503,7 @@
 					initials: item.initials,
 					photo: item.photo,
 				}))
-			: fallbackTestimonials,
+			: fallbackTestimonials[$locale],
 	);
 
 	const featuredTestimonial = $derived(testimonials[0]);
@@ -243,10 +517,10 @@
 </script>
 
 <svelte:head>
-	<title>Tentang Kami — Beacon Engineering</title>
+	<title>{copy.metaTitle}</title>
 	<meta
 		name="description"
-		content="Beacon Engineering, didirikan 2013, adalah pionir sistem telemetri pintar buatan Indonesia dengan 300+ proyek infrastruktur strategis."
+		content={copy.metaDesc}
 	/>
 </svelte:head>
 
@@ -284,7 +558,7 @@
 					<span
 						class="text-xs font-mono font-semibold uppercase tracking-[0.2em] text-[#C8102E]"
 					>
-						Tentang Kami
+						{copy.heroBadge}
 					</span>
 				</div>
 
@@ -292,22 +566,20 @@
 					class="font-heading text-4xl md:text-5xl lg:text-[52px] xl:text-[60px] font-extrabold tracking-tighter leading-[1.06] mb-6"
 					style="color: #1A1A1A;"
 				>
-					Mulai dengan <br />
-					<span style="color: #C8102E;">Satu Pertanyaan.</span>
+					{copy.heroTitleBefore} <br />
+					<span style="color: #C8102E;">{copy.heroTitleAccent}</span>
 				</h1>
 
 				<p
 					class="text-base md:text-lg text-gray-600 leading-relaxed max-w-[52ch] mb-4"
 				>
-					"Kenapa monitoring infrastruktur strategis Indonesia harus
-					selalu bergantung pada perangkat impor?"
+					{copy.heroQuestion}
 				</p>
 				<p
 					class="text-base md:text-lg font-semibold"
 					style="color: #C8102E;"
 				>
-					Tiga belas tahun kemudian, jawaban itu terbentang di 300+
-					lokasi.
+					{copy.heroTagline}
 				</p>
 
 				<!-- Stat strip -->
@@ -319,13 +591,13 @@
 							class="font-heading text-2xl font-extrabold tabular-nums"
 							style="color: #1A1A1A; letter-spacing: -0.03em;"
 						>
-							2013
+							{copy.stats[0].value}
 						</p>
 						<p
 							class="text-xs font-medium mt-0.5"
 							style="color: #7A7A7A;"
 						>
-							Tahun Berdiri
+							{copy.stats[0].label}
 						</p>
 					</div>
 					<div class="w-px h-8 bg-[#E5E5E5]"></div>
@@ -334,13 +606,13 @@
 							class="font-heading text-2xl font-extrabold tabular-nums"
 							style="color: #1A1A1A; letter-spacing: -0.03em;"
 						>
-							300+
+							{copy.stats[1].value}
 						</p>
 						<p
 							class="text-xs font-medium mt-0.5"
 							style="color: #7A7A7A;"
 						>
-							Sistem Aktif
+							{copy.stats[1].label}
 						</p>
 					</div>
 					<div class="w-px h-8 bg-[#E5E5E5]"></div>
@@ -349,13 +621,13 @@
 							class="font-heading text-2xl font-extrabold tabular-nums"
 							style="color: #1A1A1A; letter-spacing: -0.03em;"
 						>
-							100%
+							{copy.stats[2].value}
 						</p>
 						<p
 							class="text-xs font-medium mt-0.5"
 							style="color: #7A7A7A;"
 						>
-							Riset Lokal
+							{copy.stats[2].label}
 						</p>
 					</div>
 				</div>
@@ -380,7 +652,7 @@
 				>
 					<img
 						src="/ilustrasi_tentang_kami.webp"
-						alt="Ilustrasi tim Beacon Engineering"
+						alt={copy.heroAlt}
 						class="w-full h-auto object-contain select-none"
 						draggable="false"
 					/>
@@ -418,7 +690,7 @@
 					<h3
 						class="font-heading text-3xl font-bold text-zinc-950 tracking-tight mb-5"
 					>
-						Visi
+						{copy.visionTitle}
 					</h3>
 					<p
 						class="text-lg leading-relaxed font-semibold text-zinc-700"
@@ -447,7 +719,7 @@
 					<h3
 						class="font-heading text-3xl font-bold text-zinc-950 tracking-tight mb-6"
 					>
-						Misi
+						{copy.missionTitle}
 					</h3>
 					<ul class="space-y-4">
 						{#each misiList as mission}
@@ -483,18 +755,19 @@
 				<span
 					class="text-xs font-mono font-semibold uppercase tracking-[0.2em] text-[#C8102E]"
 				>
-					Bidang Kontribusi
+					{copy.contributionBadge}
 				</span>
 			</div>
 			<h2
 				class="font-heading text-4xl sm:text-5xl lg:text-[56px] font-bold leading-[1.05] tracking-tight text-zinc-950"
 			>
-				Tiga Pilar Kontribusi Beacon
+				{copy.contributionTitle}
 			</h2>
 		</div>
 
 		<div class="space-y-8">
 			{#each contributions as item, i}
+				{@const ItemIcon = item.icon}
 				<div
 					class="group flex flex-col md:flex-row gap-0 rounded-[2rem] overflow-hidden transition-all duration-500 hover:shadow-[0_20px_40px_-15px_rgba(200,16,46,0.15)] hover:-translate-y-1 relative"
 					style="
@@ -554,11 +827,7 @@
 								class="w-16 h-16 rounded-[20px] flex items-center justify-center shrink-0 transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-3 shadow-sm border border-zinc-100"
 								style="background: #FBE9EC;"
 							>
-								<svelte:component
-									this={item.icon}
-									size={28}
-									style="color: #C8102E;"
-								/>
+								<ItemIcon size={28} style="color: #C8102E;" />
 							</div>
 							<div class="flex-1 mt-2 sm:mt-0">
 								<h3
@@ -591,17 +860,16 @@
 					<span
 						class="text-xs font-mono font-semibold uppercase tracking-[0.2em] text-[#C8102E]"
 					>
-						Perjalanan
+						{copy.timelineBadge}
 					</span>
 				</div>
 				<h2
 					class="font-heading text-4xl sm:text-5xl font-bold tracking-tight text-zinc-950 leading-[1.05] mb-5"
 				>
-					Timeline Beacon Engineering
+					{copy.timelineTitle}
 				</h2>
 				<p class="text-lg font-medium leading-relaxed text-zinc-500">
-					Dari garasi kecil di Yogyakarta hingga mengamankan
-					infrastruktur strategis nasional.
+					{copy.timelineDesc}
 				</p>
 			</div>
 
@@ -691,20 +959,19 @@
 					<div class="w-8 h-[1px] bg-[#C8102E]"></div>
 					<span
 						class="text-xs font-mono font-semibold uppercase tracking-[0.2em] text-[#C8102E]"
-						>Standar Kualitas</span
+						>{copy.certBadge}</span
 					>
 				</div>
 				<h2
 					class="font-heading text-4xl sm:text-5xl font-extrabold tracking-tighter text-zinc-950 leading-[1.05]"
 				>
-					Sertifikasi & <span style="color: #C8102E;">HAKI</span>
+					{copy.certTitlePrefix} <span style="color: #C8102E;">{copy.certTitleAccent}</span>
 				</h2>
 			</div>
 			<p
 				class="text-lg font-medium leading-relaxed text-zinc-500 max-w-md"
 			>
-				Berkomitmen pada standar kualitas dan keamanan internasional
-				dalam setiap lini produk telemetri kami.
+				{copy.certDesc}
 			</p>
 		</div>
 
@@ -727,17 +994,16 @@
 					<h3
 						class="font-heading text-2xl font-bold text-zinc-950 tracking-tight mb-2"
 					>
-						ISO 9001:2025
+						{copy.certifications[0].title}
 					</h3>
 					<span
 						class="inline-block text-[11px] font-mono font-bold uppercase tracking-widest text-[#C8102E] mb-4"
-						>Manajemen Mutu</span
+						>{copy.certifications[0].subtitle}</span
 					>
 					<p
 						class="text-sm font-medium leading-relaxed text-zinc-500 flex-1"
 					>
-						Standar internasional untuk sistem manajemen mutu R&D
-						dan manufaktur perangkat.
+						{copy.certifications[0].desc}
 					</p>
 
 					<div
@@ -745,7 +1011,7 @@
 					>
 						<CheckCircle2 size={16} class="text-[#1B7F3A]" />
 						<span class="text-xs font-bold text-zinc-900"
-							>Certified</span
+							>{copy.certifications[0].status}</span
 						>
 					</div>
 				</div>
@@ -769,17 +1035,16 @@
 					<h3
 						class="font-heading text-2xl font-bold text-zinc-950 tracking-tight mb-2"
 					>
-						ISO 27001
+						{copy.certifications[1].title}
 					</h3>
 					<span
 						class="inline-block text-[11px] font-mono font-bold uppercase tracking-widest text-[#C8102E] mb-4"
-						>Keamanan Informasi</span
+						>{copy.certifications[1].subtitle}</span
 					>
 					<p
 						class="text-sm font-medium leading-relaxed text-zinc-500 flex-1"
 					>
-						Jaminan keamanan data tingkat tinggi untuk arsitektur
-						STESY dan perlindungan data klien.
+						{copy.certifications[1].desc}
 					</p>
 
 					<div
@@ -787,7 +1052,7 @@
 					>
 						<CheckCircle2 size={16} class="text-[#1B7F3A]" />
 						<span class="text-xs font-bold text-zinc-900"
-							>Certified</span
+							>{copy.certifications[1].status}</span
 						>
 					</div>
 				</div>
@@ -811,17 +1076,16 @@
 					<h3
 						class="font-heading text-2xl font-bold text-zinc-950 tracking-tight mb-2"
 					>
-						ISO 30141
+						{copy.certifications[2].title}
 					</h3>
 					<span
 						class="inline-block text-[11px] font-mono font-bold uppercase tracking-widest text-[#C8102E] mb-4"
-						>IoT Architecture</span
+						>{copy.certifications[2].subtitle}</span
 					>
 					<p
 						class="text-sm font-medium leading-relaxed text-zinc-500 flex-1"
 					>
-						Kepatuhan arsitektur standar sistem Internet of Things
-						(IoT) berskala enterprise.
+						{copy.certifications[2].desc}
 					</p>
 
 					<div
@@ -829,7 +1093,7 @@
 					>
 						<CheckCircle2 size={16} class="text-[#1B7F3A]" />
 						<span class="text-xs font-bold text-zinc-900"
-							>Certified</span
+							>{copy.certifications[2].status}</span
 						>
 					</div>
 				</div>
@@ -856,17 +1120,16 @@
 					<h3
 						class="font-heading text-2xl font-bold text-white tracking-tight mb-2"
 					>
-						HAKI Terdaftar
+						{copy.certifications[3].title}
 					</h3>
 					<span
 						class="inline-block text-[11px] font-mono font-bold uppercase tracking-widest text-zinc-400 mb-4"
-						>Kekayaan Intelektual</span
+						>{copy.certifications[3].subtitle}</span
 					>
 					<p
 						class="text-sm font-medium leading-relaxed text-zinc-400 flex-1"
 					>
-						Desain industri dan algoritma perangkat lunak kami telah
-						terlindungi secara hukum nasional.
+						{copy.certifications[3].desc}
 					</p>
 
 					<div
@@ -874,7 +1137,7 @@
 					>
 						<CheckCircle2 size={16} class="text-emerald-500" />
 						<span class="text-xs font-bold text-white"
-							>Registered</span
+							>{copy.certifications[3].status}</span
 						>
 					</div>
 				</div>
@@ -904,14 +1167,14 @@
 					<div class="w-8 h-[1px] bg-[#C8102E]"></div>
 					<span
 						class="text-xs font-mono font-semibold uppercase tracking-[0.2em] text-[#C8102E]"
-						>Mitra & Klien</span
+						>{copy.clientsBadge}</span
 					>
 				</div>
 				<h2
 					class="font-heading text-4xl sm:text-5xl lg:text-[56px] font-bold leading-[1.05] tracking-tight text-zinc-950"
 				>
-					Dipercaya Institusi <br /><span class="text-zinc-400"
-						>& Korporasi Strategis.</span
+					{copy.clientsTitle} <br /><span class="text-zinc-400"
+						>{copy.clientsTitleMuted}</span
 					>
 				</h2>
 			</div>
@@ -923,7 +1186,7 @@
 				>
 				<span
 					class="text-sm font-mono font-bold uppercase tracking-[0.2em] text-zinc-400"
-					>Mitra & Klien Aktif</span
+					>{copy.clientsStat}</span
 				>
 			</div>
 		</div>
@@ -1012,7 +1275,7 @@
 					<Building2 size={28} style="color: #C8102E;" />
 				</div>
 				<p class="text-base font-medium text-zinc-400">
-					Belum ada data untuk kategori ini.
+					{copy.emptyClients}
 				</p>
 			</div>
 		{/if}
@@ -1042,19 +1305,17 @@
 					<div class="w-8 h-[1px] bg-[#C8102E]"></div>
 					<span
 						class="text-xs font-mono font-semibold uppercase tracking-[0.2em] text-[#C8102E]"
-						>Testimoni</span
+						>{copy.testimonialBadge}</span
 					>
 				</div>
 				<h2
 					class="font-heading text-4xl sm:text-5xl lg:text-[58px] font-extrabold tracking-tighter leading-[1.05] text-zinc-950"
 				>
-					Suara Mitra yang <span class="text-zinc-400">Bekerja di Lapangan.</span>
+					{copy.testimonialTitle} <span class="text-zinc-400">{copy.testimonialTitleMuted}</span>
 				</h2>
 			</div>
 			<p class="text-base lg:text-lg leading-relaxed text-zinc-600 max-w-[58ch] lg:justify-self-end">
-				Testimoni ini merangkum hal yang paling penting bagi tim lapangan:
-				data yang presisi, perangkat yang tahan kondisi ekstrem, dan dukungan
-				teknis yang bisa dijangkau saat dibutuhkan.
+				{copy.testimonialDesc}
 			</p>
 		</div>
 
@@ -1161,8 +1422,8 @@
 							class="mt-2 sm:col-span-2 inline-flex items-center justify-center rounded-[1.25rem] border border-[#E5E5E5] bg-white px-5 py-4 text-sm font-bold text-zinc-800 transition-all duration-300 hover:-translate-y-1 hover:border-[#C8102E]/40 hover:text-[#C8102E] hover:shadow-[0_16px_32px_-24px_rgba(200,16,46,0.35)] active:scale-[0.98]"
 						>
 							{showAllTestimonials
-								? "Tampilkan lebih ringkas"
-								: `Lihat ${hiddenTestimonialsCount} testimoni lainnya`}
+								? copy.showLessTestimonials
+								: copy.showMoreTestimonials(hiddenTestimonialsCount)}
 						</button>
 					{/if}
 				</div>
@@ -1187,21 +1448,20 @@
 				<span
 					class="text-xs font-mono font-semibold uppercase tracking-[0.2em] text-[#C8102E]"
 				>
-					Kantor Kami
+					{copy.officeBadge}
 				</span>
 			</div>
 			<h2
 				class="font-heading text-4xl sm:text-5xl lg:text-[64px] font-extrabold tracking-tighter text-zinc-950 leading-[1.05] mb-6"
 			>
-				Dirancang & Dirakit <br /><span class="text-zinc-400"
-					>di Yogyakarta</span
+				{copy.officeTitle} <br /><span class="text-zinc-400"
+					>{copy.officeTitleMuted}</span
 				>
 			</h2>
 			<p
 				class="text-xl font-medium leading-relaxed text-zinc-600 mb-10 max-w-[45ch]"
 			>
-				Seluruh kegiatan R&D, produksi, dan support teknis kami berpusat
-				secara mandiri di Daerah Istimewa Yogyakarta.
+				{copy.officeDesc}
 			</p>
 
 			<a
@@ -1219,7 +1479,7 @@
 				<div class="flex flex-col text-left">
 					<span
 						class="text-[11px] font-mono font-bold uppercase tracking-[0.15em] text-zinc-400 mb-0.5"
-						>Alamat HQ</span
+						>{copy.hqLabel}</span
 					>
 					<span
 						class="text-base font-bold text-zinc-900 group-hover:text-[#C8102E] transition-colors"
@@ -1267,26 +1527,8 @@
 		}
 	}
 
-	/* Live dot pulse for Red */
-	.animate-pulse-red {
-		animation: pulseRed 2s ease-in-out infinite;
-	}
-
-	@keyframes pulseRed {
-		0%,
-		100% {
-			opacity: 1;
-			transform: scale(1);
-		}
-		50% {
-			opacity: 0.4;
-			transform: scale(0.7);
-		}
-	}
-
 	@media (prefers-reduced-motion: reduce) {
-		.ws-hero-float,
-		.animate-pulse-red {
+		.ws-hero-float {
 			animation: none !important;
 		}
 	}

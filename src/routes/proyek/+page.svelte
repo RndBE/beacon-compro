@@ -1,17 +1,16 @@
 <script lang="ts">
 	import {
 		MapPin,
-		Calendar,
-		Filter,
 		ArrowRight,
-		SearchX,
 		Inbox,
 		ZoomIn,
 	} from "@lucide/svelte";
 	import Lightbox from '$lib/components/Lightbox.svelte';
+	import { locale } from "$lib/i18n";
 	import type { ProjectListItem } from "./+page.server";
 
 	let { data } = $props();
+	const apiProjects = $derived((data.projects ?? []) as ProjectListItem[]);
 
 	// Lightbox state
 	let lightboxOpen = $state(false);
@@ -26,64 +25,185 @@
 
 	let activeFilter = $state("semua");
 
-	// Fallback hardcoded data
-	const fallbackProjects = [
-		{
-			name: "Telemetri ADR Bendungan Ciawi-Sukamahi",
-			year: "2024",
-			client: "BBWS Ciliwung-Cisadane",
-			location: "Bogor, Jawa Barat",
-			products: ["ADR", "STESY"],
-			category: "Water Security",
-			highlight: "Proyek strategis pengendalian banjir Jakarta",
-			image: "https://picsum.photos/seed/p1/800/600",
+	const pageCopy = {
+		ID: {
+			metaTitle: "Proyek - Beacon Engineering",
+			metaDesc:
+				"300+ proyek telemetri dari Aceh sampai Papua. Lihat track record Beacon Engineering di infrastruktur strategis Indonesia.",
+			badge: "Portfolio",
+			titlePrefix: "300+",
+			titleLine1: "Titik.",
+			titleLine2: "Satu Indonesia.",
+			desc: "Setiap pin di peta ini adalah cerita tentang bendungan yang dijaga, sungai yang dipantau, atau wilayah yang dilindungi dari bencana.",
+			stats: [
+				{ value: "34", label: "Provinsi" },
+				{ value: "12+", label: "Tahun Berpengalaman" },
+				{ value: "5", label: "Kategori Solusi" },
+			],
+			mapAlt:
+				"Peta sebaran monitoring Beacon Engineering di seluruh Indonesia",
+			allFilter: "Semua",
+			emptyTitle: "Belum ada proyek di kategori ini",
+			emptyDesc:
+				"Coba pilih kategori lain, atau lihat semua proyek untuk melihat portfolio lengkap kami.",
+			emptyCta: "Lihat Semua Proyek",
+			zoomAria: "Perbesar gambar proyek",
+			zoomProjectAria: (name: string) => `Perbesar gambar ${name}`,
 		},
-		{
-			name: "Telemetri AWLR Bendungan Sepaku IKN",
-			year: "2024",
-			client: "BWS Kalimantan IV",
-			location: "Kalimantan Timur",
-			products: ["AWLR", "STESY"],
-			category: "Water Security",
-			highlight: "Mendukung infrastruktur Ibu Kota Nusantara",
-			image: "https://picsum.photos/seed/p2/800/600",
+		EN: {
+			metaTitle: "Projects - Beacon Engineering",
+			metaDesc:
+				"300+ telemetry projects from Aceh to Papua. Explore Beacon Engineering's track record across Indonesia's strategic infrastructure.",
+			badge: "Portfolio",
+			titlePrefix: "300+",
+			titleLine1: "Sites.",
+			titleLine2: "One Indonesia.",
+			desc: "Every pin on this map tells a story of dams safeguarded, rivers monitored, or regions protected from disaster risk.",
+			stats: [
+				{ value: "34", label: "Provinces" },
+				{ value: "12+", label: "Years of Experience" },
+				{ value: "5", label: "Solution Categories" },
+			],
+			mapAlt:
+				"Map of Beacon Engineering monitoring deployments across Indonesia",
+			allFilter: "All",
+			emptyTitle: "No projects in this category yet",
+			emptyDesc:
+				"Try another category, or view all projects to see our complete portfolio.",
+			emptyCta: "View All Projects",
+			zoomAria: "Enlarge project image",
+			zoomProjectAria: (name: string) => `Enlarge image for ${name}`,
 		},
-		{
-			name: "Telemetri APLR Kawah Ijen",
-			year: "2023",
-			client: "PT Medco Energi",
-			location: "Banyuwangi, Jawa Timur",
-			products: ["APLR"],
-			category: "Infrastructure Security",
-			highlight: "",
-			image: "https://picsum.photos/seed/p3/800/600",
+	};
+
+	const fallbackProjects = {
+		ID: [
+			{
+				name: "Telemetri ADR Bendungan Ciawi-Sukamahi",
+				year: "2024",
+				client: "BBWS Ciliwung-Cisadane",
+				location: "Bogor, Jawa Barat",
+				products: ["ADR", "STESY"],
+				category: "Water Security",
+				highlight: "Proyek strategis pengendalian banjir Jakarta",
+				image: "https://picsum.photos/seed/p1/800/600",
+			},
+			{
+				name: "Telemetri AWLR Bendungan Sepaku IKN",
+				year: "2024",
+				client: "BWS Kalimantan IV",
+				location: "Kalimantan Timur",
+				products: ["AWLR", "STESY"],
+				category: "Water Security",
+				highlight: "Mendukung infrastruktur Ibu Kota Nusantara",
+				image: "https://picsum.photos/seed/p2/800/600",
+			},
+			{
+				name: "Telemetri APLR Kawah Ijen",
+				year: "2023",
+				client: "PT Medco Energi",
+				location: "Banyuwangi, Jawa Timur",
+				products: ["APLR"],
+				category: "Infrastructure Security",
+				highlight: "",
+				image: "https://picsum.photos/seed/p3/800/600",
+			},
+			{
+				name: "Telemetri AWGC Sungai Cisadane BKC 3",
+				year: "2023",
+				client: "BBWS Ciliwung-Cisadane",
+				location: "Tangerang, Banten",
+				products: ["AWGC", "STESY"],
+				category: "Water Security",
+				highlight: "",
+				image: "https://picsum.photos/seed/p4/800/600",
+			},
+			{
+				name: "Sistem Telemetri Bendungan Keureuto",
+				year: "2023",
+				client: "BWS Sumatera I",
+				location: "Aceh",
+				products: ["AWLR", "ADR", "STESY"],
+				category: "Water Security",
+				highlight: "",
+				image: "https://picsum.photos/seed/p5/800/600",
+			},
+		],
+		EN: [
+			{
+				name: "Ciawi-Sukamahi Dam ADR Telemetry",
+				year: "2024",
+				client: "BBWS Ciliwung-Cisadane",
+				location: "Bogor, West Java",
+				products: ["ADR", "STESY"],
+				category: "Water Security",
+				highlight: "A strategic project for Jakarta flood control",
+				image: "https://picsum.photos/seed/p1/800/600",
+			},
+			{
+				name: "Sepaku IKN Dam AWLR Telemetry",
+				year: "2024",
+				client: "BWS Kalimantan IV",
+				location: "East Kalimantan",
+				products: ["AWLR", "STESY"],
+				category: "Water Security",
+				highlight: "Supporting infrastructure for Indonesia's new capital city",
+				image: "https://picsum.photos/seed/p2/800/600",
+			},
+			{
+				name: "Ijen Crater APLR Telemetry",
+				year: "2023",
+				client: "PT Medco Energi",
+				location: "Banyuwangi, East Java",
+				products: ["APLR"],
+				category: "Infrastructure Security",
+				highlight: "",
+				image: "https://picsum.photos/seed/p3/800/600",
+			},
+			{
+				name: "Cisadane BKC 3 River AWGC Telemetry",
+				year: "2023",
+				client: "BBWS Ciliwung-Cisadane",
+				location: "Tangerang, Banten",
+				products: ["AWGC", "STESY"],
+				category: "Water Security",
+				highlight: "",
+				image: "https://picsum.photos/seed/p4/800/600",
+			},
+			{
+				name: "Keureuto Dam Telemetry System",
+				year: "2023",
+				client: "BWS Sumatera I",
+				location: "Aceh",
+				products: ["AWLR", "ADR", "STESY"],
+				category: "Water Security",
+				highlight: "",
+				image: "https://picsum.photos/seed/p5/800/600",
+			},
+		],
+	};
+
+	const categoryLabels: Record<"ID" | "EN", Record<string, string>> = {
+		ID: {
+			semua: "Semua",
 		},
-		{
-			name: "Telemetri AWGC Sungai Cisadane BKC 3",
-			year: "2023",
-			client: "BBWS Ciliwung-Cisadane",
-			location: "Tangerang, Banten",
-			products: ["AWGC", "STESY"],
-			category: "Water Security",
-			highlight: "",
-			image: "https://picsum.photos/seed/p4/800/600",
+		EN: {
+			semua: "All",
+			"Water Security": "Water Security",
+			"Infrastructure Security": "Infrastructure Security",
+			"Weather Forecast": "Weather Forecast",
+			"Weather & Climate Intelligence": "Weather & Climate Intelligence",
+			"Early Warning": "Early Warning",
+			"Digital Monitoring Platform": "Digital Monitoring Platform",
 		},
-		{
-			name: "Sistem Telemetri Bendungan Keureuto",
-			year: "2023",
-			client: "BWS Sumatera I",
-			location: "Aceh",
-			products: ["AWLR", "ADR", "STESY"],
-			category: "Water Security",
-			highlight: "",
-			image: "https://picsum.photos/seed/p5/800/600",
-		},
-	];
+	};
+
+	const copy = $derived(pageCopy[$locale]);
 
 	// Map API data to the shape the template expects
 	const projects = $derived(
-		data.projects && data.projects.length > 0
-			? data.projects.map((p: ProjectListItem) => ({
+		apiProjects.length > 0
+			? apiProjects.map((p: ProjectListItem) => ({
 					name: p.name,
 					year: p.year,
 					client: p.client_name ?? "",
@@ -95,7 +215,7 @@
 						p.thumbnail ??
 						`https://picsum.photos/seed/${p.slug}/800/600`,
 				}))
-			: fallbackProjects,
+			: fallbackProjects[$locale],
 	);
 
 	// Derive unique categories from data
@@ -117,13 +237,17 @@
 		activeFilter = cat;
 		filterKey++;
 	}
+
+	function categoryLabel(cat: string) {
+		return cat === "semua" ? copy.allFilter : categoryLabels[$locale][cat] ?? cat;
+	}
 </script>
 
 <svelte:head>
-	<title>Proyek — Beacon Engineering</title>
+	<title>{copy.metaTitle}</title>
 	<meta
 		name="description"
-		content="300+ proyek telemetri dari Aceh sampai Papua. Lihat track record Beacon Engineering di infrastruktur strategis Indonesia."
+		content={copy.metaDesc}
 	/>
 	<link rel="canonical" href="https://beaconengineering.co.id/proyek" />
 </svelte:head>
@@ -163,22 +287,20 @@
 				<span
 					class="inline-flex items-center px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-widest mb-6 w-fit"
 					style="background: rgba(200,16,46,0.06); color: #C8102E; border: 1px solid rgba(200,16,46,0.12);"
-					>Portfolio</span
+					>{copy.badge}</span
 				>
 				<h1
 					class="font-heading text-4xl sm:text-5xl lg:text-[56px] xl:text-[64px] font-extrabold leading-[1.04] mb-6"
 					style="letter-spacing: -0.035em; color: #1A1A1A;"
 				>
-					<span class="gradient-text-animated">300+</span> Titik.<br
-					/>Satu Indonesia.
+					<span class="gradient-text-animated">{copy.titlePrefix}</span> {copy.titleLine1}<br
+					/>{copy.titleLine2}
 				</h1>
 				<p
 					class="text-lg leading-relaxed max-w-[48ch]"
 					style="color: #5C5C5C;"
 				>
-					Setiap pin di peta ini adalah cerita tentang bendungan yang
-					dijaga, sungai yang dipantau, atau wilayah yang dilindungi
-					dari bencana.
+					{copy.desc}
 				</p>
 				<!-- Stat strip -->
 				<div
@@ -189,13 +311,13 @@
 							class="font-heading text-2xl font-extrabold tabular-nums"
 							style="color: #1A1A1A; letter-spacing: -0.03em;"
 						>
-							34
+							{copy.stats[0].value}
 						</p>
 						<p
 							class="text-xs font-medium mt-0.5"
 							style="color: #7A7A7A;"
 						>
-							Provinsi
+							{copy.stats[0].label}
 						</p>
 					</div>
 					<div class="w-px h-8 bg-[#E5E5E5]"></div>
@@ -204,13 +326,13 @@
 							class="font-heading text-2xl font-extrabold tabular-nums"
 							style="color: #1A1A1A; letter-spacing: -0.03em;"
 						>
-							12+
+							{copy.stats[1].value}
 						</p>
 						<p
 							class="text-xs font-medium mt-0.5"
 							style="color: #7A7A7A;"
 						>
-							Tahun Berpengalaman
+							{copy.stats[1].label}
 						</p>
 					</div>
 					<div class="w-px h-8 bg-[#E5E5E5]"></div>
@@ -219,13 +341,13 @@
 							class="font-heading text-2xl font-extrabold tabular-nums"
 							style="color: #1A1A1A; letter-spacing: -0.03em;"
 						>
-							5
+							{copy.stats[2].value}
 						</p>
 						<p
 							class="text-xs font-medium mt-0.5"
 							style="color: #7A7A7A;"
 						>
-							Kategori Solusi
+							{copy.stats[2].label}
 						</p>
 					</div>
 				</div>
@@ -250,7 +372,7 @@
 				>
 					<img
 						src="/ilustrasi_peta_indonesia.webp"
-						alt="Peta sebaran monitoring Beacon Engineering di seluruh Indonesia"
+						alt={copy.mapAlt}
 						class="w-full h-auto object-contain select-none"
 						draggable="false"
 					/>
@@ -276,7 +398,7 @@
 					"
 					onclick={() => setFilter(cat)}
 				>
-					{cat === "semua" ? "Semua" : cat}
+					{categoryLabel(cat)}
 				</button>
 			{/each}
 		</div>
@@ -297,21 +419,20 @@
 					class="font-heading text-xl font-bold mb-2"
 					style="color: #1A1A1A;"
 				>
-					Belum ada proyek di kategori ini
+					{copy.emptyTitle}
 				</h3>
 				<p
 					class="text-sm max-w-[40ch] text-center mb-6"
 					style="color: #5C5C5C;"
 				>
-					Coba pilih kategori lain, atau lihat semua proyek untuk
-					melihat portfolio lengkap kami.
+					{copy.emptyDesc}
 				</p>
 				<button
 					class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold text-white btn-tactile"
 					style="background: #C8102E; box-shadow: 0 4px 12px rgba(200,16,46,0.2);"
 					onclick={() => setFilter("semua")}
 				>
-					Lihat Semua Proyek
+					{copy.emptyCta}
 					<ArrowRight size={14} />
 				</button>
 			</div>
@@ -338,7 +459,7 @@
 									class="absolute top-5 right-5 z-30 w-10 h-10 rounded-xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 cursor-zoom-in"
 									style="background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.18); backdrop-filter: blur(8px);"
 									onclick={(e) => { e.stopPropagation(); openLightbox(project.image, project.name); }}
-									aria-label="Perbesar gambar proyek"
+									aria-label={copy.zoomAria}
 								>
 									<ZoomIn size={16} class="text-white" />
 								</button>
@@ -407,7 +528,7 @@
 								<button
 									class="relative w-full h-48 rounded-[16px] overflow-hidden mb-5 bg-zinc-100 cursor-zoom-in block"
 									onclick={(e) => { e.stopPropagation(); openLightbox(project.image, project.name); }}
-									aria-label="Perbesar gambar {project.name}"
+									aria-label={copy.zoomProjectAria(project.name)}
 								>
 									<div
 										class="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-110"
@@ -530,31 +651,13 @@
 		}
 	}
 
-	/* Pulsing red dot for live status badge */
-	.animate-pulse-red {
-		animation: pulseRed 2s ease-in-out infinite;
-	}
-
-	@keyframes pulseRed {
-		0%,
-		100% {
-			opacity: 1;
-			transform: scale(1);
-		}
-		50% {
-			opacity: 0.5;
-			transform: scale(0.7);
-		}
-	}
-
 	@media (prefers-reduced-motion: reduce) {
 		.stagger-item {
 			animation: none !important;
 			opacity: 1;
 		}
 		.hero-map-float,
-		.animate-float-slow,
-		.animate-pulse-red {
+		.animate-float-slow {
 			animation: none !important;
 		}
 	}

@@ -5,11 +5,70 @@
 		ShieldCheck,
 	} from "@lucide/svelte";
 	import Ornaments from "$lib/components/Ornaments.svelte";
+	import { locale } from "$lib/i18n";
 	import { pressureMeasurementProducts as fallbackProducts } from "$lib/data/solutions";
 
 	let { data } = $props();
 	let solutionName = $derived(data.solutionDetail?.solution?.name ?? 'Infrastructure Security');
 	let solutionSlug = $derived(data.solutionDetail?.solution?.slug ?? 'infrastructure-security');
+	const pageCopy = {
+		ID: {
+			metaDescription:
+				"Infrastructure Security Beacon Engineering: proteksi aset kritis melalui instrumentasi keamanan, alarm anomali, dan telemetri lapangan terintegrasi STESY.",
+			title: 'Proteksi Lapangan untuk <br /><span style="color: #059669;">Aset Kritis.</span>',
+			description:
+				"Instrumentasi keamanan untuk fasilitas energi, bendungan, utilitas, dan infrastruktur strategis yang harus tetap terpantau.",
+			emphasis:
+				"Alarm anomali, logging kondisi aset, dan integrasi STESY dari Indonesia.",
+			stats: [
+				{ value: "High", label: "Field Reliability" },
+				{ value: "1/3", label: "Lead Time Integrasi" },
+				{ value: "100%", label: "Local Support" },
+			],
+			heroAlt: "Ilustrasi sistem proteksi infrastruktur",
+			productBadge: "Produk",
+			productTitle: "Proteksi Aset Infrastruktur",
+			detail: "Lihat Detail",
+			ctaBadge: "Next Step",
+			ctaTitle: "Mulai Proyek dengan Beacon",
+			ctaDescription:
+				"Tim engineer kami akan merancang arsitektur telemetri yang tepat dan menghitung kebutuhan riil proyek Anda.",
+			ctaPrimary: "Konsultasi Beacon",
+			ctaSecondary: "Jelajahi Produk Lain",
+			waText:
+				"Halo CS Marketing Beacon, saya ingin konsultasi tentang Beacon untuk proyek saya.",
+		},
+		EN: {
+			metaDescription:
+				"Beacon Engineering Infrastructure Security: protect critical assets through security instrumentation, anomaly alarms, and STESY-integrated field telemetry.",
+			title: 'Field Protection for <br /><span style="color: #059669;">Critical Assets.</span>',
+			description:
+				"Security instrumentation for energy facilities, dams, utilities, and strategic infrastructure that must remain monitored.",
+			emphasis:
+				"Anomaly alarms, asset-condition logging, and STESY integration from Indonesia.",
+			stats: [
+				{ value: "High", label: "Field Reliability" },
+				{ value: "1/3", label: "Integration Lead Time" },
+				{ value: "100%", label: "Local Support" },
+			],
+			heroAlt: "Beacon Engineering infrastructure protection system illustration",
+			productBadge: "Products",
+			productTitle: "Infrastructure Asset Protection",
+			detail: "View Details",
+			ctaBadge: "Next Step",
+			ctaTitle: "Start a Project with Beacon",
+			ctaDescription:
+				"Our engineers will design the right telemetry architecture and estimate the real requirements for your project.",
+			ctaPrimary: "Consult Beacon",
+			ctaSecondary: "Explore Other Products",
+			waText:
+				"Hello Beacon Marketing CS, I want to consult about Beacon for my project.",
+		},
+	};
+	let copy = $derived(pageCopy[$locale]);
+	let consultationUrl = $derived(
+		`https://wa.me/628112632151?text=${encodeURIComponent(copy.waText)}`,
+	);
 
 	const products = $derived(
 		data.solutionDetail?.sub_solutions &&
@@ -38,7 +97,7 @@
 	<title>{solutionName} — Beacon Engineering</title>
 	<meta
 		name="description"
-		content="Infrastructure Security Beacon Engineering: proteksi aset kritis melalui instrumentasi keamanan, alarm anomali, dan telemetri lapangan terintegrasi STESY."
+		content={copy.metaDescription}
 	/>
 </svelte:head>
 
@@ -83,71 +142,44 @@
 					class="font-heading text-4xl md:text-5xl lg:text-[52px] xl:text-[60px] font-extrabold tracking-tighter leading-[1.06] mb-6"
 					style="color: #1A1A1A;"
 				>
-					Proteksi Lapangan untuk <br />
-					<span style="color: #059669;">Aset Kritis.</span>
+					{@html copy.title}
 				</h1>
 
 				<p
 					class="text-base md:text-lg text-gray-600 leading-relaxed max-w-[52ch] mb-4"
 				>
-					Instrumentasi keamanan untuk fasilitas energi, bendungan,
-					utilitas, dan infrastruktur strategis yang harus tetap terpantau.
+					{copy.description}
 				</p>
 				<p
 					class="text-base md:text-lg font-semibold"
 					style="color: #059669;"
 				>
-					Alarm anomali, logging kondisi aset, dan integrasi STESY dari Indonesia.
+					{copy.emphasis}
 				</p>
 
 				<!-- Stat strip -->
 				<div
 					class="flex items-center gap-8 mt-10 pt-8 border-t border-[#E5E5E5]"
 				>
+					{#each copy.stats as stat, i}
 					<div>
 						<p
 							class="font-heading text-2xl font-extrabold tabular-nums"
 							style="color: #1A1A1A; letter-spacing: -0.03em;"
 						>
-							High
+							{stat.value}
 						</p>
 						<p
 							class="text-xs font-medium mt-0.5"
 							style="color: #7A7A7A;"
 						>
-							Field Reliability
+							{stat.label}
 						</p>
 					</div>
-					<div class="w-px h-8 bg-[#E5E5E5]"></div>
-					<div>
-						<p
-							class="font-heading text-2xl font-extrabold tabular-nums"
-							style="color: #1A1A1A; letter-spacing: -0.03em;"
-						>
-							1/3
-						</p>
-						<p
-							class="text-xs font-medium mt-0.5"
-							style="color: #7A7A7A;"
-						>
-							Lead Time Integrasi
-						</p>
-					</div>
-					<div class="w-px h-8 bg-[#E5E5E5]"></div>
-					<div>
-						<p
-							class="font-heading text-2xl font-extrabold tabular-nums"
-							style="color: #1A1A1A; letter-spacing: -0.03em;"
-						>
-							100%
-						</p>
-						<p
-							class="text-xs font-medium mt-0.5"
-							style="color: #7A7A7A;"
-						>
-							Local Support
-						</p>
-					</div>
+					{#if i < copy.stats.length - 1}
+						<div class="w-px h-8 bg-[#E5E5E5]"></div>
+					{/if}
+					{/each}
 				</div>
 			</div>
 
@@ -172,7 +204,7 @@
 						src="/ilustrasi_pressure_measurement.webp"
 						srcset="/images/hero-solutions/pressure_measurement-960.webp 960w, /images/hero-solutions/pressure_measurement-1280.webp 1280w, /ilustrasi_pressure_measurement.webp 1672w"
 						sizes="(min-width: 1280px) 980px, (min-width: 1024px) 860px, 92vw"
-						alt="Ilustrasi sistem proteksi infrastruktur {solutionName} Beacon Engineering"
+						alt="{copy.heroAlt} {solutionName} Beacon Engineering"
 						class="w-full h-auto object-contain select-none"
 						width="1672"
 						height="941"
@@ -191,8 +223,8 @@
 	<Ornaments variant="dense" />
 	<div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 		<div class="max-w-2xl mb-14 space-y-3">
-			<span class="text-xs font-semibold uppercase tracking-widest" style="color: #059669;">Produk {solutionName}</span>
-			<h2 class="font-heading text-3xl sm:text-4xl font-bold leading-[1.1]" style="color: #1A1A1A; letter-spacing: -0.025em;">Proteksi Aset Infrastruktur</h2>
+			<span class="text-xs font-semibold uppercase tracking-widest" style="color: #059669;">{copy.productBadge} {solutionName}</span>
+			<h2 class="font-heading text-3xl sm:text-4xl font-bold leading-[1.1]" style="color: #1A1A1A; letter-spacing: -0.025em;">{copy.productTitle}</h2>
 		</div>
 
 		<div class="grid md:grid-cols-2 gap-6">
@@ -233,7 +265,7 @@
 						</div>
 
 						<div class="flex items-center gap-2 text-sm font-semibold text-[#34D399] group-hover:gap-3 transition-all mt-4">
-							Lihat Detail {product.name}
+							{copy.detail} {product.name}
 							<ArrowRight size={14} />
 						</div>
 					</div>
@@ -255,21 +287,21 @@
 			<div class="relative z-10 text-center lg:text-left flex-1 max-w-2xl">
 				<span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest mb-6" style="background: rgba(200,16,46,0.15); color: #FF4D6D; border: 1px solid rgba(200,16,46,0.3);">
 					<span class="w-1.5 h-1.5 rounded-full" style="background: #FF4D6D; box-shadow: 0 0 10px #FF4D6D;"></span>
-					Next Step
+					{copy.ctaBadge}
 				</span>
-				<h2 class="font-heading text-4xl sm:text-5xl font-extrabold text-white tracking-tighter mb-4">Mulai Proyek dengan Beacon</h2>
-				<p class="text-lg text-zinc-400 font-medium">Tim engineer kami akan merancang arsitektur telemetri yang tepat dan menghitung kebutuhan riil proyek Anda.</p>
+				<h2 class="font-heading text-4xl sm:text-5xl font-extrabold text-white tracking-tighter mb-4">{copy.ctaTitle}</h2>
+				<p class="text-lg text-zinc-400 font-medium">{copy.ctaDescription}</p>
 			</div>
 
 			<div class="relative z-10 flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto shrink-0">
-				<a href="https://wa.me/628112632151?text=Halo%20CS%20Marketing%20Beacon%2C%20saya%20ingin%20konsultasi%20tentang%20Beacon%20untuk%20proyek%20saya." target="_blank" rel="noopener"
+				<a href={consultationUrl} target="_blank" rel="noopener"
 					class="w-full sm:w-auto inline-flex justify-center items-center gap-2 px-8 py-4 rounded-full text-sm font-bold text-zinc-950 bg-white transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(255,255,255,0.1)] btn-tactile">
 					<MessageCircle size={18} />
-					Konsultasi Beacon
+					{copy.ctaPrimary}
 				</a>
 				<a href="/solusi" class="w-full sm:w-auto inline-flex justify-center items-center gap-2 px-8 py-4 rounded-full text-sm font-bold text-white transition-all hover:bg-zinc-800 btn-tactile" style="border: 1px solid rgba(255,255,255,0.15);">
 					<ArrowRight size={18} />
-					Jelajahi Produk Lain
+					{copy.ctaSecondary}
 				</a>
 			</div>
 		</div>

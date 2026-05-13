@@ -12,6 +12,7 @@
 		CheckCircle2,
 		ArrowRight,
 	} from "@lucide/svelte";
+	import { locale } from "$lib/i18n";
 
 	let formData = $state({
 		name: "",
@@ -22,45 +23,333 @@
 		message: "",
 	});
 
-	const partnershipWhatsAppUrl =
-		"https://wa.me/628112632151?text=Halo%20CS%20Marketing%20Beacon%2C%20saya%20ingin%20berdiskusi%20tentang%20kemitraan%20dengan%20Beacon%20Engineering.";
+	const pageCopy = {
+		ID: {
+			metaTitle: "Kontak — Beacon Engineering",
+			metaDesc:
+				"Hubungi tim engineer Beacon Engineering untuk konsultasi gratis tentang solusi telemetri dan monitoring infrastruktur.",
+			heroBadge: "Kontak",
+			heroTitle: "Bicara Langsung dengan",
+			heroAccent: "Engineer Kami.",
+			heroDesc:
+				"Konsultasi pertama selalu gratis. Kami akan bantu memetakan kebutuhan monitoring Anda.",
+			heroEmphasis: "Menyarankan konfigurasi, dan memberikan estimasi.",
+			heroAlt: "Ilustrasi kontak Beacon Engineering",
+			stats: [
+				{ value: "24/7", label: "Customer Support" },
+				{ value: "08:00", label: "Jam Buka (WIB)" },
+				{ value: "HQ", label: "Yogyakarta" },
+			],
+			contactTitle: "Informasi Kontak",
+			contactItems: [
+				{
+					icon: MapPin,
+					label: "Alamat",
+					value: "Kadirojo I, Purwomartani, Kalasan, Sleman, DIY 55571",
+				},
+				{
+					icon: Phone,
+					label: "Telepon",
+					value: "(0274) 4986899",
+					href: "tel:02744986899",
+				},
+				{
+					icon: Mail,
+					label: "Email",
+					value: "info@bejogja.com",
+					href: "mailto:info@bejogja.com",
+				},
+				{
+					icon: Clock,
+					label: "Jam Operasional",
+					value: "Senin - Jumat, 08:00 - 17:00 WIB",
+				},
+			],
+			quickCtaTitle: "Chat CS Marketing",
+			quickCtaDesc: "Respons cepat di jam kerja",
+			quickCtaText:
+				"Halo CS Marketing Beacon, saya ingin konsultasi tentang solusi telemetri.",
+			formTitle: "Kirim Permintaan Konsultasi",
+			form: {
+				name: "Nama Lengkap *",
+				namePlaceholder: "Nama Anda",
+				email: "Email *",
+				emailPlaceholder: "email@perusahaan.com",
+				phone: "Telepon / WhatsApp",
+				phonePlaceholder: "081xxxxxxxxx",
+				company: "Perusahaan / Instansi",
+				companyPlaceholder: "BBWS / BUMN / Swasta",
+				subject: "Subjek *",
+				subjectPlaceholder: "Pilih subjek...",
+				message: "Pesan *",
+				messagePlaceholder: "Ceritakan kebutuhan monitoring Anda...",
+				submit: "Kirim Permintaan Konsultasi",
+				note: "* Form ini akan mengarahkan Anda ke WhatsApp untuk komunikasi lebih cepat.",
+			},
+			subjects: [
+				{ value: "AWLR", label: "Konsultasi AWLR" },
+				{ value: "EWS", label: "Konsultasi EWS" },
+				{ value: "ADR", label: "Konsultasi ADR" },
+				{ value: "STESY", label: "Demo STESY" },
+				{ value: "Kemitraan", label: "Kemitraan / Partnership" },
+				{ value: "Water Security", label: "Water Security" },
+				{ value: "Weather Forecast", label: "Weather Forecast" },
+				{ value: "Infrastructure Security", label: "Infrastructure Security" },
+				{ value: "Lainnya", label: "Lainnya" },
+			],
+			formWhatsAppIntro: "Halo CS Marketing Beacon,",
+			formFields: {
+				name: "Nama",
+				email: "Email",
+				phone: "Telepon",
+				company: "Perusahaan",
+				subject: "Subjek",
+				message: "Pesan",
+			},
+			partnershipText:
+				"Halo CS Marketing Beacon, saya ingin berdiskusi tentang kemitraan dengan Beacon Engineering.",
+			partnershipBadge: "Open Partnership",
+			partnershipTitle:
+				"Kemitraan untuk proyek monitoring yang siap masuk lapangan.",
+			partnershipDesc:
+				"Beacon membuka kerja sama dengan integrator, kontraktor, konsultan, distributor regional, dan institusi teknis yang ingin membawa solusi telemetri ke proyek strategis.",
+			partnershipReadiness: [
+				"Profil perusahaan atau institusi",
+				"Wilayah operasi dan jaringan proyek",
+				"Skema kolaborasi yang ingin dibangun",
+			],
+			partnershipPrimary: "Ajukan Kemitraan",
+			partnershipSecondary: "Kirim Profil",
+			partnershipSubject: "Pengajuan Kemitraan Beacon Engineering",
+			collaborationTitle: "Model Kolaborasi",
+			partnershipModels: [
+				{
+					icon: Building2,
+					title: "Integrator & EPC",
+					desc: "Kolaborasi proyek hidrologi, bendungan, irigasi, dan infrastruktur monitoring yang membutuhkan perangkat lapangan serta dashboard.",
+				},
+				{
+					icon: Users,
+					title: "Channel Partner Regional",
+					desc: "Kemitraan penjualan, instalasi, dan dukungan teknis untuk memperluas layanan Beacon di wilayah prioritas.",
+				},
+				{
+					icon: ShieldCheck,
+					title: "Riset & Implementasi Lapangan",
+					desc: "Kerja sama validasi sensor, pengembangan data, pilot project, dan integrasi sistem dengan institusi teknis.",
+				},
+			],
+			flowTitle: "Alur Awal",
+			flow: [
+				{
+					title: "Screening kecocokan",
+					desc: "Tim kami meninjau area, portofolio, dan kebutuhan kolaborasi.",
+				},
+				{
+					title: "Mapping teknis",
+					desc: "Kita petakan perangkat, dashboard, instalasi, dan dukungan pascaproyek.",
+				},
+				{
+					title: "Pilot atau tender support",
+					desc: "Lanjut ke demo, dokumen teknis, atau pendampingan penawaran proyek.",
+				},
+			],
+			startDiscussion: "Mulai diskusi",
+			mapBadge: "Headquarters",
+			mapTitle: "Kunjungi Fasilitas",
+			mapAccent: "Kami",
+			mapDesc:
+				"Pusat riset, perakitan, dan pengujian kalibrasi seluruh perangkat telemetri Beacon Engineering berada di Yogyakarta.",
+			mapTitleAttr: "Lokasi Beacon Engineering",
+			hqLocation: "HQ Location",
+			facilityStatus: "Status Fasilitas",
+			coordinates: "Koordinat",
+			elevation: "Elevasi (AMSL)",
+			openMaps: "Buka di Google Maps",
+		},
+		EN: {
+			metaTitle: "Contact — Beacon Engineering",
+			metaDesc:
+				"Contact Beacon Engineering's team for a free consultation on telemetry and infrastructure monitoring solutions.",
+			heroBadge: "Contact",
+			heroTitle: "Talk Directly with",
+			heroAccent: "Our Engineers.",
+			heroDesc:
+				"Your first consultation is always free. We will help map your monitoring requirements.",
+			heroEmphasis: "Get configuration recommendations and project estimates.",
+			heroAlt: "Beacon Engineering contact illustration",
+			stats: [
+				{ value: "24/7", label: "Customer Support" },
+				{ value: "08:00", label: "Opening Time (WIB)" },
+				{ value: "HQ", label: "Yogyakarta" },
+			],
+			contactTitle: "Contact Information",
+			contactItems: [
+				{
+					icon: MapPin,
+					label: "Address",
+					value: "Kadirojo I, Purwomartani, Kalasan, Sleman, DIY 55571",
+				},
+				{
+					icon: Phone,
+					label: "Phone",
+					value: "(0274) 4986899",
+					href: "tel:02744986899",
+				},
+				{
+					icon: Mail,
+					label: "Email",
+					value: "info@bejogja.com",
+					href: "mailto:info@bejogja.com",
+				},
+				{
+					icon: Clock,
+					label: "Operating Hours",
+					value: "Monday - Friday, 08:00 - 17:00 WIB",
+				},
+			],
+			quickCtaTitle: "Chat CS Marketing",
+			quickCtaDesc: "Fast response during working hours",
+			quickCtaText:
+				"Hello Beacon Marketing CS, I would like to consult about telemetry solutions.",
+			formTitle: "Send a Consultation Request",
+			form: {
+				name: "Full Name *",
+				namePlaceholder: "Your name",
+				email: "Email *",
+				emailPlaceholder: "email@company.com",
+				phone: "Phone / WhatsApp",
+				phonePlaceholder: "+62 8xx xxxx xxxx",
+				company: "Company / Institution",
+				companyPlaceholder: "Agency / SOE / Private Company",
+				subject: "Subject *",
+				subjectPlaceholder: "Choose a subject...",
+				message: "Message *",
+				messagePlaceholder: "Tell us about your monitoring requirements...",
+				submit: "Send Consultation Request",
+				note: "* This form will redirect you to WhatsApp for faster communication.",
+			},
+			subjects: [
+				{ value: "AWLR", label: "AWLR Consultation" },
+				{ value: "EWS", label: "EWS Consultation" },
+				{ value: "ADR", label: "ADR Consultation" },
+				{ value: "STESY", label: "STESY Demo" },
+				{ value: "Partnership", label: "Partnership" },
+				{ value: "Water Security", label: "Water Security" },
+				{ value: "Weather Forecast", label: "Weather Forecast" },
+				{ value: "Infrastructure Security", label: "Infrastructure Security" },
+				{ value: "Other", label: "Other" },
+			],
+			formWhatsAppIntro: "Hello Beacon Marketing CS,",
+			formFields: {
+				name: "Name",
+				email: "Email",
+				phone: "Phone",
+				company: "Company",
+				subject: "Subject",
+				message: "Message",
+			},
+			partnershipText:
+				"Hello Beacon Marketing CS, I would like to discuss a partnership with Beacon Engineering.",
+			partnershipBadge: "Open Partnership",
+			partnershipTitle:
+				"Partnerships for monitoring projects that are ready for the field.",
+			partnershipDesc:
+				"Beacon collaborates with integrators, contractors, consultants, regional distributors, and technical institutions that want to bring telemetry solutions into strategic projects.",
+			partnershipReadiness: [
+				"Company or institution profile",
+				"Operating region and project network",
+				"Preferred collaboration model",
+			],
+			partnershipPrimary: "Propose Partnership",
+			partnershipSecondary: "Send Profile",
+			partnershipSubject: "Beacon Engineering Partnership Proposal",
+			collaborationTitle: "Collaboration Models",
+			partnershipModels: [
+				{
+					icon: Building2,
+					title: "Integrator & EPC",
+					desc: "Collaboration for hydrology, dam, irrigation, and infrastructure monitoring projects requiring field devices and dashboards.",
+				},
+				{
+					icon: Users,
+					title: "Regional Channel Partner",
+					desc: "Sales, installation, and technical support partnerships to expand Beacon services in priority regions.",
+				},
+				{
+					icon: ShieldCheck,
+					title: "Research & Field Implementation",
+					desc: "Cooperation on sensor validation, data development, pilot projects, and system integration with technical institutions.",
+				},
+			],
+			flowTitle: "Initial Flow",
+			flow: [
+				{
+					title: "Fit screening",
+					desc: "Our team reviews the region, portfolio, and collaboration requirements.",
+				},
+				{
+					title: "Technical mapping",
+					desc: "We map the devices, dashboard, installation plan, and post-project support.",
+				},
+				{
+					title: "Pilot or tender support",
+					desc: "Proceed to demos, technical documents, or support for project proposals.",
+				},
+			],
+			startDiscussion: "Start discussion",
+			mapBadge: "Headquarters",
+			mapTitle: "Visit Our",
+			mapAccent: "Facility",
+			mapDesc:
+				"Beacon Engineering's telemetry device research, assembly, and calibration testing center is located in Yogyakarta.",
+			mapTitleAttr: "Beacon Engineering location",
+			hqLocation: "HQ Location",
+			facilityStatus: "Facility Status",
+			coordinates: "Coordinates",
+			elevation: "Elevation (AMSL)",
+			openMaps: "Open in Google Maps",
+		},
+	};
 
-	const partnershipModels = [
-		{
-			icon: Building2,
-			title: "Integrator & EPC",
-			desc: "Kolaborasi proyek hidrologi, bendungan, irigasi, dan infrastruktur monitoring yang membutuhkan perangkat lapangan serta dashboard.",
-		},
-		{
-			icon: Users,
-			title: "Channel Partner Regional",
-			desc: "Kemitraan penjualan, instalasi, dan dukungan teknis untuk memperluas layanan Beacon di wilayah prioritas.",
-		},
-		{
-			icon: ShieldCheck,
-			title: "Riset & Implementasi Lapangan",
-			desc: "Kerja sama validasi sensor, pengembangan data, pilot project, dan integrasi sistem dengan institusi teknis.",
-		},
-	];
-
-	const partnershipReadiness = [
-		"Profil perusahaan atau institusi",
-		"Wilayah operasi dan jaringan proyek",
-		"Skema kolaborasi yang ingin dibangun",
-	];
+	const copy = $derived(pageCopy[$locale]);
+	const partnershipWhatsAppUrl = $derived(
+		`https://wa.me/628112632151?text=${encodeURIComponent(copy.partnershipText)}`
+	);
+	const quickWhatsAppUrl = $derived(
+		`https://wa.me/628112632151?text=${encodeURIComponent(copy.quickCtaText)}`
+	);
+	const partnershipMailUrl = $derived(
+		`mailto:info@bejogja.com?subject=${encodeURIComponent(copy.partnershipSubject)}`
+	);
+	const partnershipModels = $derived(copy.partnershipModels);
+	const partnershipReadiness = $derived(copy.partnershipReadiness);
+	const contactItems = $derived(copy.contactItems);
 
 	function handleSubmit(e: Event) {
 		e.preventDefault();
-		const msg = `Halo CS Marketing Beacon,%0A%0ANama: ${formData.name}%0AEmail: ${formData.email}%0ATelepon: ${formData.phone}%0APerusahaan: ${formData.company}%0ASubjek: ${formData.subject}%0APesan: ${formData.message}`;
-		window.open(`https://wa.me/628112632151?text=${msg}`, "_blank");
+		const msg = [
+			copy.formWhatsAppIntro,
+			"",
+			`${copy.formFields.name}: ${formData.name}`,
+			`${copy.formFields.email}: ${formData.email}`,
+			`${copy.formFields.phone}: ${formData.phone}`,
+			`${copy.formFields.company}: ${formData.company}`,
+			`${copy.formFields.subject}: ${formData.subject}`,
+			`${copy.formFields.message}: ${formData.message}`,
+		].join("\n");
+		window.open(
+			`https://wa.me/628112632151?text=${encodeURIComponent(msg)}`,
+			"_blank",
+		);
 	}
 </script>
 
 <svelte:head>
-	<title>Kontak — Beacon Engineering</title>
+	<title>{copy.metaTitle}</title>
 	<meta
 		name="description"
-		content="Hubungi tim engineer Beacon Engineering untuk konsultasi gratis tentang solusi telemetri dan monitoring infrastruktur."
+		content={copy.metaDesc}
 	/>
 </svelte:head>
 
@@ -98,28 +387,27 @@
 					style="background: rgba(200,16,46,0.06); color: #C8102E; border: 1px solid rgba(200,16,46,0.12);"
 				>
 					<Phone size={12} class="mr-2" />
-					Kontak
+					{copy.heroBadge}
 				</span>
 
 				<h1
 					class="font-heading text-4xl md:text-5xl lg:text-[52px] xl:text-[60px] font-extrabold tracking-tighter leading-[1.06] mb-6"
 					style="color: #1A1A1A;"
 				>
-					Bicara Langsung dengan <br />
-					<span style="color: #C8102E;">Engineer Kami.</span>
+					{copy.heroTitle} <br />
+					<span style="color: #C8102E;">{copy.heroAccent}</span>
 				</h1>
 
 				<p
 					class="text-base md:text-lg text-gray-600 leading-relaxed max-w-[52ch] mb-4"
 				>
-					Konsultasi pertama selalu gratis. Kami akan bantu memetakan
-					kebutuhan monitoring Anda.
+					{copy.heroDesc}
 				</p>
 				<p
 					class="text-base md:text-lg font-semibold"
 					style="color: #C8102E;"
 				>
-					Menyarankan konfigurasi, dan memberikan estimasi.
+					{copy.heroEmphasis}
 				</p>
 
 				<!-- Stat strip -->
@@ -131,13 +419,13 @@
 							class="font-heading text-2xl font-extrabold tabular-nums"
 							style="color: #1A1A1A; letter-spacing: -0.03em;"
 						>
-							24/7
+							{copy.stats[0].value}
 						</p>
 						<p
 							class="text-xs font-medium mt-0.5"
 							style="color: #7A7A7A;"
 						>
-							Customer Support
+							{copy.stats[0].label}
 						</p>
 					</div>
 					<div class="w-px h-8 bg-[#E5E5E5]"></div>
@@ -146,13 +434,13 @@
 							class="font-heading text-2xl font-extrabold tabular-nums"
 							style="color: #1A1A1A; letter-spacing: -0.03em;"
 						>
-							08:00
+							{copy.stats[1].value}
 						</p>
 						<p
 							class="text-xs font-medium mt-0.5"
 							style="color: #7A7A7A;"
 						>
-							Jam Buka (WIB)
+							{copy.stats[1].label}
 						</p>
 					</div>
 					<div class="w-px h-8 bg-[#E5E5E5]"></div>
@@ -161,13 +449,13 @@
 							class="font-heading text-2xl font-extrabold tabular-nums"
 							style="color: #1A1A1A; letter-spacing: -0.03em;"
 						>
-							HQ
+							{copy.stats[2].value}
 						</p>
 						<p
 							class="text-xs font-medium mt-0.5"
 							style="color: #7A7A7A;"
 						>
-							Yogyakarta
+							{copy.stats[2].label}
 						</p>
 					</div>
 				</div>
@@ -192,7 +480,7 @@
 				>
 					<img
 						src="/ilustrasi_kontak.webp"
-						alt="Ilustrasi kontak Beacon Engineering"
+						alt={copy.heroAlt}
 						class="w-full h-auto object-contain select-none"
 						draggable="false"
 					/>
@@ -215,11 +503,11 @@
 						class="font-heading text-2xl font-bold mb-6"
 						style="color: #1A1A1A;"
 					>
-						Informasi Kontak
+						{copy.contactTitle}
 					</h2>
 
 					<div class="space-y-5">
-						{#each [{ icon: MapPin, label: "Alamat", value: "Kadirojo I, Purwomartani, Kalasan, Sleman, DIY 55571" }, { icon: Phone, label: "Telepon", value: "(0274) 4986899", href: "tel:02744986899" }, { icon: Mail, label: "Email", value: "info@bejogja.com", href: "mailto:info@bejogja.com" }, { icon: Clock, label: "Jam Operasional", value: "Senin – Jumat, 08:00 – 17:00 WIB" }] as item}
+						{#each contactItems as item}
 							{@const ContactIcon = item.icon}
 							<div class="flex items-start gap-4">
 								<div
@@ -283,7 +571,7 @@
 
 				<!-- Quick CTA — SKILL: btn-tactile -->
 				<a
-					href="https://wa.me/628112632151?text=Halo%20CS%20Marketing%20Beacon%2C%20saya%20ingin%20konsultasi%20tentang%20solusi%20telemetri."
+					href={quickWhatsAppUrl}
 					target="_blank"
 					rel="noopener"
 					class="group flex items-center gap-4 p-5 rounded-[20px] btn-tactile"
@@ -297,12 +585,12 @@
 					</div>
 					<div>
 						<span class="text-sm font-semibold block text-white"
-							>Chat CS Marketing</span
+							>{copy.quickCtaTitle}</span
 						>
 						<span
 							class="text-xs"
 							style="color: rgba(255,255,255,0.6);"
-							>Respons cepat di jam kerja</span
+							>{copy.quickCtaDesc}</span
 						>
 					</div>
 					<ArrowRight
@@ -322,7 +610,7 @@
 						class="font-heading text-xl font-bold mb-6"
 						style="color: #1A1A1A;"
 					>
-						Kirim Permintaan Konsultasi
+						{copy.formTitle}
 					</h3>
 
 					<form onsubmit={handleSubmit} class="space-y-5">
@@ -332,7 +620,7 @@
 									for="name"
 									class="block text-sm font-medium mb-1.5"
 									style="color: #1A1A1A;"
-									>Nama Lengkap *</label
+									>{copy.form.name}</label
 								>
 								<input
 									id="name"
@@ -341,14 +629,14 @@
 									bind:value={formData.name}
 									class="w-full px-4 py-3 rounded-[14px] text-sm outline-none focus:ring-2 focus:ring-[#C8102E]/20 transition-all"
 									style="background: white; border: 1px solid #E5E5E5; color: #1A1A1A;"
-									placeholder="Nama Anda"
+									placeholder={copy.form.namePlaceholder}
 								/>
 							</div>
 							<div>
 								<label
 									for="email"
 									class="block text-sm font-medium mb-1.5"
-									style="color: #1A1A1A;">Email *</label
+									style="color: #1A1A1A;">{copy.form.email}</label
 								>
 								<input
 									id="email"
@@ -357,7 +645,7 @@
 									bind:value={formData.email}
 									class="w-full px-4 py-3 rounded-[14px] text-sm outline-none focus:ring-2 focus:ring-[#C8102E]/20 transition-all"
 									style="background: white; border: 1px solid #E5E5E5; color: #1A1A1A;"
-									placeholder="email@perusahaan.com"
+									placeholder={copy.form.emailPlaceholder}
 								/>
 							</div>
 						</div>
@@ -368,7 +656,7 @@
 									for="phone"
 									class="block text-sm font-medium mb-1.5"
 									style="color: #1A1A1A;"
-									>Telepon / WhatsApp</label
+									>{copy.form.phone}</label
 								>
 								<input
 									id="phone"
@@ -376,7 +664,7 @@
 									bind:value={formData.phone}
 									class="w-full px-4 py-3 rounded-[14px] text-sm outline-none focus:ring-2 focus:ring-[#C8102E]/20 transition-all"
 									style="background: white; border: 1px solid #E5E5E5; color: #1A1A1A;"
-									placeholder="081xxxxxxxxx"
+									placeholder={copy.form.phonePlaceholder}
 								/>
 							</div>
 							<div>
@@ -384,7 +672,7 @@
 									for="company"
 									class="block text-sm font-medium mb-1.5"
 									style="color: #1A1A1A;"
-									>Perusahaan / Instansi</label
+									>{copy.form.company}</label
 								>
 								<input
 									id="company"
@@ -392,7 +680,7 @@
 									bind:value={formData.company}
 									class="w-full px-4 py-3 rounded-[14px] text-sm outline-none focus:ring-2 focus:ring-[#C8102E]/20 transition-all"
 									style="background: white; border: 1px solid #E5E5E5; color: #1A1A1A;"
-									placeholder="BBWS / BUMN / Swasta"
+									placeholder={copy.form.companyPlaceholder}
 								/>
 							</div>
 						</div>
@@ -401,7 +689,7 @@
 							<label
 								for="subject"
 								class="block text-sm font-medium mb-1.5"
-								style="color: #1A1A1A;">Subjek *</label
+								style="color: #1A1A1A;">{copy.form.subject}</label
 							>
 							<select
 								id="subject"
@@ -410,24 +698,10 @@
 								class="w-full px-4 py-3 rounded-[14px] text-sm outline-none focus:ring-2 focus:ring-[#C8102E]/20 transition-all"
 								style="background: white; border: 1px solid #E5E5E5; color: #1A1A1A;"
 							>
-								<option value="">Pilih subjek...</option>
-								<option value="AWLR">Konsultasi AWLR</option>
-								<option value="EWS">Konsultasi EWS</option>
-								<option value="ADR">Konsultasi ADR</option>
-								<option value="STESY">Demo STESY</option>
-								<option value="Kemitraan"
-									>Kemitraan / Partnership</option
-								>
-								<option value="Water Security"
-									>Water Security</option
-								>
-								<option value="Weather Forecast"
-									>Weather Forecast</option
-								>
-								<option value="Infrastructure Security"
-									>Infrastructure Security</option
-								>
-								<option value="Lainnya">Lainnya</option>
+								<option value="">{copy.form.subjectPlaceholder}</option>
+								{#each copy.subjects as subject}
+									<option value={subject.value}>{subject.label}</option>
+								{/each}
 							</select>
 						</div>
 
@@ -435,7 +709,7 @@
 							<label
 								for="message"
 								class="block text-sm font-medium mb-1.5"
-								style="color: #1A1A1A;">Pesan *</label
+								style="color: #1A1A1A;">{copy.form.message}</label
 							>
 							<textarea
 								id="message"
@@ -444,7 +718,7 @@
 								rows="4"
 								class="w-full px-4 py-3 rounded-[14px] text-sm outline-none focus:ring-2 focus:ring-[#C8102E]/20 transition-all resize-none"
 								style="background: white; border: 1px solid #E5E5E5; color: #1A1A1A;"
-								placeholder="Ceritakan kebutuhan monitoring Anda..."
+								placeholder={copy.form.messagePlaceholder}
 							></textarea>
 						</div>
 
@@ -454,12 +728,11 @@
 							style="background: linear-gradient(135deg, #C8102E, #A50D25); box-shadow: 0 4px 12px rgba(200,16,46,0.25);"
 						>
 							<Send size={16} />
-							Kirim Permintaan Konsultasi
+							{copy.form.submit}
 						</button>
 
 						<p class="text-xs" style="color: #9A9A9A;">
-							* Form ini akan mengarahkan Anda ke WhatsApp untuk
-							komunikasi lebih cepat.
+							{copy.form.note}
 						</p>
 					</form>
 				</div>
@@ -490,23 +763,21 @@
 					style="background: rgba(200,16,46,0.06); color: #C8102E; border: 1px solid rgba(200,16,46,0.12);"
 				>
 					<Building2 size={12} class="mr-2" />
-					Open Partnership
+					{copy.partnershipBadge}
 				</span>
 
 				<h2
 					class="font-heading text-3xl md:text-4xl lg:text-[44px] font-extrabold leading-[1.08] mb-5"
 					style="color: #1A1A1A;"
 				>
-					Kemitraan untuk proyek monitoring yang siap masuk lapangan.
+					{copy.partnershipTitle}
 				</h2>
 
 				<p
 					class="text-base leading-relaxed mb-8 max-w-[55ch]"
 					style="color: #5C5C5C;"
 				>
-					Beacon membuka kerja sama dengan integrator, kontraktor,
-					konsultan, distributor regional, dan institusi teknis yang
-					ingin membawa solusi telemetri ke proyek strategis.
+					{copy.partnershipDesc}
 				</p>
 
 				<div class="grid sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-3 mb-8">
@@ -535,15 +806,15 @@
 						style="background: linear-gradient(135deg, #C8102E, #A50D25); box-shadow: 0 8px 20px rgba(200,16,46,0.18);"
 					>
 						<MessageCircle size={16} />
-						Ajukan Kemitraan
+						{copy.partnershipPrimary}
 					</a>
 					<a
-						href="mailto:info@bejogja.com?subject=Pengajuan%20Kemitraan%20Beacon%20Engineering"
+						href={partnershipMailUrl}
 						class="btn-tactile inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-[14px] text-sm font-semibold bg-white"
 						style="color: #1A1A1A; border: 1px solid #E5E5E5;"
 					>
 						<Mail size={16} />
-						Kirim Profil
+						{copy.partnershipSecondary}
 					</a>
 				</div>
 			</div>
@@ -559,7 +830,7 @@
 								class="font-mono text-[11px] font-bold uppercase tracking-[0.18em] mb-5"
 								style="color: #C8102E;"
 							>
-								Model Kolaborasi
+								{copy.collaborationTitle}
 							</p>
 
 							<div class="space-y-6">
@@ -601,46 +872,27 @@
 								class="font-mono text-[11px] font-bold uppercase tracking-[0.18em] mb-6"
 								style="color: rgba(255,255,255,0.55);"
 							>
-								Alur Awal
+								{copy.flowTitle}
 							</p>
 
 							<div class="space-y-7">
-								<div>
-									<span class="font-mono text-xs text-white/40">01</span>
-									<h4 class="font-heading text-base font-bold mt-2 mb-1">
-										Screening kecocokan
-									</h4>
-									<p class="text-sm leading-relaxed text-white/60">
-										Tim kami meninjau area, portofolio, dan kebutuhan
-										kolaborasi.
-									</p>
-								</div>
+								{#each copy.flow as step, index}
+									<div>
+										<span class="font-mono text-xs text-white/40"
+											>{String(index + 1).padStart(2, "0")}</span
+										>
+										<h4 class="font-heading text-base font-bold mt-2 mb-1">
+											{step.title}
+										</h4>
+										<p class="text-sm leading-relaxed text-white/60">
+											{step.desc}
+										</p>
+									</div>
 
-								<div class="h-px bg-white/10"></div>
-
-								<div>
-									<span class="font-mono text-xs text-white/40">02</span>
-									<h4 class="font-heading text-base font-bold mt-2 mb-1">
-										Mapping teknis
-									</h4>
-									<p class="text-sm leading-relaxed text-white/60">
-										Kita petakan perangkat, dashboard, instalasi, dan
-										dukungan pascaproyek.
-									</p>
-								</div>
-
-								<div class="h-px bg-white/10"></div>
-
-								<div>
-									<span class="font-mono text-xs text-white/40">03</span>
-									<h4 class="font-heading text-base font-bold mt-2 mb-1">
-										Pilot atau tender support
-									</h4>
-									<p class="text-sm leading-relaxed text-white/60">
-										Lanjut ke demo, dokumen teknis, atau pendampingan
-										penawaran proyek.
-									</p>
-								</div>
+									{#if index < copy.flow.length - 1}
+										<div class="h-px bg-white/10"></div>
+									{/if}
+								{/each}
 							</div>
 
 							<a
@@ -649,7 +901,7 @@
 								rel="noopener"
 								class="group mt-9 inline-flex items-center gap-2 text-sm font-semibold text-white"
 							>
-								Mulai diskusi
+								{copy.startDiscussion}
 								<ArrowRight
 									size={15}
 									class="group-hover:translate-x-1 transition-transform"
@@ -673,20 +925,19 @@
 				style="background: rgba(200,16,46,0.06); color: #C8102E; border: 1px solid rgba(200,16,46,0.12);"
 			>
 				<span class="w-1.5 h-1.5 rounded-full bg-[#C8102E] mr-2"></span>
-				Headquarters
+				{copy.mapBadge}
 			</span>
 			<h2
 				class="font-heading text-3xl md:text-4xl font-extrabold mb-4"
 				style="letter-spacing: -0.02em; color: #1A1A1A;"
 			>
-				Kunjungi Fasilitas <span style="color: #C8102E;">Kami</span>
+				{copy.mapTitle} <span style="color: #C8102E;">{copy.mapAccent}</span>
 			</h2>
 			<p
 				class="text-sm sm:text-base max-w-[55ch] mx-auto leading-relaxed"
 				style="color: #5C5C5C;"
 			>
-				Pusat riset, perakitan, dan pengujian kalibrasi seluruh
-				perangkat telemetri Beacon Engineering berada di Yogyakarta.
+				{copy.mapDesc}
 			</p>
 		</div>
 
@@ -702,7 +953,7 @@
 				allowfullscreen
 				loading="lazy"
 				referrerpolicy="no-referrer-when-downgrade"
-				title="Lokasi Beacon Engineering"
+				title={copy.mapTitleAttr}
 			></iframe>
 
 			<!-- Gradient Overlay to blend map edges -->
@@ -725,7 +976,7 @@
 					<div>
 						<span
 							class="block text-[10px] font-mono font-bold uppercase tracking-[0.2em]"
-							style="color: #C8102E;">HQ Location</span
+							style="color: #C8102E;">{copy.hqLocation}</span
 						>
 						<span
 							class="block text-base font-extrabold text-zinc-950 font-heading"
@@ -740,7 +991,7 @@
 				>
 					<div class="flex justify-between items-center">
 						<span class="text-xs font-semibold text-zinc-500"
-							>Status Fasilitas</span
+							>{copy.facilityStatus}</span
 						>
 						<span
 							class="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-md"
@@ -754,7 +1005,7 @@
 					</div>
 					<div class="flex justify-between items-center">
 						<span class="text-xs font-semibold text-zinc-500"
-							>Koordinat</span
+							>{copy.coordinates}</span
 						>
 						<span
 							class="text-xs font-mono font-bold text-zinc-950 bg-zinc-100 px-2 py-1 rounded-md"
@@ -763,7 +1014,7 @@
 					</div>
 					<div class="flex justify-between items-center">
 						<span class="text-xs font-semibold text-zinc-500"
-							>Elevasi (AMSL)</span
+							>{copy.elevation}</span
 						>
 						<span
 							class="text-xs font-mono font-bold text-zinc-950 bg-zinc-100 px-2 py-1 rounded-md"
@@ -779,7 +1030,7 @@
 					class="mt-6 w-full flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-bold transition-all btn-tactile group"
 					style="background: white; border: 1px solid #E5E5E5; color: #1A1A1A; box-shadow: 0 4px 12px rgba(0,0,0,0.03);"
 				>
-					Buka di Google Maps
+					{copy.openMaps}
 					<ArrowRight
 						size={14}
 						class="text-zinc-400 group-hover:text-[#C8102E] group-hover:translate-x-1 transition-all"

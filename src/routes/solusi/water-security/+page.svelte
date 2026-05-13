@@ -2,8 +2,83 @@
 	import { ArrowRight, Check, MessageCircle, Droplets } from '@lucide/svelte';
 	import Ornaments from '$lib/components/Ornaments.svelte';
 	import { waterSecurityProducts as fallbackProducts } from '$lib/data/solutions';
+	import { locale } from '$lib/i18n';
 
 	let { data } = $props();
+	const pageCopy = {
+		ID: {
+			metaTitle: 'Water Security - Beacon Engineering',
+			metaDesc: 'Enam perangkat Water Security Beacon: AWLR, AWGC, AFMR, ADR, AWQR, AVWR - amankan setiap meter kubik air Indonesia.',
+			title: 'Air adalah Hidup. <br/><span style="color: #C8102E;">Dan Risiko.</span>',
+			desc: 'Banjir, kekeringan, jebolnya tanggul, pencemaran sungai, deformasi bendungan - semua bermula dari satu hal: data yang terlambat.',
+			emphasis: 'Enam perangkat Water Security Beacon dirancang supaya Anda tidak pernah terlambat lagi.',
+			stats: [{ value: '6', label: 'Perangkat' }, { value: 'IP67', label: 'Water Resistant' }, { value: '24/7', label: 'Real-time Data' }],
+			heroAlt: 'Ilustrasi sistem monitoring Water Security Beacon Engineering',
+			productBadge: '6 Produk Water Security',
+			productTitle: 'Satu Ekosistem untuk Keamanan Air',
+			detail: 'Lihat Detail',
+			whyBadge: 'Mengapa Water Security Beacon',
+			whyTitle: 'Dipercaya di Infrastruktur Paling Kritis Indonesia',
+			points: [
+				'Presisi tinggi - sensor-grade accuracy untuk standar SNI',
+				'Tahan iklim tropis - IP67/IP68, teruji di cuaca ekstrem Indonesia',
+				'Real-time 24/7 - data terkirim setiap detik ke STESY',
+				'After-sales lokal - tim teknis di Jogja, respons cepat',
+				'Terintegrasi penuh - semua perangkat tersambung ke satu dashboard',
+				'Hak cipta Indonesia - tidak tergantung vendor asing'
+			],
+			projects: [
+				'Bendungan Ciawi-Sukamahi - BBWS Ciliwung-Cisadane',
+				'Bendungan Sepaku IKN - BWS Kalimantan IV',
+				'Bendungan Cipanas - BWS Ciliwung-Cisadane',
+				'Bendungan Keureuto - BWS Sumatera I',
+				'DAS Bogowonto - BBWS Serayu Opak'
+			],
+			ctaBadge: 'Next Step',
+			ctaTitle: 'Mulai Proyek dengan Beacon',
+			ctaDesc: 'Tim engineer kami akan merancang arsitektur telemetri yang tepat dan menghitung kebutuhan riil proyek Anda.',
+			ctaPrimary: 'Konsultasi Beacon',
+			ctaSecondary: 'Jelajahi Produk Lain',
+			whatsappText: 'Halo CS Marketing Beacon, saya ingin konsultasi tentang Beacon untuk proyek saya.'
+		},
+		EN: {
+			metaTitle: 'Water Security - Beacon Engineering',
+			metaDesc: 'Six Beacon Water Security devices: AWLR, AWGC, AFMR, ADR, AWQR, and AVWR - protecting every cubic meter of water in Indonesia.',
+			title: 'Water Is Life. <br/><span style="color: #C8102E;">And Risk.</span>',
+			desc: 'Floods, droughts, embankment failures, river pollution, and dam deformation all start from one thing: data that arrives too late.',
+			emphasis: 'Beacon’s six Water Security devices are designed so you are never too late again.',
+			stats: [{ value: '6', label: 'Devices' }, { value: 'IP67', label: 'Water Resistant' }, { value: '24/7', label: 'Real-time Data' }],
+			heroAlt: 'Beacon Engineering Water Security monitoring system illustration',
+			productBadge: '6 Water Security Products',
+			productTitle: 'One Ecosystem for Water Safety',
+			detail: 'View Details',
+			whyBadge: 'Why Beacon Water Security',
+			whyTitle: 'Trusted in Indonesia’s Most Critical Infrastructure',
+			points: [
+				'High precision - sensor-grade accuracy for national standards',
+				'Tropical-ready - IP67/IP68, tested in Indonesia’s extreme weather',
+				'Real-time 24/7 - data transmitted continuously to STESY',
+				'Local after-sales - technical team in Jogja with fast response',
+				'Fully integrated - every device connects to one dashboard',
+				'Indonesian intellectual property - not dependent on foreign vendors'
+			],
+			projects: [
+				'Ciawi-Sukamahi Dam - BBWS Ciliwung-Cisadane',
+				'Sepaku IKN Dam - BWS Kalimantan IV',
+				'Cipanas Dam - BWS Ciliwung-Cisadane',
+				'Keureuto Dam - BWS Sumatera I',
+				'Bogowonto Watershed - BBWS Serayu Opak'
+			],
+			ctaBadge: 'Next Step',
+			ctaTitle: 'Start a Project with Beacon',
+			ctaDesc: 'Our engineering team will design the right telemetry architecture and calculate your project’s real requirements.',
+			ctaPrimary: 'Consult Beacon',
+			ctaSecondary: 'Explore Other Products',
+			whatsappText: 'Hello Beacon Marketing CS, I would like to consult about Beacon for my project.'
+		}
+	};
+	const copy = $derived(pageCopy[$locale]);
+	const consultationUrl = $derived(`https://wa.me/628112632151?text=${encodeURIComponent(copy.whatsappText)}`);
 
 	// Merge API sub_solutions with editorial metadata (icon, hook, specs, thumbnail)
 	const products = $derived(
@@ -26,8 +101,8 @@
 </script>
 
 <svelte:head>
-	<title>Water Security — Beacon Engineering</title>
-	<meta name="description" content="Enam perangkat Water Security Beacon: AWLR, AWGC, AFMR, ADR, AWQR, AVWR — amankan setiap meter kubik air Indonesia." />
+	<title>{copy.metaTitle}</title>
+	<meta name="description" content={copy.metaDesc} />
 </svelte:head>
 
 <!-- Hero — SKILL: Split Screen, DESIGN_VARIANCE: 8, MOTION_INTENSITY: 6 -->
@@ -51,32 +126,31 @@
 				</div>
 
 				<h1 class="font-heading text-4xl md:text-5xl lg:text-[52px] xl:text-[60px] font-extrabold tracking-tighter leading-[1.06] mb-6" style="color: #1A1A1A;">
-					Air adalah Hidup. <br/>
-					<span style="color: #C8102E;">Dan Risiko.</span>
+					{@html copy.title}
 				</h1>
 
 				<p class="text-base md:text-lg text-gray-600 leading-relaxed max-w-[52ch] mb-4">
-					Banjir, kekeringan, jebolnya tanggul, pencemaran sungai, deformasi bendungan — semua bermula dari satu hal: data yang terlambat.
+					{copy.desc}
 				</p>
 				<p class="text-base md:text-lg font-semibold" style="color: #C8102E;">
-					Enam perangkat Water Security Beacon dirancang supaya Anda tidak pernah terlambat lagi.
+					{copy.emphasis}
 				</p>
 
 				<!-- Stat strip -->
 				<div class="flex items-center gap-8 mt-10 pt-8 border-t border-[#E5E5E5]">
 					<div>
-						<p class="font-heading text-2xl font-extrabold tabular-nums" style="color: #1A1A1A; letter-spacing: -0.03em;">6</p>
-						<p class="text-xs font-medium mt-0.5" style="color: #7A7A7A;">Perangkat</p>
+						<p class="font-heading text-2xl font-extrabold tabular-nums" style="color: #1A1A1A; letter-spacing: -0.03em;">{copy.stats[0].value}</p>
+						<p class="text-xs font-medium mt-0.5" style="color: #7A7A7A;">{copy.stats[0].label}</p>
 					</div>
 					<div class="w-px h-8 bg-[#E5E5E5]"></div>
 					<div>
-						<p class="font-heading text-2xl font-extrabold tabular-nums" style="color: #1A1A1A; letter-spacing: -0.03em;">IP67</p>
-						<p class="text-xs font-medium mt-0.5" style="color: #7A7A7A;">Water Resistant</p>
+						<p class="font-heading text-2xl font-extrabold tabular-nums" style="color: #1A1A1A; letter-spacing: -0.03em;">{copy.stats[1].value}</p>
+						<p class="text-xs font-medium mt-0.5" style="color: #7A7A7A;">{copy.stats[1].label}</p>
 					</div>
 					<div class="w-px h-8 bg-[#E5E5E5]"></div>
 					<div>
-						<p class="font-heading text-2xl font-extrabold tabular-nums" style="color: #1A1A1A; letter-spacing: -0.03em;">24/7</p>
-						<p class="text-xs font-medium mt-0.5" style="color: #7A7A7A;">Real-time Data</p>
+						<p class="font-heading text-2xl font-extrabold tabular-nums" style="color: #1A1A1A; letter-spacing: -0.03em;">{copy.stats[2].value}</p>
+						<p class="text-xs font-medium mt-0.5" style="color: #7A7A7A;">{copy.stats[2].label}</p>
 					</div>
 				</div>
 			</div>
@@ -93,7 +167,7 @@
 						src="/ilustrasi_water_security.webp"
 						srcset="/images/hero-solutions/water_security-960.webp 960w, /images/hero-solutions/water_security-1280.webp 1280w, /ilustrasi_water_security.webp 1672w"
 						sizes="(min-width: 1280px) 980px, (min-width: 1024px) 860px, 92vw"
-						alt="Ilustrasi sistem monitoring Water Security Beacon Engineering"
+						alt={copy.heroAlt}
 						class="w-full h-auto object-contain select-none"
 						width="1672"
 						height="941"
@@ -115,8 +189,8 @@
 
 	<div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 		<div class="max-w-2xl mb-14 space-y-3">
-			<span class="text-xs font-semibold uppercase tracking-widest" style="color: #C8102E;">6 Produk Water Security</span>
-			<h2 class="font-heading text-3xl sm:text-4xl font-bold leading-[1.1]" style="color: #1A1A1A; letter-spacing: -0.025em;">Satu Ekosistem untuk Keamanan Air</h2>
+			<span class="text-xs font-semibold uppercase tracking-widest" style="color: #C8102E;">{copy.productBadge}</span>
+			<h2 class="font-heading text-3xl sm:text-4xl font-bold leading-[1.1]" style="color: #1A1A1A; letter-spacing: -0.025em;">{copy.productTitle}</h2>
 		</div>
 
 		<div class="grid md:grid-cols-2 gap-6">
@@ -159,7 +233,7 @@
 						</div>
 
 						<div class="flex items-center gap-2 text-sm font-semibold text-[#FF4D6D] group-hover:gap-3 transition-all mt-4">
-							Lihat Detail {product.name}
+							{copy.detail} {product.name}
 							<ArrowRight size={14} />
 						</div>
 					</div>
@@ -176,10 +250,10 @@
 	<div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 		<div class="grid lg:grid-cols-2 gap-12 items-center">
 			<div class="space-y-6">
-				<span class="text-xs font-semibold uppercase tracking-widest" style="color: #C8102E;">Mengapa Water Security Beacon</span>
-				<h2 class="font-heading text-3xl sm:text-4xl font-bold" style="color: #1A1A1A;">Dipercaya di Infrastruktur Paling Kritis Indonesia</h2>
+				<span class="text-xs font-semibold uppercase tracking-widest" style="color: #C8102E;">{copy.whyBadge}</span>
+				<h2 class="font-heading text-3xl sm:text-4xl font-bold" style="color: #1A1A1A;">{copy.whyTitle}</h2>
 				<ul class="space-y-4">
-					{#each ['Presisi tinggi — sensor-grade accuracy untuk standar SNI', 'Tahan iklim tropis — IP67/IP68, teruji di cuaca ekstrem Indonesia', 'Real-time 24/7 — data terkirim setiap detik ke STESY', 'After-sales lokal — tim teknis di Jogja, respons cepat', 'Terintegrasi penuh — semua perangkat tersambung ke satu dashboard', 'Hak cipta Indonesia — tidak tergantung vendor asing'] as point}
+					{#each copy.points as point}
 						<li class="flex items-start gap-3">
 							<div class="w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5" style="background: #FBE9EC;"><Check size={12} style="color: #C8102E;" /></div>
 							<span class="text-sm" style="color: #3A3A3A;">{point}</span>
@@ -188,7 +262,7 @@
 				</ul>
 			</div>
 			<div class="space-y-4">
-				{#each ['Bendungan Ciawi-Sukamahi — BBWS Ciliwung-Cisadane', 'Bendungan Sepaku IKN — BWS Kalimantan IV', 'Bendungan Cipanas — BWS Ciliwung-Cisadane', 'Bendungan Keureuto — BWS Sumatera I', 'DAS Bogowonto — BBWS Serayu Opak'] as project}
+				{#each copy.projects as project}
 					<div class="flex items-center gap-3 p-4 rounded-xl bg-white" style="border: 1px solid #E5E5E5; box-shadow: 0 2px 8px rgba(0,0,0,0.03);">
 						<div class="w-2 h-2 rounded-full bg-[#1B7F3A] animate-pulse-dot shrink-0"></div>
 						<span class="text-sm font-medium" style="color: #1A1A1A;">{project}</span>
@@ -211,21 +285,21 @@
 			<div class="relative z-10 text-center lg:text-left flex-1 max-w-2xl">
 				<span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest mb-6" style="background: rgba(200,16,46,0.15); color: #FF4D6D; border: 1px solid rgba(200,16,46,0.3);">
 					<span class="w-1.5 h-1.5 rounded-full" style="background: #FF4D6D; box-shadow: 0 0 10px #FF4D6D;"></span>
-					Next Step
+					{copy.ctaBadge}
 				</span>
-				<h2 class="font-heading text-4xl sm:text-5xl font-extrabold text-white tracking-tighter mb-4">Mulai Proyek dengan Beacon</h2>
-				<p class="text-lg text-zinc-400 font-medium">Tim engineer kami akan merancang arsitektur telemetri yang tepat dan menghitung kebutuhan riil proyek Anda.</p>
+				<h2 class="font-heading text-4xl sm:text-5xl font-extrabold text-white tracking-tighter mb-4">{copy.ctaTitle}</h2>
+				<p class="text-lg text-zinc-400 font-medium">{copy.ctaDesc}</p>
 			</div>
 
 			<div class="relative z-10 flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto shrink-0">
-				<a href="https://wa.me/628112632151?text=Halo%20CS%20Marketing%20Beacon%2C%20saya%20ingin%20konsultasi%20tentang%20Beacon%20untuk%20proyek%20saya." target="_blank" rel="noopener"
+				<a href={consultationUrl} target="_blank" rel="noopener"
 					class="w-full sm:w-auto inline-flex justify-center items-center gap-2 px-8 py-4 rounded-full text-sm font-bold text-zinc-950 bg-white transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(255,255,255,0.1)] btn-tactile">
 					<MessageCircle size={18} />
-					Konsultasi Beacon
+					{copy.ctaPrimary}
 				</a>
 				<a href="/solusi" class="w-full sm:w-auto inline-flex justify-center items-center gap-2 px-8 py-4 rounded-full text-sm font-bold text-white transition-all hover:bg-zinc-800 btn-tactile" style="border: 1px solid rgba(255,255,255,0.15);">
 					<ArrowRight size={18} />
-					Jelajahi Produk Lain
+					{copy.ctaSecondary}
 				</a>
 			</div>
 		</div>

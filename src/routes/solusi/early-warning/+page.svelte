@@ -8,8 +8,57 @@
 	} from "@lucide/svelte";
 	import Ornaments from "$lib/components/Ornaments.svelte";
 	import { earlyWarningProducts as fallbackProducts } from "$lib/data/solutions";
+	import { locale } from "$lib/i18n";
 
 	let { data } = $props();
+	const pageCopy = {
+		ID: {
+			metaTitle: "Early Warning System - Beacon Engineering",
+			metaDesc: "Sistem peringatan dini bencana EWS Beacon Engineering: multi-level alert, sirene, SMS, integrasi STESY.",
+			title: 'Detik Pertama <br /><span style="color: #D97706;">Menentukan Nyawa.</span>',
+			desc: "Sistem peringatan dini multi-level untuk wilayah rawan banjir, longsor, dan bencana hidrometeorologi.",
+			emphasis: "Real-time dari sensor ke sirene, SMS, dan dashboard.",
+			stats: [
+				{ value: "Multi", label: "Level Alert" },
+				{ value: "120dB", label: "Sirene Radius" },
+				{ value: "SMS", label: "Direct Blast" },
+			],
+			heroAlt: "Ilustrasi sistem peringatan dini Early Warning System Beacon Engineering",
+			productBadge: "Produk Early Warning",
+			productTitle: "Sistem Peringatan Dini Terpadu",
+			detail: "Lihat Detail",
+			ctaBadge: "Next Step",
+			ctaTitle: "Mulai Proyek dengan Beacon",
+			ctaDesc: "Tim engineer kami akan merancang arsitektur telemetri yang tepat dan menghitung kebutuhan riil proyek Anda.",
+			ctaPrimary: "Konsultasi Beacon",
+			ctaSecondary: "Jelajahi Produk Lain",
+			whatsappText: "Halo CS Marketing Beacon, saya ingin konsultasi tentang Beacon untuk proyek saya.",
+		},
+		EN: {
+			metaTitle: "Early Warning System - Beacon Engineering",
+			metaDesc: "Beacon Engineering EWS disaster early warning system: multi-level alerts, sirens, SMS, and STESY integration.",
+			title: 'The First Seconds <br /><span style="color: #D97706;">Save Lives.</span>',
+			desc: "A multi-level early warning system for flood, landslide, and hydrometeorological hazard zones.",
+			emphasis: "Real-time flow from sensors to sirens, SMS, and dashboards.",
+			stats: [
+				{ value: "Multi", label: "Level Alert" },
+				{ value: "120dB", label: "Siren Radius" },
+				{ value: "SMS", label: "Direct Blast" },
+			],
+			heroAlt: "Beacon Engineering Early Warning System illustration",
+			productBadge: "Early Warning Products",
+			productTitle: "Integrated Early Warning System",
+			detail: "View Details",
+			ctaBadge: "Next Step",
+			ctaTitle: "Start a Project with Beacon",
+			ctaDesc: "Our engineering team will design the right telemetry architecture and calculate your project’s real requirements.",
+			ctaPrimary: "Consult Beacon",
+			ctaSecondary: "Explore Other Products",
+			whatsappText: "Hello Beacon Marketing CS, I would like to consult about Beacon for my project.",
+		},
+	};
+	const copy = $derived(pageCopy[$locale]);
+	const consultationUrl = $derived(`https://wa.me/628112632151?text=${encodeURIComponent(copy.whatsappText)}`);
 
 	const products = $derived(
 		data.solutionDetail?.sub_solutions &&
@@ -35,10 +84,10 @@
 </script>
 
 <svelte:head>
-	<title>Early Warning System — Beacon Engineering</title>
+	<title>{copy.metaTitle}</title>
 	<meta
 		name="description"
-		content="Sistem peringatan dini bencana EWS Beacon Engineering: multi-level alert, sirene, SMS, integrasi STESY."
+		content={copy.metaDesc}
 	/>
 </svelte:head>
 
@@ -83,21 +132,19 @@
 					class="font-heading text-4xl md:text-5xl lg:text-[52px] xl:text-[60px] font-extrabold tracking-tighter leading-[1.06] mb-6"
 					style="color: #1A1A1A;"
 				>
-					Detik Pertama <br />
-					<span style="color: #D97706;">Menentukan Nyawa.</span>
+					{@html copy.title}
 				</h1>
 
 				<p
 					class="text-base md:text-lg text-gray-600 leading-relaxed max-w-[52ch] mb-4"
 				>
-					Sistem peringatan dini multi-level untuk wilayah rawan
-					banjir, longsor, dan bencana hidrometeorologi.
+					{copy.desc}
 				</p>
 				<p
 					class="text-base md:text-lg font-semibold"
 					style="color: #D97706;"
 				>
-					Real-time dari sensor ke sirene, SMS, dan dashboard.
+					{copy.emphasis}
 				</p>
 
 				<!-- Stat strip -->
@@ -109,13 +156,13 @@
 							class="font-heading text-2xl font-extrabold tabular-nums"
 							style="color: #1A1A1A; letter-spacing: -0.03em;"
 						>
-							Multi
+							{copy.stats[0].value}
 						</p>
 						<p
 							class="text-xs font-medium mt-0.5"
 							style="color: #7A7A7A;"
 						>
-							Level Alert
+							{copy.stats[0].label}
 						</p>
 					</div>
 					<div class="w-px h-8 bg-[#E5E5E5]"></div>
@@ -124,13 +171,13 @@
 							class="font-heading text-2xl font-extrabold tabular-nums"
 							style="color: #1A1A1A; letter-spacing: -0.03em;"
 						>
-							120dB
+							{copy.stats[1].value}
 						</p>
 						<p
 							class="text-xs font-medium mt-0.5"
 							style="color: #7A7A7A;"
 						>
-							Sirene Radius
+							{copy.stats[1].label}
 						</p>
 					</div>
 					<div class="w-px h-8 bg-[#E5E5E5]"></div>
@@ -139,13 +186,13 @@
 							class="font-heading text-2xl font-extrabold tabular-nums"
 							style="color: #1A1A1A; letter-spacing: -0.03em;"
 						>
-							SMS
+							{copy.stats[2].value}
 						</p>
 						<p
 							class="text-xs font-medium mt-0.5"
 							style="color: #7A7A7A;"
 						>
-							Direct Blast
+							{copy.stats[2].label}
 						</p>
 					</div>
 				</div>
@@ -172,7 +219,7 @@
 						src="/ilustrasi_ews.webp"
 						srcset="/images/hero-solutions/ews-960.webp 960w, /images/hero-solutions/ews-1280.webp 1280w, /ilustrasi_ews.webp 1672w"
 						sizes="(min-width: 1280px) 980px, (min-width: 1024px) 860px, 92vw"
-						alt="Ilustrasi sistem peringatan dini Early Warning System Beacon Engineering"
+						alt={copy.heroAlt}
 						class="w-full h-auto object-contain select-none"
 						width="1672"
 						height="941"
@@ -191,8 +238,8 @@
 	<Ornaments variant="dense" />
 	<div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 		<div class="max-w-2xl mb-14 space-y-3">
-			<span class="text-xs font-semibold uppercase tracking-widest" style="color: #D97706;">Produk Early Warning</span>
-			<h2 class="font-heading text-3xl sm:text-4xl font-bold leading-[1.1]" style="color: #1A1A1A; letter-spacing: -0.025em;">Sistem Peringatan Dini Terpadu</h2>
+			<span class="text-xs font-semibold uppercase tracking-widest" style="color: #D97706;">{copy.productBadge}</span>
+			<h2 class="font-heading text-3xl sm:text-4xl font-bold leading-[1.1]" style="color: #1A1A1A; letter-spacing: -0.025em;">{copy.productTitle}</h2>
 		</div>
 
 		<div class="grid md:grid-cols-2 gap-6">
@@ -233,7 +280,7 @@
 						</div>
 
 						<div class="flex items-center gap-2 text-sm font-semibold text-[#FBBF24] group-hover:gap-3 transition-all mt-4">
-							Lihat Detail {product.name}
+							{copy.detail} {product.name}
 							<ArrowRight size={14} />
 						</div>
 					</div>
@@ -255,21 +302,21 @@
 			<div class="relative z-10 text-center lg:text-left flex-1 max-w-2xl">
 				<span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest mb-6" style="background: rgba(200,16,46,0.15); color: #FF4D6D; border: 1px solid rgba(200,16,46,0.3);">
 					<span class="w-1.5 h-1.5 rounded-full" style="background: #FF4D6D; box-shadow: 0 0 10px #FF4D6D;"></span>
-					Next Step
+					{copy.ctaBadge}
 				</span>
-				<h2 class="font-heading text-4xl sm:text-5xl font-extrabold text-white tracking-tighter mb-4">Mulai Proyek dengan Beacon</h2>
-				<p class="text-lg text-zinc-400 font-medium">Tim engineer kami akan merancang arsitektur telemetri yang tepat dan menghitung kebutuhan riil proyek Anda.</p>
+				<h2 class="font-heading text-4xl sm:text-5xl font-extrabold text-white tracking-tighter mb-4">{copy.ctaTitle}</h2>
+				<p class="text-lg text-zinc-400 font-medium">{copy.ctaDesc}</p>
 			</div>
 
 			<div class="relative z-10 flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto shrink-0">
-				<a href="https://wa.me/628112632151?text=Halo%20CS%20Marketing%20Beacon%2C%20saya%20ingin%20konsultasi%20tentang%20Beacon%20untuk%20proyek%20saya." target="_blank" rel="noopener"
+				<a href={consultationUrl} target="_blank" rel="noopener"
 					class="w-full sm:w-auto inline-flex justify-center items-center gap-2 px-8 py-4 rounded-full text-sm font-bold text-zinc-950 bg-white transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(255,255,255,0.1)] btn-tactile">
 					<MessageCircle size={18} />
-					Konsultasi Beacon
+					{copy.ctaPrimary}
 				</a>
 				<a href="/solusi" class="w-full sm:w-auto inline-flex justify-center items-center gap-2 px-8 py-4 rounded-full text-sm font-bold text-white transition-all hover:bg-zinc-800 btn-tactile" style="border: 1px solid rgba(255,255,255,0.15);">
 					<ArrowRight size={18} />
-					Jelajahi Produk Lain
+					{copy.ctaSecondary}
 				</a>
 			</div>
 		</div>
