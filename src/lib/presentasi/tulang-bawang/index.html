@@ -1,0 +1,3089 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <title>Beacon Engineering × Kabupaten Tulang Bawang — Proposal 2026</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="slides.css" />
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <script src="deck-stage.js"></script>
+</head>
+
+<body>
+  <deck-stage>
+
+    <!-- ============================================================
+         01 · COVER
+         ============================================================ -->
+    <section data-screen-label="01 Cover">
+      <div class="slide-grid"></div>
+
+      <header class="chrome chrome--top">
+        <div class="brand-mark">
+          <img class="brand-logo" src="logo_be%202.png" alt="Beacon Engineering" />
+          <span class="brand-suffix">· Proposal Pemerintah Daerah</span>
+        </div>
+        <div>Kabupaten Tulang Bawang · 2026</div>
+      </header>
+
+      <div class="cover-grid">
+        <div class="cover-left">
+          <span class="eyebrow">Proposal Kerjasama Pemerintah Daerah</span>
+          <h1 class="h-display">
+            Infrastruktur<br/>
+            Data Real-Time<br/>
+            untuk <span style="color:var(--brand)">Asta Cita</span><br/>
+            Daerah.
+          </h1>
+          <p class="lead" style="max-width: 720px;">
+            Sistem telemetri, IoT, SCADA, dan dashboard untuk ketahanan
+            pangan & air, mitigasi bencana, kawasan industri, dan
+            pengelolaan lingkungan di <strong style="color:var(--ink); font-weight:600;">Kabupaten Tulang Bawang</strong>.
+          </p>
+          <div class="row g-12" style="flex-wrap: wrap;">
+            <span class="pill pill--brand">Telemetri</span>
+            <span class="pill pill--water">IoT</span>
+            <span class="pill pill--brand">SCADA</span>
+            <span class="pill pill--water">Dashboard</span>
+            <span class="pill pill--amber">Alarm & EWS</span>
+            <span class="pill">Data Historis</span>
+          </div>
+        </div>
+        <div class="cover-art">
+          <svg viewBox="0 0 700 700" width="100%" height="100%">
+            <defs>
+              <linearGradient id="cv-bg" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="var(--surface-2)"/><stop offset="100%" stop-color="var(--surface-3)"/>
+              </linearGradient>
+              <linearGradient id="cv-water" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="var(--brand-2)" stop-opacity=".7"/>
+                <stop offset="100%" stop-color="var(--brand)" stop-opacity=".9"/>
+              </linearGradient>
+              <radialGradient id="cv-pulse" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="var(--brand-2)" stop-opacity=".3"/>
+                <stop offset="70%" stop-color="var(--brand-2)" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <rect x="20" y="20" width="660" height="660" rx="24" fill="url(#cv-bg)" stroke="var(--line)" stroke-width="1"/>
+            <g class="cv-grid">
+              <path d="M86 20 V680 M152 20 V680 M218 20 V680 M284 20 V680 M350 20 V680 M416 20 V680 M482 20 V680 M548 20 V680 M614 20 V680" stroke="var(--bg-grid)" stroke-width="1" fill="none"/>
+              <path d="M20 86 H680 M20 152 H680 M20 218 H680 M20 284 H680 M20 350 H680 M20 416 H680 M20 482 H680 M20 548 H680 M20 614 H680" stroke="var(--bg-grid)" stroke-width="1" fill="none"/>
+            </g>
+            <circle cx="350" cy="380" r="280" fill="url(#cv-pulse)">
+              <animate attributeName="r" values="200;320;200" dur="6s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="350" cy="380" r="180" fill="url(#cv-pulse)" opacity=".6">
+              <animate attributeName="r" values="160;240;160" dur="5s" repeatCount="indefinite"/>
+            </circle>
+            <!-- Water -->
+            <path d="M 20 540 Q 100 510 200 540 T 380 540 T 560 540 T 720 540 L 720 680 L 20 680 Z" fill="url(#cv-water)" opacity=".35"/>
+            <path d="M 20 580 Q 110 555 220 580 T 420 580 T 620 580 T 720 580 L 720 680 L 20 680 Z" fill="url(#cv-water)" opacity=".6"/>
+            <path d="M 20 620 Q 100 600 200 620 T 400 620 T 600 620 T 720 620 L 720 680 L 20 680 Z" fill="url(#cv-water)" opacity=".85"/>
+            <!-- Pole -->
+            <ellipse cx="350" cy="610" rx="42" ry="6" fill="var(--brand-deep)" opacity=".2"/>
+            <rect x="343" y="240" width="14" height="380" rx="3" fill="var(--ink-2)"/>
+            <rect x="345" y="240" width="3" height="380" fill="white" opacity=".15"/>
+            <g transform="translate(290 200) rotate(-15)">
+              <rect width="120" height="50" rx="4" fill="var(--brand-deep)" stroke="var(--ink)" stroke-width="1"/>
+              <rect x="2" y="2" width="116" height="46" fill="var(--brand-2)" opacity=".18"/>
+              <path d="M30 0 V50 M60 0 V50 M90 0 V50 M0 25 H120" stroke="var(--brand-2)" stroke-opacity=".5" stroke-width="0.6" fill="none"/>
+            </g>
+            <rect x="320" y="280" width="60" height="44" rx="4" fill="var(--surface)" stroke="var(--ink)" stroke-width="1.5"/>
+            <rect x="326" y="288" width="48" height="14" rx="2" fill="var(--brand)"/>
+            <text x="350" y="299" text-anchor="middle" font-family="var(--font-mono)" font-size="9" font-weight="700" fill="white" letter-spacing=".15em">AWLR</text>
+            <circle cx="332" cy="316" r="2.2" fill="var(--green)">
+              <animate attributeName="opacity" values="1;.3;1" dur="1.6s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="342" cy="316" r="2.2" fill="var(--amber)" opacity=".5"/>
+            <circle cx="352" cy="316" r="2.2" fill="var(--ink-mute)" opacity=".3"/>
+            <line x1="350" y1="280" x2="350" y2="240" stroke="var(--ink-2)" stroke-width="2"/>
+            <circle cx="350" cy="240" r="4" fill="var(--brand)"/>
+            <!-- Radio waves -->
+            <g class="cv-radio">
+              <path d="M 320 230 Q 328 250 320 280" fill="none" stroke="var(--brand-2)" stroke-width="2">
+                <animate attributeName="opacity" values="0;0.8;0" dur="2.4s" repeatCount="indefinite"/>
+              </path>
+              <path d="M 302 224 Q 314 250 302 286" fill="none" stroke="var(--brand-2)" stroke-width="2">
+                <animate attributeName="opacity" values="0;0.6;0" dur="2.4s" begin="0.3s" repeatCount="indefinite"/>
+              </path>
+              <path d="M 284 218 Q 300 250 284 292" fill="none" stroke="var(--brand-2)" stroke-width="2">
+                <animate attributeName="opacity" values="0;0.4;0" dur="2.4s" begin="0.6s" repeatCount="indefinite"/>
+              </path>
+              <path d="M 380 230 Q 372 250 380 280" fill="none" stroke="var(--brand-2)" stroke-width="2">
+                <animate attributeName="opacity" values="0;0.8;0" dur="2.4s" repeatCount="indefinite"/>
+              </path>
+              <path d="M 398 224 Q 386 250 398 286" fill="none" stroke="var(--brand-2)" stroke-width="2">
+                <animate attributeName="opacity" values="0;0.6;0" dur="2.4s" begin="0.3s" repeatCount="indefinite"/>
+              </path>
+              <path d="M 416 218 Q 400 250 416 292" fill="none" stroke="var(--brand-2)" stroke-width="2">
+                <animate attributeName="opacity" values="0;0.4;0" dur="2.4s" begin="0.6s" repeatCount="indefinite"/>
+              </path>
+            </g>
+            <!-- Depth marker -->
+            <g transform="translate(420 545)">
+              <rect width="78" height="24" y="-12" rx="4" fill="var(--surface)" stroke="var(--line)" stroke-width="1"/>
+              <text x="6" y="-2" font-family="var(--font-mono)" font-size="9" fill="var(--ink-mute)" letter-spacing=".08em">TMA</text>
+              <text x="6" y="9" font-family="var(--font-mono)" font-size="11" font-weight="700" fill="var(--ink)">2.14 m</text>
+              <line x1="-70" y1="0" x2="0" y2="0" stroke="var(--ink-mute)" stroke-dasharray="3 3" stroke-width="1"/>
+            </g>
+            <!-- Floating tags -->
+            <g transform="translate(90 130)">
+              <rect width="140" height="46" rx="6" fill="var(--surface)" stroke="var(--line)" stroke-width="1"/>
+              <circle cx="14" cy="23" r="4" fill="var(--green)"/>
+              <text x="26" y="18" font-family="var(--font-mono)" font-size="9" font-weight="600" fill="var(--ink-mute)" letter-spacing=".08em">RAINFALL · ARR-02</text>
+              <text x="26" y="34" font-family="var(--font-mono)" font-size="13" font-weight="700" fill="var(--ink)">12.4 mm/h</text>
+            </g>
+            <g transform="translate(470 100)">
+              <rect width="140" height="46" rx="6" fill="var(--surface)" stroke="var(--line)" stroke-width="1"/>
+              <circle cx="14" cy="23" r="4" fill="var(--amber)"/>
+              <text x="26" y="18" font-family="var(--font-mono)" font-size="9" font-weight="600" fill="var(--ink-mute)" letter-spacing=".08em">PUMP P-04</text>
+              <text x="26" y="34" font-family="var(--font-mono)" font-size="13" font-weight="700" fill="var(--ink)">95 L/s · siaga</text>
+            </g>
+            <g transform="translate(490 420)">
+              <rect width="140" height="46" rx="6" fill="var(--surface)" stroke="var(--line)" stroke-width="1"/>
+              <circle cx="14" cy="23" r="4" fill="var(--water)"/>
+              <text x="26" y="18" font-family="var(--font-mono)" font-size="9" font-weight="600" fill="var(--ink-mute)" letter-spacing=".08em">WQ · pH</text>
+              <text x="26" y="34" font-family="var(--font-mono)" font-size="13" font-weight="700" fill="var(--ink)">7.2 · normal</text>
+            </g>
+          </svg>
+        </div>
+      </div>
+
+      <footer class="chrome chrome--bot">
+        <div class="left"><span>Disusun untuk Bappeda · PUPR · BPBD · DLH · Diskominfo · PDAM · Dinas Perikanan</span></div>
+        <div class="right"><span class="dot"></span><span>23 SLIDE · 25 MENIT</span></div>
+      </footer>
+    </section>
+
+
+    <!-- ============================================================
+         02 · POSITIONING
+         ============================================================ -->
+    <section data-screen-label="02 Positioning">
+      <div class="slide-grid"></div>
+      <header class="chrome chrome--top">
+        <div class="brand-mark"><img class="brand-logo" src="logo_be%202.png" alt="Beacon Engineering" /></div>
+        <div>Positioning · 02 / 22</div>
+      </header>
+
+      <div class="canvas" style="justify-content: center;">
+        <div style="max-width: 1500px; margin: 0 auto;">
+          <span class="eyebrow">Positioning Statement</span>
+          <p class="positioning-quote">
+            "Beacon Engineering mendukung implementasi
+            <span style="color: var(--brand)">Asta Cita</span> di daerah melalui
+            sistem telemetri, IoT, SCADA, dan dashboard real-time —
+            untuk memperkuat <em>ketahanan pangan,
+            ketahanan air, mitigasi bencana, pengelolaan lingkungan,</em>
+            serta kesiapan kawasan industri berbasis data."
+          </p>
+
+          <div class="pillar-row">
+            <div class="card pillar"><div class="n">01</div><div class="t">Telemetri</div></div>
+            <div class="card pillar"><div class="n">02</div><div class="t">IoT</div></div>
+            <div class="card pillar"><div class="n">03</div><div class="t">SCADA</div></div>
+            <div class="card pillar"><div class="n">04</div><div class="t">Dashboard</div></div>
+            <div class="card pillar"><div class="n">05</div><div class="t">Alarm & EWS</div></div>
+            <div class="card pillar"><div class="n">06</div><div class="t">Data Historis</div></div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="chrome chrome--bot">
+        <div class="left"><span>Beacon Engineering · 2026</span></div>
+        <div class="right"><span class="dot"></span><span>POSITIONING</span></div>
+      </footer>
+    </section>
+
+
+    <!-- ============================================================
+         03 · KONTEKS TULANG BAWANG (with map)
+         ============================================================ -->
+    <section data-screen-label="03 Konteks">
+      <div class="slide-grid"></div>
+      <header class="chrome chrome--top">
+        <div class="brand-mark"><img class="brand-logo" src="logo_be%202.png" alt="Beacon Engineering" /></div>
+        <div>Konteks Daerah · 03 / 22</div>
+      </header>
+
+      <div class="canvas ctx-grid">
+        <div class="ctx-left">
+          <span class="eyebrow">Mengapa Tulang Bawang</span>
+          <h2 class="h-title">Kabupaten dengan DNA air, pangan, dan ekonomi biru.</h2>
+          <p class="lead">
+            Tulang Bawang adalah perpaduan sungai besar, rawa, pertanian,
+            pesisir, dan kawasan industri — semua membutuhkan sensor, telemetri,
+            dan keputusan berbasis data.
+          </p>
+
+          <div class="divider-line"></div>
+
+          <div class="ctx-kpi">
+            <div class="kpi"><span class="v">~3,119<span class="u">km²</span></span><span class="k">Luas Wilayah · BIG RBI</span></div>
+            <div class="kpi"><span class="v">15</span><span class="k">Kecamatan</span></div>
+            <div class="kpi"><span class="v">Way TB</span><span class="k">Sungai Utama · DAS lintas kabupaten</span></div>
+            <div class="kpi"><span class="v">Udang<br/>Manis</span><span class="k">Kawasan Industri · Blue Economy</span></div>
+          </div>
+
+          <div class="row g-12" style="flex-wrap:wrap; margin-top: 4px;">
+            <span class="pill pill--water">Sungai & Rawa</span>
+            <span class="pill pill--green">Pertanian</span>
+            <span class="pill pill--water">Pesisir & Tambak</span>
+            <span class="pill pill--amber">Kawasan Industri</span>
+            <span class="pill pill--danger">Rawan Banjir</span>
+          </div>
+        </div>
+
+        <div class="ctx-right">
+          <div class="ctx-map-label">
+            <span>PETA SENSOR · TULANG BAWANG</span>
+            <span><span class="status-dot ok" style="width:6px; height:6px; display:inline-block; margin-right:6px;"></span>12 NODE TERPASANG · DEMO</span>
+          </div>
+          <div class="ctx-map-mount" data-component="map"></div>
+        </div>
+      </div>
+
+      <footer class="chrome chrome--bot">
+        <div class="left"><span>Konteks Daerah · Tulang Bawang, Lampung</span></div>
+        <div class="right"><span class="dot"></span><span>HOVER PIN UNTUK DETAIL</span></div>
+      </footer>
+    </section>
+
+
+    <!-- ============================================================
+         04 · ASTA CITA × BE
+         ============================================================ -->
+    <section data-screen-label="04 Asta Cita">
+      <div class="slide-grid"></div>
+      <header class="chrome chrome--top">
+        <div class="brand-mark"><img class="brand-logo" src="logo_be%202.png" alt="Beacon Engineering" /></div>
+        <div>Asta Cita × BE · 04 / 22</div>
+      </header>
+
+      <div class="canvas">
+        <span class="eyebrow">Asta Cita × Beacon Engineering</span>
+        <h2 class="h-section" style="margin-top: 16px; max-width: 1500px;">
+          Setiap program kami disandingkan langsung dengan poin Asta Cita yang relevan.
+        </h2>
+
+        <div class="asta-grid">
+          <div class="card asta-card">
+            <span class="asta-pill"><span class="n">3</span> Industrialisasi</span>
+            <h3 class="h-card">Ketahanan Pangan, Air & Energi</h3>
+            <p class="body-sm">Swasembada pangan, swasembada air, pembangunan dari desa.</p>
+            <div class="divider-line"></div>
+            <div class="asta-card-foot">→ Program 1, 6, 7</div>
+          </div>
+          <div class="card asta-card">
+            <span class="asta-pill"><span class="n">8</span> Perlindungan</span>
+            <h3 class="h-card">Mitigasi Bencana & Keselamatan</h3>
+            <p class="body-sm">Perlindungan masyarakat, ketahanan iklim, keselamatan warga.</p>
+            <div class="divider-line"></div>
+            <div class="asta-card-foot">→ Program 2, 8</div>
+          </div>
+          <div class="card asta-card">
+            <span class="asta-pill"><span class="n">5</span> Hilirisasi</span>
+            <h3 class="h-card">Industrialisasi & Ekonomi Biru</h3>
+            <p class="body-sm">Hilirisasi, investasi, ekonomi biru — kesiapan kawasan industri.</p>
+            <div class="divider-line"></div>
+            <div class="asta-card-foot">→ Program 3, 4, 7</div>
+          </div>
+          <div class="card asta-card">
+            <span class="asta-pill"><span class="n">7</span> Reformasi</span>
+            <h3 class="h-card">Birokrasi & Tata Kelola Data</h3>
+            <p class="body-sm">Reformasi birokrasi, digitalisasi layanan publik, pemerintahan berbasis data.</p>
+            <div class="divider-line"></div>
+            <div class="asta-card-foot">→ Program 5, 8</div>
+          </div>
+        </div>
+
+        <div class="card card--quiet asta-principle">
+          <div class="label">PRINSIP</div>
+          <div class="bar"></div>
+          <p>
+            BE tidak menjual alat sensor — kami merancang
+            <strong>program transformasi data daerah</strong>
+            yang langsung mendukung agenda nasional di tingkat kabupaten.
+          </p>
+        </div>
+      </div>
+
+      <footer class="chrome chrome--bot">
+        <div class="left"><span>Asta Cita Framing</span></div>
+        <div class="right"><span class="dot"></span><span>04 / 22</span></div>
+      </footer>
+    </section>
+
+
+    <!-- ============================================================
+         05 · TECH STACK / WHAT WE BUILD
+         ============================================================ -->
+    <section data-screen-label="05 Tech Stack">
+      <div class="slide-grid"></div>
+      <header class="chrome chrome--top">
+        <div class="brand-mark"><img class="brand-logo" src="logo_be%202.png" alt="Beacon Engineering" /></div>
+        <div>Tech Stack · 05 / 22</div>
+      </header>
+
+      <div class="canvas">
+        <div class="stack-head">
+          <div>
+            <span class="eyebrow">Yang Kami Bangun</span>
+            <h2 class="h-section" style="margin-top:14px;">Tujuh lapis kemampuan, terintegrasi end-to-end.</h2>
+          </div>
+          <p class="body" style="max-width: 520px;">
+            Dari sensor lapangan, gateway telemetri, sampai dashboard pimpinan
+            daerah — semua dirancang agar bisa dipakai langsung oleh operator dinas.
+          </p>
+        </div>
+
+        <div class="stack-grid">
+          <div class="card stack-card">
+            <svg class="stack-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="2.5"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="9.5"/></svg>
+            <div class="stack-body">
+              <div class="stack-label">LAPIS 01</div>
+              <div class="h-mini">Sensor Lapangan</div>
+              <p class="body-sm">AWLR · AWLL · ARR · Water Quality · Flow · Pressure · Energi</p>
+            </div>
+          </div>
+          <div class="card stack-card">
+            <svg class="stack-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"><path d="M13 3 4 14h6l-1 7 9-11h-6l1-7z"/></svg>
+            <div class="stack-body">
+              <div class="stack-label">LAPIS 02</div>
+              <div class="h-mini">Telemetri & Gateway</div>
+              <p class="body-sm">Solar power · GSM / LoRa / Satelit · Edge logger · Cloud sync</p>
+            </div>
+          </div>
+          <div class="card stack-card">
+            <svg class="stack-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"><path d="M3 12h6a3 3 0 0 0 3-3V6"/><path d="M12 18v-3a3 3 0 0 1 3-3h6"/><circle cx="3" cy="12" r="1"/><circle cx="12" cy="6" r="1"/><circle cx="12" cy="18" r="1"/><circle cx="21" cy="12" r="1"/></svg>
+            <div class="stack-body">
+              <div class="stack-label">LAPIS 03</div>
+              <div class="h-mini">SCADA Utilitas</div>
+              <p class="body-sm">Pompa · pintu air · reservoir · IPA · jaringan distribusi</p>
+            </div>
+          </div>
+          <div class="card stack-card">
+            <svg class="stack-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><rect x="3" y="3" width="8" height="9" rx="1.5"/><rect x="13" y="3" width="8" height="5" rx="1.5"/><rect x="13" y="10" width="8" height="11" rx="1.5"/><rect x="3" y="14" width="8" height="7" rx="1.5"/></svg>
+            <div class="stack-body">
+              <div class="stack-label">LAPIS 04</div>
+              <div class="h-mini">Dashboard Real-Time</div>
+              <p class="body-sm">Per-dinas + dashboard pimpinan + peta GIS sensor</p>
+            </div>
+          </div>
+          <div class="card stack-card">
+            <svg class="stack-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"><path d="M6 16V10a6 6 0 0 1 12 0v6l2 2H4l2-2z"/><path d="M10 21a2 2 0 0 0 4 0"/></svg>
+            <div class="stack-body">
+              <div class="stack-label">LAPIS 05</div>
+              <div class="h-mini">Alarm & EWS</div>
+              <p class="body-sm">Status Normal/Siaga/Awas · sirine lapangan · WA/SMS/Telegram</p>
+            </div>
+          </div>
+          <div class="card stack-card">
+            <svg class="stack-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"/><line x1="9" y1="4" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="20"/></svg>
+            <div class="stack-body">
+              <div class="stack-label">LAPIS 06</div>
+              <div class="h-mini">GIS & Asset Map</div>
+              <p class="body-sm">Lokasi tiap sensor, status perangkat, QR tagging aset</p>
+            </div>
+          </div>
+          <div class="card stack-card">
+            <svg class="stack-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"><path d="M3 20h18M6 16l4-6 4 3 5-9"/></svg>
+            <div class="stack-body">
+              <div class="stack-label">LAPIS 07</div>
+              <div class="h-mini">Data Historis & Laporan</div>
+              <p class="body-sm">Auto laporan harian/mingguan · tren bulanan · dataset evaluasi</p>
+            </div>
+          </div>
+          <div class="card stack-card stack-card--accent">
+            <div class="stack-label" style="color: rgba(255,255,255,.7);">INTEGRASI</div>
+            <div class="stack-body">
+              <div class="h-mini" style="color:white;">Command Center<br/>Kabupaten</div>
+              <p class="body-sm" style="color: rgba(255,255,255,.85);">Bupati · Sekda · Bappeda · BPBD · PUPR — satu layar bersama.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="chrome chrome--bot">
+        <div class="left"><span>End-to-end Stack</span></div>
+        <div class="right"><span class="dot"></span><span>05 / 22</span></div>
+      </footer>
+    </section>
+
+
+    <!-- ============================================================
+         06 · DIVIDER: 8 PROGRAM IMPLEMENTASI
+         ============================================================ -->
+    <section data-screen-label="06 Divider Bagian I">
+      <div class="slide-grid"></div>
+      <header class="chrome chrome--top">
+        <div class="brand-mark"><img class="brand-logo" src="logo_be%202.png" alt="Beacon Engineering" /></div>
+        <div>Bagian I · 06 / 22</div>
+      </header>
+
+      <div class="canvas" style="justify-content: center;">
+        <div class="divider-grid">
+          <div>
+            <span class="eyebrow">Bagian I</span>
+            <div class="divider-num">08</div>
+            <h2 class="h-title divider-title">
+              Program<br/>Implementasi<br/>untuk Pemda.
+            </h2>
+            <p class="lead" style="margin-top: 32px; max-width: 640px;">
+              Delapan area kerja yang langsung memetakan ke kebutuhan
+              dinas-dinas di Kabupaten Tulang Bawang.
+            </p>
+          </div>
+
+          <ol class="prog-mini-list">
+            <li><span class="n">01</span><span>Ketahanan Air & Pangan</span></li>
+            <li><span class="n">02</span><span>Sistem Peringatan Dini Banjir</span></li>
+            <li><span class="n">03</span><span>Kawasan Industri Udang Manis</span></li>
+            <li><span class="n">04</span><span>Monitoring Lingkungan & Kualitas Air</span></li>
+            <li><span class="n">05</span><span>Smart Regency Command Center</span></li>
+            <li><span class="n">06</span><span>Digitalisasi SPAM, PDAM & Air Bersih</span></li>
+            <li><span class="n">07</span><span>Monitoring Tambak & Blue Economy</span></li>
+            <li><span class="n">08</span><span>Monitoring Aset Infrastruktur Daerah</span></li>
+          </ol>
+        </div>
+      </div>
+
+      <footer class="chrome chrome--bot">
+        <div class="left"><span>Bagian I · 8 Program Implementasi</span></div>
+        <div class="right"><span class="dot"></span><span>06 / 22</span></div>
+      </footer>
+    </section>
+
+
+    <!-- ============================================================
+         07 · PROGRAM 01 · Ketahanan Air & Pangan
+         ============================================================ -->
+    <section data-screen-label="07 Prog 01 Ketahanan Air & Pangan">
+      <div class="slide-grid"></div>
+      <header class="chrome chrome--top">
+        <div class="brand-mark"><img class="brand-logo" src="logo_be%202.png" alt="Beacon Engineering" /></div>
+        <div>Program 01 · 07 / 22</div>
+      </header>
+
+      <div class="canvas">
+        <div class="prog-head">
+          <div class="num">01</div>
+          <div>
+            <span class="eyebrow">Program Implementasi</span>
+            <div class="title" style="margin-top:8px;">Ketahanan Air & Pangan</div>
+          </div>
+          <div class="asta">
+            <div class="asta-label">ASTA CITA</div>
+            <span class="asta-pill"><span class="n">3</span> Swasembada pangan · air · energi · desa</span>
+          </div>
+        </div>
+
+        <div class="prog-body">
+          <div class="card prog-impl">
+            <div class="prog-section-title">Implementasi BE</div>
+            <ul>
+              <li>AWLR / AWLL di sungai, kanal, rawa, embung, dan saluran irigasi</li>
+              <li>ARR / Automatic Rain Gauge untuk data curah hujan lokal</li>
+              <li>Monitoring irigasi pertanian dan lahan pangan</li>
+              <li>Dashboard tinggi muka air, curah hujan, status pompa & pintu air</li>
+              <li>Sistem rekomendasi status: <strong>Normal · Siaga · Awas</strong></li>
+            </ul>
+          </div>
+          <div class="card prog-fits">
+            <div class="prog-section-title">Cocok untuk</div>
+            <div class="pill-list">
+              <span class="pill"><span class="swatch"></span>Dinas PUPR / SDA</span>
+              <span class="pill"><span class="swatch" style="background:var(--green)"></span>Dinas Pertanian</span>
+              <span class="pill"><span class="swatch"></span>Bappeda</span>
+              <span class="pill"><span class="swatch" style="background:var(--amber)"></span>BPBD</span>
+            </div>
+          </div>
+          <div class="card prog-value">
+            <div class="prog-section-title">Nilai Jual</div>
+            <p class="quote">
+              Tulang Bawang banyak wilayah sungai, rawa, pertanian, dan pesisir.
+              Data air real-time menjaga <strong>produktivitas pangan</strong>
+              dan mengurangi risiko gagal panen serta banjir.
+            </p>
+            <div class="prog-value-foot">
+              <div>
+                <div class="stack-label">USE CASE</div>
+                <div style="font-size:20px; font-weight:700; margin-top:4px;">Pangan & Air Daerah</div>
+              </div>
+              <div class="vis">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"><path d="M12 3c-3 5-6 8-6 12a6 6 0 0 0 12 0c0-4-3-7-6-12z"/></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="chrome chrome--bot">
+        <div class="left"><span>Program 01 · Ketahanan Air & Pangan</span></div>
+        <div class="right"><span class="dot"></span><span>07 / 22</span></div>
+      </footer>
+    </section>
+
+
+    <!-- ============================================================
+         08 · PROGRAM 02 · Sistem Peringatan Dini Banjir
+         ============================================================ -->
+    <section data-screen-label="08 Prog 02 EWS Banjir">
+      <div class="slide-grid"></div>
+      <header class="chrome chrome--top">
+        <div class="brand-mark"><img class="brand-logo" src="logo_be%202.png" alt="Beacon Engineering" /></div>
+        <div>Program 02 · 08 / 22</div>
+      </header>
+
+      <div class="canvas">
+        <div class="prog-head">
+          <div class="num">02</div>
+          <div>
+            <span class="eyebrow">Program Implementasi</span>
+            <div class="title" style="margin-top:8px;">Sistem Peringatan Dini Banjir & Hidrometeorologi</div>
+          </div>
+          <div class="asta">
+            <div class="asta-label">ASTA CITA</div>
+            <span class="asta-pill"><span class="n">8</span> Perlindungan masyarakat & ketahanan iklim</span>
+          </div>
+        </div>
+
+        <div class="prog-body">
+          <div class="card prog-impl">
+            <div class="prog-section-title">Implementasi BE</div>
+            <ul>
+              <li>Flood Early Warning System (FEWS) berbasis sensor tinggi muka air</li>
+              <li>Sirine peringatan dini di titik-titik rawan</li>
+              <li>Dashboard BPBD & command center kabupaten</li>
+              <li>Notifikasi WhatsApp / SMS / Telegram untuk petugas lapangan</li>
+              <li>Integrasi CCTV sungai dan pos pantau</li>
+            </ul>
+          </div>
+          <div class="card prog-fits">
+            <div class="prog-section-title">Cocok untuk</div>
+            <div class="pill-list">
+              <span class="pill"><span class="swatch" style="background:var(--amber)"></span>BPBD</span>
+              <span class="pill"><span class="swatch"></span>Dinas PUPR</span>
+              <span class="pill"><span class="swatch" style="background:var(--water)"></span>Diskominfo</span>
+              <span class="pill"><span class="swatch" style="background:var(--danger)"></span>Kecamatan / desa rawan banjir</span>
+            </div>
+          </div>
+          <div class="card prog-value">
+            <div class="prog-section-title">Nilai Jual</div>
+            <p class="quote">
+              Tulang Bawang punya sungai besar dan dataran rendah — ini bisa
+              jadi program unggulan
+              <strong>"Kabupaten Tangguh Bencana Berbasis Data Real-Time"</strong>.
+            </p>
+            <div class="prog-value-foot">
+              <div>
+                <div class="stack-label">FLAGSHIP PROGRAM</div>
+                <div style="font-size:20px; font-weight:700; margin-top:4px;">Tangguh Bencana</div>
+              </div>
+              <div class="vis" style="background:var(--amber)">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"><path d="M6 16V10a6 6 0 0 1 12 0v6l2 2H4l2-2z"/><path d="M10 21a2 2 0 0 0 4 0"/></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="chrome chrome--bot">
+        <div class="left"><span>Program 02 · EWS Banjir & Hidrometeorologi</span></div>
+        <div class="right"><span class="dot"></span><span>08 / 22</span></div>
+      </footer>
+    </section>
+
+
+    <!-- ============================================================
+         09 · PROGRAM 03 · Kawasan Industri Udang Manis
+         ============================================================ -->
+    <section data-screen-label="09 Prog 03 Udang Manis">
+      <div class="slide-grid"></div>
+      <header class="chrome chrome--top">
+        <div class="brand-mark"><img class="brand-logo" src="logo_be%202.png" alt="Beacon Engineering" /></div>
+        <div>Program 03 · 09 / 22</div>
+      </header>
+
+      <div class="canvas">
+        <div class="prog-head">
+          <div class="num">03</div>
+          <div>
+            <span class="eyebrow">Program Implementasi</span>
+            <div class="title" style="margin-top:8px;">Monitoring Kawasan Industri Udang Manis / Blue Economy Zone</div>
+          </div>
+          <div class="asta">
+            <div class="asta-label">ASTA CITA</div>
+            <span class="asta-pill"><span class="n">5</span> Hilirisasi · industrialisasi · investasi · ekonomi biru</span>
+          </div>
+        </div>
+
+        <div class="prog-body">
+          <div class="card prog-impl">
+            <div class="prog-section-title">Implementasi BE</div>
+            <ul>
+              <li>SCADA untuk utilitas kawasan industri</li>
+              <li>Monitoring kualitas air limbah dan air baku</li>
+              <li>Monitoring pompa, reservoir, pintu air, flow meter, energi & tekanan jaringan</li>
+              <li>Dashboard operasional kawasan industri</li>
+              <li>Environmental monitoring untuk kepatuhan DLH</li>
+            </ul>
+          </div>
+          <div class="card prog-fits">
+            <div class="prog-section-title">Cocok untuk</div>
+            <div class="pill-list">
+              <span class="pill"><span class="swatch" style="background:var(--amber)"></span>Dinas Perindustrian</span>
+              <span class="pill"><span class="swatch"></span>DPMPTSP</span>
+              <span class="pill"><span class="swatch" style="background:var(--green)"></span>DLH</span>
+              <span class="pill"><span class="swatch" style="background:var(--brand-2)"></span>Pengelola Kawasan Industri</span>
+              <span class="pill"><span class="swatch"></span>Bappeda</span>
+            </div>
+          </div>
+          <div class="card prog-value">
+            <div class="prog-section-title">Nilai Jual</div>
+            <p class="quote">
+              Kalau Tulang Bawang ingin menarik investor, kawasan industri perlu terlihat
+              <strong>siap secara infrastruktur digital</strong> — air, energi,
+              lingkungan, dan utilitas dipantau real-time.
+            </p>
+            <div class="prog-value-foot">
+              <div>
+                <div class="stack-label">INVESTOR SIGNAL</div>
+                <div style="font-size:20px; font-weight:700; margin-top:4px;">Kesiapan Digital</div>
+              </div>
+              <div class="vis">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"><path d="M3 21V10l5 3V10l5 3V10l5 3v8H3z"/></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="chrome chrome--bot">
+        <div class="left"><span>Program 03 · Kawasan Industri Udang Manis</span></div>
+        <div class="right"><span class="dot"></span><span>09 / 22</span></div>
+      </footer>
+    </section>
+
+
+    <!-- ============================================================
+         10 · PROGRAM 04 · Monitoring Lingkungan Hidup & Kualitas Air
+         ============================================================ -->
+    <section data-screen-label="10 Prog 04 Lingkungan">
+      <div class="slide-grid"></div>
+      <header class="chrome chrome--top">
+        <div class="brand-mark"><img class="brand-logo" src="logo_be%202.png" alt="Beacon Engineering" /></div>
+        <div>Program 04 · 10 / 22</div>
+      </header>
+
+      <div class="canvas">
+        <div class="prog-head">
+          <div class="num">04</div>
+          <div>
+            <span class="eyebrow">Program Implementasi</span>
+            <div class="title" style="margin-top:8px;">Monitoring Lingkungan Hidup & Kualitas Air</div>
+          </div>
+          <div class="asta">
+            <div class="asta-label">ASTA CITA</div>
+            <span class="asta-pill"><span class="n">5</span> Pembangunan berkelanjutan & harmoni alam</span>
+          </div>
+        </div>
+
+        <div class="prog-body">
+          <div class="card prog-impl">
+            <div class="prog-section-title">Implementasi BE</div>
+            <ul>
+              <li>Online Water Quality Monitoring (OWQM)</li>
+              <li>Sensor pH, TSS, DO, COD/BOD estimator, suhu, konduktivitas</li>
+              <li>Monitoring sungai dekat industri, tambak, permukiman & outlet limbah</li>
+              <li>Dashboard DLH untuk tren kualitas air</li>
+              <li>Alarm otomatis jika parameter melewati ambang baku mutu</li>
+            </ul>
+          </div>
+          <div class="card prog-fits">
+            <div class="prog-section-title">Cocok untuk</div>
+            <div class="pill-list">
+              <span class="pill"><span class="swatch" style="background:var(--green)"></span>DLH</span>
+              <span class="pill"><span class="swatch" style="background:var(--water)"></span>Dinas Perikanan</span>
+              <span class="pill"><span class="swatch" style="background:var(--amber)"></span>Kawasan Industri</span>
+              <span class="pill"><span class="swatch"></span>Bappeda</span>
+            </div>
+          </div>
+          <div class="card prog-value">
+            <div class="prog-section-title">Nilai Jual</div>
+            <p class="quote">
+              Kuat untuk narasi <strong>blue economy</strong>, tambak, sungai,
+              dan kawasan industri — BE masuk sebagai
+              <strong>sistem penjaga keberlanjutan investasi</strong>.
+            </p>
+            <div class="prog-value-foot">
+              <div>
+                <div class="stack-label">KEBERLANJUTAN</div>
+                <div style="font-size:20px; font-weight:700; margin-top:4px;">Compliance DLH</div>
+              </div>
+              <div class="vis" style="background:var(--green)">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"><path d="M5 19c0-9 7-14 16-14 0 9-5 16-14 16-3 0-2-2-2-2z"/><path d="M5 19c4-7 7-9 11-11"/></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="chrome chrome--bot">
+        <div class="left"><span>Program 04 · Monitoring Lingkungan Hidup</span></div>
+        <div class="right"><span class="dot"></span><span>10 / 22</span></div>
+      </footer>
+    </section>
+
+
+    <!-- ============================================================
+         11 · PROGRAM 05 · Smart Regency Command Center
+         ============================================================ -->
+    <section data-screen-label="11 Prog 05 Command Center">
+      <div class="slide-grid"></div>
+      <header class="chrome chrome--top">
+        <div class="brand-mark"><img class="brand-logo" src="logo_be%202.png" alt="Beacon Engineering" /></div>
+        <div>Program 05 · 11 / 22</div>
+      </header>
+
+      <div class="canvas">
+        <div class="prog-head">
+          <div class="num">05</div>
+          <div>
+            <span class="eyebrow">Program Implementasi</span>
+            <div class="title" style="margin-top:8px;">Smart Regency Command Center</div>
+          </div>
+          <div class="asta">
+            <div class="asta-label">ASTA CITA</div>
+            <span class="asta-pill"><span class="n">7</span> Reformasi birokrasi & digitalisasi layanan</span>
+          </div>
+        </div>
+
+        <div class="prog-body">
+          <div class="card prog-impl">
+            <div class="prog-section-title">Implementasi BE</div>
+            <ul>
+              <li>Dashboard terpadu kabupaten</li>
+              <li>Integrasi data AWLR, curah hujan, kualitas air, pompa, CCTV, aset lapangan</li>
+              <li>Peta GIS titik sensor & status perangkat</li>
+              <li>Laporan otomatis harian / mingguan untuk pimpinan daerah</li>
+              <li>Ruang kendali untuk Bupati / Sekda / Bappeda / BPBD</li>
+            </ul>
+          </div>
+          <div class="card prog-fits">
+            <div class="prog-section-title">Cocok untuk</div>
+            <div class="pill-list">
+              <span class="pill"><span class="swatch" style="background:var(--water)"></span>Diskominfo</span>
+              <span class="pill"><span class="swatch"></span>Bappeda</span>
+              <span class="pill"><span class="swatch"></span>Sekretariat Daerah</span>
+              <span class="pill"><span class="swatch" style="background:var(--brand-2)"></span>Command Center Daerah</span>
+            </div>
+          </div>
+          <div class="card prog-value">
+            <div class="prog-section-title">Nilai Jual</div>
+            <p class="quote">
+              Bukan sekadar beli alat — ini membangun
+              <strong>sistem pengambilan keputusan berbasis data</strong>
+              di tingkat pimpinan daerah.
+            </p>
+            <div class="prog-value-foot">
+              <div>
+                <div class="stack-label">DATA-DRIVEN GOV</div>
+                <div style="font-size:20px; font-weight:700; margin-top:4px;">Ruang Kendali</div>
+              </div>
+              <div class="vis">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><rect x="3" y="3" width="8" height="9" rx="1.5"/><rect x="13" y="3" width="8" height="5" rx="1.5"/><rect x="13" y="10" width="8" height="11" rx="1.5"/><rect x="3" y="14" width="8" height="7" rx="1.5"/></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="chrome chrome--bot">
+        <div class="left"><span>Program 05 · Smart Regency Command Center</span></div>
+        <div class="right"><span class="dot"></span><span>11 / 22</span></div>
+      </footer>
+    </section>
+
+
+    <!-- ============================================================
+         12 · PROGRAM 06 · Digitalisasi SPAM, PDAM & Air Bersih
+         ============================================================ -->
+    <section data-screen-label="12 Prog 06 SPAM PDAM">
+      <div class="slide-grid"></div>
+      <header class="chrome chrome--top">
+        <div class="brand-mark"><img class="brand-logo" src="logo_be%202.png" alt="Beacon Engineering" /></div>
+        <div>Program 06 · 12 / 22</div>
+      </header>
+
+      <div class="canvas">
+        <div class="prog-head">
+          <div class="num">06</div>
+          <div>
+            <span class="eyebrow">Program Implementasi</span>
+            <div class="title" style="margin-top:8px;">Digitalisasi SPAM, PDAM & Air Bersih</div>
+          </div>
+          <div class="asta">
+            <div class="asta-label">ASTA CITA</div>
+            <span class="asta-pill"><span class="n">3</span> Akses air bersih & infrastruktur dasar</span>
+          </div>
+        </div>
+
+        <div class="prog-body">
+          <div class="card prog-impl">
+            <div class="prog-section-title">Implementasi BE</div>
+            <ul>
+              <li>SCADA Instalasi Pengolahan Air (IPA)</li>
+              <li>Monitoring level reservoir</li>
+              <li>Flow meter & pressure monitoring jaringan distribusi</li>
+              <li>Monitoring pompa & panel listrik</li>
+              <li>Alarm kebocoran / anomali tekanan</li>
+              <li>Dashboard kinerja layanan air bersih</li>
+            </ul>
+          </div>
+          <div class="card prog-fits">
+            <div class="prog-section-title">Cocok untuk</div>
+            <div class="pill-list">
+              <span class="pill"><span class="swatch" style="background:var(--water)"></span>PDAM / Perumda Air Minum</span>
+              <span class="pill"><span class="swatch"></span>Dinas PUPR Cipta Karya</span>
+              <span class="pill"><span class="swatch"></span>Bappeda</span>
+            </div>
+          </div>
+          <div class="card prog-value">
+            <div class="prog-section-title">Nilai Jual</div>
+            <p class="quote">
+              Mengaitkan transformasi data dengan
+              <strong>layanan dasar masyarakat</strong> dan peningkatan
+              kualitas hidup warga Tulang Bawang.
+            </p>
+            <div class="prog-value-foot">
+              <div>
+                <div class="stack-label">LAYANAN DASAR</div>
+                <div style="font-size:20px; font-weight:700; margin-top:4px;">Air Bersih</div>
+              </div>
+              <div class="vis" style="background:var(--water)">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"><path d="M3 12h6a3 3 0 0 0 3-3V6"/><path d="M12 18v-3a3 3 0 0 1 3-3h6"/><circle cx="3" cy="12" r="1"/><circle cx="12" cy="6" r="1"/><circle cx="12" cy="18" r="1"/><circle cx="21" cy="12" r="1"/></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="chrome chrome--bot">
+        <div class="left"><span>Program 06 · Digitalisasi SPAM & PDAM</span></div>
+        <div class="right"><span class="dot"></span><span>12 / 22</span></div>
+      </footer>
+    </section>
+
+
+    <!-- ============================================================
+         13 · PROGRAM 07 · Monitoring Tambak & Blue Economy
+         ============================================================ -->
+    <section data-screen-label="13 Prog 07 Tambak">
+      <div class="slide-grid"></div>
+      <header class="chrome chrome--top">
+        <div class="brand-mark"><img class="brand-logo" src="logo_be%202.png" alt="Beacon Engineering" /></div>
+        <div>Program 07 · 13 / 22</div>
+      </header>
+
+      <div class="canvas">
+        <div class="prog-head">
+          <div class="num">07</div>
+          <div>
+            <span class="eyebrow">Program Implementasi</span>
+            <div class="title" style="margin-top:8px;">Monitoring Tambak, Perikanan & Blue Economy</div>
+          </div>
+          <div class="asta">
+            <div class="asta-label">ASTA CITA</div>
+            <span class="asta-pill"><span class="n">5</span> Ekonomi biru, pangan & hilirisasi hasil laut</span>
+          </div>
+        </div>
+
+        <div class="prog-body">
+          <div class="card prog-impl">
+            <div class="prog-section-title">Implementasi BE</div>
+            <ul>
+              <li>Monitoring kualitas air tambak: <strong>pH, suhu, DO, salinitas</strong></li>
+              <li>Weather station mikro untuk kawasan tambak</li>
+              <li>Dashboard produksi dan risiko kualitas air</li>
+              <li>Sistem alarm untuk perubahan parameter ekstrem</li>
+              <li>Data historis untuk evaluasi hasil panen</li>
+            </ul>
+          </div>
+          <div class="card prog-fits">
+            <div class="prog-section-title">Cocok untuk</div>
+            <div class="pill-list">
+              <span class="pill"><span class="swatch" style="background:var(--water)"></span>Dinas Perikanan</span>
+              <span class="pill"><span class="swatch" style="background:var(--green)"></span>Kawasan Blue Economy</span>
+              <span class="pill"><span class="swatch"></span>Koperasi / tambak rakyat</span>
+              <span class="pill"><span class="swatch" style="background:var(--amber)"></span>Investor tambak modern</span>
+            </div>
+          </div>
+          <div class="card prog-value">
+            <div class="prog-section-title">Nilai Jual</div>
+            <p class="quote">
+              Bisa jadi program contoh:
+              <strong>"Tambak Cerdas Berbasis IoT untuk Blue Economy Tulang Bawang"</strong>.
+            </p>
+            <div class="prog-value-foot">
+              <div>
+                <div class="stack-label">PROGRAM CONTOH</div>
+                <div style="font-size:20px; font-weight:700; margin-top:4px;">Tambak Cerdas</div>
+              </div>
+              <div class="vis" style="background:var(--water)">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"><path d="M3 12c4-5 10-5 14 0-4 5-10 5-14 0z"/><path d="M17 12l4-3v6l-4-3z"/><circle cx="7" cy="11" r=".7" fill="currentColor"/></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="chrome chrome--bot">
+        <div class="left"><span>Program 07 · Monitoring Tambak & Blue Economy</span></div>
+        <div class="right"><span class="dot"></span><span>13 / 22</span></div>
+      </footer>
+    </section>
+
+
+    <!-- ============================================================
+         14 · PROGRAM 08 · Monitoring Aset Infrastruktur Daerah
+         ============================================================ -->
+    <section data-screen-label="14 Prog 08 Aset">
+      <div class="slide-grid"></div>
+      <header class="chrome chrome--top">
+        <div class="brand-mark"><img class="brand-logo" src="logo_be%202.png" alt="Beacon Engineering" /></div>
+        <div>Program 08 · 14 / 22</div>
+      </header>
+
+      <div class="canvas">
+        <div class="prog-head">
+          <div class="num">08</div>
+          <div>
+            <span class="eyebrow">Program Implementasi</span>
+            <div class="title" style="margin-top:8px;">Monitoring Aset Infrastruktur Daerah</div>
+          </div>
+          <div class="asta">
+            <div class="asta-label">ASTA CITA</div>
+            <span class="asta-pill"><span class="n">7</span> Efisiensi anggaran & reformasi tata kelola</span>
+          </div>
+        </div>
+
+        <div class="prog-body">
+          <div class="card prog-impl">
+            <div class="prog-section-title">Implementasi BE</div>
+            <ul>
+              <li>Monitoring pompa banjir</li>
+              <li>Monitoring pintu air</li>
+              <li>Monitoring jembatan / slope / pergerakan tanah (jika diperlukan)</li>
+              <li>Asset dashboard: status perangkat & jadwal maintenance</li>
+              <li>QR tagging aset lapangan</li>
+            </ul>
+          </div>
+          <div class="card prog-fits">
+            <div class="prog-section-title">Cocok untuk</div>
+            <div class="pill-list">
+              <span class="pill"><span class="swatch"></span>Dinas PUPR</span>
+              <span class="pill"><span class="swatch"></span>Bappeda</span>
+              <span class="pill"><span class="swatch" style="background:var(--amber)"></span>Inspektorat</span>
+              <span class="pill"><span class="swatch"></span>Kecamatan</span>
+            </div>
+          </div>
+          <div class="card prog-value">
+            <div class="prog-section-title">Nilai Jual</div>
+            <p class="quote">
+              Pemda mengurangi <strong>kerusakan tidak terdeteksi</strong>
+              dan punya bukti data untuk perencanaan anggaran tahunan.
+            </p>
+            <div class="prog-value-foot">
+              <div>
+                <div class="stack-label">EFISIENSI</div>
+                <div style="font-size:20px; font-weight:700; margin-top:4px;">Bukti Anggaran</div>
+              </div>
+              <div class="vis">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"><path d="M14 7a4 4 0 0 1 5 5l-9 9a3 3 0 1 1-4-4l8-8a4 4 0 0 1 0-2z"/></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="chrome chrome--bot">
+        <div class="left"><span>Program 08 · Aset Infrastruktur Daerah</span></div>
+        <div class="right"><span class="dot"></span><span>14 / 22</span></div>
+      </footer>
+    </section>
+
+
+    <!-- ============================================================
+         15 · DIVIDER: 4 PAKET PRIORITAS
+         ============================================================ -->
+    <section data-screen-label="15 Divider Bagian II">
+      <div class="slide-grid"></div>
+      <header class="chrome chrome--top">
+        <div class="brand-mark"><img class="brand-logo" src="logo_be%202.png" alt="Beacon Engineering" /></div>
+        <div>Bagian II · 15 / 22</div>
+      </header>
+
+      <div class="canvas" style="justify-content: center;">
+        <div class="divider-grid">
+          <div>
+            <span class="eyebrow">Bagian II · Paket Prioritas</span>
+            <div class="divider-num">04</div>
+            <h2 class="h-title divider-title">
+              Paket yang Paling<br/>Layak Ditawarkan<br/>Lebih Dulu.
+            </h2>
+            <p class="lead" style="margin-top: 32px; max-width: 640px;">
+              Untuk fase pertama, kami merekomendasikan empat paket yang paling
+              relevan dengan kondisi geografis dan agenda prioritas Tulang Bawang.
+            </p>
+          </div>
+
+          <ol class="prog-mini-list">
+            <li><span class="n">01</span><span>TB Water & Flood Monitoring System</span></li>
+            <li><span class="n">02</span><span>Blue Economy Environmental Monitoring</span></li>
+            <li><span class="n">03</span><span>Udang Manis Industrial Utility SCADA</span></li>
+            <li><span class="n">04</span><span>Smart Regency Command Dashboard</span></li>
+          </ol>
+        </div>
+      </div>
+
+      <footer class="chrome chrome--bot">
+        <div class="left"><span>Bagian II · 4 Paket Prioritas</span></div>
+        <div class="right"><span class="dot"></span><span>15 / 22</span></div>
+      </footer>
+    </section>
+
+
+    <!-- ============================================================
+         16 · PAKET 01 · TB Water & Flood Monitoring
+         ============================================================ -->
+    <section data-screen-label="16 Paket 01 Water Flood">
+      <div class="slide-grid"></div>
+      <header class="chrome chrome--top">
+        <div class="brand-mark"><img class="brand-logo" src="logo_be%202.png" alt="Beacon Engineering" /></div>
+        <div>Paket Prioritas 01 · 16 / 22</div>
+      </header>
+
+      <div class="canvas">
+        <div class="pkg-head">
+          <div>
+            <span class="tag">Paket Prioritas · 01 / 04</span>
+            <h2 class="h-title" style="margin-top:8px; font-size:64px;">TB Water & Flood Monitoring System</h2>
+          </div>
+          <div></div>
+          <div>
+            <span class="pill pill--brand">Flagship Program</span>
+          </div>
+        </div>
+
+        <p class="lead" style="margin-top: 20px; max-width: 1300px;">
+          Sistem terpadu pemantauan air & banjir untuk seluruh DAS Way Tulang Bawang —
+          fondasi dari "Kabupaten Tangguh Bencana Berbasis Data Real-Time".
+        </p>
+
+        <div class="pkg-body">
+          <div class="pkg-content">
+            <div>
+              <div class="prog-section-title">Isi Paket</div>
+              <ul class="pkg-isi-list" style="margin-top:18px;">
+                <li>AWLR di titik kritis sungai & kanal</li>
+                <li>ARR / Rain gauge per kecamatan</li>
+                <li>CCTV sungai & pos pantau</li>
+                <li>Sirine peringatan dini</li>
+                <li>Dashboard BPBD & PUPR</li>
+                <li>Notifikasi WA / SMS / Telegram</li>
+              </ul>
+            </div>
+
+            <div class="pkg-pilot">
+              <div class="kpi"><span class="v">5</span><span class="k">titik sensor pilot</span></div>
+              <div class="kpi"><span class="v">3<span class="u">bulan</span></span><span class="k">durasi pilot</span></div>
+              <div class="kpi"><span class="v">BPBD<br/>PUPR</span><span class="k">stakeholder utama</span></div>
+            </div>
+          </div>
+
+          <div class="pkg-visual">
+            <div class="card-h">
+              <div>
+                <div class="stack-label">PREVIEW</div>
+                <div style="font-size:20px; font-weight:700; margin-top:4px;">Dashboard Banjir · Live</div>
+              </div>
+              <span class="pill pill--amber">SIAGA 1 titik</span>
+            </div>
+            <div style="height: calc(100% - 60px);" data-component="pkg-water-vis"></div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="chrome chrome--bot">
+        <div class="left"><span>Paket 01 · TB Water & Flood Monitoring</span></div>
+        <div class="right"><span class="dot"></span><span>16 / 22</span></div>
+      </footer>
+    </section>
+
+
+    <!-- ============================================================
+         17 · PAKET 02 · Blue Economy Environmental Monitoring
+         ============================================================ -->
+    <section data-screen-label="17 Paket 02 Blue Economy">
+      <div class="slide-grid"></div>
+      <header class="chrome chrome--top">
+        <div class="brand-mark"><img class="brand-logo" src="logo_be%202.png" alt="Beacon Engineering" /></div>
+        <div>Paket Prioritas 02 · 17 / 22</div>
+      </header>
+
+      <div class="canvas">
+        <div class="pkg-head">
+          <div>
+            <span class="tag">Paket Prioritas · 02 / 04</span>
+            <h2 class="h-title" style="margin-top:8px; font-size:64px;">Blue Economy Environmental Monitoring</h2>
+          </div>
+          <div></div>
+          <div>
+            <span class="pill pill--green">Sustainability</span>
+          </div>
+        </div>
+
+        <p class="lead" style="margin-top: 20px; max-width: 1300px;">
+          Online Water Quality Monitoring untuk sungai, tambak, dan outlet kawasan industri —
+          menjaga keberlanjutan investasi dan kepatuhan baku mutu DLH.
+        </p>
+
+        <div class="pkg-body">
+          <div class="pkg-content">
+            <div>
+              <div class="prog-section-title">Isi Paket</div>
+              <ul class="pkg-isi-list" style="margin-top:18px;">
+                <li>Sensor pH, TSS, DO, suhu, konduktivitas</li>
+                <li>COD / BOD estimator (jika relevan)</li>
+                <li>Monitoring sungai dekat industri</li>
+                <li>Monitoring tambak & outlet limbah</li>
+                <li>Dashboard DLH untuk tren bulanan</li>
+                <li>Alarm pencemaran melewati ambang batas</li>
+              </ul>
+            </div>
+
+            <div class="pkg-pilot">
+              <div class="kpi"><span class="v">3</span><span class="k">titik OWQM pilot</span></div>
+              <div class="kpi"><span class="v">5<span class="u">parameter</span></span><span class="k">kualitas air</span></div>
+              <div class="kpi"><span class="v">DLH</span><span class="k">stakeholder utama</span></div>
+            </div>
+          </div>
+
+          <div class="pkg-visual">
+            <div class="card-h">
+              <div>
+                <div class="stack-label">PREVIEW</div>
+                <div style="font-size:20px; font-weight:700; margin-top:4px;">WQ Monitoring · Outlet Kawasan</div>
+              </div>
+              <span class="pill pill--green">DLH COMPLIANT</span>
+            </div>
+            <div style="height: calc(100% - 60px);" data-component="pkg-wq-vis"></div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="chrome chrome--bot">
+        <div class="left"><span>Paket 02 · Blue Economy Environmental Monitoring</span></div>
+        <div class="right"><span class="dot"></span><span>17 / 22</span></div>
+      </footer>
+    </section>
+
+
+    <!-- ============================================================
+         18 · PAKET 03 · Udang Manis Industrial Utility SCADA
+         ============================================================ -->
+    <section data-screen-label="18 Paket 03 SCADA Industri">
+      <div class="slide-grid"></div>
+      <header class="chrome chrome--top">
+        <div class="brand-mark"><img class="brand-logo" src="logo_be%202.png" alt="Beacon Engineering" /></div>
+        <div>Paket Prioritas 03 · 18 / 22</div>
+      </header>
+
+      <div class="canvas">
+        <div class="pkg-head">
+          <div>
+            <span class="tag">Paket Prioritas · 03 / 04</span>
+            <h2 class="h-title" style="margin-top:8px; font-size:64px;">Udang Manis Industrial Utility SCADA</h2>
+          </div>
+          <div></div>
+          <div>
+            <span class="pill pill--amber">Investor-ready</span>
+          </div>
+        </div>
+
+        <p class="lead" style="margin-top: 20px; max-width: 1300px;">
+          SCADA utilitas terpadu untuk kawasan industri Udang Manis — air baku,
+          limbah, pompa, energi, dan tekanan jaringan dipantau real-time.
+        </p>
+
+        <div class="pkg-body">
+          <div class="pkg-content">
+            <div>
+              <div class="prog-section-title">Isi Paket</div>
+              <ul class="pkg-isi-list" style="margin-top:18px;">
+                <li>Monitoring air baku & air limbah</li>
+                <li>Pompa & pintu air kawasan</li>
+                <li>Flow meter jaringan distribusi</li>
+                <li>Pressure monitoring</li>
+                <li>Monitoring energi & daya</li>
+                <li>Dashboard operasional kawasan</li>
+              </ul>
+            </div>
+
+            <div class="pkg-pilot">
+              <div class="kpi"><span class="v">SCADA</span><span class="k">end-to-end</span></div>
+              <div class="kpi"><span class="v">24/7</span><span class="k">operasional kawasan</span></div>
+              <div class="kpi"><span class="v">Disperin<br/>DPMPTSP</span><span class="k">stakeholder</span></div>
+            </div>
+          </div>
+
+          <div class="pkg-visual">
+            <div class="card-h">
+              <div>
+                <div class="stack-label">PREVIEW</div>
+                <div style="font-size:20px; font-weight:700; margin-top:4px;">SCADA Utilitas · Kawasan</div>
+              </div>
+              <span class="pill pill--green">ALL UNITS OK</span>
+            </div>
+            <div style="height: calc(100% - 60px);" data-component="pkg-scada-vis"></div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="chrome chrome--bot">
+        <div class="left"><span>Paket 03 · Udang Manis SCADA</span></div>
+        <div class="right"><span class="dot"></span><span>18 / 22</span></div>
+      </footer>
+    </section>
+
+
+    <!-- ============================================================
+         19 · PAKET 04 · Smart Regency Command Dashboard
+         ============================================================ -->
+    <section data-screen-label="19 Paket 04 Command">
+      <div class="slide-grid"></div>
+      <header class="chrome chrome--top">
+        <div class="brand-mark"><img class="brand-logo" src="logo_be%202.png" alt="Beacon Engineering" /></div>
+        <div>Paket Prioritas 04 · 19 / 22</div>
+      </header>
+
+      <div class="canvas">
+        <div class="pkg-head">
+          <div>
+            <span class="tag">Paket Prioritas · 04 / 04</span>
+            <h2 class="h-title" style="margin-top:8px; font-size:64px;">Smart Regency Command Dashboard</h2>
+          </div>
+          <div></div>
+          <div>
+            <span class="pill pill--brand">Bupati View</span>
+          </div>
+        </div>
+
+        <p class="lead" style="margin-top: 20px; max-width: 1300px;">
+          Lapisan integrasi — semua data sensor dari paket 01, 02, 03 mengalir ke
+          satu dashboard untuk pimpinan daerah dan ruang kendali kabupaten.
+        </p>
+
+        <div class="pkg-body">
+          <div class="pkg-content">
+            <div>
+              <div class="prog-section-title">Isi Paket</div>
+              <ul class="pkg-isi-list" style="margin-top:18px;">
+                <li>Integrasi data AWLR & curah hujan</li>
+                <li>Integrasi data kualitas air & SCADA</li>
+                <li>Peta GIS titik sensor & status perangkat</li>
+                <li>Laporan otomatis harian / mingguan</li>
+                <li>Ruang kendali Bupati & Sekda</li>
+                <li>Dashboard responsif untuk mobile</li>
+              </ul>
+            </div>
+
+            <div class="pkg-pilot">
+              <div class="kpi"><span class="v">1</span><span class="k">dashboard pimpinan</span></div>
+              <div class="kpi"><span class="v">∞</span><span class="k">data source terintegrasi</span></div>
+              <div class="kpi"><span class="v">Bupati<br/>Sekda</span><span class="k">stakeholder</span></div>
+            </div>
+          </div>
+
+          <div class="pkg-visual">
+            <div class="card-h">
+              <div>
+                <div class="stack-label">PREVIEW</div>
+                <div style="font-size:20px; font-weight:700; margin-top:4px;">Bupati's View · Pagi Hari</div>
+              </div>
+              <span class="pill pill--brand">LIVE</span>
+            </div>
+            <div style="height: calc(100% - 60px);" data-component="pkg-command-vis"></div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="chrome chrome--bot">
+        <div class="left"><span>Paket 04 · Smart Regency Command Dashboard</span></div>
+        <div class="right"><span class="dot"></span><span>19 / 22</span></div>
+      </footer>
+    </section>
+
+
+    <!-- ============================================================
+         20 · LIVE DASHBOARD DEMO
+         ============================================================ -->
+    <section data-screen-label="20 Live Dashboard Demo">
+      <div class="slide-grid"></div>
+      <header class="chrome chrome--top">
+        <div class="brand-mark"><img class="brand-logo" src="logo_be%202.png" alt="Beacon Engineering" /></div>
+        <div>Live Demo · 20 / 22</div>
+      </header>
+
+      <div class="demo-canvas">
+        <div style="display:flex; justify-content:space-between; align-items:end; margin-bottom: 20px;">
+          <div>
+            <span class="eyebrow">Live Demo · Simulasi Data</span>
+            <h2 class="h-section" style="margin-top: 8px; font-size: 44px;">Smart Regency Command Center · Tulang Bawang</h2>
+          </div>
+          <p class="body" style="max-width: 520px; text-align: right;">
+            Tampilan terintegrasi yang menggabungkan data AWLR, curah hujan,
+            status pompa, dan kualitas air dalam satu pandangan.
+          </p>
+        </div>
+
+        <div style="height: calc(100% - 90px);" data-component="live-dashboard"></div>
+      </div>
+
+      <footer class="chrome chrome--bot">
+        <div class="left"><span>Live Dashboard Demo · Data Tersimulasi</span></div>
+        <div class="right"><span class="dot"></span><span>20 / 22</span></div>
+      </footer>
+    </section>
+
+
+    <!-- ============================================================
+         22 · ROADMAP
+         ============================================================ -->
+    <section data-screen-label="21 Roadmap">
+      <div class="slide-grid"></div>
+      <header class="chrome chrome--top">
+        <div class="brand-mark"><img class="brand-logo" src="logo_be%202.png" alt="Beacon Engineering" /></div>
+        <div>Roadmap · 21 / 22</div>
+      </header>
+
+      <div class="canvas">
+        <span class="eyebrow">Roadmap Tiga Fase</span>
+        <h2 class="h-section" style="margin-top:14px; max-width: 1500px;">Dari pilot 3 bulan ke kabupaten yang sepenuhnya berbasis data.</h2>
+
+        <div class="roadmap-grid">
+          <div class="card roadmap-card">
+            <div class="num">01</div>
+            <div class="phase">FASE 01 · BULAN 1-3</div>
+            <h3>Pilot Project</h3>
+            <p class="desc">Pasang 3-5 titik sensor di lokasi paling kritis. Bangun dashboard awal. Hasilkan laporan kuartal pertama sebagai bukti.</p>
+            <ul>
+              <li>3-5 AWLR / ARR pilot</li>
+              <li>Dashboard BPBD / PUPR</li>
+              <li>Laporan operasional Q1</li>
+              <li>Onboarding operator dinas</li>
+            </ul>
+          </div>
+          <div class="card roadmap-card">
+            <div class="num">02</div>
+            <div class="phase">FASE 02 · BULAN 4-9</div>
+            <h3>Scale ke DAS / Kawasan</h3>
+            <p class="desc">Setelah pilot terbukti, perluas cakupan ke satu DAS lengkap atau satu kawasan industri / kecamatan rawan.</p>
+            <ul>
+              <li>15-25 titik sensor terintegrasi</li>
+              <li>SCADA kawasan industri</li>
+              <li>OWQM untuk DLH</li>
+              <li>Dashboard pimpinan daerah</li>
+            </ul>
+          </div>
+          <div class="card roadmap-card roadmap-card--accent">
+            <div class="num">03</div>
+            <div class="phase">FASE 03 · BULAN 10-18</div>
+            <h3>Smart Regency Penuh</h3>
+            <p class="desc">Integrasi seluruh dinas ke Smart Regency Command Center. Tulang Bawang sebagai kabupaten dengan keputusan berbasis data real-time.</p>
+            <ul>
+              <li>Seluruh DAS Way Tulang Bawang</li>
+              <li>Command Center Kabupaten</li>
+              <li>SOP keputusan berbasis data</li>
+              <li>Showcase nasional · Asta Cita</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <footer class="chrome chrome--bot">
+        <div class="left"><span>Roadmap · 3 Fase · 18 Bulan</span></div>
+        <div class="right"><span class="dot"></span><span>21 / 22</span></div>
+      </footer>
+    </section>
+
+
+    <!-- ============================================================
+         23 · CLOSING / CTA
+         ============================================================ -->
+    <section data-screen-label="22 Closing">
+      <div class="slide-grid"></div>
+      <header class="chrome chrome--top">
+        <div class="brand-mark"><img class="brand-logo" src="logo_be%202.png" alt="Beacon Engineering" /></div>
+        <div>Closing · 22 / 22</div>
+      </header>
+
+      <div class="canvas closing-grid">
+        <div>
+          <span class="eyebrow">Mari Mulai</span>
+          <h2 class="closing-cta" style="margin-top: 24px;">
+            Mari membangun<br/>Tulang Bawang yang<br/><em>tangguh, hijau,</em><br/>dan <em>berbasis data.</em>
+          </h2>
+          <p class="lead" style="margin-top: 28px; max-width: 880px;">
+            Beacon Engineering siap memulai pilot project 3 bulan bersama Pemerintah
+            Kabupaten Tulang Bawang — sebagai langkah pertama menuju Smart Regency
+            yang mendukung implementasi Asta Cita di tingkat daerah.
+          </p>
+          <div class="row g-12" style="margin-top: 28px; flex-wrap:wrap;">
+            <span class="pill pill--brand">Ketahanan Air & Pangan</span>
+            <span class="pill pill--water">Blue Economy</span>
+            <span class="pill pill--amber">EWS Banjir</span>
+            <span class="pill pill--green">Smart Regency</span>
+          </div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:20px;">
+          <div class="card contact-card">
+            <div style="display:flex; align-items:center; gap:14px;">
+              <img src="logo_be%202.png" alt="Beacon Engineering" style="height:44px; width:auto; display:block;" />
+              <div>
+                <div style="font-size:20px; font-weight:700;">Beacon Engineering</div>
+                <div style="font-size:14px; color:var(--ink-mute); font-family:var(--font-mono);">Telemetry · IoT · SCADA · Dashboard</div>
+              </div>
+            </div>
+            <div class="divider-line"></div>
+            <div class="contact-row"><span class="k">Alamat</span><span class="v">Kadirojo I, Purwomartani, Kalasan, Sleman, DIY 55571</span></div>
+            <div class="contact-row"><span class="k">Telepon</span><span class="v">(0274) 4986899</span></div>
+            <div class="contact-row"><span class="k">Email</span><span class="v">info@bejogja.com</span></div>
+            <div class="contact-row"><span class="k">Jam Operasional</span><span class="v">Senin - Jumat, 08:00 - 17:00 WIB</span></div>
+            <div class="contact-row"><span class="k">CS Marketing</span><span class="v">+62 811 2632 151</span></div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="chrome chrome--bot">
+        <div class="left"><span>Terima kasih · Kabupaten Tulang Bawang</span></div>
+        <div class="right"><span class="dot"></span><span>END · 22 / 22</span></div>
+      </footer>
+    </section>
+
+</deck-stage>
+
+  <!-- =========================================================
+       Mount points + tweaks panel placeholder
+       ========================================================= -->
+  <div id="tweaks-root"></div>
+
+  <!-- =========================================================
+       Persisted tweak defaults (editable on disk by host)
+       ========================================================= -->
+  <script>
+    window.__TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+      "theme": "light"
+    }/*EDITMODE-END*/;
+  </script>
+
+  <!-- ===== inlined from map.jsx (offline/file:// safe; re-inline if you edit map.jsx) ===== -->
+  <script type="text/babel" data-inlined-from="map.jsx">
+/* global React, L */
+/**
+ * TulangBawangMap - Leaflet GIS preview with demo sensor nodes.
+ * Sensor coordinates are representative; the kabupaten boundary is fetched
+ * from BIG RBI as GeoJSON when available.
+ */
+const { useState, useEffect, useMemo, useRef } = React;
+
+/* ----- Sensor data ----- */
+const SENSORS = [
+  { id: "AWLR-01", lat: -4.444, lng: 105.264, type: "AWLR",  name: "Way Tulang Bawang - Menggala",       status: "ok",    value: "2.14", unit: "m" },
+  { id: "AWLR-02", lat: -4.279, lng: 105.382, type: "AWLR",  name: "Way Tulang Bawang - Banjar Margo",   status: "warn",  value: "3.42", unit: "m" },
+  { id: "AWLR-03", lat: -4.213, lng: 105.132, type: "AWLR",  name: "Way Kanan - Penawar Aji",            status: "ok",    value: "1.87", unit: "m" },
+  { id: "AWLR-04", lat: -4.383, lng: 105.740, type: "AWLR",  name: "Saluran Irigasi - Rawa Pitu",        status: "ok",    value: "0.92", unit: "m" },
+  { id: "ARR-01",  lat: -4.167, lng: 105.302, type: "ARR",   name: "Curah Hujan - Banjar Agung",         status: "ok",    value: "12.4", unit: "mm/h" },
+  { id: "ARR-02",  lat: -4.477, lng: 105.438, type: "ARR",   name: "Curah Hujan - Gedung Aji",           status: "warn",  value: "32.1", unit: "mm/h" },
+  { id: "WQ-01",   lat: -4.501, lng: 105.823, type: "WQ",    name: "Kualitas Air - Outlet Industri",     status: "ok",    value: "7.2",  unit: "pH" },
+  { id: "WQ-02",   lat: -4.702, lng: 105.930, type: "WQ",    name: "Kualitas Air - Tambak Dente",        status: "ok",    value: "6.8",  unit: "DO" },
+  { id: "WQ-03",   lat: -4.635, lng: 105.742, type: "WQ",    name: "Sungai Hilir - Rawajitu",            status: "alarm", value: "5.1",  unit: "pH" },
+  { id: "SCADA-01",lat: -4.442, lng: 105.842, type: "SCADA", name: "Udang Manis Industrial Utility",     status: "ok",    value: "98.4", unit: "%" },
+  { id: "CCTV-01", lat: -4.417, lng: 105.330, type: "CCTV",  name: "CCTV Sungai - Menggala",             status: "ok",    value: "LIVE", unit: "" },
+  { id: "CMD",     lat: -4.442, lng: 105.264, type: "CMD",   name: "Command Center - Menggala",          status: "ok",    value: "HUB",  unit: "" },
+];
+
+const TYPE_META = {
+  AWLR:  { label: "AWLR",          short: "AW", color: "var(--brand-2)" },
+  ARR:   { label: "Rain Gauge",    short: "RG", color: "var(--water)" },
+  WQ:    { label: "Water Quality", short: "WQ", color: "var(--green)" },
+  SCADA: { label: "SCADA",         short: "SC", color: "var(--amber)" },
+  CCTV:  { label: "CCTV",          short: "TV", color: "var(--ink-2)" },
+  CMD:   { label: "Command",       short: "CC", color: "var(--brand)" },
+};
+
+const STATUS_META = {
+  ok:    { label: "Normal", color: "var(--green)" },
+  warn:  { label: "Siaga",  color: "var(--amber)" },
+  alarm: { label: "Awas",   color: "var(--danger)" },
+};
+
+const BIG_BOUNDARY_ENDPOINT = "https://geoservices.big.go.id/rbi/rest/services/BATASWILAYAH/BATAS_WILAYAH/MapServer/13/query";
+
+const BOUNDARY = [
+  [-4.080, 105.050], [-4.150, 105.350], [-4.080, 105.650],
+  [-4.230, 105.980], [-4.520, 106.040], [-4.820, 105.880],
+  [-4.790, 105.520], [-4.650, 105.180], [-4.360, 104.980],
+];
+
+function getThemeName() {
+  return document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
+}
+
+function getTileUrl() {
+  return getThemeName() === "dark"
+    ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+    : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
+}
+
+function getBigBoundaryUrl() {
+  const params = new URLSearchParams({
+    f: "geojson",
+    where: "namobj='Tulang Bawang' AND wadmpr='Lampung'",
+    outFields: "objectid,namobj,wadmkk,wadmpr,kdpkab,luaswh",
+    returnGeometry: "true",
+    outSR: "4326",
+    geometryPrecision: "5",
+  });
+
+  return `${BIG_BOUNDARY_ENDPOINT}?${params.toString()}`;
+}
+
+function getBoundaryStyle({ fallback = false } = {}) {
+  return {
+    color: "var(--brand)",
+    weight: fallback ? 1.5 : 2.6,
+    opacity: fallback ? 0.46 : 0.92,
+    fillColor: "var(--brand)",
+    fillOpacity: fallback ? 0.02 : 0.04,
+    dashArray: fallback ? "8 7" : null,
+  };
+}
+
+function sensorIcon(sensor, active) {
+  const meta = TYPE_META[sensor.type];
+  const status = STATUS_META[sensor.status];
+  const activeClass = active ? " is-active" : "";
+
+  return L.divIcon({
+    className: "sensor-div-icon",
+    html: `
+      <span class="sensor-marker sensor-marker--${sensor.status}${activeClass}" style="--sensor-color:${meta.color}; --status-color:${status.color};">
+        <span class="sensor-marker__pulse"></span>
+        <span class="sensor-marker__core">${meta.short}</span>
+      </span>
+    `,
+    iconSize: [44, 44],
+    iconAnchor: [22, 22],
+  });
+}
+
+function MapLegend() {
+  return (
+    <div className="leaflet-map-legend">
+      <div className="map-panel-title">SENSOR LEGEND</div>
+      {Object.entries(TYPE_META).map(([key, meta]) => (
+        <div className="map-legend-row" key={key}>
+          <span className="map-legend-dot" style={{ background: meta.color }} />
+          <span>{meta.label}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function MapStatusStrip({ boundaryStatus }) {
+  const totals = useMemo(() => {
+    return SENSORS.reduce((acc, s) => {
+      acc[s.status] = (acc[s.status] || 0) + 1;
+      return acc;
+    }, {});
+  }, []);
+
+  const sourceLabel = boundaryStatus === "big"
+    ? "Batas BIG RBI"
+    : boundaryStatus === "fallback"
+      ? "Batas demo"
+      : "Memuat batas BIG";
+
+  return (
+    <div className="leaflet-map-status">
+      <div><span className="status-dot ok" />{totals.ok || 0} normal</div>
+      <div><span className="status-dot warn" />{totals.warn || 0} siaga</div>
+      <div><span className="status-dot alarm" />{totals.alarm || 0} awas</div>
+      <div className={`map-source-state map-source-state--${boundaryStatus}`}>{sourceLabel}</div>
+    </div>
+  );
+}
+
+function MapInfoCard({ sensor }) {
+  if (!sensor) return null;
+  const meta = TYPE_META[sensor.type];
+  const status = STATUS_META[sensor.status];
+
+  return (
+    <div className="leaflet-map-info">
+      <div className="map-info-head">
+        <span style={{ color: meta.color }}>{sensor.id} - {meta.label}</span>
+        <span className={`status-dot ${sensor.status}`} />
+      </div>
+      <div className="map-info-name">{sensor.name}</div>
+      <div className="map-info-value">
+        <span>{sensor.value}</span>
+        <em>{sensor.unit || status.label}</em>
+      </div>
+      <div className={`map-info-status map-info-status--${sensor.status}`}>{status.label}</div>
+    </div>
+  );
+}
+
+function TulangBawangMap({ sensors = SENSORS }) {
+  const mountRef = useRef(null);
+  const mapRef = useRef(null);
+  const tileRef = useRef(null);
+  const markersRef = useRef({});
+  const vectorRef = useRef([]);
+  const fallbackBoundaryRef = useRef(null);
+  const preciseBoundaryRef = useRef(null);
+  const [activeId, setActiveId] = useState("AWLR-02");
+  const [boundaryStatus, setBoundaryStatus] = useState("loading");
+
+  const activeSensor = useMemo(
+    () => sensors.find((s) => s.id === activeId) || sensors[0],
+    [activeId, sensors]
+  );
+
+  useEffect(() => {
+    if (!mountRef.current || typeof L === "undefined") return undefined;
+
+    const map = L.map(mountRef.current, {
+      zoomControl: true,
+      attributionControl: true,
+      scrollWheelZoom: false,
+      tap: true,
+      zoomSnap: 0.25,
+      zoomDelta: 0.5,
+    });
+
+    mapRef.current = map;
+    map.setView([-4.430, 105.520], 9);
+    map.fitBounds([[-4.860, 104.980], [-4.040, 106.080]], { padding: [22, 22] });
+
+    tileRef.current = L.tileLayer(getTileUrl(), {
+      maxZoom: 19,
+      attribution: "&copy; OpenStreetMap &copy; CARTO",
+    }).addTo(map);
+
+    fallbackBoundaryRef.current = L.polygon(BOUNDARY, getBoundaryStyle({ fallback: true })).addTo(map);
+    vectorRef.current = [fallbackBoundaryRef.current];
+
+    const controller = new AbortController();
+    fetch(getBigBoundaryUrl(), { signal: controller.signal })
+      .then((response) => {
+        if (!response.ok) throw new Error(`BIG boundary request failed: ${response.status}`);
+        return response.json();
+      })
+      .then((geojson) => {
+        if (!geojson.features || !geojson.features.length) {
+          throw new Error("BIG boundary response does not contain Tulang Bawang geometry");
+        }
+
+        if (fallbackBoundaryRef.current) {
+          map.removeLayer(fallbackBoundaryRef.current);
+          fallbackBoundaryRef.current = null;
+        }
+
+        preciseBoundaryRef.current = L.geoJSON(geojson, {
+          style: getBoundaryStyle(),
+          onEachFeature: (feature, layer) => {
+            const p = feature.properties || {};
+            const luasKm2 = p.luaswh ? Number(p.luaswh).toLocaleString("id-ID", { maximumFractionDigits: 1 }) : "-";
+            layer.bindTooltip(`${p.wadmkk || "Tulang Bawang"} - BIG RBI - ${luasKm2} km2`, {
+              sticky: true,
+              className: "sensor-tooltip",
+            });
+          },
+        }).addTo(map);
+
+        preciseBoundaryRef.current.bringToBack();
+        vectorRef.current.forEach((layer) => layer && layer.bringToFront && layer.bringToFront());
+        const bounds = preciseBoundaryRef.current.getBounds();
+        if (bounds.isValid()) map.fitBounds(bounds.pad(0.05), { padding: [18, 18] });
+        setBoundaryStatus("big");
+        setTimeout(() => map.invalidateSize(), 80);
+      })
+      .catch((error) => {
+        if (error.name === "AbortError") return;
+        console.warn("[TulangBawangMap] Falling back to demo boundary:", error);
+        setBoundaryStatus("fallback");
+      });
+
+    sensors.forEach((sensor) => {
+      const marker = L.marker([sensor.lat, sensor.lng], {
+        icon: sensorIcon(sensor, sensor.id === activeId),
+        keyboard: true,
+        title: `${sensor.id} - ${sensor.name}`,
+      }).addTo(map);
+
+      marker.on("mouseover focus click", () => setActiveId(sensor.id));
+      marker.bindTooltip(`${sensor.id} - ${sensor.name}`, {
+        direction: "top",
+        offset: [0, -20],
+        className: "sensor-tooltip",
+      });
+      markersRef.current[sensor.id] = marker;
+    });
+
+    const invalidate = () => setTimeout(() => map.invalidateSize(), 80);
+    const ro = new ResizeObserver(invalidate);
+    ro.observe(mountRef.current);
+    document.querySelector("deck-stage")?.addEventListener("slidechange", invalidate);
+    window.addEventListener("resize", invalidate);
+
+    const themeObserver = new MutationObserver(() => {
+      if (tileRef.current) tileRef.current.setUrl(getTileUrl());
+      setTimeout(() => map.invalidateSize(), 80);
+    });
+    themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+
+    invalidate();
+
+    return () => {
+      controller.abort();
+      ro.disconnect();
+      themeObserver.disconnect();
+      document.querySelector("deck-stage")?.removeEventListener("slidechange", invalidate);
+      window.removeEventListener("resize", invalidate);
+      map.remove();
+      mapRef.current = null;
+      tileRef.current = null;
+      markersRef.current = {};
+      vectorRef.current = [];
+      fallbackBoundaryRef.current = null;
+      preciseBoundaryRef.current = null;
+    };
+  }, []);
+
+  useEffect(() => {
+    sensors.forEach((sensor) => {
+      const marker = markersRef.current[sensor.id];
+      if (!marker) return;
+      const active = sensor.id === activeId;
+      marker.setIcon(sensorIcon(sensor, active));
+      marker.setZIndexOffset(active ? 1000 : 0);
+    });
+
+    const marker = markersRef.current[activeId];
+    if (marker && mapRef.current) {
+      marker.openTooltip();
+    }
+  }, [activeId, sensors]);
+
+  if (typeof L === "undefined") {
+    return (
+      <div className="map-wrap map-wrap--leaflet">
+        <div className="map-empty">Leaflet belum termuat.</div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="map-wrap map-wrap--leaflet">
+      <div ref={mountRef} className="leaflet-map-canvas" />
+      <MapStatusStrip boundaryStatus={boundaryStatus} />
+      <MapLegend />
+      <MapInfoCard sensor={activeSensor} />
+    </div>
+  );
+}
+
+window.TulangBawangMap = TulangBawangMap;
+
+  </script>
+
+  <!-- ===== inlined from dashboard.jsx (offline/file:// safe; re-inline if you edit dashboard.jsx) ===== -->
+  <script type="text/babel" data-inlined-from="dashboard.jsx">
+/* global React */
+/**
+ * Dashboard mocks — animated SCADA/IoT dashboard widgets.
+ *
+ * Exports:
+ *   - LiveDashboard         : full command-center grid
+ *   - AWLRChart             : water level time series
+ *   - RainfallBars          : rainfall bar chart
+ *   - PumpGrid              : pump status grid
+ *   - AlertFeed             : alert stream
+ *   - WQGauge               : water quality circular gauge
+ *   - StatusRibbon          : top status ribbon
+ */
+const { useState, useEffect, useRef, useMemo } = React;
+
+/* --------- shared hook: animation timer --------- */
+function useTick(intervalMs = 1500) {
+  const [tick, setTick] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => setTick(t => t + 1), intervalMs);
+    return () => clearInterval(id);
+  }, [intervalMs]);
+  return tick;
+}
+
+/* --------- shared hook: measure container in real px (responsive, no distortion) --------- */
+function useMeasure() {
+  const ref = useRef(null);
+  const [size, setSize] = useState({ w: 0, h: 0 });
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const update = () => setSize({ w: el.clientWidth, h: el.clientHeight });
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    window.addEventListener("resize", update);
+    return () => { ro.disconnect(); window.removeEventListener("resize", update); };
+  }, []);
+  return [ref, size];
+}
+
+/* --------- AWLR time series chart --------- */
+function AWLRChart({ height = 220, threshold = 3.0, compact = false }) {
+  const N = 60;
+  const [data, setData] = useState(() => {
+    const base = 2.0;
+    return Array.from({ length: N }, (_, i) => {
+      const t = i / N;
+      return base + 0.6 * Math.sin(t * 6) + 0.3 * Math.sin(t * 13) + 0.1 * Math.random();
+    });
+  });
+  useEffect(() => {
+    const id = setInterval(() => {
+      setData(prev => {
+        const last = prev[prev.length - 1];
+        const next = Math.max(1.2, Math.min(4.2, last + (Math.random() - 0.45) * 0.12));
+        return [...prev.slice(1), next];
+      });
+    }, 1500);
+    return () => clearInterval(id);
+  }, []);
+
+  const [wrapRef, { w: W, h: H }] = useMeasure();
+  const pad = compact ? { l: 34, r: 14, t: 12, b: 18 } : { l: 36, r: 16, t: 18, b: 24 };
+  const innerW = Math.max(0, W - pad.l - pad.r);
+  const innerH = Math.max(0, H - pad.t - pad.b);
+  const ready = W > 0 && H > 0;
+  const min = 0.5, max = 4.5;
+  const xs = (i) => pad.l + (i / (N - 1)) * innerW;
+  const ys = (v) => pad.t + (1 - (v - min) / (max - min)) * innerH;
+
+  const path = data.map((v, i) => `${i === 0 ? "M" : "L"} ${xs(i)} ${ys(v)}`).join(" ");
+  const area = `${path} L ${xs(N - 1)} ${pad.t + innerH} L ${xs(0)} ${pad.t + innerH} Z`;
+  const current = data[data.length - 1];
+  const status = current > 3.5 ? "alarm" : current > 2.8 ? "warn" : "ok";
+  const statusLabel = status === "alarm" ? "AWAS" : status === "warn" ? "SIAGA" : "NORMAL";
+
+  return (
+    <div className="card" style={{
+      padding: compact ? 12 : 22,
+      height: "100%",
+      display: "flex",
+      flexDirection: "column",
+      minHeight: 0,
+      overflow: "hidden"
+    }}>
+      <div className="card-h" style={{ marginBottom: compact ? 5 : 18, gap: compact ? 10 : undefined }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+          <span className="label" style={compact ? { fontSize: 10, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", maxWidth: 390 } : null}>AWLR-02 · Way Tulang Bawang · Banjar Margo</span>
+          <span style={{ fontFamily: "var(--font-mono)", fontSize: compact ? 11 : 14, color: "var(--ink-mute)" }}>Tinggi Muka Air · 60 min</span>
+        </div>
+        <span className={`pill pill--${status === "alarm" ? "danger" : status === "warn" ? "amber" : "green"}`} style={compact ? { fontSize: 11, padding: "4px 8px" } : null}>
+          <span className={`status-dot ${status}`} style={{ width: compact ? 7 : 8, height: compact ? 7 : 8 }} />
+          {statusLabel}
+        </span>
+      </div>
+      <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: compact ? 0 : 8 }}>
+        <span style={{ fontFamily: "var(--font-mono)", fontSize: compact ? 30 : 44, fontWeight: 600, color: "var(--ink)", letterSpacing: "-0.02em", lineHeight: 1 }}>
+          {current.toFixed(2)}
+        </span>
+        <span style={{ fontSize: compact ? 13 : 18, color: "var(--ink-soft)" }}>meter</span>
+        <span style={{ marginLeft: "auto", fontFamily: "var(--font-mono)", fontSize: compact ? 11 : 13, color: "var(--ink-mute)" }}>
+          ambang siaga: {threshold.toFixed(1)} m
+        </span>
+      </div>
+      <div ref={wrapRef} style={{ flex: "1 1 auto", minHeight: 0, position: "relative" }}>
+        {ready && (
+        <svg
+          viewBox={`0 0 ${W} ${H}`}
+          width="100%"
+          height="100%"
+          style={{ display: "block", position: "absolute", inset: 0 }}
+        >
+        <defs>
+          <linearGradient id="awlrFill" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stopColor="var(--brand-2)" stopOpacity="0.45" />
+            <stop offset="100%" stopColor="var(--brand-2)" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+        {/* Y grid */}
+        {[1, 2, 3, 4].map(v => (
+          <g key={v}>
+            <line x1={pad.l} x2={W - pad.r} y1={ys(v)} y2={ys(v)} stroke="var(--line-soft)" strokeDasharray="2 4" />
+            <text x={pad.l - 8} y={ys(v) + 4} fontFamily="var(--font-mono)" fontSize="11" fill="var(--ink-mute)" textAnchor="end">{v}.0</text>
+          </g>
+        ))}
+        {/* Threshold lines */}
+        <line x1={pad.l} x2={W - pad.r} y1={ys(threshold)} y2={ys(threshold)} stroke="var(--amber)" strokeDasharray="6 4" strokeWidth="1.5" />
+        <text x={W - pad.r - 4} y={ys(threshold) - 6} fontSize="10" fontFamily="var(--font-mono)" fill="var(--amber)" textAnchor="end" fontWeight="600">SIAGA 3.0</text>
+        <line x1={pad.l} x2={W - pad.r} y1={ys(3.8)} y2={ys(3.8)} stroke="var(--danger)" strokeDasharray="6 4" strokeWidth="1.5" />
+        <text x={W - pad.r - 4} y={ys(3.8) - 6} fontSize="10" fontFamily="var(--font-mono)" fill="var(--danger)" textAnchor="end" fontWeight="600">AWAS 3.8</text>
+
+        <path d={area} fill="url(#awlrFill)" />
+        <path d={path} fill="none" stroke="var(--brand-2)" strokeWidth="2.2" strokeLinejoin="round" strokeLinecap="round" />
+        {/* Current dot */}
+        <circle cx={xs(N - 1)} cy={ys(current)} r="5" fill="var(--surface)" stroke="var(--brand-2)" strokeWidth="2.5" />
+        <circle cx={xs(N - 1)} cy={ys(current)} r="11" fill="none" stroke="var(--brand-2)" strokeOpacity="0.35">
+          <animate attributeName="r" values="6;18;6" dur="2s" repeatCount="indefinite" />
+          <animate attributeName="stroke-opacity" values="0.5;0;0.5" dur="2s" repeatCount="indefinite" />
+        </circle>
+
+        {/* X axis labels */}
+        <text x={pad.l} y={H - 6} fontFamily="var(--font-mono)" fontSize="11" fill="var(--ink-mute)">-60m</text>
+        <text x={W / 2} y={H - 6} fontFamily="var(--font-mono)" fontSize="11" fill="var(--ink-mute)" textAnchor="middle">-30m</text>
+        <text x={W - pad.r} y={H - 6} fontFamily="var(--font-mono)" fontSize="11" fill="var(--ink-mute)" textAnchor="end">live</text>
+        </svg>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* --------- Rainfall bar chart --------- */
+function RainfallBars({ height = 220, compact = false }) {
+  const N = 24;
+  const [data, setData] = useState(() =>
+    Array.from({ length: N }, (_, i) => Math.max(0, 8 + 14 * Math.sin(i / 3) + 12 * Math.random() - 4))
+  );
+  useEffect(() => {
+    const id = setInterval(() => {
+      setData(prev => {
+        const next = Math.max(0, 15 + 8 * Math.sin(Date.now() / 7000) + (Math.random() - 0.3) * 20);
+        return [...prev.slice(1), next];
+      });
+    }, 2000);
+    return () => clearInterval(id);
+  }, []);
+
+  const [wrapRef, { w: W, h: H }] = useMeasure();
+  const pad = compact ? { l: 34, r: 12, t: 10, b: 18 } : { l: 36, r: 12, t: 18, b: 26 };
+  const innerW = Math.max(0, W - pad.l - pad.r);
+  const innerH = Math.max(0, H - pad.t - pad.b);
+  const ready = W > 0 && H > 0;
+  const max = 50;
+  const bw = Math.max(0, innerW / N - 4);
+
+  const sum = data.reduce((a, b) => a + b, 0).toFixed(1);
+
+  return (
+    <div className="card" style={{
+      padding: compact ? 12 : 22,
+      height: "100%",
+      display: "flex",
+      flexDirection: "column",
+      minHeight: 0,
+      overflow: "hidden"
+    }}>
+      <div className="card-h" style={{ marginBottom: compact ? 5 : 18, gap: compact ? 10 : undefined }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+          <span className="label" style={compact ? { fontSize: 10 } : null}>ARR-02 · Curah Hujan · Gedung Aji</span>
+          <span style={{ fontFamily: "var(--font-mono)", fontSize: compact ? 11 : 14, color: "var(--ink-mute)" }}>Hourly · 24h</span>
+        </div>
+        <span className="pill pill--water" style={compact ? { fontSize: 11, padding: "4px 8px" } : null}>
+          <span style={{ fontFamily: "var(--font-mono)" }}>Σ 24h · {sum} mm</span>
+        </span>
+      </div>
+      <div ref={wrapRef} style={{ flex: "1 1 auto", minHeight: 0, position: "relative" }}>
+        {ready && (
+        <svg
+          viewBox={`0 0 ${W} ${H}`}
+          width="100%"
+          height="100%"
+          style={{ display: "block", position: "absolute", inset: 0 }}
+        >
+        {[10, 20, 30, 40].map(v => (
+          <g key={v}>
+            <line x1={pad.l} x2={W - pad.r} y1={pad.t + (1 - v / max) * innerH} y2={pad.t + (1 - v / max) * innerH} stroke="var(--line-soft)" strokeDasharray="2 4" />
+            <text x={pad.l - 8} y={pad.t + (1 - v / max) * innerH + 4} fontFamily="var(--font-mono)" fontSize="11" fill="var(--ink-mute)" textAnchor="end">{v}</text>
+          </g>
+        ))}
+        {data.map((v, i) => {
+          const h = (v / max) * innerH;
+          const x = pad.l + i * (innerW / N) + 2;
+          const y = pad.t + innerH - h;
+          const color = v > 30 ? "var(--danger)" : v > 18 ? "var(--amber)" : "var(--water)";
+          return (
+            <rect key={i} x={x} y={y} width={bw} height={h} rx="2" fill={color} opacity={0.85 + (i / N) * 0.15}>
+              <animate attributeName="height" from="0" to={h} dur="0.4s" />
+            </rect>
+          );
+        })}
+        <text x={pad.l} y={H - 6} fontFamily="var(--font-mono)" fontSize="11" fill="var(--ink-mute)">00:00</text>
+        <text x={pad.l + innerW / 2} y={H - 6} fontFamily="var(--font-mono)" fontSize="11" fill="var(--ink-mute)" textAnchor="middle">12:00</text>
+        <text x={W - pad.r} y={H - 6} fontFamily="var(--font-mono)" fontSize="11" fill="var(--ink-mute)" textAnchor="end">now</text>
+        <text x={pad.l - 18} y={pad.t - 4} fontFamily="var(--font-mono)" fontSize="10" fill="var(--ink-mute)">mm/h</text>
+        </svg>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* --------- Pump grid --------- */
+const PUMPS = [
+  { id: "P-01", name: "Pompa Banjir Menggala",  status: "ok",   flow: "240 L/s" },
+  { id: "P-02", name: "Pintu Air Banjar Margo", status: "ok",   flow: "open 60%" },
+  { id: "P-03", name: "Pompa SPAM Tumijajar",   status: "ok",   flow: "180 L/s" },
+  { id: "P-04", name: "Lift Pump Rawa Pitu",    status: "warn", flow: "95 L/s" },
+  { id: "P-05", name: "Pintu Air Penawar Aji",  status: "ok",   flow: "open 40%" },
+  { id: "P-06", name: "Pompa Industri UM-A",    status: "ok",   flow: "320 L/s" },
+];
+function PumpGrid({ compact = false }) {
+  const tick = useTick(2200);
+  return (
+    <div className="card" style={{ padding: compact ? 14 : 22, height: "100%", overflow: "hidden" }}>
+      <div className="card-h" style={{ marginBottom: compact ? 10 : undefined }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+          <span className="label" style={compact ? { fontSize: 10 } : null}>STATUS PERANGKAT · POMPA & PINTU AIR</span>
+          <span style={{ fontFamily: "var(--font-mono)", fontSize: compact ? 11 : 14, color: "var(--ink-mute)" }}>6 unit · refresh 2s</span>
+        </div>
+        <span className="pill pill--green" style={compact ? { fontSize: 11, padding: "4px 8px" } : null}>5/6 OPERATIONAL</span>
+      </div>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: compact ? 6 : 10 }}>
+        {PUMPS.map((p, i) => (
+          <div key={p.id} style={{
+            display: "flex", alignItems: "center", gap: compact ? 8 : 12,
+            padding: compact ? "6px 9px" : "10px 14px",
+            border: "1px solid var(--line)",
+            borderRadius: 8,
+            background: "var(--surface-2)"
+          }}>
+            <span className={`status-dot ${p.status}`} style={compact ? { width: 8, height: 8 } : null} />
+            <div style={{ display: "flex", flexDirection: "column", gap: 0, minWidth: 0, flex: 1 }}>
+              <span style={{ fontFamily: "var(--font-mono)", fontSize: compact ? 9 : 11, fontWeight: 700, color: "var(--ink-mute)", letterSpacing: ".08em" }}>{p.id}</span>
+              <span style={{ fontSize: compact ? 12 : 14, fontWeight: 600, color: "var(--ink)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{p.name}</span>
+            </div>
+            <span style={{ fontFamily: "var(--font-mono)", fontSize: compact ? 11 : 13, fontWeight: 600, color: "var(--ink-2)", whiteSpace: "nowrap" }}>
+              {p.flow}
+              <span style={{ display: "inline-block", marginLeft: 6, opacity: tick % 2 === 0 ? 1 : 0.4, color: "var(--green)" }}>•</span>
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* --------- Alert feed --------- */
+const ALERTS_SEED = [
+  { t: "now",      sev: "alarm", code: "WQ-03",   msg: "pH 5.1 di Rawajitu — di bawah ambang baku" },
+  { t: "2m",       sev: "warn",  code: "ARR-02",  msg: "Curah hujan 32 mm/h · Gedung Aji" },
+  { t: "8m",       sev: "warn",  code: "AWLR-02", msg: "TMA naik 0.6 m dalam 30 menit" },
+  { t: "14m",      sev: "ok",    code: "P-04",    msg: "Lift pump Rawa Pitu normal kembali" },
+];
+function AlertFeed({ compact = false }) {
+  const tick = useTick(2400);
+  const visibleAlerts = compact ? ALERTS_SEED.slice(0, 3) : ALERTS_SEED;
+  return (
+    <div className="card" style={{ padding: compact ? 14 : 22, height: "100%", overflow: "hidden" }}>
+      <div className="card-h" style={{ marginBottom: compact ? 10 : undefined }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+          <span className="label" style={compact ? { fontSize: 10 } : null}>ALERT FEED · 30 MIN</span>
+          <span style={{ fontFamily: "var(--font-mono)", fontSize: compact ? 11 : 14, color: "var(--ink-mute)" }}>WhatsApp · SMS · Telegram</span>
+        </div>
+        <span style={{ fontFamily: "var(--font-mono)", fontSize: compact ? 10 : 12, color: "var(--green)", fontWeight: 700 }}>
+          ● LIVE
+        </span>
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: compact ? 7 : 10 }}>
+        {visibleAlerts.map((a, i) => (
+          <div key={i} style={{
+            display: "flex", gap: compact ? 9 : 12,
+            padding: compact ? "8px 10px" : "10px 14px",
+            border: "1px solid var(--line)",
+            borderRadius: 8,
+            background: i === 0 ? (a.sev === "alarm" ? "var(--danger-soft)" : "var(--amber-soft)") : "var(--surface-2)"
+          }}>
+            <span className={`status-dot ${a.sev}`} style={{ marginTop: compact ? 5 : 6, width: compact ? 8 : undefined, height: compact ? 8 : undefined }} />
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 2 }}>
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: compact ? 10 : 11, fontWeight: 700, color: "var(--ink-mute)", letterSpacing: ".08em" }}>{a.code}</span>
+                <span style={{ marginLeft: "auto", fontFamily: "var(--font-mono)", fontSize: compact ? 10 : 11, color: "var(--ink-mute)" }}>{a.t}</span>
+              </div>
+              <div style={{ fontSize: compact ? 12 : 14, color: "var(--ink-2)", lineHeight: compact ? 1.25 : 1.35, whiteSpace: compact ? "nowrap" : undefined, overflow: compact ? "hidden" : undefined, textOverflow: compact ? "ellipsis" : undefined }}>{a.msg}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* --------- WQ Gauges --------- */
+function WQGauge({ label, value, unit, min, max, ok = [0, 100], compact = false }) {
+  const pct = Math.max(0, Math.min(1, (value - min) / (max - min)));
+  const inOk = value >= ok[0] && value <= ok[1];
+  const color = inOk ? "var(--green)" : "var(--amber)";
+  const R = compact ? 44 : 56;
+  const C = 2 * Math.PI * R;
+  const arc = 0.7; // 70% arc
+  const offset = C * (1 - arc * pct);
+  return (
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: compact ? 3 : 8, minWidth: 0, minHeight: 0, flex: 1 }}>
+      <svg width="100%" height="100%" viewBox="-72 -72 144 144" preserveAspectRatio="xMidYMid meet" style={{ display: "block", flex: "1 1 auto", minHeight: 0 }}>
+        <circle r={R} fill="none" stroke="var(--line)" strokeWidth={compact ? 8 : 10}
+          strokeDasharray={`${C * arc} ${C}`}
+          transform={`rotate(${180 + (1 - arc) * 180})`}
+          strokeLinecap="round" />
+        <circle r={R} fill="none" stroke={color} strokeWidth={compact ? 8 : 10}
+          strokeDasharray={`${C * arc * pct} ${C}`}
+          transform={`rotate(${180 + (1 - arc) * 180})`}
+          strokeLinecap="round" />
+        <text x="0" y="0" textAnchor="middle" fontFamily="var(--font-mono)" fontSize={compact ? 19 : 22} fontWeight="600" fill="var(--ink)">{value}</text>
+        <text x="0" y="18" textAnchor="middle" fontFamily="var(--font-mono)" fontSize={compact ? 9 : 11} fill="var(--ink-mute)">{unit}</text>
+      </svg>
+      <span style={{ fontFamily: "var(--font-mono)", fontSize: compact ? 10 : 12, fontWeight: 600, color: "var(--ink-mute)", letterSpacing: ".06em", textTransform: "uppercase" }}>{label}</span>
+    </div>
+  );
+}
+function WQPanel({ compact = false }) {
+  return (
+    <div className="card" style={{ padding: compact ? 14 : 22, height: "100%", overflow: "hidden", display: "flex", flexDirection: "column", minHeight: 0 }}>
+      
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, minmax(0, 1fr))", gap: compact ? 4 : 6, marginTop: compact ? 0 : 4, flex: 1, minHeight: 0, alignItems: "stretch" }}>
+        <WQGauge label="pH"   value="7.2"  unit=""     min={0}  max={14} ok={[6, 9]} compact={compact} />
+        <WQGauge label="DO"   value="6.8"  unit="mg/L" min={0}  max={12} ok={[4, 12]} compact={compact} />
+        <WQGauge label="TSS"  value="42"   unit="mg/L" min={0}  max={200} ok={[0, 100]} compact={compact} />
+        <WQGauge label="COND" value="320"  unit="µS"   min={0}  max={1000} ok={[0, 500]} compact={compact} />
+      </div>
+    </div>
+  );
+}
+
+/* --------- Status ribbon at top of dashboard --------- */
+function StatusRibbon() {
+  return (
+    <div style={{
+      display: "flex", alignItems: "center", gap: 28,
+      padding: "16px 24px",
+      background: "var(--surface)",
+      border: "1px solid var(--line)",
+      borderRadius: 12
+    }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+        <span className="status-dot ok" />
+        <span style={{ fontFamily: "var(--font-mono)", fontSize: 13, fontWeight: 700, color: "var(--ink-mute)", letterSpacing: ".08em" }}>
+          SYSTEM ONLINE
+        </span>
+      </div>
+      <div style={{ width: 1, height: 22, background: "var(--line)" }} />
+      <KV k="Sensor aktif" v="42 / 44" />
+      <KV k="Last sync" v="2s ago" />
+      <KV k="Alarm aktif" v="1" tone="danger" />
+      <KV k="Notifikasi · 24h" v="186" />
+      <KV k="Uptime · 30d" v="99.6%" tone="ok" />
+      <div style={{ marginLeft: "auto", fontFamily: "var(--font-mono)", fontSize: 13, color: "var(--ink-mute)" }}>
+        Kab. Tulang Bawang · 16 Mei 2026 · 14:32 WIB
+      </div>
+    </div>
+  );
+}
+function KV({ k, v, tone }) {
+  const color = tone === "danger" ? "var(--danger)" : tone === "ok" ? "var(--green)" : "var(--ink)";
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+      <span style={{ fontFamily: "var(--font-mono)", fontSize: 11, fontWeight: 600, color: "var(--ink-mute)", letterSpacing: ".08em", textTransform: "uppercase" }}>{k}</span>
+      <span style={{ fontFamily: "var(--font-mono)", fontSize: 17, fontWeight: 600, color, letterSpacing: "-0.01em" }}>{v}</span>
+    </div>
+  );
+}
+
+/* --------- Full live dashboard layout --------- */
+function LiveDashboard() {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 16, width: "100%", height: "100%" }}>
+      <StatusRibbon />
+      <div style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr", gap: 16, flex: 1, minHeight: 0 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 16, minHeight: 0 }}>
+          <div style={{ flex: 1, minHeight: 0 }}>
+            <AWLRChart height={240} />
+          </div>
+          <div style={{ flex: 1, minHeight: 0 }}>
+            <RainfallBars height={240} />
+          </div>
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 16, minHeight: 0 }}>
+          <div style={{ flex: 1, minHeight: 0 }}>
+            <PumpGrid />
+          </div>
+          <div style={{ flex: 1, minHeight: 0 }}>
+            <WQPanel />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+window.LiveDashboard = LiveDashboard;
+window.AWLRChart = AWLRChart;
+window.RainfallBars = RainfallBars;
+window.PumpGrid = PumpGrid;
+window.AlertFeed = AlertFeed;
+window.WQPanel = WQPanel;
+window.StatusRibbon = StatusRibbon;
+
+  </script>
+
+  <!-- ===== inlined from tweaks-panel.jsx (offline/file:// safe; re-inline if you edit tweaks-panel.jsx) ===== -->
+  <script type="text/babel" data-inlined-from="tweaks-panel.jsx">
+
+// tweaks-panel.jsx
+// Reusable Tweaks shell + form-control helpers.
+//
+// Owns the host protocol (listens for __activate_edit_mode / __deactivate_edit_mode,
+// posts __edit_mode_available / __edit_mode_set_keys / __edit_mode_dismissed) so
+// individual prototypes don't re-roll it. Ships a consistent set of controls so you
+// don't hand-draw <input type="range">, segmented radios, steppers, etc.
+//
+// Usage (in an HTML file that loads React + Babel):
+//
+//   const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+//     "primaryColor": "#D97757",
+//     "palette": ["#D97757", "#29261b", "#f6f4ef"],
+//     "fontSize": 16,
+//     "density": "regular",
+//     "dark": false
+//   }/*EDITMODE-END*/;
+//
+//   function App() {
+//     const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+//     return (
+//       <div style={{ fontSize: t.fontSize, color: t.primaryColor }}>
+//         Hello
+//         <TweaksPanel>
+//           <TweakSection label="Typography" />
+//           <TweakSlider label="Font size" value={t.fontSize} min={10} max={32} unit="px"
+//                        onChange={(v) => setTweak('fontSize', v)} />
+//           <TweakRadio  label="Density" value={t.density}
+//                        options={['compact', 'regular', 'comfy']}
+//                        onChange={(v) => setTweak('density', v)} />
+//           <TweakSection label="Theme" />
+//           <TweakColor  label="Primary" value={t.primaryColor}
+//                        options={['#D97757', '#2A6FDB', '#1F8A5B', '#7A5AE0']}
+//                        onChange={(v) => setTweak('primaryColor', v)} />
+//           <TweakColor  label="Palette" value={t.palette}
+//                        options={[['#D97757', '#29261b', '#f6f4ef'],
+//                                  ['#475569', '#0f172a', '#f1f5f9']]}
+//                        onChange={(v) => setTweak('palette', v)} />
+//           <TweakToggle label="Dark mode" value={t.dark}
+//                        onChange={(v) => setTweak('dark', v)} />
+//         </TweaksPanel>
+//       </div>
+//     );
+//   }
+//
+// ─────────────────────────────────────────────────────────────────────────────
+
+const __TWEAKS_STYLE = `
+  .twk-panel{position:fixed;right:16px;bottom:16px;z-index:2147483646;width:280px;
+    max-height:calc(100vh - 32px);display:flex;flex-direction:column;
+    transform:scale(var(--dc-inv-zoom,1));transform-origin:bottom right;
+    background:rgba(250,249,247,.78);color:#29261b;
+    -webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);
+    border:.5px solid rgba(255,255,255,.6);border-radius:14px;
+    box-shadow:0 1px 0 rgba(255,255,255,.5) inset,0 12px 40px rgba(0,0,0,.18);
+    font:11.5px/1.4 ui-sans-serif,system-ui,-apple-system,sans-serif;overflow:hidden}
+  .twk-hd{display:flex;align-items:center;justify-content:space-between;
+    padding:10px 8px 10px 14px;cursor:move;user-select:none}
+  .twk-hd b{font-size:12px;font-weight:600;letter-spacing:.01em}
+  .twk-x{appearance:none;border:0;background:transparent;color:rgba(41,38,27,.55);
+    width:22px;height:22px;border-radius:6px;cursor:default;font-size:13px;line-height:1}
+  .twk-x:hover{background:rgba(0,0,0,.06);color:#29261b}
+  .twk-body{padding:2px 14px 14px;display:flex;flex-direction:column;gap:10px;
+    overflow-y:auto;overflow-x:hidden;min-height:0;
+    scrollbar-width:thin;scrollbar-color:rgba(0,0,0,.15) transparent}
+  .twk-body::-webkit-scrollbar{width:8px}
+  .twk-body::-webkit-scrollbar-track{background:transparent;margin:2px}
+  .twk-body::-webkit-scrollbar-thumb{background:rgba(0,0,0,.15);border-radius:4px;
+    border:2px solid transparent;background-clip:content-box}
+  .twk-body::-webkit-scrollbar-thumb:hover{background:rgba(0,0,0,.25);
+    border:2px solid transparent;background-clip:content-box}
+  .twk-row{display:flex;flex-direction:column;gap:5px}
+  .twk-row-h{flex-direction:row;align-items:center;justify-content:space-between;gap:10px}
+  .twk-lbl{display:flex;justify-content:space-between;align-items:baseline;
+    color:rgba(41,38,27,.72)}
+  .twk-lbl>span:first-child{font-weight:500}
+  .twk-val{color:rgba(41,38,27,.5);font-variant-numeric:tabular-nums}
+
+  .twk-sect{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+    color:rgba(41,38,27,.45);padding:10px 0 0}
+  .twk-sect:first-child{padding-top:0}
+
+  .twk-field{appearance:none;box-sizing:border-box;width:100%;min-width:0;height:26px;padding:0 8px;
+    border:.5px solid rgba(0,0,0,.1);border-radius:7px;
+    background:rgba(255,255,255,.6);color:inherit;font:inherit;outline:none}
+  .twk-field:focus{border-color:rgba(0,0,0,.25);background:rgba(255,255,255,.85)}
+  select.twk-field{padding-right:22px;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path fill='rgba(0,0,0,.5)' d='M0 0h10L5 6z'/></svg>");
+    background-repeat:no-repeat;background-position:right 8px center}
+
+  .twk-slider{appearance:none;-webkit-appearance:none;width:100%;height:4px;margin:6px 0;
+    border-radius:999px;background:rgba(0,0,0,.12);outline:none}
+  .twk-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
+    width:14px;height:14px;border-radius:50%;background:#fff;
+    border:.5px solid rgba(0,0,0,.12);box-shadow:0 1px 3px rgba(0,0,0,.2);cursor:default}
+  .twk-slider::-moz-range-thumb{width:14px;height:14px;border-radius:50%;
+    background:#fff;border:.5px solid rgba(0,0,0,.12);box-shadow:0 1px 3px rgba(0,0,0,.2);cursor:default}
+
+  .twk-seg{position:relative;display:flex;padding:2px;border-radius:8px;
+    background:rgba(0,0,0,.06);user-select:none}
+  .twk-seg-thumb{position:absolute;top:2px;bottom:2px;border-radius:6px;
+    background:rgba(255,255,255,.9);box-shadow:0 1px 2px rgba(0,0,0,.12);
+    transition:left .15s cubic-bezier(.3,.7,.4,1),width .15s}
+  .twk-seg.dragging .twk-seg-thumb{transition:none}
+  .twk-seg button{appearance:none;position:relative;z-index:1;flex:1;border:0;
+    background:transparent;color:inherit;font:inherit;font-weight:500;min-height:22px;
+    border-radius:6px;cursor:default;padding:4px 6px;line-height:1.2;
+    overflow-wrap:anywhere}
+
+  .twk-toggle{position:relative;width:32px;height:18px;border:0;border-radius:999px;
+    background:rgba(0,0,0,.15);transition:background .15s;cursor:default;padding:0}
+  .twk-toggle[data-on="1"]{background:#34c759}
+  .twk-toggle i{position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;
+    background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .15s}
+  .twk-toggle[data-on="1"] i{transform:translateX(14px)}
+
+  .twk-num{display:flex;align-items:center;box-sizing:border-box;min-width:0;height:26px;padding:0 0 0 8px;
+    border:.5px solid rgba(0,0,0,.1);border-radius:7px;background:rgba(255,255,255,.6)}
+  .twk-num-lbl{font-weight:500;color:rgba(41,38,27,.6);cursor:ew-resize;
+    user-select:none;padding-right:8px}
+  .twk-num input{flex:1;min-width:0;height:100%;border:0;background:transparent;
+    font:inherit;font-variant-numeric:tabular-nums;text-align:right;padding:0 8px 0 0;
+    outline:none;color:inherit;-moz-appearance:textfield}
+  .twk-num input::-webkit-inner-spin-button,.twk-num input::-webkit-outer-spin-button{
+    -webkit-appearance:none;margin:0}
+  .twk-num-unit{padding-right:8px;color:rgba(41,38,27,.45)}
+
+  .twk-btn{appearance:none;height:26px;padding:0 12px;border:0;border-radius:7px;
+    background:rgba(0,0,0,.78);color:#fff;font:inherit;font-weight:500;cursor:default}
+  .twk-btn:hover{background:rgba(0,0,0,.88)}
+  .twk-btn.secondary{background:rgba(0,0,0,.06);color:inherit}
+  .twk-btn.secondary:hover{background:rgba(0,0,0,.1)}
+
+  .twk-swatch{appearance:none;-webkit-appearance:none;width:56px;height:22px;
+    border:.5px solid rgba(0,0,0,.1);border-radius:6px;padding:0;cursor:default;
+    background:transparent;flex-shrink:0}
+  .twk-swatch::-webkit-color-swatch-wrapper{padding:0}
+  .twk-swatch::-webkit-color-swatch{border:0;border-radius:5.5px}
+  .twk-swatch::-moz-color-swatch{border:0;border-radius:5.5px}
+
+  .twk-chips{display:flex;gap:6px}
+  .twk-chip{position:relative;appearance:none;flex:1;min-width:0;height:46px;
+    padding:0;border:0;border-radius:6px;overflow:hidden;cursor:default;
+    box-shadow:0 0 0 .5px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.06);
+    transition:transform .12s cubic-bezier(.3,.7,.4,1),box-shadow .12s}
+  .twk-chip:hover{transform:translateY(-1px);
+    box-shadow:0 0 0 .5px rgba(0,0,0,.18),0 4px 10px rgba(0,0,0,.12)}
+  .twk-chip[data-on="1"]{box-shadow:0 0 0 1.5px rgba(0,0,0,.85),
+    0 2px 6px rgba(0,0,0,.15)}
+  .twk-chip>span{position:absolute;top:0;bottom:0;right:0;width:34%;
+    display:flex;flex-direction:column;box-shadow:-1px 0 0 rgba(0,0,0,.1)}
+  .twk-chip>span>i{flex:1;box-shadow:0 -1px 0 rgba(0,0,0,.1)}
+  .twk-chip>span>i:first-child{box-shadow:none}
+  .twk-chip svg{position:absolute;top:6px;left:6px;width:13px;height:13px;
+    filter:drop-shadow(0 1px 1px rgba(0,0,0,.3))}
+`;
+
+// ── useTweaks ───────────────────────────────────────────────────────────────
+// Single source of truth for tweak values. setTweak persists via the host
+// (__edit_mode_set_keys → host rewrites the EDITMODE block on disk).
+function useTweaks(defaults) {
+  const [values, setValues] = React.useState(defaults);
+  // Accepts either setTweak('key', value) or setTweak({ key: value, ... }) so a
+  // useState-style call doesn't write a "[object Object]" key into the persisted
+  // JSON block.
+  const setTweak = React.useCallback((keyOrEdits, val) => {
+    const edits = typeof keyOrEdits === 'object' && keyOrEdits !== null
+      ? keyOrEdits : { [keyOrEdits]: val };
+    setValues((prev) => ({ ...prev, ...edits }));
+    window.parent.postMessage({ type: '__edit_mode_set_keys', edits }, '*');
+    // Same-window signal so in-page listeners (deck-stage rail thumbnails)
+    // can react — the parent message only reaches the host, not peers.
+    window.dispatchEvent(new CustomEvent('tweakchange', { detail: edits }));
+  }, []);
+  return [values, setTweak];
+}
+
+// ── TweaksPanel ─────────────────────────────────────────────────────────────
+// Floating shell. Registers the protocol listener BEFORE announcing
+// availability — if the announce ran first, the host's activate could land
+// before our handler exists and the toolbar toggle would silently no-op.
+// The close button posts __edit_mode_dismissed so the host's toolbar toggle
+// flips off in lockstep; the host echoes __deactivate_edit_mode back which
+// is what actually hides the panel.
+function TweaksPanel({ title = 'Tweaks', noDeckControls = false, children }) {
+  const [open, setOpen] = React.useState(false);
+  const dragRef = React.useRef(null);
+  // Auto-inject a rail toggle when a <deck-stage> is on the page. The
+  // toggle drives the deck's per-viewer _railVisible via window message;
+  // state is mirrored from the same localStorage key the deck reads so
+  // the control reflects reality across reloads. The mechanism is the
+  // message — authors who want custom placement can post it directly
+  // and pass noDeckControls to suppress this one.
+  const hasDeckStage = React.useMemo(
+    () => typeof document !== 'undefined' && !!document.querySelector('deck-stage'),
+    [],
+  );
+  // deck-stage enables its rail in connectedCallback, but this panel can
+  // mount before that element has upgraded. The initial read catches the
+  // common case; the listener covers mounting first. (Older deck-stage.js
+  // copies still wait for the host's __omelette_rail_enabled postMessage —
+  // same listener handles those.)
+  const [railEnabled, setRailEnabled] = React.useState(
+    () => hasDeckStage && !!document.querySelector('deck-stage')?._railEnabled,
+  );
+  React.useEffect(() => {
+    if (!hasDeckStage || railEnabled) return undefined;
+    const onMsg = (e) => {
+      if (e.data && e.data.type === '__omelette_rail_enabled') setRailEnabled(true);
+    };
+    window.addEventListener('message', onMsg);
+    return () => window.removeEventListener('message', onMsg);
+  }, [hasDeckStage, railEnabled]);
+  const [railVisible, setRailVisible] = React.useState(() => {
+    try { return localStorage.getItem('deck-stage.railVisible') !== '0'; } catch (e) { return true; }
+  });
+  const toggleRail = (on) => {
+    setRailVisible(on);
+    window.postMessage({ type: '__deck_rail_visible', on }, '*');
+  };
+  const offsetRef = React.useRef({ x: 16, y: 16 });
+  const PAD = 16;
+
+  const clampToViewport = React.useCallback(() => {
+    const panel = dragRef.current;
+    if (!panel) return;
+    const w = panel.offsetWidth, h = panel.offsetHeight;
+    const maxRight = Math.max(PAD, window.innerWidth - w - PAD);
+    const maxBottom = Math.max(PAD, window.innerHeight - h - PAD);
+    offsetRef.current = {
+      x: Math.min(maxRight, Math.max(PAD, offsetRef.current.x)),
+      y: Math.min(maxBottom, Math.max(PAD, offsetRef.current.y)),
+    };
+    panel.style.right = offsetRef.current.x + 'px';
+    panel.style.bottom = offsetRef.current.y + 'px';
+  }, []);
+
+  React.useEffect(() => {
+    if (!open) return;
+    clampToViewport();
+    if (typeof ResizeObserver === 'undefined') {
+      window.addEventListener('resize', clampToViewport);
+      return () => window.removeEventListener('resize', clampToViewport);
+    }
+    const ro = new ResizeObserver(clampToViewport);
+    ro.observe(document.documentElement);
+    return () => ro.disconnect();
+  }, [open, clampToViewport]);
+
+  React.useEffect(() => {
+    const onMsg = (e) => {
+      const t = e?.data?.type;
+      if (t === '__activate_edit_mode') setOpen(true);
+      else if (t === '__deactivate_edit_mode') setOpen(false);
+    };
+    window.addEventListener('message', onMsg);
+    window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+    return () => window.removeEventListener('message', onMsg);
+  }, []);
+
+  const dismiss = () => {
+    setOpen(false);
+    window.parent.postMessage({ type: '__edit_mode_dismissed' }, '*');
+  };
+
+  const onDragStart = (e) => {
+    const panel = dragRef.current;
+    if (!panel) return;
+    const r = panel.getBoundingClientRect();
+    const sx = e.clientX, sy = e.clientY;
+    const startRight = window.innerWidth - r.right;
+    const startBottom = window.innerHeight - r.bottom;
+    const move = (ev) => {
+      offsetRef.current = {
+        x: startRight - (ev.clientX - sx),
+        y: startBottom - (ev.clientY - sy),
+      };
+      clampToViewport();
+    };
+    const up = () => {
+      window.removeEventListener('mousemove', move);
+      window.removeEventListener('mouseup', up);
+    };
+    window.addEventListener('mousemove', move);
+    window.addEventListener('mouseup', up);
+  };
+
+  if (!open) return null;
+  return (
+    <>
+      <style>{__TWEAKS_STYLE}</style>
+      <div ref={dragRef} className="twk-panel" data-noncommentable=""
+           style={{ right: offsetRef.current.x, bottom: offsetRef.current.y }}>
+        <div className="twk-hd" onMouseDown={onDragStart}>
+          <b>{title}</b>
+          <button className="twk-x" aria-label="Close tweaks"
+                  onMouseDown={(e) => e.stopPropagation()}
+                  onClick={dismiss}>✕</button>
+        </div>
+        <div className="twk-body">
+          {children}
+          {hasDeckStage && railEnabled && !noDeckControls && (
+            <TweakSection label="Deck">
+              <TweakToggle label="Thumbnail rail" value={railVisible} onChange={toggleRail} />
+            </TweakSection>
+          )}
+        </div>
+      </div>
+    </>
+  );
+}
+
+// ── Layout helpers ──────────────────────────────────────────────────────────
+
+function TweakSection({ label, children }) {
+  return (
+    <>
+      <div className="twk-sect">{label}</div>
+      {children}
+    </>
+  );
+}
+
+function TweakRow({ label, value, children, inline = false }) {
+  return (
+    <div className={inline ? 'twk-row twk-row-h' : 'twk-row'}>
+      <div className="twk-lbl">
+        <span>{label}</span>
+        {value != null && <span className="twk-val">{value}</span>}
+      </div>
+      {children}
+    </div>
+  );
+}
+
+// ── Controls ────────────────────────────────────────────────────────────────
+
+function TweakSlider({ label, value, min = 0, max = 100, step = 1, unit = '', onChange }) {
+  return (
+    <TweakRow label={label} value={`${value}${unit}`}>
+      <input type="range" className="twk-slider" min={min} max={max} step={step}
+             value={value} onChange={(e) => onChange(Number(e.target.value))} />
+    </TweakRow>
+  );
+}
+
+function TweakToggle({ label, value, onChange }) {
+  return (
+    <div className="twk-row twk-row-h">
+      <div className="twk-lbl"><span>{label}</span></div>
+      <button type="button" className="twk-toggle" data-on={value ? '1' : '0'}
+              role="switch" aria-checked={!!value}
+              onClick={() => onChange(!value)}><i /></button>
+    </div>
+  );
+}
+
+function TweakRadio({ label, value, options, onChange }) {
+  const trackRef = React.useRef(null);
+  const [dragging, setDragging] = React.useState(false);
+  // The active value is read by pointer-move handlers attached for the lifetime
+  // of a drag — ref it so a stale closure doesn't fire onChange for every move.
+  const valueRef = React.useRef(value);
+  valueRef.current = value;
+
+  // Segments wrap mid-word once per-segment width runs out. The track is
+  // ~248px (280 panel − 28 body pad − 4 seg pad), each button loses 12px
+  // to its own padding, and 11.5px system-ui averages ~6.3px/char — so 2
+  // options fit ~16 chars each, 3 fit ~10. Past that (or >3 options), fall
+  // back to a dropdown rather than wrap.
+  const labelLen = (o) => String(typeof o === 'object' ? o.label : o).length;
+  const maxLen = options.reduce((m, o) => Math.max(m, labelLen(o)), 0);
+  const fitsAsSegments = maxLen <= ({ 2: 16, 3: 10 }[options.length] ?? 0);
+  if (!fitsAsSegments) {
+    // <select> emits strings — map back to the original option value so the
+    // fallback stays type-preserving (numbers, booleans) like the segment path.
+    const resolve = (s) => {
+      const m = options.find((o) => String(typeof o === 'object' ? o.value : o) === s);
+      return m === undefined ? s : typeof m === 'object' ? m.value : m;
+    };
+    return <TweakSelect label={label} value={value} options={options}
+                        onChange={(s) => onChange(resolve(s))} />;
+  }
+  const opts = options.map((o) => (typeof o === 'object' ? o : { value: o, label: o }));
+  const idx = Math.max(0, opts.findIndex((o) => o.value === value));
+  const n = opts.length;
+
+  const segAt = (clientX) => {
+    const r = trackRef.current.getBoundingClientRect();
+    const inner = r.width - 4;
+    const i = Math.floor(((clientX - r.left - 2) / inner) * n);
+    return opts[Math.max(0, Math.min(n - 1, i))].value;
+  };
+
+  const onPointerDown = (e) => {
+    setDragging(true);
+    const v0 = segAt(e.clientX);
+    if (v0 !== valueRef.current) onChange(v0);
+    const move = (ev) => {
+      if (!trackRef.current) return;
+      const v = segAt(ev.clientX);
+      if (v !== valueRef.current) onChange(v);
+    };
+    const up = () => {
+      setDragging(false);
+      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointerup', up);
+    };
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', up);
+  };
+
+  return (
+    <TweakRow label={label}>
+      <div ref={trackRef} role="radiogroup" onPointerDown={onPointerDown}
+           className={dragging ? 'twk-seg dragging' : 'twk-seg'}>
+        <div className="twk-seg-thumb"
+             style={{ left: `calc(2px + ${idx} * (100% - 4px) / ${n})`,
+                      width: `calc((100% - 4px) / ${n})` }} />
+        {opts.map((o) => (
+          <button key={o.value} type="button" role="radio" aria-checked={o.value === value}>
+            {o.label}
+          </button>
+        ))}
+      </div>
+    </TweakRow>
+  );
+}
+
+function TweakSelect({ label, value, options, onChange }) {
+  return (
+    <TweakRow label={label}>
+      <select className="twk-field" value={value} onChange={(e) => onChange(e.target.value)}>
+        {options.map((o) => {
+          const v = typeof o === 'object' ? o.value : o;
+          const l = typeof o === 'object' ? o.label : o;
+          return <option key={v} value={v}>{l}</option>;
+        })}
+      </select>
+    </TweakRow>
+  );
+}
+
+function TweakText({ label, value, placeholder, onChange }) {
+  return (
+    <TweakRow label={label}>
+      <input className="twk-field" type="text" value={value} placeholder={placeholder}
+             onChange={(e) => onChange(e.target.value)} />
+    </TweakRow>
+  );
+}
+
+function TweakNumber({ label, value, min, max, step = 1, unit = '', onChange }) {
+  const clamp = (n) => {
+    if (min != null && n < min) return min;
+    if (max != null && n > max) return max;
+    return n;
+  };
+  const startRef = React.useRef({ x: 0, val: 0 });
+  const onScrubStart = (e) => {
+    e.preventDefault();
+    startRef.current = { x: e.clientX, val: value };
+    const decimals = (String(step).split('.')[1] || '').length;
+    const move = (ev) => {
+      const dx = ev.clientX - startRef.current.x;
+      const raw = startRef.current.val + dx * step;
+      const snapped = Math.round(raw / step) * step;
+      onChange(clamp(Number(snapped.toFixed(decimals))));
+    };
+    const up = () => {
+      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointerup', up);
+    };
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', up);
+  };
+  return (
+    <div className="twk-num">
+      <span className="twk-num-lbl" onPointerDown={onScrubStart}>{label}</span>
+      <input type="number" value={value} min={min} max={max} step={step}
+             onChange={(e) => onChange(clamp(Number(e.target.value)))} />
+      {unit && <span className="twk-num-unit">{unit}</span>}
+    </div>
+  );
+}
+
+// Relative-luminance contrast pick — checkmarks drawn over a swatch need to
+// read on both #111 and #fafafa without per-option configuration. Hex input
+// only (#rgb / #rrggbb); named or rgb()/hsl() colors fall through to "light".
+function __twkIsLight(hex) {
+  const h = String(hex).replace('#', '');
+  const x = h.length === 3 ? h.replace(/./g, (c) => c + c) : h.padEnd(6, '0');
+  const n = parseInt(x.slice(0, 6), 16);
+  if (Number.isNaN(n)) return true;
+  const r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255;
+  return r * 299 + g * 587 + b * 114 > 148000;
+}
+
+const __TwkCheck = ({ light }) => (
+  <svg viewBox="0 0 14 14" aria-hidden="true">
+    <path d="M3 7.2 5.8 10 11 4.2" fill="none" strokeWidth="2.2"
+          strokeLinecap="round" strokeLinejoin="round"
+          stroke={light ? 'rgba(0,0,0,.78)' : '#fff'} />
+  </svg>
+);
+
+// TweakColor — curated color/palette picker. Each option is either a single
+// hex string or an array of 1-5 hex strings; the card adapts — a lone color
+// renders solid, a palette renders colors[0] as the hero (left ~2/3) with the
+// rest stacked in a sharp column on the right. onChange emits the
+// option in the shape it was passed (string stays string, array stays array).
+// Without options it falls back to the native color input for back-compat.
+function TweakColor({ label, value, options, onChange }) {
+  if (!options || !options.length) {
+    return (
+      <div className="twk-row twk-row-h">
+        <div className="twk-lbl"><span>{label}</span></div>
+        <input type="color" className="twk-swatch" value={value}
+               onChange={(e) => onChange(e.target.value)} />
+      </div>
+    );
+  }
+  // Native <input type=color> emits lowercase hex per the HTML spec, so
+  // compare case-insensitively. String() guards JSON.stringify(undefined),
+  // which returns the primitive undefined (no .toLowerCase).
+  const key = (o) => String(JSON.stringify(o)).toLowerCase();
+  const cur = key(value);
+  return (
+    <TweakRow label={label}>
+      <div className="twk-chips" role="radiogroup">
+        {options.map((o, i) => {
+          const colors = Array.isArray(o) ? o : [o];
+          const [hero, ...rest] = colors;
+          const sup = rest.slice(0, 4);
+          const on = key(o) === cur;
+          return (
+            <button key={i} type="button" className="twk-chip" role="radio"
+                    aria-checked={on} data-on={on ? '1' : '0'}
+                    aria-label={colors.join(', ')} title={colors.join(' · ')}
+                    style={{ background: hero }}
+                    onClick={() => onChange(o)}>
+              {sup.length > 0 && (
+                <span>
+                  {sup.map((c, j) => <i key={j} style={{ background: c }} />)}
+                </span>
+              )}
+              {on && <__TwkCheck light={__twkIsLight(hero)} />}
+            </button>
+          );
+        })}
+      </div>
+    </TweakRow>
+  );
+}
+
+function TweakButton({ label, onClick, secondary = false }) {
+  return (
+    <button type="button" className={secondary ? 'twk-btn secondary' : 'twk-btn'}
+            onClick={onClick}>{label}</button>
+  );
+}
+
+Object.assign(window, {
+  useTweaks, TweaksPanel, TweakSection, TweakRow,
+  TweakSlider, TweakToggle, TweakRadio, TweakSelect,
+  TweakText, TweakNumber, TweakColor, TweakButton,
+});
+
+  </script>
+
+  <!-- ===== inlined from app.jsx (offline/file:// safe; re-inline if you edit app.jsx) ===== -->
+  <script type="text/babel" data-inlined-from="app.jsx">
+/* global React, ReactDOM, TulangBawangMap, LiveDashboard, AWLRChart, RainfallBars, PumpGrid, AlertFeed, WQPanel, StatusRibbon, TweaksPanel, useTweaks, TweakSection, TweakRadio, TweakToggle */
+
+const { useState, useEffect, useMemo } = React;
+
+/* =========================================================
+   Tweaks
+   ========================================================= */
+function TweaksApp() {
+  const [t, setTweak] = useTweaks(window.__TWEAK_DEFAULTS || { theme: "light" });
+
+  // Apply the theme attribute on <html>
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", t.theme === "dark" ? "dark" : "light");
+  }, [t.theme]);
+
+  return (
+    <TweaksPanel title="Tweaks">
+      <TweakSection label="Tema Dashboard" />
+      <TweakRadio
+        label="Mode tampilan"
+        value={t.theme}
+        options={[
+          { value: "light", label: "Terang" },
+          { value: "dark",  label: "Gelap" },
+        ]}
+        onChange={(v) => setTweak("theme", v)}
+      />
+      <div style={{
+        marginTop: 12, padding: 12,
+        background: "rgba(0,0,0,0.04)",
+        borderRadius: 8,
+        fontSize: 12, lineHeight: 1.4, color: "var(--ink-soft, #51607A)"
+      }}>
+        Mode <strong>Gelap</strong> mensimulasikan tampilan command-center /
+        ruang kendali — cocok untuk presentasi malam atau ruangan minim cahaya.
+      </div>
+    </TweaksPanel>
+  );
+}
+
+/* =========================================================
+   Package preview visualizations
+   ========================================================= */
+
+/* Paket 01 — Water & Flood: AWLR chart + small alert feed */
+function PkgWaterVis() {
+  return (
+    <div style={{ display: "grid", gridTemplateRows: "minmax(0, 1.08fr) minmax(0, .92fr)", gap: 10, height: "100%", minHeight: 0 }}>
+      <div style={{ minHeight: 0 }}><AWLRChart height={132} compact /></div>
+      <div style={{ minHeight: 0 }}><RainfallBars height={118} compact /></div>
+    </div>
+  );
+}
+
+/* Paket 02 — Blue Economy: WQ Panel + alert feed */
+function PkgWQVis() {
+  return (
+    <div style={{ display: "grid", gridTemplateRows: "1fr 1fr", gap: 10, height: "100%", minHeight: 0 }}>
+      <div style={{ minHeight: 0 }}><WQPanel /></div>
+      <div style={{ minHeight: 0 }}><AlertFeed compact /></div>
+    </div>
+  );
+}
+
+/* Paket 03 — SCADA Industri: Pump grid + small schematic */
+function ScadaSchematic({ compact = false }) {
+  const tick = React.useState(0)[0];
+  const [pulse, setPulse] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => setPulse(p => (p + 1) % 4), 600);
+    return () => clearInterval(id);
+  }, []);
+  const schematic = compact
+    ? {
+        viewBox: "0 0 760 148",
+        nodeY: 54,
+        metricY: 126,
+        nodeW: 112,
+        nodeH: 52,
+        pipeLen: 78,
+        nodes: [
+          { x: 130, label: "INTAKE", sub: "320 L/s", color: "var(--water)" },
+          { x: 300, label: "IPA", sub: "98.4%", color: "var(--brand)" },
+          { x: 470, label: "RESERVOIR", sub: "82% full", color: "var(--brand)" },
+          { x: 640, label: "DISTRIBUSI", sub: "4.2 bar", color: "var(--green)" },
+        ],
+        metrics: [
+          { x: 160, label: "ENERGY", value: "142.6 kWh", color: "var(--ink)" },
+          { x: 360, label: "PRESSURE", value: "4.2 bar", color: "var(--ink)" },
+          { x: 560, label: "UPTIME", value: "99.8%", color: "var(--green)" },
+        ],
+      }
+    : {
+        viewBox: "0 0 600 200",
+        nodeY: 70,
+        metricY: 160,
+        nodeW: 100,
+        nodeH: 60,
+        pipeLen: 80,
+        nodes: [
+          { x: 60, label: "INTAKE", sub: "320 L/s", color: "var(--water)" },
+          { x: 200, label: "IPA", sub: "98.4%", color: "var(--brand)" },
+          { x: 340, label: "RESERVOIR", sub: "82% full", color: "var(--brand)" },
+          { x: 480, label: "DISTRIBUSI", sub: "4.2 bar", color: "var(--green)" },
+        ],
+        metrics: [
+          { x: 60, label: "ENERGY", value: "142.6 kWh", color: "var(--ink)" },
+          { x: 280, label: "PRESSURE", value: "4.2 bar", color: "var(--ink)" },
+          { x: 480, label: "UPTIME", value: "99.8%", color: "var(--green)" },
+        ],
+      };
+  return (
+    <div className="card" style={{ padding: compact ? 14 : 22, height: "100%", display: "flex", flexDirection: "column", overflow: "hidden" }}>
+      <div className="card-h" style={{ marginBottom: compact ? 2 : undefined }}>
+        <div>
+          <span className="label" style={compact ? { fontSize: 10 } : null}>SCADA SCHEMATIC · UDANG MANIS</span>
+          <div style={{ fontFamily: "var(--font-mono)", fontSize: compact ? 11 : 14, color: "var(--ink-mute)", marginTop: 4 }}>Air baku → IPA → Reservoir → Distribusi</div>
+        </div>
+        <span className="pill pill--green" style={compact ? { fontSize: 11, padding: "4px 8px" } : null}>FLOW NORMAL</span>
+      </div>
+      <svg viewBox={schematic.viewBox} width="100%" height={compact ? "100%" : 180} style={{ display: "block", flex: compact ? "1 1 auto" : "0 0 auto", minHeight: 0 }}>
+        {/* Pipes */}
+        {schematic.nodes.slice(0, -1).map((n, i) => {
+          const next = schematic.nodes[i + 1];
+          const pipeStart = n.x + schematic.nodeW / 2;
+          const pipeEnd = next.x - schematic.nodeW / 2;
+          const travel = pipeEnd - pipeStart;
+          return (
+          <g key={i}>
+            <line x1={pipeStart} y1={schematic.nodeY} x2={pipeEnd} y2={schematic.nodeY} stroke="var(--brand-2)" strokeWidth="3" />
+            {[0, 1, 2, 3].map(d => (
+              <circle key={d} cx={pipeStart + ((pulse + d * 1) * 7) % travel} cy={schematic.nodeY} r="3" fill="var(--brand-2)" opacity={1 - d * 0.2} />
+            ))}
+          </g>
+          );
+        })}
+        {/* Nodes */}
+        {schematic.nodes.map((n, i) => (
+          <g key={i} transform={`translate(${n.x} ${schematic.nodeY})`}>
+            <rect x={-schematic.nodeW / 2} y={-schematic.nodeH / 2} width={schematic.nodeW} height={schematic.nodeH} rx="8" fill="var(--surface-2)" stroke={n.color} strokeWidth="2" />
+            <text textAnchor="middle" y="-3" fontFamily="var(--font-mono)" fontSize={compact ? 10 : 11} fontWeight="700" fill="var(--ink-mute)" letterSpacing=".08em">{n.label}</text>
+            <text textAnchor="middle" y="18" fontFamily="var(--font-mono)" fontSize={compact ? 13 : 14} fontWeight="700" fill={n.color}>{n.sub}</text>
+          </g>
+        ))}
+        {/* Metrics */}
+        {schematic.metrics.map((m) => (
+          <g key={m.label} transform={`translate(${m.x} ${schematic.metricY})`}>
+            <text textAnchor="middle" fontFamily="var(--font-mono)" fontSize={compact ? 10 : 11} fill="var(--ink-mute)" letterSpacing=".08em">{m.label}</text>
+            <text x="48" textAnchor="start" fontFamily="var(--font-mono)" fontSize={compact ? 12 : 14} fontWeight="700" fill={m.color}>{m.value}</text>
+          </g>
+        ))}
+      </svg>
+    </div>
+  );
+}
+function PkgScadaVis() {
+  return (
+    <div style={{ display: "grid", gridTemplateRows: "minmax(0, 1fr) minmax(0, 1fr)", gap: 10, height: "100%", minHeight: 0 }}>
+      <div style={{ minHeight: 0 }}><PumpGrid compact /></div>
+      <div style={{ minHeight: 0 }}><ScadaSchematic compact /></div>
+    </div>
+  );
+}
+
+/* Paket 04 — Command Dashboard: ribbon + summary tiles */
+function CommandSummary() {
+  return (
+    <div className="card" style={{ padding: 22, height: "100%" }}>
+      <div className="card-h">
+        <div>
+          <span className="label">BUPATI'S BRIEFING · PAGI</span>
+          <div style={{ fontFamily: "var(--font-mono)", fontSize: 14, color: "var(--ink-mute)", marginTop: 4 }}>Snapshot harian otomatis · 06:00 WIB</div>
+        </div>
+        <span className="pill pill--brand">DAILY REPORT</span>
+      </div>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+        {[
+          { k: "Sungai Way TB", v: "Normal · TMA 2.14 m", tone: "ok" },
+          { k: "Curah Hujan 24h", v: "Tinggi · 86 mm", tone: "warn" },
+          { k: "Kawasan Industri", v: "98.4% utilitas OK", tone: "ok" },
+          { k: "Kualitas Air DLH", v: "1 outlet · siaga pH", tone: "warn" },
+          { k: "Aset Lapangan", v: "5/6 pompa beroperasi", tone: "ok" },
+          { k: "Tambak Rakyat", v: "Tren DO stabil 7 hari", tone: "ok" },
+        ].map((t, i) => (
+          <div key={i} style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 14px", border: "1px solid var(--line)", borderRadius: 8, background: "var(--surface-2)" }}>
+            <span className={`status-dot ${t.tone}`} />
+            <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
+              <span style={{ fontFamily: "var(--font-mono)", fontSize: 11, fontWeight: 700, color: "var(--ink-mute)", letterSpacing: ".08em" }}>{t.k}</span>
+              <span style={{ fontSize: 15, fontWeight: 600, color: "var(--ink)" }}>{t.v}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+function PkgCommandVis() {
+  return (
+    <div style={{ display: "grid", gridTemplateRows: "auto 1fr", gap: 12, height: "100%" }}>
+      <StatusRibbon />
+      <CommandSummary />
+    </div>
+  );
+}
+
+/* =========================================================
+   Mount points
+   ========================================================= */
+function mountAll() {
+  const COMPONENT_MAP = {
+    "map": <TulangBawangMap />,
+    "live-dashboard": <LiveDashboard />,
+    "pkg-water-vis": <PkgWaterVis />,
+    "pkg-wq-vis": <PkgWQVis />,
+    "pkg-scada-vis": <PkgScadaVis />,
+    "pkg-command-vis": <PkgCommandVis />,
+  };
+  document.querySelectorAll("[data-component]").forEach(el => {
+    const key = el.getAttribute("data-component");
+    const comp = COMPONENT_MAP[key];
+    if (!comp || el.dataset.mounted === "1") return;
+    el.dataset.mounted = "1";
+    ReactDOM.createRoot(el).render(comp);
+  });
+
+  // Mount tweaks panel
+  const tweaksRoot = document.getElementById("tweaks-root");
+  if (tweaksRoot && tweaksRoot.dataset.mounted !== "1") {
+    tweaksRoot.dataset.mounted = "1";
+    ReactDOM.createRoot(tweaksRoot).render(<TweaksApp />);
+  }
+}
+
+// Try mount once DOM is ready; deck-stage may move sections around but the elements persist.
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", mountAll);
+} else {
+  mountAll();
+}
+// Also retry shortly after — deck-stage initializes async and clones for thumbnails.
+setTimeout(mountAll, 200);
+setTimeout(mountAll, 800);
+
+  </script>
+</body>
+</html>

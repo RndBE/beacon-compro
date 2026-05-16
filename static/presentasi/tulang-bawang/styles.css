@@ -1,0 +1,800 @@
+/* =========================================================================
+   Beacon Engineering × Kab. Tulang Bawang — Slide Deck
+   Design tokens, slide chrome, and component primitives.
+   ========================================================================= */
+
+:root {
+  /* Surfaces */
+  --bg: #F1F4F9;
+  --bg-grid: #E6EBF3;
+  --surface: #FFFFFF;
+  --surface-2: #F7F9FC;
+  --surface-3: #EEF2F8;
+  --line: #DCE3EE;
+  --line-soft: #E8ECF3;
+
+  /* Ink */
+  --ink: #0B1424;
+  --ink-2: #1F2A40;
+  --ink-soft: #51607A;
+  --ink-mute: #8593AC;
+
+  /* Brand */
+  --brand: #0B3A82;          /* deep institutional blue */
+  --brand-2: #2876E8;        /* tech blue */
+  --brand-deep: #061F4A;
+  --water: #1FA5C7;          /* sensor cyan */
+  --water-soft: #DFF3F9;
+  --green: #1B8A5B;          /* pangan / blue economy */
+  --green-soft: #DEEFE6;
+  --amber: #D98220;          /* siaga */
+  --amber-soft: #FBEAD2;
+  --danger: #C1432B;         /* awas */
+  --danger-soft: #F9D8D0;
+
+  /* Type */
+  --font-sans: "Plus Jakarta Sans", "Inter Tight", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "JetBrains Mono", "IBM Plex Mono", ui-monospace, monospace;
+
+  /* Radius */
+  --r-sm: 6px;
+  --r: 10px;
+  --r-lg: 16px;
+  --r-xl: 24px;
+
+  /* Shadow */
+  --shadow-card: 0 1px 0 rgba(11,20,36,.04), 0 8px 24px -12px rgba(11,20,36,.10);
+  --shadow-pop:  0 12px 40px -16px rgba(11,20,36,.22);
+}
+
+[data-theme="dark"] {
+  --bg: #060912;
+  --bg-grid: #0D1424;
+  --surface: #0F1626;
+  --surface-2: #131B2E;
+  --surface-3: #1A2238;
+  --line: #1F2A44;
+  --line-soft: #182032;
+
+  --ink: #E9EEF8;
+  --ink-2: #C8D2E5;
+  --ink-soft: #97A3BD;
+  --ink-mute: #5F6C87;
+
+  --brand: #5A8DFB;
+  --brand-2: #87B0FF;
+  --brand-deep: #0F1F4A;
+  --water: #38C7E6;
+  --water-soft: rgba(56, 199, 230, 0.12);
+  --green: #4CCB8E;
+  --green-soft: rgba(76, 203, 142, 0.12);
+  --amber: #F0AC57;
+  --amber-soft: rgba(240, 172, 87, 0.14);
+  --danger: #F0735C;
+  --danger-soft: rgba(240, 115, 92, 0.14);
+
+  --shadow-card: 0 1px 0 rgba(0,0,0,.5), 0 18px 40px -20px rgba(0,0,0,.6);
+}
+
+/* ---------- Base ---------- */
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0; padding: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+deck-stage { background: var(--bg); }
+
+section {
+  /* every direct child of deck-stage is a slide; 1920x1080 */
+  position: relative;
+  width: 1920px; height: 1080px;
+  background: var(--bg);
+  color: var(--ink);
+  overflow: hidden;
+  font-size: 22px;
+  line-height: 1.45;
+}
+
+/* Slide subtle grid background */
+.slide-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(to right, var(--bg-grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--bg-grid) 1px, transparent 1px);
+  background-size: 80px 80px;
+  background-position: -1px -1px;
+  opacity: .5;
+  pointer-events: none;
+}
+
+/* ---------- Slide chrome (header + footer) ---------- */
+
+.chrome {
+  position: absolute; left: 80px; right: 80px;
+  display: flex; align-items: center; justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--ink-mute);
+  text-transform: uppercase;
+}
+.chrome--top { top: 56px; }
+.chrome--bot { bottom: 56px; }
+
+.brand-mark {
+  display: inline-flex; align-items: center; gap: 14px;
+  color: var(--ink);
+}
+.brand-mark .logo {
+  width: 28px; height: 28px;
+  border-radius: 8px;
+  background: var(--brand);
+  display: grid; place-items: center;
+  color: white;
+  font-family: var(--font-sans);
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: -0.02em;
+  position: relative;
+}
+.brand-mark .logo::after {
+  content: "";
+  position: absolute; inset: 4px;
+  border: 1.5px solid rgba(255,255,255,.55);
+  border-radius: 5px;
+}
+.brand-mark .name {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 17px;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  color: var(--ink);
+}
+.brand-mark .name span { color: var(--ink-mute); font-weight: 500; }
+
+/* Image logo lockup (replaces the BE badge + name text) */
+.brand-mark .brand-logo {
+  height: 36px;
+  width: auto;
+  display: block;
+}
+.brand-mark .brand-suffix {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  color: var(--ink-mute);
+}
+
+.chrome .divider {
+  height: 16px; width: 1px; background: var(--line); margin: 0 6px;
+}
+
+.chrome--bot .left,
+.chrome--bot .right {
+  display: inline-flex; align-items: center; gap: 14px;
+}
+.chrome .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 4px var(--green-soft); }
+
+/* ---------- Body / canvas ---------- */
+.canvas {
+  position: absolute;
+  left: 80px; right: 80px;
+  top: 124px; bottom: 124px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------- Typography ---------- */
+h1, h2, h3, h4, p { margin: 0; }
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--brand);
+  display: inline-flex; align-items: center; gap: 10px;
+}
+[data-theme="dark"] .eyebrow { color: var(--brand-2); }
+.eyebrow::before {
+  content: "";
+  width: 22px; height: 1px;
+  background: currentColor;
+}
+
+.h-display {
+  font-size: 104px;
+  line-height: 0.96;
+  letter-spacing: -0.035em;
+  font-weight: 700;
+  color: var(--ink);
+  text-wrap: balance;
+}
+.h-title {
+  font-size: 72px;
+  line-height: 1.0;
+  letter-spacing: -0.025em;
+  font-weight: 700;
+  color: var(--ink);
+  text-wrap: balance;
+}
+.h-section {
+  font-size: 54px;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+  color: var(--ink);
+}
+.h-card {
+  font-size: 30px;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  font-weight: 700;
+  color: var(--ink);
+}
+.h-mini {
+  font-size: 22px;
+  line-height: 1.15;
+  letter-spacing: -0.005em;
+  font-weight: 700;
+  color: var(--ink);
+}
+.lead {
+  font-size: 28px;
+  line-height: 1.35;
+  color: var(--ink-2);
+  font-weight: 400;
+  text-wrap: pretty;
+}
+.body {
+  font-size: 20px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+.body-sm {
+  font-size: 17px;
+  line-height: 1.45;
+  color: var(--ink-soft);
+}
+.mono {
+  font-family: var(--font-mono);
+  font-feature-settings: "tnum", "zero";
+}
+
+/* ---------- Pills, tags ---------- */
+.pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink-2);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+}
+.pill .swatch { width: 8px; height: 8px; border-radius: 50%; background: var(--brand); }
+.pill--brand { color: var(--brand); border-color: var(--brand); background: rgba(11,58,130,.04); }
+[data-theme="dark"] .pill--brand { background: rgba(90, 141, 251, 0.12); }
+.pill--water  { color: var(--water);  border-color: var(--water);  background: var(--water-soft); }
+.pill--green  { color: var(--green);  border-color: var(--green);  background: var(--green-soft); }
+.pill--amber  { color: var(--amber);  border-color: var(--amber);  background: var(--amber-soft); }
+.pill--danger { color: var(--danger); border-color: var(--danger); background: var(--danger-soft); }
+.pill--ghost  { background: transparent; }
+
+/* ---------- Cards ---------- */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-card);
+  padding: 28px;
+}
+.card--flat { box-shadow: none; }
+.card--quiet { background: var(--surface-2); }
+
+.card-h {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 18px;
+}
+.card-h .label {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+/* ---------- Lists ---------- */
+.list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
+.list li {
+  display: flex; gap: 14px;
+  font-size: 20px;
+  line-height: 1.4;
+  color: var(--ink-2);
+}
+.list li::before {
+  content: "";
+  flex: 0 0 auto;
+  width: 8px; height: 8px;
+  margin-top: 12px;
+  border-radius: 2px;
+  background: var(--brand);
+}
+.list--check li::before {
+  content: "";
+  width: 18px; height: 18px;
+  margin-top: 4px;
+  border-radius: 4px;
+  background:
+    linear-gradient(45deg, transparent 45%, var(--brand) 46%, var(--brand) 56%, transparent 57%) no-repeat,
+    linear-gradient(-45deg, transparent 45%, var(--brand) 46%, var(--brand) 56%, transparent 57%) no-repeat;
+  background-size: 70% 2.5px, 30% 2.5px;
+  background-position: 70% 60%, 30% 70%;
+  background-color: var(--brand-deep);
+}
+
+/* ---------- Layout helpers ---------- */
+.row { display: flex; }
+.col { display: flex; flex-direction: column; }
+.g-12 { gap: 12px; } .g-16 { gap: 16px; } .g-20 { gap: 20px; } .g-24 { gap: 24px; } .g-32 { gap: 32px; } .g-40 { gap: 40px; } .g-48 { gap: 48px; } .g-64 { gap: 64px; }
+.grid { display: grid; }
+
+/* ---------- Status dot ---------- */
+.status-dot { width: 10px; height: 10px; border-radius: 50%; position: relative; flex: 0 0 auto; }
+.status-dot::after {
+  content: ""; position: absolute; inset: -6px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: .2;
+  animation: pulse 2.4s ease-out infinite;
+}
+.status-dot.ok { background: var(--green); color: var(--green); }
+.status-dot.warn { background: var(--amber); color: var(--amber); }
+.status-dot.alarm { background: var(--danger); color: var(--danger); animation: blink 1s ease infinite; }
+@keyframes pulse {
+  0%   { transform: scale(0.6); opacity: .35; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+@keyframes blink {
+  50% { opacity: 0.4; }
+}
+
+/* ---------- Asta Cita pill row ---------- */
+.asta-pill {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 8px 14px 8px 8px;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink-2);
+}
+.asta-pill .n {
+  display: inline-grid; place-items: center;
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--surface);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* ---------- Section divider slides ---------- */
+.divider-num {
+  font-size: 280px;
+  line-height: 0.88;
+  letter-spacing: -0.06em;
+  font-weight: 700;
+  color: var(--brand);
+  font-feature-settings: "tnum";
+  margin-top: 8px;
+}
+[data-theme="dark"] .divider-num { color: var(--brand-2); }
+
+/* ---------- Index marker ---------- */
+.index-mark {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--ink-mute);
+}
+
+/* ---------- Stat / KPI ---------- */
+.kpi { display: flex; flex-direction: column; gap: 6px; }
+.kpi .v {
+  font-family: var(--font-mono);
+  font-size: 56px;
+  line-height: 1;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+.kpi .v .u {
+  font-size: 22px;
+  color: var(--ink-soft);
+  margin-left: 6px;
+  font-weight: 500;
+}
+.kpi .k {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+/* ---------- Annotation tag ---------- */
+.annot {
+  position: absolute;
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-card);
+  font-size: 13px;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+/* ---------- Map ---------- */
+.map-wrap {
+  position: relative;
+  width: 100%; height: 100%;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+[data-theme="dark"] .map-wrap { background: linear-gradient(180deg, #0B1424 0%, #0F1A30 100%); }
+
+.map-wrap--leaflet {
+  box-shadow: var(--shadow-card);
+  isolation: isolate;
+}
+
+.leaflet-map-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: var(--surface-2);
+}
+
+.leaflet-map-canvas .leaflet-control-container {
+  font-family: var(--font-sans);
+}
+
+.leaflet-map-canvas .leaflet-control-zoom {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+
+.leaflet-map-canvas .leaflet-control-zoom a {
+  width: 34px;
+  height: 34px;
+  border: 0;
+  color: var(--brand);
+  background: var(--surface);
+  line-height: 34px;
+}
+
+.leaflet-map-canvas .leaflet-control-zoom a + a {
+  border-top: 1px solid var(--line);
+}
+
+.leaflet-map-canvas .leaflet-control-attribution {
+  padding: 4px 8px;
+  border-radius: 8px 0 0 0;
+  background: var(--surface);
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  color: var(--ink-mute);
+  font-family: var(--font-mono);
+  font-size: 10px;
+}
+
+.leaflet-map-canvas .leaflet-control-attribution a {
+  color: var(--brand);
+}
+
+.sensor-div-icon {
+  background: transparent;
+  border: 0;
+}
+
+.sensor-marker {
+  --sensor-color: var(--brand);
+  --status-color: var(--green);
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+}
+
+.sensor-marker__pulse {
+  position: absolute;
+  inset: 4px;
+  border: 2px solid var(--status-color);
+  border-radius: 50%;
+  opacity: .42;
+  animation: sensorPulse 2.4s ease-out infinite;
+}
+
+.sensor-marker__core {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 2px solid var(--status-color);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--sensor-color);
+  box-shadow: 0 8px 18px rgba(11,20,36,.22);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: -.02em;
+}
+
+.sensor-marker.is-active .sensor-marker__core {
+  width: 36px;
+  height: 36px;
+  background: var(--status-color);
+  color: white;
+  border-color: var(--surface);
+  box-shadow: 0 14px 34px rgba(11,20,36,.30);
+}
+
+.sensor-marker.is-active .sensor-marker__pulse {
+  inset: -2px;
+  opacity: .52;
+}
+
+@keyframes sensorPulse {
+  0% { transform: scale(.72); opacity: .45; }
+  70% { transform: scale(1.42); opacity: 0; }
+  100% { transform: scale(1.42); opacity: 0; }
+}
+
+.sensor-tooltip {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: var(--shadow-card);
+  font-family: var(--font-mono);
+  font-weight: 700;
+}
+
+.sensor-tooltip {
+  padding: 6px 9px;
+  font-size: 11px;
+}
+
+.sensor-tooltip::before {
+  display: none;
+}
+
+.leaflet-map-legend,
+.leaflet-map-info,
+.leaflet-map-status {
+  position: absolute;
+  z-index: 500;
+  background: var(--surface);
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-card);
+  backdrop-filter: blur(12px);
+}
+
+.leaflet-map-legend {
+  left: 20px;
+  bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 188px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-2);
+}
+
+.map-panel-title,
+.map-info-head {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  color: var(--ink-mute);
+}
+
+.map-legend-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.map-legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+}
+
+.leaflet-map-status {
+  top: 18px;
+  left: 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 10px;
+  border-radius: 999px;
+  color: var(--ink-2);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.leaflet-map-status div {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  white-space: nowrap;
+}
+
+.leaflet-map-status .status-dot {
+  width: 8px;
+  height: 8px;
+}
+
+.map-source-state {
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: var(--water-soft);
+  color: var(--brand);
+}
+
+.map-source-state--big {
+  background: var(--green-soft);
+  color: var(--green);
+}
+
+.map-source-state--fallback {
+  background: var(--amber-soft);
+  color: var(--amber);
+}
+
+.leaflet-map-info {
+  right: 20px;
+  bottom: 20px;
+  width: 292px;
+  padding: 16px;
+  border-radius: 12px;
+}
+
+.map-info-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.map-info-name {
+  color: var(--ink);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.map-info-value {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  margin-top: 12px;
+  font-family: var(--font-mono);
+}
+
+.map-info-value span {
+  color: var(--ink);
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -.03em;
+}
+
+.map-info-value em {
+  color: var(--ink-soft);
+  font-size: 14px;
+  font-style: normal;
+}
+
+.map-info-status {
+  display: inline-flex;
+  margin-top: 12px;
+  padding: 5px 9px;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.map-info-status--ok { color: var(--green); background: var(--green-soft); }
+.map-info-status--warn { color: var(--amber); background: var(--amber-soft); }
+.map-info-status--alarm { color: var(--danger); background: var(--danger-soft); }
+
+.map-empty {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  color: var(--ink-mute);
+  font-family: var(--font-mono);
+  font-size: 14px;
+}
+
+[data-theme="dark"] .leaflet-map-canvas .leaflet-tile {
+  filter: saturate(.8) contrast(1.08);
+}
+
+[data-theme="dark"] .sensor-marker__core {
+  background: var(--surface-2);
+  box-shadow: 0 10px 24px rgba(0,0,0,.45);
+}
+
+[data-theme="dark"] .leaflet-map-legend,
+[data-theme="dark"] .leaflet-map-info,
+[data-theme="dark"] .leaflet-map-status,
+[data-theme="dark"] .sensor-tooltip {
+  background: var(--surface);
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+}
+
+@media (max-width: 900px), (pointer: coarse) {
+  .leaflet-map-canvas .leaflet-control-zoom a {
+    width: 42px;
+    height: 42px;
+    line-height: 42px;
+  }
+}
+
+/* ---------- Sparkline / chart wrappers ---------- */
+.chart {
+  width: 100%; height: 100%;
+}
+
+/* ---------- Utility ---------- */
+.divider-line { height: 1px; background: var(--line); width: 100%; }
+.vdivider-line { width: 1px; background: var(--line); height: 100%; }
+
+/* ---------- Tweaks panel overrides for dark deck ---------- */
+[data-theme="dark"] section { background: var(--bg); color: var(--ink); }

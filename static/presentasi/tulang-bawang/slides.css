@@ -1,0 +1,460 @@
+/* ========================================================================
+   Slide-specific layout — composed on top of styles.css design tokens.
+   ======================================================================== */
+
+/* ---------- Cover ---------- */
+.cover-grid {
+  position: absolute;
+  left: 80px; right: 80px; top: 140px; bottom: 130px;
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+.cover-left { display: flex; flex-direction: column; gap: 28px; }
+.cover-art { height: 720px; max-height: 100%; }
+
+/* ---------- Positioning ---------- */
+.positioning-quote {
+  font-size: 72px;
+  line-height: 1.12;
+  letter-spacing: -0.025em;
+  font-weight: 600;
+  color: var(--ink);
+  margin-top: 36px;
+  text-wrap: balance;
+}
+.positioning-quote em {
+  font-style: normal;
+  background: linear-gradient(180deg, transparent 65%, var(--amber-soft) 65%);
+  padding: 0 4px;
+}
+.pillar-row {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 20px;
+  margin-top: 72px;
+}
+.pillar { padding: 20px; }
+.pillar .n {
+  font-family: var(--font-mono); font-size: 12px; font-weight: 700;
+  color: var(--ink-mute); letter-spacing: .08em;
+}
+.pillar .t {
+  font-size: 22px; font-weight: 700; margin-top: 6px;
+  letter-spacing: -0.01em;
+}
+
+/* ---------- Context (slide 03) ---------- */
+.ctx-grid {
+  display: grid;
+  grid-template-columns: 620px 1fr;
+  gap: 56px;
+}
+.ctx-left { display: flex; flex-direction: column; gap: 18px; }
+.ctx-left .h-title { font-size: 52px; line-height: 1.0; }
+.ctx-left .lead { font-size: 21px; }
+.ctx-kpi {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 36px;
+}
+.ctx-kpi .kpi .v { font-size: 40px; }
+.ctx-right { position: relative; }
+.ctx-map-label {
+  position: absolute; left: 0; right: 0; top: -8px;
+  display: flex; align-items: center; justify-content: space-between;
+  font-family: var(--font-mono); font-size: 13px;
+  color: var(--ink-mute); letter-spacing: .08em;
+}
+.ctx-map-mount { position: absolute; left: 0; right: 0; top: 24px; bottom: 0; }
+
+/* ---------- Asta Cita grid (slide 04) ---------- */
+.asta-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-top: 48px;
+}
+.asta-card { display: flex; flex-direction: column; gap: 14px; min-height: 280px; }
+.asta-card-foot {
+  font-family: var(--font-mono); font-size: 13px;
+  color: var(--ink-mute); letter-spacing: .06em;
+  margin-top: auto;
+}
+.asta-principle {
+  margin-top: 40px;
+  padding: 24px 36px;
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  align-items: center;
+  gap: 28px;
+}
+.asta-principle .label {
+  font-family: var(--font-mono); font-size: 13px; font-weight: 700;
+  color: var(--ink-mute); letter-spacing: .08em;
+}
+.asta-principle .bar { width: 1px; height: 32px; background: var(--line); }
+.asta-principle p {
+  font-size: 24px; line-height: 1.35;
+  color: var(--ink-2); font-weight: 500;
+}
+.asta-principle strong { color: var(--ink); font-weight: 700; }
+
+/* ---------- Stack (slide 05) ---------- */
+.stack-head {
+  display: flex; align-items: end; justify-content: space-between;
+  gap: 48px;
+}
+.stack-grid {
+  margin-top: 48px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 18px;
+  flex: 1;
+  min-height: 0;
+}
+.stack-card {
+  display: flex; flex-direction: column; justify-content: space-between;
+  padding: 24px;
+}
+.stack-icon { width: 36px; height: 36px; color: var(--brand); }
+.stack-label {
+  font-family: var(--font-mono); font-size: 12px; font-weight: 700;
+  color: var(--ink-mute); letter-spacing: .08em;
+}
+.stack-body { display: flex; flex-direction: column; gap: 8px; }
+.stack-card .h-mini { margin-top: 2px; }
+.stack-card .body-sm { margin: 0; }
+.stack-card--accent {
+  background: var(--brand);
+  border: none;
+  color: white;
+}
+[data-theme="dark"] .stack-card--accent { background: var(--brand-deep); }
+.stack-card--accent .h-mini { color: white; }
+
+/* ---------- Divider slides ---------- */
+.divider-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+.divider-title {
+  margin-top: 24px;
+  font-size: 80px;
+  line-height: 0.96;
+}
+.prog-mini-list {
+  list-style: none;
+  padding: 0; margin: 0;
+  display: flex; flex-direction: column;
+  gap: 0;
+  border-top: 1px solid var(--line);
+}
+.prog-mini-list li {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  padding: 18px 4px;
+  border-bottom: 1px solid var(--line);
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+.prog-mini-list li .n {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--brand);
+  letter-spacing: 0;
+  min-width: 40px;
+}
+
+/* ---------- Program slides (07-14) ---------- */
+.prog-head {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 28px;
+}
+.prog-head .num {
+  font-family: var(--font-mono);
+  font-size: 56px;
+  font-weight: 600;
+  color: var(--brand);
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+[data-theme="dark"] .prog-head .num { color: var(--brand-2); }
+.prog-head .title { 
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: var(--ink);
+  text-wrap: balance;
+}
+.prog-head .asta {
+  display: flex; flex-direction: column; gap: 6px; align-items: flex-end;
+}
+.prog-head .asta-label {
+  font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+  color: var(--ink-mute); letter-spacing: .08em;
+}
+
+.prog-body {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr 1fr;
+  gap: 24px;
+  margin-top: 32px;
+  flex: 1;
+  min-height: 0;
+}
+.prog-impl, .prog-fits, .prog-value { padding: 28px; display: flex; flex-direction: column; gap: 16px; }
+.prog-section-title {
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--font-mono); font-size: 12px; font-weight: 700;
+  color: var(--ink-mute); letter-spacing: .08em;
+}
+.prog-section-title::before {
+  content: ""; width: 24px; height: 1px; background: var(--brand);
+}
+.prog-impl ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 14px; }
+.prog-impl li {
+  display: flex; gap: 14px;
+  font-size: 19px; line-height: 1.4;
+  color: var(--ink-2);
+}
+.prog-impl li::before {
+  content: ""; flex: 0 0 auto;
+  width: 18px; height: 18px; margin-top: 3px; border-radius: 4px;
+  background: var(--water-soft);
+  border: 1.5px solid var(--water);
+  background-image: linear-gradient(135deg, transparent 40%, var(--water) 40%, var(--water) 60%, transparent 60%);
+}
+.prog-fits .pill-list { display: flex; flex-direction: column; gap: 10px; }
+.prog-fits .pill-list .pill { justify-content: flex-start; font-size: 17px; padding: 10px 14px; }
+.prog-value .quote {
+  font-size: 24px; line-height: 1.35;
+  color: var(--ink); font-weight: 500;
+  text-wrap: pretty;
+}
+.prog-value .quote strong { color: var(--brand); font-weight: 700; }
+.prog-value-foot {
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.prog-value-foot .vis {
+  width: 64px; height: 64px;
+  border-radius: 12px;
+  background: var(--brand);
+  display: grid; place-items: center;
+  color: white;
+}
+
+/* ---------- Package slides ---------- */
+.pkg-head {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 28px;
+  align-items: center;
+}
+.pkg-head .tag {
+  font-family: var(--font-mono);
+  font-size: 13px; font-weight: 700;
+  letter-spacing: .08em;
+  color: var(--brand);
+  text-transform: uppercase;
+}
+.pkg-body {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 32px;
+  margin-top: 32px;
+  flex: 1;
+  min-height: 0;
+}
+.pkg-content { display: flex; flex-direction: column; gap: 24px; }
+.pkg-visual {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-card);
+  padding: 24px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.pkg-visual > [data-component] {
+  flex: 1;
+  min-height: 0;
+  height: auto !important;
+}
+.pkg-isi-list {
+  list-style: none; padding: 0; margin: 0;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 12px 24px;
+}
+.pkg-isi-list li {
+  display: flex; align-items: flex-start; gap: 12px;
+  font-size: 18px; color: var(--ink-2);
+  line-height: 1.35;
+  padding: 12px 14px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+.pkg-isi-list li::before {
+  content: "+";
+  flex: 0 0 auto;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--brand);
+  color: white;
+  display: grid; place-items: center;
+  font-family: var(--font-mono); font-weight: 700; font-size: 14px;
+  line-height: 1;
+}
+
+.pkg-pilot {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 20px;
+  padding: 20px;
+  background: var(--surface-2);
+  border-radius: 12px;
+  border: 1px solid var(--line);
+}
+.pkg-pilot .kpi .v { font-size: 32px; }
+
+/* ---------- Dashboard demo slide ---------- */
+.demo-canvas {
+  position: absolute;
+  left: 80px; right: 80px;
+  top: 124px; bottom: 124px;
+}
+
+/* ---------- Strategi masuk ---------- */
+.strategi-flow {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0;
+  margin-top: 48px;
+  align-items: stretch;
+}
+.strategi-step {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-right: none;
+  padding: 28px;
+  display: flex; flex-direction: column; gap: 16px;
+  position: relative;
+}
+.strategi-step:last-child { border-right: 1px solid var(--line); }
+.strategi-step:first-child { border-radius: 16px 0 0 16px; }
+.strategi-step:last-child { border-radius: 0 16px 16px 0; }
+.strategi-step::after {
+  content: "";
+  position: absolute;
+  right: -12px; top: 50%;
+  width: 24px; height: 24px;
+  background: var(--surface);
+  border-top: 1px solid var(--line);
+  border-right: 1px solid var(--line);
+  transform: translateY(-50%) rotate(45deg);
+  z-index: 2;
+}
+.strategi-step:last-child::after { display: none; }
+.strategi-step .step-num {
+  font-family: var(--font-mono);
+  font-size: 12px; font-weight: 700; letter-spacing: .08em;
+  color: var(--brand);
+}
+.strategi-step .step-title {
+  font-size: 22px; font-weight: 700; line-height: 1.15;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+.strategi-step .step-detail {
+  font-size: 16px; color: var(--ink-soft); line-height: 1.4;
+}
+.strategi-step .step-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; }
+.strategi-step .step-tags .pill { font-size: 13px; padding: 4px 10px; }
+
+/* ---------- Roadmap ---------- */
+.roadmap-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 48px;
+}
+.roadmap-card {
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: relative;
+  min-height: 540px;
+}
+.roadmap-card .phase {
+  font-family: var(--font-mono); font-size: 13px; font-weight: 700;
+  letter-spacing: .08em; color: var(--brand);
+}
+.roadmap-card h3 {
+  font-size: 36px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.05;
+}
+.roadmap-card .desc { font-size: 18px; color: var(--ink-soft); line-height: 1.45; }
+.roadmap-card ul {
+  list-style: none; padding: 0; margin-top: auto;
+  display: flex; flex-direction: column; gap: 10px;
+  border-top: 1px solid var(--line);
+  padding-top: 20px;
+}
+.roadmap-card ul li {
+  display: flex; gap: 12px; align-items: center;
+  font-family: var(--font-mono); font-size: 14px; font-weight: 500;
+  color: var(--ink-2);
+}
+.roadmap-card ul li::before {
+  content: "→"; color: var(--brand); font-weight: 700;
+}
+.roadmap-card .num { display: none; }
+.roadmap-card--accent { background: var(--brand); color: white; border: none; }
+.roadmap-card--accent .phase, .roadmap-card--accent ul li::before { color: rgba(255,255,255,.7); }
+.roadmap-card--accent .desc { color: rgba(255,255,255,.85); }
+.roadmap-card--accent ul { border-top-color: rgba(255,255,255,.2); }
+.roadmap-card--accent ul li { color: rgba(255,255,255,.95); }
+.roadmap-card--accent .num { color: white; opacity: .15; }
+[data-theme="dark"] .roadmap-card--accent { background: var(--brand-deep); }
+
+/* ---------- Closing ---------- */
+.closing-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 64px;
+  align-items: center;
+  height: 100%;
+}
+.closing-cta { font-size: 76px; line-height: 1.05; letter-spacing: -0.03em; font-weight: 700; }
+.closing-cta em { font-style: normal; color: var(--brand); }
+.contact-card { padding: 36px; display: flex; flex-direction: column; gap: 24px; }
+.contact-card h3 { font-size: 22px; font-weight: 700; letter-spacing: -0.01em; }
+.contact-row { display: flex; flex-direction: column; gap: 4px; }
+.contact-row .k {
+  font-family: var(--font-mono); font-size: 12px; font-weight: 700;
+  letter-spacing: .08em; color: var(--ink-mute); text-transform: uppercase;
+}
+.contact-row .v {
+  font-size: 20px; font-weight: 600; color: var(--ink); letter-spacing: -0.005em;
+}
+
+/* ---------- Tweaks panel (custom positioning) ---------- */
+#tweaks-root { position: fixed; bottom: 24px; right: 24px; z-index: 99999; }
