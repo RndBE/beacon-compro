@@ -487,7 +487,7 @@
 									>
 										<!-- Floating infinite animation wrapper -->
 										<div
-											class="relative w-full max-w-[450px] aspect-square flex items-center justify-center {shouldFloatStage && isActiveStage
+											class="relative w-full max-w-[720px] aspect-square flex items-center justify-center {shouldFloatStage && isActiveStage
 												? 'animate-float'
 												: ''}"
 										>
