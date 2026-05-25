@@ -512,7 +512,7 @@
 															srcset={stageProduct.image_srcset ?? undefined}
 															sizes="(min-width: 1024px) 520px, 90vw"
 															alt={`${stageProduct.name} Data Logger`}
-															class="relative z-10 h-full max-h-[520px] w-full object-contain"
+															class="relative z-10 h-full max-h-[620px] w-full object-contain"
 															draggable="false"
 															loading="eager"
 															decoding="async"
