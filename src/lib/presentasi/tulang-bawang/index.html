@@ -61,103 +61,163 @@
             <span class="pill">Data Historis</span>
           </div>
         </div>
-        <div class="cover-art">
-          <svg viewBox="0 0 700 700" width="100%" height="100%">
-            <defs>
-              <linearGradient id="cv-bg" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stop-color="var(--surface-2)"/><stop offset="100%" stop-color="var(--surface-3)"/>
-              </linearGradient>
-              <linearGradient id="cv-water" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="var(--brand-2)" stop-opacity=".7"/>
-                <stop offset="100%" stop-color="var(--brand)" stop-opacity=".9"/>
-              </linearGradient>
-              <radialGradient id="cv-pulse" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stop-color="var(--brand-2)" stop-opacity=".3"/>
-                <stop offset="70%" stop-color="var(--brand-2)" stop-opacity="0"/>
-              </radialGradient>
-            </defs>
-            <rect x="20" y="20" width="660" height="660" rx="24" fill="url(#cv-bg)" stroke="var(--line)" stroke-width="1"/>
-            <g class="cv-grid">
-              <path d="M86 20 V680 M152 20 V680 M218 20 V680 M284 20 V680 M350 20 V680 M416 20 V680 M482 20 V680 M548 20 V680 M614 20 V680" stroke="var(--bg-grid)" stroke-width="1" fill="none"/>
-              <path d="M20 86 H680 M20 152 H680 M20 218 H680 M20 284 H680 M20 350 H680 M20 416 H680 M20 482 H680 M20 548 H680 M20 614 H680" stroke="var(--bg-grid)" stroke-width="1" fill="none"/>
-            </g>
-            <circle cx="350" cy="380" r="280" fill="url(#cv-pulse)">
-              <animate attributeName="r" values="200;320;200" dur="6s" repeatCount="indefinite"/>
-            </circle>
-            <circle cx="350" cy="380" r="180" fill="url(#cv-pulse)" opacity=".6">
-              <animate attributeName="r" values="160;240;160" dur="5s" repeatCount="indefinite"/>
-            </circle>
-            <!-- Water -->
-            <path d="M 20 540 Q 100 510 200 540 T 380 540 T 560 540 T 720 540 L 720 680 L 20 680 Z" fill="url(#cv-water)" opacity=".35"/>
-            <path d="M 20 580 Q 110 555 220 580 T 420 580 T 620 580 T 720 580 L 720 680 L 20 680 Z" fill="url(#cv-water)" opacity=".6"/>
-            <path d="M 20 620 Q 100 600 200 620 T 400 620 T 600 620 T 720 620 L 720 680 L 20 680 Z" fill="url(#cv-water)" opacity=".85"/>
-            <!-- Pole -->
-            <ellipse cx="350" cy="610" rx="42" ry="6" fill="var(--brand-deep)" opacity=".2"/>
-            <rect x="343" y="240" width="14" height="380" rx="3" fill="var(--ink-2)"/>
-            <rect x="345" y="240" width="3" height="380" fill="white" opacity=".15"/>
-            <g transform="translate(290 200) rotate(-15)">
-              <rect width="120" height="50" rx="4" fill="var(--brand-deep)" stroke="var(--ink)" stroke-width="1"/>
-              <rect x="2" y="2" width="116" height="46" fill="var(--brand-2)" opacity=".18"/>
-              <path d="M30 0 V50 M60 0 V50 M90 0 V50 M0 25 H120" stroke="var(--brand-2)" stroke-opacity=".5" stroke-width="0.6" fill="none"/>
-            </g>
-            <rect x="320" y="280" width="60" height="44" rx="4" fill="var(--surface)" stroke="var(--ink)" stroke-width="1.5"/>
-            <rect x="326" y="288" width="48" height="14" rx="2" fill="var(--brand)"/>
-            <text x="350" y="299" text-anchor="middle" font-family="var(--font-mono)" font-size="9" font-weight="700" fill="white" letter-spacing=".15em">AWLR</text>
-            <circle cx="332" cy="316" r="2.2" fill="var(--green)">
-              <animate attributeName="opacity" values="1;.3;1" dur="1.6s" repeatCount="indefinite"/>
-            </circle>
-            <circle cx="342" cy="316" r="2.2" fill="var(--amber)" opacity=".5"/>
-            <circle cx="352" cy="316" r="2.2" fill="var(--ink-mute)" opacity=".3"/>
-            <line x1="350" y1="280" x2="350" y2="240" stroke="var(--ink-2)" stroke-width="2"/>
-            <circle cx="350" cy="240" r="4" fill="var(--brand)"/>
-            <!-- Radio waves -->
-            <g class="cv-radio">
-              <path d="M 320 230 Q 328 250 320 280" fill="none" stroke="var(--brand-2)" stroke-width="2">
-                <animate attributeName="opacity" values="0;0.8;0" dur="2.4s" repeatCount="indefinite"/>
-              </path>
-              <path d="M 302 224 Q 314 250 302 286" fill="none" stroke="var(--brand-2)" stroke-width="2">
-                <animate attributeName="opacity" values="0;0.6;0" dur="2.4s" begin="0.3s" repeatCount="indefinite"/>
-              </path>
-              <path d="M 284 218 Q 300 250 284 292" fill="none" stroke="var(--brand-2)" stroke-width="2">
-                <animate attributeName="opacity" values="0;0.4;0" dur="2.4s" begin="0.6s" repeatCount="indefinite"/>
-              </path>
-              <path d="M 380 230 Q 372 250 380 280" fill="none" stroke="var(--brand-2)" stroke-width="2">
-                <animate attributeName="opacity" values="0;0.8;0" dur="2.4s" repeatCount="indefinite"/>
-              </path>
-              <path d="M 398 224 Q 386 250 398 286" fill="none" stroke="var(--brand-2)" stroke-width="2">
-                <animate attributeName="opacity" values="0;0.6;0" dur="2.4s" begin="0.3s" repeatCount="indefinite"/>
-              </path>
-              <path d="M 416 218 Q 400 250 416 292" fill="none" stroke="var(--brand-2)" stroke-width="2">
-                <animate attributeName="opacity" values="0;0.4;0" dur="2.4s" begin="0.6s" repeatCount="indefinite"/>
-              </path>
-            </g>
-            <!-- Depth marker -->
-            <g transform="translate(420 545)">
-              <rect width="78" height="24" y="-12" rx="4" fill="var(--surface)" stroke="var(--line)" stroke-width="1"/>
-              <text x="6" y="-2" font-family="var(--font-mono)" font-size="9" fill="var(--ink-mute)" letter-spacing=".08em">TMA</text>
-              <text x="6" y="9" font-family="var(--font-mono)" font-size="11" font-weight="700" fill="var(--ink)">2.14 m</text>
-              <line x1="-70" y1="0" x2="0" y2="0" stroke="var(--ink-mute)" stroke-dasharray="3 3" stroke-width="1"/>
-            </g>
-            <!-- Floating tags -->
-            <g transform="translate(90 130)">
-              <rect width="140" height="46" rx="6" fill="var(--surface)" stroke="var(--line)" stroke-width="1"/>
-              <circle cx="14" cy="23" r="4" fill="var(--green)"/>
-              <text x="26" y="18" font-family="var(--font-mono)" font-size="9" font-weight="600" fill="var(--ink-mute)" letter-spacing=".08em">RAINFALL · ARR-02</text>
-              <text x="26" y="34" font-family="var(--font-mono)" font-size="13" font-weight="700" fill="var(--ink)">12.4 mm/h</text>
-            </g>
-            <g transform="translate(470 100)">
-              <rect width="140" height="46" rx="6" fill="var(--surface)" stroke="var(--line)" stroke-width="1"/>
-              <circle cx="14" cy="23" r="4" fill="var(--amber)"/>
-              <text x="26" y="18" font-family="var(--font-mono)" font-size="9" font-weight="600" fill="var(--ink-mute)" letter-spacing=".08em">PUMP P-04</text>
-              <text x="26" y="34" font-family="var(--font-mono)" font-size="13" font-weight="700" fill="var(--ink)">95 L/s · siaga</text>
-            </g>
-            <g transform="translate(490 420)">
-              <rect width="140" height="46" rx="6" fill="var(--surface)" stroke="var(--line)" stroke-width="1"/>
-              <circle cx="14" cy="23" r="4" fill="var(--water)"/>
-              <text x="26" y="18" font-family="var(--font-mono)" font-size="9" font-weight="600" fill="var(--ink-mute)" letter-spacing=".08em">WQ · pH</text>
-              <text x="26" y="34" font-family="var(--font-mono)" font-size="13" font-weight="700" fill="var(--ink)">7.2 · normal</text>
-            </g>
-          </svg>
+        <div class="cover-art" data-cover-art aria-label="Field Telemetry Atlas Tulang Bawang">
+          <div class="cover-atlas">
+            <div class="ca-grid"></div>
+            <div class="ca-spotlight"></div>
+            <div class="ca-noise"></div>
+
+            <svg class="ca-topo" viewBox="0 0 640 560" preserveAspectRatio="none" aria-hidden="true">
+              <path class="ca-topo-line" d="M 53 154 C 122 88, 232 82, 306 130 C 396 188, 465 124, 559 160" />
+              <path class="ca-topo-line ca-delay-1" d="M 78 250 C 146 190, 236 205, 305 242 C 382 284, 473 246, 582 284" />
+              <path class="ca-topo-line ca-delay-2" d="M 48 382 C 126 334, 207 358, 288 398 C 390 449, 478 396, 606 432" />
+              <path class="ca-topo-line ca-delay-3" d="M 121 92 C 190 48, 303 55, 370 98 C 459 155, 520 74, 612 121" />
+              <path class="ca-topo-line ca-delay-4" d="M 18 476 C 110 435, 202 462, 284 494 C 377 531, 478 483, 624 516" />
+            </svg>
+
+            <svg class="ca-routes" viewBox="0 0 640 560" preserveAspectRatio="none" aria-hidden="true">
+              <path class="ca-route-base" d="M147 168 C180 174 207 190 232 214" />
+              <path class="ca-route-pulse" d="M147 168 C180 174 207 190 232 214" />
+              <circle class="ca-packet" r="4">
+                <animateMotion dur="3.6s" repeatCount="indefinite" path="M147 168 C180 174 207 190 232 214" />
+              </circle>
+
+              <path class="ca-route-base" d="M499 146 C465 163 438 190 408 224" />
+              <path class="ca-route-pulse ca-route-pulse--amber ca-delay-1" d="M499 146 C465 163 438 190 408 224" />
+              <circle class="ca-packet ca-packet--amber" r="4">
+                <animateMotion dur="4.1s" begin=".45s" repeatCount="indefinite" path="M499 146 C465 163 438 190 408 224" />
+              </circle>
+
+              <path class="ca-route-base" d="M474 353 C449 340 428 326 408 313" />
+              <path class="ca-route-pulse ca-route-pulse--water ca-delay-2" d="M474 353 C449 340 428 326 408 313" />
+              <circle class="ca-packet ca-packet--blue" r="4">
+                <animateMotion dur="3.8s" begin=".9s" repeatCount="indefinite" path="M474 353 C449 340 428 326 408 313" />
+              </circle>
+
+              <path class="ca-route-base" d="M198 420 C224 391 229 361 244 334" />
+              <path class="ca-route-pulse ca-delay-3" d="M198 420 C224 391 229 361 244 334" />
+              <circle class="ca-packet" r="4">
+                <animateMotion dur="4.4s" begin="1.25s" repeatCount="indefinite" path="M198 420 C224 391 229 361 244 334" />
+              </circle>
+            </svg>
+
+            <div class="ca-scanline"></div>
+
+            <div class="ca-terminal glass-panel">
+              <div class="ca-panel-head">
+                <span class="ca-terminal-dot"></span>
+                <span>Field Telemetry Atlas</span>
+              </div>
+              <div class="ca-prompt"><span>~%</span> sync tulang-bawang.nodes <i></i></div>
+              <div class="ca-progress"><b></b></div>
+            </div>
+
+            <div class="ca-event glass-panel">
+              <div class="ca-panel-head">
+                <span class="ca-live-dot"></span>
+                <span>Live Decision</span>
+              </div>
+              <strong>Way Tulang Bawang</strong>
+              <p>Curah hujan hulu naik, debit pompa tetap siaga.</p>
+              <div class="ca-alert-value"><span class="cv-live-flow">95 L/s</span></div>
+            </div>
+
+            <div class="ca-core">
+              <div class="ca-core-inner">
+                <div class="ca-core-head">
+                  <span class="ca-chip"></span>
+                  <span>CENTRALIZED DASHBOARD</span>
+                  <b></b>
+                </div>
+                <div class="ca-core-bars">
+                  <span style="--h: 30px; --d: 0ms;"></span>
+                  <span style="--h: 44px; --d: 90ms;"></span>
+                  <span style="--h: 26px; --d: 180ms;"></span>
+                  <span style="--h: 58px; --d: 270ms;"></span>
+                  <span style="--h: 38px; --d: 360ms;"></span>
+                  <span style="--h: 50px; --d: 450ms;"></span>
+                  <span style="--h: 33px; --d: 540ms;"></span>
+                  <span style="--h: 63px; --d: 630ms;"></span>
+                  <span style="--h: 42px; --d: 720ms;"></span>
+                  <span style="--h: 54px; --d: 810ms;"></span>
+                </div>
+                <div class="ca-core-foot">
+                  <span>Uplink</span>
+                  <strong>99.42</strong>
+                  <em>%</em>
+                </div>
+              </div>
+            </div>
+
+            <div class="ca-node ca-node--rain" style="left: 23%; top: 30%;">
+              <span class="ca-node-ring"></span>
+              <span class="ca-node-dot"></span>
+              <div class="ca-node-label glass-panel">
+                <strong>ARR Menggala</strong>
+                <span>ARR-02</span>
+                <b><span class="cv-live-rain">12.4 mm/h</span></b>
+              </div>
+            </div>
+
+            <div class="ca-node ca-node--ews" style="left: 78%; top: 26%;">
+              <span class="ca-node-ring ca-node-ring--warn"></span>
+              <span class="ca-node-dot ca-node-dot--warn"></span>
+              <div class="ca-node-label glass-panel">
+                <strong>EWS Pintu Air</strong>
+                <span>BPBD-04</span>
+                <b>SIAGA 1</b>
+              </div>
+            </div>
+
+            <div class="ca-node ca-node--wq" style="left: 74%; top: 63%;">
+              <span class="ca-node-ring"></span>
+              <span class="ca-node-dot ca-node-dot--water"></span>
+              <div class="ca-node-label glass-panel">
+                <strong>DLH Water Quality</strong>
+                <span>WQ-07</span>
+                <b><span class="cv-live-ph">7.2</span> pH</b>
+              </div>
+            </div>
+
+            <div class="ca-node ca-node--pdam" style="left: 31%; top: 75%;">
+              <span class="ca-node-ring"></span>
+              <span class="ca-node-dot"></span>
+              <div class="ca-node-label glass-panel">
+                <strong>SPAM Unit 3</strong>
+                <span>PDAM-03</span>
+                <b><span class="cv-live-tma">2.14 m</span></b>
+              </div>
+            </div>
+
+            <div class="ca-corridor" aria-hidden="true">
+              <span style="--d: 0ms;"></span>
+              <span style="--d: 170ms;"></span>
+              <span style="--d: 340ms;"></span>
+              <span style="--d: 510ms;"></span>
+              <span style="--d: 680ms;"></span>
+              <span style="--d: 850ms;"></span>
+              <span style="--d: 1020ms;"></span>
+              <span style="--d: 1190ms;"></span>
+            </div>
+
+            <div class="ca-metrics">
+              <div class="glass-panel">
+                <span>Water Level</span>
+                <strong class="cv-live-tma">2.14</strong>
+                <em>m</em>
+              </div>
+              <div class="glass-panel">
+                <span>Rainfall</span>
+                <strong class="cv-live-rain">12.4</strong>
+                <em>mm/h</em>
+              </div>
+              <div class="glass-panel">
+                <span>Decision SLA</span>
+                <strong>04.8</strong>
+                <em>min</em>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -1441,7 +1501,7 @@
         <div>Closing · 22 / 22</div>
       </header>
 
-      <div class="canvas closing-grid">
+      <div class="canvas closing-grid" style="top: 132px; bottom: 116px; align-items: start;">
         <div>
           <span class="eyebrow">Mari Mulai</span>
           <h2 class="closing-cta" style="margin-top: 24px;">
@@ -3046,6 +3106,63 @@ function PkgCommandVis() {
   );
 }
 
+function mountCoverArtInteraction() {
+  document.querySelectorAll("[data-cover-art]").forEach((art) => {
+    if (art.dataset.coverMounted === "1") return;
+    art.dataset.coverMounted = "1";
+
+    const liveRain = art.querySelectorAll(".cv-live-rain");
+    const liveFlow = art.querySelectorAll(".cv-live-flow");
+    const livePh = art.querySelectorAll(".cv-live-ph");
+    const liveTma = art.querySelectorAll(".cv-live-tma");
+    let raf = 0;
+    let x = 0;
+    let y = 0;
+
+    const clamp = (value) => Math.max(-1, Math.min(1, value));
+    const render = () => {
+      raf = 0;
+      liveRain.forEach((el) => {
+        const value = (12.4 + x * 1.7 - y * 0.9).toFixed(1);
+        el.textContent = el.closest(".ca-metrics") ? value : `${value} mm/h`;
+      });
+      liveFlow.forEach((el) => { el.textContent = `${Math.round(95 + x * 5 - y * 3)} L/s`; });
+      livePh.forEach((el) => { el.textContent = (7.2 + x * 0.05 - y * 0.04).toFixed(1); });
+      liveTma.forEach((el) => {
+        const value = (2.14 + y * 0.08).toFixed(2);
+        el.textContent = el.closest(".ca-metrics") ? value : `${value} m`;
+      });
+    };
+    const queueRender = () => {
+      if (!raf) raf = requestAnimationFrame(render);
+    };
+    const setPointer = (event) => {
+      const rect = art.getBoundingClientRect();
+      if (!rect.width || !rect.height) return;
+      x = clamp(((event.clientX - rect.left) / rect.width - 0.5) * 2);
+      y = clamp(((event.clientY - rect.top) / rect.height - 0.5) * 2);
+      art.style.setProperty("--cover-x", x.toFixed(3));
+      art.style.setProperty("--cover-y", y.toFixed(3));
+      art.classList.add("is-interacting");
+      queueRender();
+    };
+    const resetPointer = () => {
+      x = 0;
+      y = 0;
+      art.style.setProperty("--cover-x", "0");
+      art.style.setProperty("--cover-y", "0");
+      art.classList.remove("is-interacting");
+      queueRender();
+    };
+
+    art.addEventListener("pointerenter", setPointer);
+    art.addEventListener("pointermove", setPointer);
+    art.addEventListener("pointerleave", resetPointer);
+    art.addEventListener("pointercancel", resetPointer);
+    resetPointer();
+  });
+}
+
 /* =========================================================
    Mount points
    ========================================================= */
@@ -3069,9 +3186,11 @@ function mountAll() {
   // Mount tweaks panel
   const tweaksRoot = document.getElementById("tweaks-root");
   if (tweaksRoot && tweaksRoot.dataset.mounted !== "1") {
-    tweaksRoot.dataset.mounted = "1";
-    ReactDOM.createRoot(tweaksRoot).render(<TweaksApp />);
+      tweaksRoot.dataset.mounted = "1";
+      ReactDOM.createRoot(tweaksRoot).render(<TweaksApp />);
   }
+
+  mountCoverArtInteraction();
 }
 
 // Try mount once DOM is ready; deck-stage may move sections around but the elements persist.
