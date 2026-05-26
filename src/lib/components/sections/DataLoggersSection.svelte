@@ -493,7 +493,7 @@
 										>
 											{#if stageProduct.image}
 												<div
-													class="relative flex h-full w-full max-w-[620px] items-center justify-center overflow-visible p-2 lg:p-4"
+													class="relative flex h-full w-full max-w-[820px] items-center justify-center overflow-visible p-2 lg:p-4"
 												>
 													{#if isVideoStage}
 														<video
@@ -510,9 +510,9 @@
 														<img
 															src={stageProduct.image}
 															srcset={stageProduct.image_srcset ?? undefined}
-															sizes="(min-width: 1024px) 520px, 90vw"
+															sizes="(min-width: 1024px) 760px, 90vw"
 															alt={`${stageProduct.name} Data Logger`}
-															class="relative z-10 h-full max-h-[620px] w-full object-contain"
+															class="relative z-10 h-full max-h-[680px] w-full max-w-none object-contain scale-[1.18]"
 															draggable="false"
 															loading="eager"
 															decoding="async"
