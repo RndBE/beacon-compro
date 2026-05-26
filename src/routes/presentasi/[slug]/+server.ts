@@ -40,7 +40,8 @@ const RELATIVE_ASSETS = [
 	'href="styles.css"',
 	'href="slides.css"',
 	'src="deck-stage.js"',
-	'src="logo_be%202.png"'
+	'src="logo_be%202.png"',
+	'src="logo_be.png"'
 ] as const;
 
 function withAbsoluteAssets(html: string, slug: string): string {
