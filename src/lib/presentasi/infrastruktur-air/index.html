@@ -3786,6 +3786,410 @@ h1, h2, h3, h4, p { margin: 0; }
 }
 @keyframes statusBlink { 50% { opacity: .4; } }
 
+/* ============================================================
+   SLIDE 14 — COMMAND CENTER (dark modern theme)
+   ============================================================ */
+.slide--cmdctr { background: var(--bg); }
+
+.canvas--cmdctr {
+  gap: 22px;
+  padding-bottom: 0;
+}
+
+.cmdctr-header {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  flex: 0 0 auto;
+}
+.cmdctr-header__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+.cmdctr-header .prod-tag { margin-bottom: 0; }
+.cmdctr-header__meta {
+  display: inline-flex; align-items: center; gap: 14px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  font-weight: 600;
+}
+.cmdctr-header__sep { color: var(--line); }
+.cmdctr-header__live {
+  display: inline-flex; align-items: center; gap: 9px;
+  color: var(--danger);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+.cmdctr-pulse {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--danger);
+  box-shadow: 0 0 0 0 rgba(193,67,43,0.5);
+  animation: cmdctrPulse 1.8s ease-out infinite;
+}
+@keyframes cmdctrPulse {
+  0%   { box-shadow: 0 0 0 0 rgba(193,67,43,0.55); }
+  70%  { box-shadow: 0 0 0 10px rgba(193,67,43,0); }
+  100% { box-shadow: 0 0 0 0 rgba(193,67,43,0); }
+}
+
+.cmdctr-header__main {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: 48px;
+  align-items: end;
+}
+.cmdctr-header__title {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 56px;
+  line-height: 1.0;
+  letter-spacing: -0.025em;
+  color: var(--ink);
+  margin: 0;
+}
+.cmdctr-header__lede {
+  font-size: 19px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  margin: 0;
+  max-width: 720px;
+}
+
+.cmdctr-deck {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  border-radius: 26px;
+  padding: 22px;
+  background:
+    radial-gradient(1100px 600px at 10% -10%, rgba(60, 130, 232, 0.22), transparent 60%),
+    radial-gradient(900px 600px at 110% 110%, rgba(31, 165, 199, 0.18), transparent 60%),
+    linear-gradient(180deg, #0B1B3A 0%, #07112A 100%);
+  border: 1px solid rgba(88, 132, 210, 0.22);
+  box-shadow:
+    0 30px 80px rgba(6, 15, 35, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  color: #EAF1FB;
+
+  /* dark theme overrides for child .card, charts, pills */
+  --surface: rgba(255, 255, 255, 0.04);
+  --surface-2: rgba(255, 255, 255, 0.025);
+  --surface-3: rgba(255, 255, 255, 0.06);
+  --line: rgba(120, 160, 220, 0.16);
+  --line-soft: rgba(120, 160, 220, 0.10);
+  --ink: #EAF1FB;
+  --ink-2: #C9D5EC;
+  --ink-soft: #93A5C7;
+  --ink-mute: #7388AC;
+  --shadow-card: none;
+  --green-soft: rgba(40, 200, 130, 0.16);
+  --amber-soft: rgba(232, 160, 50, 0.18);
+  --danger-soft: rgba(232, 86, 58, 0.20);
+  --water-soft: rgba(52, 190, 220, 0.18);
+}
+.cmdctr-deck::before {
+  content: "";
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(120, 160, 220, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(120, 160, 220, 0.06) 1px, transparent 1px);
+  background-size: 56px 56px;
+  pointer-events: none;
+  -webkit-mask-image: radial-gradient(ellipse at 50% 35%, black 30%, transparent 85%);
+          mask-image: radial-gradient(ellipse at 50% 35%, black 30%, transparent 85%);
+}
+
+/* re-paint child cards inside the dark deck */
+.cmdctr-deck .card {
+  background: linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.015) 100%);
+  border: 1px solid rgba(120, 160, 220, 0.18);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+  backdrop-filter: blur(8px);
+}
+.cmdctr-deck .pill {
+  background: rgba(255,255,255,0.05);
+  border-color: rgba(120, 160, 220, 0.22);
+  color: var(--ink-2);
+}
+.cmdctr-deck .pill--green  { color: #5CE0A0; background: rgba(40,200,130,0.14); border-color: rgba(40,200,130,0.32); }
+.cmdctr-deck .pill--amber  { color: #FFB454; background: rgba(232,160,50,0.14); border-color: rgba(232,160,50,0.34); }
+.cmdctr-deck .pill--danger { color: #FF7A66; background: rgba(232,86,58,0.16);  border-color: rgba(232,86,58,0.38); }
+.cmdctr-deck .pill--water  { color: #4FD4E8; background: rgba(52,190,220,0.14); border-color: rgba(52,190,220,0.34); }
+.cmdctr-deck .status-dot.ok    { background: #46D78F; color: #46D78F; }
+.cmdctr-deck .status-dot.warn  { background: #FFB454; color: #FFB454; }
+.cmdctr-deck .status-dot.alarm { background: #FF7A66; color: #FF7A66; }
+
+/* command-center sub-blocks */
+.cc-topbar {
+  position: relative; z-index: 1;
+  display: flex; align-items: center; gap: 22px;
+  padding: 12px 18px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.035);
+  border: 1px solid rgba(120,160,220,0.18);
+}
+.cc-topbar__brand {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  color: #EAF1FB;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.cc-topbar__brand .cmdctr-pulse { background: #46D78F; box-shadow: 0 0 0 0 rgba(70, 215, 143, 0.5); animation-name: cmdctrPulseGreen; }
+@keyframes cmdctrPulseGreen {
+  0%   { box-shadow: 0 0 0 0 rgba(70, 215, 143, 0.55); }
+  70%  { box-shadow: 0 0 0 10px rgba(70, 215, 143, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(70, 215, 143, 0); }
+}
+.cc-topbar__div { width: 1px; height: 24px; background: rgba(120,160,220,0.22); }
+.cc-topbar__kv { display: flex; flex-direction: column; gap: 1px; }
+.cc-topbar__kv-k {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #7388AC;
+}
+.cc-topbar__kv-v {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  font-weight: 600;
+  color: #EAF1FB;
+  letter-spacing: -0.01em;
+}
+.cc-topbar__kv--danger .cc-topbar__kv-v { color: #FF7A66; }
+.cc-topbar__kv--ok .cc-topbar__kv-v { color: #46D78F; }
+.cc-topbar__clock {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: #93A5C7;
+  letter-spacing: 0.06em;
+}
+.cc-topbar__clock b {
+  color: #EAF1FB;
+  font-weight: 700;
+  margin-right: 8px;
+  letter-spacing: 0.04em;
+}
+
+/* KPI strip */
+.cc-kpis {
+  position: relative; z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+}
+.cc-kpi {
+  position: relative;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.015) 100%);
+  border: 1px solid rgba(120,160,220,0.18);
+  display: flex; flex-direction: column; gap: 6px;
+  overflow: hidden;
+}
+.cc-kpi::after {
+  content: "";
+  position: absolute;
+  inset: -1px auto -1px -1px;
+  width: 3px;
+  background: var(--cc-kpi-accent, #3CC3F2);
+  opacity: 0.85;
+  border-radius: 6px 0 0 6px;
+}
+.cc-kpi--danger { --cc-kpi-accent: #FF7A66; }
+.cc-kpi--ok     { --cc-kpi-accent: #46D78F; }
+.cc-kpi--warn   { --cc-kpi-accent: #FFB454; }
+.cc-kpi--ai     { --cc-kpi-accent: #8B7CFF; }
+
+.cc-kpi__label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #93A5C7;
+}
+.cc-kpi__value {
+  display: flex; align-items: baseline; gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 28px;
+  font-weight: 700;
+  color: #EAF1FB;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.cc-kpi__value small {
+  font-size: 14px;
+  font-weight: 500;
+  color: #7388AC;
+  letter-spacing: 0;
+}
+.cc-kpi__delta {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: #93A5C7;
+}
+.cc-kpi__delta--up   { color: #46D78F; }
+.cc-kpi__delta--down { color: #FF7A66; }
+
+/* main grid */
+.cc-main {
+  position: relative; z-index: 1;
+  display: grid;
+  grid-template-columns: 1.05fr 1.15fr 1fr;
+  gap: 14px;
+  flex: 1;
+  min-height: 0;
+}
+.cc-col {
+  display: flex; flex-direction: column; gap: 12px; min-height: 0;
+}
+
+/* sites map */
+.cc-map {
+  position: relative;
+  height: 100%;
+  border-radius: 16px;
+  border: 1px solid rgba(120,160,220,0.18);
+  background:
+    radial-gradient(800px 400px at 30% 30%, rgba(60,130,232,0.15), transparent 60%),
+    linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%);
+  padding: 16px 18px 14px;
+  display: flex; flex-direction: column; gap: 10px;
+  overflow: hidden;
+}
+.cc-map__head {
+  display: flex; align-items: center; justify-content: space-between;
+}
+.cc-map__title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #93A5C7;
+}
+.cc-map__sub {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: #7388AC;
+}
+.cc-map__viz { position: relative; flex: 1; min-height: 0; }
+.cc-map__legend {
+  display: flex; gap: 14px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: #93A5C7;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.cc-map__legend span {
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.cc-map__legend i {
+  width: 8px; height: 8px; border-radius: 50%;
+  display: inline-block;
+}
+
+/* AI insight ribbon */
+.cc-ai {
+  position: relative; z-index: 1;
+  display: flex; align-items: center; gap: 18px;
+  padding: 14px 18px;
+  border-radius: 16px;
+  background:
+    linear-gradient(90deg, rgba(140, 110, 255, 0.20) 0%, rgba(50, 130, 232, 0.12) 60%, transparent 100%),
+    rgba(255,255,255,0.035);
+  border: 1px solid rgba(140, 110, 255, 0.28);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+  overflow: hidden;
+}
+.cc-ai::before {
+  content: "";
+  position: absolute; left: -40px; top: -40px;
+  width: 180px; height: 180px;
+  background: radial-gradient(circle, rgba(140,110,255,0.35), transparent 60%);
+  filter: blur(12px);
+  pointer-events: none;
+}
+.cc-ai__badge {
+  position: relative;
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #C5B8FF;
+  background: rgba(140, 110, 255, 0.18);
+  border: 1px solid rgba(140, 110, 255, 0.42);
+  flex: 0 0 auto;
+}
+.cc-ai__icon {
+  width: 14px; height: 14px;
+  border-radius: 3px;
+  background: linear-gradient(135deg, #B7A6FF 0%, #7C68FF 100%);
+  box-shadow: 0 0 12px rgba(140, 110, 255, 0.6);
+}
+.cc-ai__body {
+  position: relative;
+  display: flex; flex-direction: column; gap: 2px;
+  flex: 1; min-width: 0;
+}
+.cc-ai__title {
+  font-family: var(--font-sans);
+  font-size: 17px;
+  font-weight: 700;
+  color: #EAF1FB;
+  letter-spacing: -0.01em;
+}
+.cc-ai__sub {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: #93A5C7;
+  letter-spacing: 0.02em;
+}
+.cc-ai__sub b { color: #FFB454; font-weight: 700; }
+.cc-ai__conf {
+  position: relative;
+  display: flex; flex-direction: column; align-items: flex-end; gap: 2px;
+  flex: 0 0 auto;
+  padding-left: 18px;
+  border-left: 1px solid rgba(120,160,220,0.22);
+}
+.cc-ai__conf-v {
+  font-family: var(--font-mono);
+  font-size: 24px;
+  font-weight: 700;
+  color: #EAF1FB;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.cc-ai__conf-l {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #93A5C7;
+}
+
 </style>
 <style>deck-stage:not(:defined){visibility:hidden}</style>
 </head>
@@ -4556,7 +4960,7 @@ h1, h2, h3, h4, p { margin: 0; }
   <!-- ============================================================
        14 · PRODUK 08 — COMMAND CENTER
        ============================================================ -->
-  <section data-screen-label="14 Command Center">
+  <section class="slide--cmdctr" data-screen-label="14 Command Center">
     <div class="slide-grid"></div>
     <header class="chrome chrome--top">
       <div class="brand-mark">
@@ -4565,21 +4969,26 @@ h1, h2, h3, h4, p { margin: 0; }
       <div>Produk 08 · Pimpinan · 14 / 23</div>
     </header>
 
-    <div class="canvas">
-      <span class="prod-tag">PRODUK 08 · PIMPINAN</span>
-      <h2 class="h-display">Command Center &<br/><span class="grad">Executive Dashboard.</span></h2>
-      <p class="lede lede--wide">
-        Pimpinan tidak perlu membaca data mentah — cukup melihat insight, status
-        prioritas, dan rekomendasi yang sudah dirangkum sistem.
-      </p>
-
-      <div class="demo-full">
-        <div class="prod-demo__head">
-          <span class="prod-demo__title">LIVE COMMAND CENTER · NATIONAL VIEW</span>
-          <span class="prod-demo__live">● LIVE</span>
+    <div class="canvas canvas--cmdctr">
+      <div class="cmdctr-header">
+        <div class="cmdctr-header__row">
+          <span class="prod-tag">PRODUK 08 · PIMPINAN</span>
+          <span class="cmdctr-header__meta">
+            <span class="cmdctr-header__live"><span class="cmdctr-pulse"></span>LIVE COMMAND CENTER</span>
+            <span class="cmdctr-header__sep">·</span>
+            <span>National View · 22 sites</span>
+          </span>
         </div>
-        <div class="demo-full__mount" data-component="live-dashboard"></div>
+        <div class="cmdctr-header__main">
+          <h2 class="cmdctr-header__title">Command Center &amp; <span class="grad">Executive Dashboard.</span></h2>
+          <p class="cmdctr-header__lede">
+            Pimpinan tidak perlu membaca data mentah — cukup melihat insight, status
+            prioritas, dan rekomendasi yang sudah dirangkum sistem.
+          </p>
+        </div>
       </div>
+
+      <div class="cmdctr-deck" data-component="command-center"></div>
     </div>
 
     <footer class="chrome chrome--bot">
@@ -5466,6 +5875,358 @@ function LiveDashboard() {
   );
 }
 
+/* ============================================================
+   COMMAND CENTER — slide 14 modern dark dashboard
+   ============================================================ */
+const CC_SITES = [
+  { id: "TBW-01", name: "Tulang Bawang",  lon: 105.50, lat: -4.40, s: "alarm" },
+  { id: "BKL-02", name: "Bengkulu",       lon: 102.30, lat: -3.80, s: "ok"    },
+  { id: "JKT-04", name: "DKI Jakarta",    lon: 106.83, lat: -6.21, s: "warn"  },
+  { id: "SMG-07", name: "Semarang",       lon: 110.42, lat: -6.99, s: "ok"    },
+  { id: "SBY-09", name: "Surabaya",       lon: 112.75, lat: -7.25, s: "ok"    },
+  { id: "DPS-12", name: "Denpasar",       lon: 115.22, lat: -8.67, s: "ok"    },
+  { id: "PTK-03", name: "Pontianak",      lon: 109.33, lat:  0.03, s: "ok"    },
+  { id: "BJM-05", name: "Banjarmasin",    lon: 114.59, lat: -3.32, s: "warn"  },
+  { id: "BPN-08", name: "Balikpapan",     lon: 116.83, lat: -1.27, s: "ok"    },
+  { id: "MKS-11", name: "Makassar",       lon: 119.43, lat: -5.13, s: "ok"    },
+  { id: "MND-14", name: "Manado",         lon: 124.84, lat:  1.49, s: "ok"    },
+  { id: "AMB-17", name: "Ambon",          lon: 128.18, lat: -3.70, s: "ok"    },
+  { id: "JYP-21", name: "Jayapura",       lon: 140.72, lat: -2.53, s: "ok"    },
+  { id: "PDG-22", name: "Padang",         lon: 100.36, lat: -0.95, s: "ok"    },
+  { id: "MDN-23", name: "Medan",          lon:  98.67, lat:  3.59, s: "ok"    },
+];
+
+/* Geographic bounds for Indonesia — tight crop for command-center map */
+const CC_GEO_BOUNDS = { lonMin: 94.5, lonMax: 141.5, latMin: -11.5, latMax: 7.0 };
+const CC_GEO_URL = "/presentasi/infrastruktur-air/indonesia.geojson";
+
+function ccProject(lon, lat, vw, vh) {
+  const { lonMin, lonMax, latMin, latMax } = CC_GEO_BOUNDS;
+  const x = ((lon - lonMin) / (lonMax - lonMin)) * vw;
+  const y = ((latMax - lat) / (latMax - latMin)) * vh;
+  return [x, y];
+}
+
+/* Convert a GeoJSON Polygon/MultiPolygon feature to an SVG path string.
+   Includes light simplification (skip near-duplicate projected points). */
+function ccFeatureToPath(feature, vw, vh, minDist = 0.55) {
+  const g = feature.geometry;
+  if (!g) return "";
+  const polys = g.type === "MultiPolygon" ? g.coordinates : g.type === "Polygon" ? [g.coordinates] : [];
+  let d = "";
+  for (const poly of polys) {
+    for (const ring of poly) {
+      if (!ring.length) continue;
+      let started = false;
+      let px = 0, py = 0;
+      for (let i = 0; i < ring.length; i++) {
+        const [lon, lat] = ring[i];
+        const [x, y] = ccProject(lon, lat, vw, vh);
+        if (!started) {
+          d += "M" + x.toFixed(1) + "," + y.toFixed(1);
+          started = true;
+          px = x; py = y;
+          continue;
+        }
+        if (i === ring.length - 1 || Math.hypot(x - px, y - py) >= minDist) {
+          d += "L" + x.toFixed(1) + "," + y.toFixed(1);
+          px = x; py = y;
+        }
+      }
+      d += "Z";
+    }
+  }
+  return d;
+}
+
+/* Module-level cache so we only fetch + project once per session. */
+let _ccGeoCache = null;
+let _ccGeoPromise = null;
+function ccLoadGeo(vw, vh) {
+  if (_ccGeoCache && _ccGeoCache.vw === vw && _ccGeoCache.vh === vh) {
+    return Promise.resolve(_ccGeoCache.paths);
+  }
+  if (!_ccGeoPromise) {
+    _ccGeoPromise = fetch(CC_GEO_URL)
+      .then(r => r.ok ? r.json() : Promise.reject(new Error("geo " + r.status)))
+      .catch((e) => { console.warn("[CommandCenter] geojson load failed:", e); _ccGeoPromise = null; return null; });
+  }
+  return _ccGeoPromise.then(geo => {
+    if (!geo) return null;
+    const paths = geo.features.map(f => ({
+      d: ccFeatureToPath(f, vw, vh),
+      name: f.properties?.state || f.properties?.name || ""
+    }));
+    _ccGeoCache = { vw, vh, paths };
+    return paths;
+  });
+}
+
+function CcTopBar() {
+  const [time, setTime] = useState(() => new Date());
+  useEffect(() => {
+    const id = setInterval(() => setTime(new Date()), 1000);
+    return () => clearInterval(id);
+  }, []);
+  const hh = String(time.getHours()).padStart(2, "0");
+  const mm = String(time.getMinutes()).padStart(2, "0");
+  const ss = String(time.getSeconds()).padStart(2, "0");
+  return (
+    <div className="cc-topbar">
+      <span className="cc-topbar__brand">
+        <span className="cmdctr-pulse" />
+        SYSTEM ONLINE · NATIONAL
+      </span>
+      <span className="cc-topbar__div" />
+      <div className="cc-topbar__kv">
+        <span className="cc-topbar__kv-k">Sensor aktif</span>
+        <span className="cc-topbar__kv-v">42 / 44</span>
+      </div>
+      <div className="cc-topbar__kv">
+        <span className="cc-topbar__kv-k">Last sync</span>
+        <span className="cc-topbar__kv-v">2s ago</span>
+      </div>
+      <div className="cc-topbar__kv cc-topbar__kv--danger">
+        <span className="cc-topbar__kv-k">Alarm aktif</span>
+        <span className="cc-topbar__kv-v">1</span>
+      </div>
+      <div className="cc-topbar__kv">
+        <span className="cc-topbar__kv-k">Notifikasi 24h</span>
+        <span className="cc-topbar__kv-v">186</span>
+      </div>
+      <div className="cc-topbar__kv cc-topbar__kv--ok">
+        <span className="cc-topbar__kv-k">Uptime 30d</span>
+        <span className="cc-topbar__kv-v">99.6%</span>
+      </div>
+      <span className="cc-topbar__clock">
+        <b>{hh}:{mm}<span style={{opacity:0.5}}>:{ss}</span> WIB</b>
+        16 Mei 2026
+      </span>
+    </div>
+  );
+}
+
+function CcKpis() {
+  const tick = useTick(1800);
+  const flicker = tick % 2 === 0 ? 1 : 0.55;
+  return (
+    <div className="cc-kpis">
+      <div className="cc-kpi cc-kpi--ok">
+        <span className="cc-kpi__label">Sites Online</span>
+        <span className="cc-kpi__value">42<small>/44</small></span>
+        <span className="cc-kpi__delta cc-kpi__delta--up">▲ 2 sites · 6 jam</span>
+      </div>
+      <div className="cc-kpi">
+        <span className="cc-kpi__label">Curah Hujan · 24h</span>
+        <span className="cc-kpi__value">421<small>mm</small></span>
+        <span className="cc-kpi__delta">3 stasiun &gt; 30 mm/h</span>
+      </div>
+      <div className="cc-kpi cc-kpi--warn">
+        <span className="cc-kpi__label">Pompa Aktif</span>
+        <span className="cc-kpi__value">5<small>/6</small></span>
+        <span className="cc-kpi__delta cc-kpi__delta--down">▼ 1 lift pump siaga</span>
+      </div>
+      <div className="cc-kpi cc-kpi--danger">
+        <span className="cc-kpi__label">Alarm Aktif</span>
+        <span className="cc-kpi__value" style={{ opacity: flicker, transition: "opacity .2s" }}>1</span>
+        <span className="cc-kpi__delta cc-kpi__delta--down">WQ-03 · pH 5.1 Rawajitu</span>
+      </div>
+      <div className="cc-kpi cc-kpi--ai">
+        <span className="cc-kpi__label">AI Confidence</span>
+        <span className="cc-kpi__value">94<small>%</small></span>
+        <span className="cc-kpi__delta">7 rekomendasi siap</span>
+      </div>
+    </div>
+  );
+}
+
+function CcMap() {
+  const VW = 1000, VH = 520;
+  const tick = useTick(1600);
+  const [geoPaths, setGeoPaths] = useState(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    ccLoadGeo(VW, VH).then(paths => {
+      if (!cancelled) setGeoPaths(paths);
+    });
+    return () => { cancelled = true; };
+  }, []);
+
+  const counts = CC_SITES.reduce((acc, s) => (acc[s.s] = (acc[s.s] || 0) + 1, acc), {});
+
+  return (
+    <div className="cc-map">
+      <div className="cc-map__head">
+        <span className="cc-map__title">JARINGAN NASIONAL · LIVE</span>
+        <span className="cc-map__sub">{CC_SITES.length} sites · 34 provinsi</span>
+      </div>
+      <div className="cc-map__viz">
+        <svg width="100%" height="100%" viewBox={`0 0 ${VW} ${VH}`} preserveAspectRatio="xMidYMid meet" style={{ display: "block" }}>
+          <defs>
+            <radialGradient id="ccGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="rgba(60,195,242,0.55)" />
+              <stop offset="100%" stopColor="rgba(60,195,242,0)" />
+            </radialGradient>
+            <pattern id="ccDots" width="20" height="20" patternUnits="userSpaceOnUse">
+              <circle cx="2" cy="2" r="1.0" fill="rgba(120,160,220,0.18)" />
+            </pattern>
+            <linearGradient id="ccLand" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%"  stopColor="rgba(60,130,232,0.22)" />
+              <stop offset="100%" stopColor="rgba(31,165,199,0.12)" />
+            </linearGradient>
+            <filter id="ccLandShadow" x="-5%" y="-5%" width="110%" height="110%">
+              <feGaussianBlur stdDeviation="2.5" />
+            </filter>
+          </defs>
+
+          {/* dotted ocean background */}
+          <rect x="0" y="0" width={VW} height={VH} fill="url(#ccDots)" />
+
+          {/* graticule — meridian/parallel lines for command-center aesthetic */}
+          <g stroke="rgba(120,160,220,0.10)" strokeWidth="0.6" fill="none">
+            {[100, 110, 120, 130, 140].map(lon => {
+              const [x] = ccProject(lon, 0, VW, VH);
+              return <line key={"m"+lon} x1={x} y1={0} x2={x} y2={VH} />;
+            })}
+            {[-10, -5, 0, 5].map(lat => {
+              const [, y] = ccProject(0, lat, VW, VH);
+              return <line key={"p"+lat} x1={0} y1={y} x2={VW} y2={y} />;
+            })}
+          </g>
+
+          {/* geojson land — soft glow underlay + clean stroke */}
+          {geoPaths && (
+            <g>
+              <g filter="url(#ccLandShadow)" opacity="0.55">
+                {geoPaths.map((p, i) => (
+                  <path key={"g"+i} d={p.d} fill="rgba(60,195,242,0.18)" />
+                ))}
+              </g>
+              <g fill="url(#ccLand)" stroke="rgba(140,190,240,0.45)" strokeWidth="0.7" strokeLinejoin="round">
+                {geoPaths.map((p, i) => (
+                  <path key={"l"+i} d={p.d} />
+                ))}
+              </g>
+            </g>
+          )}
+
+          {/* connection web between sites */}
+          <g stroke="rgba(60,195,242,0.20)" strokeWidth="1" strokeDasharray="3 4" fill="none">
+            {CC_SITES.slice(0, -1).map((s, i) => {
+              const next = CC_SITES[i + 1];
+              const [x1, y1] = ccProject(s.lon, s.lat, VW, VH);
+              const [x2, y2] = ccProject(next.lon, next.lat, VW, VH);
+              return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} />;
+            })}
+          </g>
+
+          {/* site nodes */}
+          {CC_SITES.map((s, i) => {
+            const [cx, cy] = ccProject(s.lon, s.lat, VW, VH);
+            const color = s.s === "alarm" ? "#FF7A66" : s.s === "warn" ? "#FFB454" : "#46D78F";
+            const isHot = s.s !== "ok";
+            const pulseR = 12 + ((tick + i) % 6) * 4;
+            const pulseO = 0.55 - ((tick + i) % 6) * 0.09;
+            return (
+              <g key={s.id}>
+                {isHot && (
+                  <circle cx={cx} cy={cy} r={pulseR} fill="none" stroke={color} strokeOpacity={pulseO} strokeWidth="1.5" />
+                )}
+                <circle cx={cx} cy={cy} r="14" fill="url(#ccGlow)" opacity={isHot ? 0.95 : 0.55} />
+                <circle cx={cx} cy={cy} r="4.5" fill={color} />
+                <circle cx={cx} cy={cy} r="4.5" fill="none" stroke="#07112A" strokeWidth="1.5" />
+                <text x={cx + 9} y={cy - 5} fontFamily="var(--font-mono)" fontSize="9.5" fontWeight="700" fill="#EAF1FB" letterSpacing="0.04em">{s.id}</text>
+                <text x={cx + 9} y={cy + 7} fontFamily="var(--font-mono)" fontSize="8.5" fill="#93A5C7">{s.name}</text>
+              </g>
+            );
+          })}
+
+          {/* corner crosshairs (command-center aesthetic) */}
+          <g stroke="rgba(120,160,220,0.45)" strokeWidth="1.4" fill="none">
+            <path d={`M10,10 L10,40 M10,10 L40,10`} />
+            <path d={`M${VW-10},10 L${VW-10},40 M${VW-10},10 L${VW-40},10`} />
+            <path d={`M10,${VH-10} L10,${VH-40} M10,${VH-10} L40,${VH-10}`} />
+            <path d={`M${VW-10},${VH-10} L${VW-10},${VH-40} M${VW-10},${VH-10} L${VW-40},${VH-10}`} />
+          </g>
+
+          {!geoPaths && (
+            <text x={VW/2} y={VH/2} textAnchor="middle" fontFamily="var(--font-mono)" fontSize="11" fill="rgba(147,165,199,0.6)" letterSpacing="0.14em">
+              LOADING GEO LAYER…
+            </text>
+          )}
+        </svg>
+      </div>
+      <div className="cc-map__legend">
+        <span><i style={{background:"#46D78F"}}/>Normal · {counts.ok || 0}</span>
+        <span><i style={{background:"#FFB454"}}/>Siaga · {counts.warn || 0}</span>
+        <span><i style={{background:"#FF7A66"}}/>Awas · {counts.alarm || 0}</span>
+      </div>
+    </div>
+  );
+}
+
+function CcAIInsight() {
+  const messages = [
+    {
+      title: "Lift Pump Rawa Pitu turun 21% — periksa mekanis dalam 24 jam",
+      sub: "Pola sama terjadi 3× sejak Februari · prediksi failure: 11–14 hari · ",
+      bold: "Prioritas Tinggi",
+    },
+    {
+      title: "Hujan ekstrem terprediksi Way Tulang Bawang (12–16 jam)",
+      sub: "Model ensemble 87% confidence · siapkan SOP banjir · ",
+      bold: "Siaga Banjir",
+    },
+    {
+      title: "Anomali pH di Rawajitu — kemungkinan kontaminasi industri",
+      sub: "Sampling otomatis dijadwalkan · investigasi lapangan disarankan · ",
+      bold: "Lapor BPBD",
+    },
+  ];
+  const [idx, setIdx] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => setIdx(i => (i + 1) % messages.length), 5200);
+    return () => clearInterval(id);
+  }, []);
+  const m = messages[idx];
+  return (
+    <div className="cc-ai">
+      <span className="cc-ai__badge"><span className="cc-ai__icon" /> ARGO · AI INSIGHT</span>
+      <div className="cc-ai__body">
+        <span className="cc-ai__title">{m.title}</span>
+        <span className="cc-ai__sub">{m.sub}<b>{m.bold}</b></span>
+      </div>
+      <div className="cc-ai__conf">
+        <span className="cc-ai__conf-v">94%</span>
+        <span className="cc-ai__conf-l">Confidence</span>
+      </div>
+    </div>
+  );
+}
+
+function CommandCenter() {
+  return (
+    <div style={{ position: "relative", zIndex: 1, display: "flex", flexDirection: "column", gap: 14, height: "100%", minHeight: 0 }}>
+      <CcTopBar />
+      <CcKpis />
+      <div className="cc-main">
+        <CcMap />
+        <div className="cc-col">
+          <div style={{ flex: 1, minHeight: 0 }}><AWLRChart compact /></div>
+          <div style={{ flex: 1, minHeight: 0 }}><RainfallBars compact /></div>
+        </div>
+        <div className="cc-col">
+          <div style={{ flex: 1.15, minHeight: 0 }}><PumpGrid compact /></div>
+          <div style={{ flex: 1, minHeight: 0 }}><WQPanel compact /></div>
+        </div>
+      </div>
+      <CcAIInsight />
+    </div>
+  );
+}
+
+window.CommandCenter = CommandCenter;
 window.LiveDashboard = LiveDashboard;
 window.AWLRChart = AWLRChart;
 window.RainfallBars = RainfallBars;
@@ -6838,7 +7599,7 @@ window.IrigasiPanel = IrigasiPanel;
 
 <script type="text/babel" data-inlined-from="dashboard-mount.jsx">
 
-/* global React, ReactDOM, AWLRChart, RainfallBars, PumpGrid, AlertFeed, WQPanel, WQPanelAI, EWSPanel, JIATPanel, IrigasiPanel, ScadaSchematic, LiveDashboard */
+/* global React, ReactDOM, AWLRChart, RainfallBars, PumpGrid, AlertFeed, WQPanel, WQPanelAI, EWSPanel, JIATPanel, IrigasiPanel, ScadaSchematic, LiveDashboard, CommandCenter */
 const _COMP_MAP = {
   'awlr-chart':     () => <AWLRChart />,
   'rainfall-bars':  () => <RainfallBars />,
@@ -6850,6 +7611,7 @@ const _COMP_MAP = {
   'wq-panel':       () => <WQPanelAI />,
   'scada-schematic':() => <ScadaSchematic compact />,
   'live-dashboard': () => <LiveDashboard />,
+  'command-center': () => <CommandCenter />,
   // Composite preview combining AWLR + Rainfall (water/flood)
   'dash-water':     () => (
     <div style={{ display: 'grid', gridTemplateRows: '1.05fr .95fr', gap: 10, height: '100%', minHeight: 0 }}>
