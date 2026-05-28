@@ -337,6 +337,19 @@ h1, h2, h3, h4, p { margin: 0; }
   justify-content: center;
 }
 
+.cover-layout {
+  height: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 0.98fr) minmax(640px, 0.9fr);
+  gap: 68px;
+  align-items: center;
+}
+.cover-copy {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 .cover__top { margin-bottom: 24px; }
 .chip {
   display: inline-flex; align-items: center; gap: 12px;
@@ -451,6 +464,2060 @@ h1, h2, h3, h4, p { margin: 0; }
   border: 1px solid var(--line);
   background: var(--surface);
   border-radius: 999px;
+}
+
+.water-cover-art {
+  --water-x: 0;
+  --water-y: 0;
+  position: relative;
+  min-width: 0;
+  height: 700px;
+  max-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1400px;
+}
+.water-system-board {
+  position: relative;
+  width: min(100%, 760px);
+  height: min(100%, 660px);
+  isolation: isolate;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.76);
+  border-radius: 34px;
+  background:
+    radial-gradient(520px 420px at 58% 42%, rgba(31,165,199,.18), transparent 62%),
+    radial-gradient(420px 360px at 18% 84%, rgba(27,138,91,.10), transparent 66%),
+    linear-gradient(150deg, rgba(255,255,255,.92), rgba(247,249,252,.72));
+  box-shadow:
+    0 36px 80px -44px rgba(11,58,130,.32),
+    0 18px 46px -34px rgba(11,20,36,.30),
+    inset 0 1px 0 rgba(255,255,255,.86);
+  backdrop-filter: blur(18px);
+  transform-origin: center;
+  transform:
+    translate3d(calc(var(--water-x) * 8px), calc(var(--water-y) * 8px), 0)
+    rotateX(calc(var(--water-y) * -1.15deg))
+    rotateY(calc(var(--water-x) * 1.2deg));
+  transition: transform .5s cubic-bezier(.16,1,.3,1);
+  will-change: transform;
+}
+.water-cover-art.is-interacting .water-system-board { transition-duration: .14s; }
+.water-system-board::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+  border-radius: inherit;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.88),
+    inset 0 -1px 0 rgba(11,58,130,.10);
+}
+.ws-grid,
+.ws-glow,
+.ws-noise,
+.ws-basin,
+.ws-scan {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.ws-grid {
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(11,58,130,.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(11,58,130,.055) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(circle at center, #000 0 74%, transparent 98%);
+}
+.ws-glow {
+  z-index: 1;
+  background:
+    radial-gradient(360px circle at calc(58% + var(--water-x) * 8%) calc(44% + var(--water-y) * 8%), rgba(40,118,232,.18), transparent 62%),
+    radial-gradient(240px circle at 78% 72%, rgba(31,165,199,.14), transparent 62%);
+  transition: background-position .25s cubic-bezier(.16,1,.3,1);
+}
+.ws-noise {
+  z-index: 2;
+  opacity: .26;
+  mix-blend-mode: multiply;
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(11,20,36,.055) 0 1px, transparent 1px),
+    radial-gradient(circle at 80% 70%, rgba(31,165,199,.08) 0 1px, transparent 1px);
+  background-size: 18px 18px, 24px 24px;
+}
+.ws-basin {
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+}
+.ws-contour {
+  fill: none;
+  stroke: rgba(81,96,122,.16);
+  stroke-width: 1.15;
+  stroke-dasharray: 8 12;
+  stroke-linecap: round;
+  animation: ws-contour 18s ease-in-out infinite;
+}
+.ws-contour--delay { animation-delay: 2.4s; }
+.ws-water-body {
+  fill: url(#wsRiverGradient);
+  opacity: .88;
+  filter: drop-shadow(0 18px 28px rgba(31,165,199,.13));
+}
+.ws-water-line {
+  fill: none;
+  stroke: rgba(255,255,255,.82);
+  stroke-width: 1.5;
+  stroke-dasharray: 18 18;
+  stroke-linecap: round;
+  animation: ws-flow 7s linear infinite;
+}
+.ws-canal {
+  fill: none;
+  stroke: rgba(27,138,91,.40);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-dasharray: 10 16;
+  animation: ws-flow 9s linear infinite;
+}
+.ws-route {
+  fill: none;
+  stroke: rgba(11,58,130,.22);
+  stroke-width: 1.3;
+  stroke-linecap: round;
+}
+.ws-route--pulse {
+  stroke: var(--brand);
+  stroke-width: 2;
+  stroke-dasharray: 14 28;
+  opacity: .75;
+  animation: ws-route 7.6s linear infinite;
+}
+.ws-route--water { stroke: var(--water); animation-delay: 1.2s; }
+.ws-route--green { stroke: var(--green); animation-delay: 2s; }
+.ws-route--amber { stroke: var(--amber); animation-delay: 2.8s; }
+.ws-packet { fill: var(--brand); opacity: .72; }
+.ws-packet--water { fill: var(--water); }
+.ws-packet--green { fill: var(--green); }
+.ws-packet--amber { fill: var(--amber); }
+.ws-glass {
+  border: 1px solid rgba(255,255,255,.72);
+  background: rgba(255,255,255,.84);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.78),
+    0 18px 40px -28px rgba(11,20,36,.50);
+  backdrop-filter: blur(14px);
+}
+.ws-terminal {
+  position: absolute;
+  z-index: 16;
+  top: 26px;
+  left: 26px;
+  width: 258px;
+  border-radius: 22px;
+  padding: 16px;
+}
+.ws-panel-head {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+.ws-live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--green);
+  animation: ws-live-dot 1.45s ease-in-out infinite;
+}
+.ws-terminal-code {
+  margin-top: 12px;
+  min-height: 22px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--ink);
+}
+.ws-terminal-code span { color: var(--brand); font-weight: 700; margin-right: 6px; }
+.ws-terminal-code i {
+  display: inline-block;
+  width: 7px;
+  height: 12px;
+  margin-left: 2px;
+  border-bottom: 2px solid var(--brand);
+  animation: ws-caret .9s step-end infinite;
+}
+.ws-progress {
+  height: 4px;
+  margin-top: 13px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(11,20,36,.08);
+}
+.ws-progress b {
+  display: block;
+  height: 100%;
+  width: 62%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--brand), var(--water));
+  animation: ws-progress 4.2s cubic-bezier(.16,1,.3,1) infinite;
+}
+.ws-forecast {
+  position: absolute;
+  z-index: 16;
+  top: 26px;
+  right: 26px;
+  width: 238px;
+  border-radius: 22px;
+  padding: 16px;
+}
+.ws-forecast strong {
+  display: block;
+  margin-top: 12px;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--ink);
+  letter-spacing: -.01em;
+}
+.ws-forecast p {
+  margin-top: 5px;
+  font-size: 12px;
+  line-height: 1.35;
+  color: var(--ink-soft);
+}
+.ws-forecast-value {
+  margin-top: 12px;
+  font-family: var(--font-mono);
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -.04em;
+  color: var(--amber);
+}
+.ws-core {
+  position: absolute;
+  z-index: 14;
+  left: 50%;
+  top: 48%;
+  width: 236px;
+  transform:
+    translate(-50%, -50%)
+    translate3d(calc(var(--water-x) * 12px), calc(var(--water-y) * 9px), 0);
+  transition: transform .25s cubic-bezier(.16,1,.3,1);
+}
+.ws-core-inner {
+  position: relative;
+  overflow: hidden;
+  border-radius: 30px;
+  padding: 18px;
+  color: white;
+  background:
+    radial-gradient(120px 90px at 70% 20%, rgba(40,118,232,.54), transparent 72%),
+    linear-gradient(145deg, var(--brand-deep), #0B1424);
+  box-shadow: 0 30px 64px -36px rgba(11,20,36,.90);
+}
+.ws-core-inner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: inherit;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.16);
+  pointer-events: none;
+}
+.ws-core-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  color: rgba(255,255,255,.72);
+}
+.ws-core-chip {
+  width: 16px;
+  height: 16px;
+  border: 1px solid rgba(255,255,255,.32);
+  border-radius: 5px;
+  background: linear-gradient(135deg, rgba(255,255,255,.18), rgba(255,255,255,.04));
+}
+.ws-core-head b {
+  width: 8px;
+  height: 8px;
+  margin-left: auto;
+  border-radius: 50%;
+  background: var(--water);
+  animation: ws-live-dot 1.35s ease-in-out infinite;
+}
+.ws-core-chart {
+  height: 78px;
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  align-items: end;
+  gap: 6px;
+}
+.ws-core-chart span {
+  height: var(--h);
+  min-height: 16px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.22);
+  transform-origin: bottom;
+  animation: ws-core-bar 3.4s ease-in-out infinite;
+  animation-delay: var(--d);
+}
+.ws-core-foot {
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: end;
+  gap: 4px;
+}
+.ws-core-foot span {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.36);
+}
+.ws-core-foot strong {
+  font-family: var(--font-mono);
+  font-size: 29px;
+  line-height: .82;
+  letter-spacing: -.06em;
+}
+.ws-core-foot em {
+  font-style: normal;
+  font-size: 10px;
+  font-weight: 700;
+  color: rgba(255,255,255,.44);
+}
+.ws-node {
+  position: absolute;
+  z-index: 13;
+  transform: translate(-50%, -50%);
+  animation: ws-node-float 6.4s ease-in-out infinite;
+}
+.ws-node--dam { animation-delay: -.7s; }
+.ws-node--ews { animation-delay: -1.5s; }
+.ws-node--wq { animation-delay: -2.6s; }
+.ws-node--irigasi { animation-delay: -3.6s; }
+.ws-node-ring,
+.ws-node-dot {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+.ws-node-ring {
+  width: 70px;
+  height: 70px;
+  border: 1px solid rgba(40,118,232,.32);
+  animation: ws-node-pulse 2.9s cubic-bezier(.16,1,.3,1) infinite;
+}
+.ws-node-ring--green { border-color: rgba(27,138,91,.38); }
+.ws-node-ring--water { border-color: rgba(31,165,199,.40); }
+.ws-node-ring--amber { border-color: rgba(217,130,32,.42); }
+.ws-node-dot {
+  width: 46px;
+  height: 46px;
+  border: 1px solid rgba(255,255,255,.86);
+  background: white;
+  box-shadow: 0 16px 32px -22px rgba(11,20,36,.65);
+}
+.ws-node-dot::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--brand);
+  transform: translate(-50%, -50%);
+}
+.ws-node-dot--green::before { background: var(--green); }
+.ws-node-dot--water::before { background: var(--water); }
+.ws-node-dot--amber::before { background: var(--amber); }
+.ws-node-label {
+  position: absolute;
+  left: 50%;
+  top: 58px;
+  width: 178px;
+  border-radius: 18px;
+  padding: 10px 12px;
+  transform: translateX(-50%) scale(.96);
+  opacity: .93;
+  transition: opacity .26s cubic-bezier(.16,1,.3,1), transform .26s cubic-bezier(.16,1,.3,1);
+}
+.ws-node--irigasi .ws-node-label { top: auto; bottom: 58px; }
+.ws-node:hover .ws-node-label {
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+}
+.ws-node-label strong {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+  line-height: 1.1;
+  font-weight: 800;
+  color: var(--ink);
+}
+.ws-node-label span {
+  display: block;
+  margin-top: 4px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  color: var(--ink-mute);
+}
+.ws-node-label b {
+  display: block;
+  margin-top: 6px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-2);
+}
+.ws-control-strip {
+  position: absolute;
+  z-index: 12;
+  right: -54px;
+  top: 152px;
+  width: 220px;
+  height: 266px;
+  display: grid;
+  gap: 10px;
+  opacity: .58;
+  transform: rotate(11deg);
+  pointer-events: none;
+}
+.ws-control-strip span {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(11,58,130,.36), rgba(31,165,199,.24), transparent);
+  transform: translateX(-24px);
+  animation: ws-strip 2.8s cubic-bezier(.16,1,.3,1) infinite;
+  animation-delay: var(--d);
+}
+.ws-metrics {
+  position: absolute;
+  z-index: 16;
+  left: 24px;
+  right: 24px;
+  bottom: 24px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+.ws-metrics > div {
+  min-width: 0;
+  border-radius: 22px;
+  padding: 15px 16px;
+}
+.ws-metrics span {
+  display: block;
+  margin-bottom: 8px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+.ws-metrics strong {
+  font-family: var(--font-mono);
+  font-size: 28px;
+  line-height: .85;
+  font-weight: 800;
+  letter-spacing: -.06em;
+  color: var(--ink);
+}
+.ws-metrics em {
+  margin-left: 4px;
+  font-style: normal;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink-mute);
+}
+.ws-scan {
+  z-index: 10;
+  left: -12%;
+  right: -12%;
+  top: 0;
+  bottom: auto;
+  height: 64px;
+  background: linear-gradient(180deg, transparent, rgba(31,165,199,.10), rgba(255,255,255,.58), transparent);
+  transform: translateY(-140%) rotate(-8deg);
+  animation: ws-scan 6s cubic-bezier(.16,1,.3,1) infinite;
+}
+@keyframes ws-contour {
+  0%, 100% { stroke-dashoffset: 0; opacity: .34; }
+  50% { stroke-dashoffset: -44; opacity: .56; }
+}
+@keyframes ws-flow {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: -144; }
+}
+@keyframes ws-route {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: -176; }
+}
+@keyframes ws-scan {
+  0% { opacity: 0; transform: translateY(-140%) rotate(-8deg); }
+  12%, 70% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(770%) rotate(-8deg); }
+}
+@keyframes ws-live-dot {
+  0%, 100% { opacity: .55; transform: scale(.9); }
+  50% { opacity: 1; transform: scale(1.18); }
+}
+@keyframes ws-caret {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+@keyframes ws-progress {
+  0%, 100% { width: 32%; }
+  50% { width: 90%; }
+}
+@keyframes ws-core-bar {
+  0%, 100% { opacity: .45; transform: scaleY(.78); }
+  50% { opacity: .96; transform: scaleY(1); }
+}
+@keyframes ws-node-float {
+  0%, 100% { transform: translate(-50%, -50%) translateY(0); }
+  50% { transform: translate(-50%, -50%) translateY(-7px); }
+}
+@keyframes ws-node-pulse {
+  0%, 100% { opacity: .36; transform: translate(-50%, -50%) scale(.82); }
+  50% { opacity: .78; transform: translate(-50%, -50%) scale(1.12); }
+}
+@keyframes ws-strip {
+  0% { opacity: 0; transform: translateX(-24px); }
+  35%, 68% { opacity: 1; }
+  100% { opacity: 0; transform: translateX(48px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .water-system-board,
+  .water-system-board * {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+  .water-system-board { transform: none !important; }
+}
+
+/* Cover v2: operations-room cutaway, replacing the atlas/map visual language. */
+.water-system-board {
+  overflow: hidden;
+  border-radius: 36px;
+  background:
+    radial-gradient(520px 360px at 50% 22%, rgba(255,255,255,.96), transparent 64%),
+    radial-gradient(520px 420px at 70% 74%, rgba(31,165,199,.18), transparent 68%),
+    linear-gradient(155deg, rgba(255,255,255,.94), rgba(238,245,251,.76) 52%, rgba(222,239,246,.82));
+}
+.ws-grid {
+  opacity: .46;
+  background-image:
+    linear-gradient(120deg, rgba(11,58,130,.055) 1px, transparent 1px),
+    linear-gradient(30deg, rgba(31,165,199,.04) 1px, transparent 1px);
+  background-size: 72px 72px, 72px 72px;
+  mask-image: linear-gradient(180deg, rgba(0,0,0,.76), rgba(0,0,0,.18) 72%, transparent);
+}
+.ws-room-haze {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    radial-gradient(360px 190px at 53% 28%, rgba(40,118,232,.13), transparent 68%),
+    radial-gradient(430px 240px at 44% 78%, rgba(31,165,199,.13), transparent 70%);
+}
+.ws-room-haze::before {
+  content: "";
+  position: absolute;
+  left: 74px;
+  right: 74px;
+  top: 270px;
+  height: 230px;
+  border-radius: 42px;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255,255,255,.64), transparent 38%),
+    radial-gradient(circle at 50% 50%, rgba(40,118,232,.12), transparent 62%);
+  border: 1px solid rgba(255,255,255,.58);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.58);
+  opacity: .72;
+}
+.ws-room-haze::after {
+  content: "";
+  position: absolute;
+  left: 108px;
+  right: 108px;
+  top: 325px;
+  height: 110px;
+  border-radius: 999px;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 38px, rgba(40,118,232,.09) 38px 40px),
+    linear-gradient(90deg, transparent, rgba(31,165,199,.16), transparent);
+  filter: blur(.2px);
+  opacity: .7;
+}
+.ws-command-screen {
+  position: absolute;
+  z-index: 22;
+  left: 138px;
+  right: 138px;
+  top: 34px;
+  height: 166px;
+  overflow: hidden;
+  border-radius: 24px;
+  padding: 16px 18px;
+  transform:
+    translate3d(calc(var(--water-x) * 8px), calc(var(--water-y) * 5px), 0)
+    rotateX(1deg);
+  transition: transform .25s cubic-bezier(.16,1,.3,1);
+}
+.ws-command-screen::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(11,58,130,.05), rgba(31,165,199,.08));
+  pointer-events: none;
+}
+.ws-screen-top,
+.ws-screen-kpis {
+  position: relative;
+  z-index: 1;
+}
+.ws-screen-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.ws-screen-title {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.ws-screen-title span,
+.ws-mini-label,
+.ws-status-label,
+.ws-device span,
+.ws-field-label span,
+.ws-hub-chip,
+.ws-metrics span {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.ws-screen-title span {
+  font-size: 10px;
+  color: var(--brand);
+}
+.ws-screen-title strong {
+  font-size: 17px;
+  line-height: 1;
+  color: var(--ink);
+  letter-spacing: -.02em;
+  white-space: nowrap;
+}
+.ws-screen-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 999px;
+  padding: 7px 10px;
+  background: var(--green-soft);
+  color: var(--green);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  white-space: nowrap;
+}
+.ws-screen-badge::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: ws-live-dot 1.45s ease-in-out infinite;
+}
+.ws-screen-kpis {
+  display: grid;
+  grid-template-columns: 1fr 1.05fr .92fr;
+  gap: 10px;
+}
+.ws-mini-card {
+  min-width: 0;
+  border: 1px solid rgba(220,227,238,.82);
+  border-radius: 16px;
+  background: rgba(255,255,255,.68);
+  padding: 10px 11px;
+}
+.ws-mini-label {
+  display: block;
+  margin-bottom: 7px;
+  font-size: 7.6px;
+  color: var(--ink-mute);
+  white-space: nowrap;
+}
+.ws-mini-value {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  font-family: var(--font-mono);
+  font-size: 20px;
+  line-height: .9;
+  font-weight: 800;
+  color: var(--ink);
+  letter-spacing: -.06em;
+}
+.ws-mini-value em {
+  font-style: normal;
+  font-size: 9px;
+  color: var(--ink-mute);
+  letter-spacing: 0;
+}
+.ws-mini-trend {
+  height: 31px;
+  width: 100%;
+  margin-top: 2px;
+}
+.ws-mini-trend path {
+  fill: none;
+  stroke: var(--water);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 180;
+  animation: ws-trend 4.2s ease-in-out infinite;
+}
+.ws-mini-bars {
+  display: grid;
+  height: 32px;
+  grid-template-columns: repeat(9, 1fr);
+  gap: 4px;
+  align-items: end;
+  margin-top: 5px;
+}
+.ws-mini-bars span {
+  height: var(--h);
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--brand-2), var(--brand));
+  opacity: .82;
+  animation: ws-core-bar 3s ease-in-out infinite;
+  animation-delay: var(--d);
+}
+.ws-telemetry {
+  position: absolute;
+  inset: 0;
+  z-index: 12;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.ws-beam {
+  fill: none;
+  stroke: url(#wsBeamGradient);
+  stroke-width: 3.2;
+  stroke-linecap: round;
+  stroke-dasharray: 18 22;
+  opacity: .48;
+  animation: ws-beam 7s linear infinite;
+}
+.ws-beam--green { stroke: url(#wsBeamGreen); animation-delay: 1.4s; }
+.ws-beam--amber { stroke: url(#wsBeamAmber); animation-delay: 2.3s; }
+.ws-cutaway {
+  position: absolute;
+  z-index: 10;
+  left: 42px;
+  right: 42px;
+  bottom: 70px;
+  height: 378px;
+  transform:
+    translate3d(calc(var(--water-x) * -7px), calc(var(--water-y) * -4px), 0)
+    rotateX(48deg)
+    rotateZ(-30deg);
+  transform-origin: 50% 62%;
+  transition: transform .25s cubic-bezier(.16,1,.3,1);
+}
+.ws-cutaway-shadow {
+  position: absolute;
+  left: 42px;
+  right: 42px;
+  bottom: -64px;
+  height: 96px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(11,20,36,.24), transparent 68%);
+  filter: blur(10px);
+  transform: rotateZ(30deg);
+}
+.ws-land-slab {
+  position: absolute;
+  inset: 36px 22px 28px 22px;
+  overflow: visible;
+  border: 1px solid rgba(255,255,255,.84);
+  border-radius: 34px;
+  background:
+    linear-gradient(135deg, rgba(222,239,230,.96), rgba(247,249,252,.96) 44%, rgba(236,226,205,.92));
+  box-shadow:
+    0 30px 58px -36px rgba(11,20,36,.52),
+    inset 0 1px 0 rgba(255,255,255,.78);
+}
+.ws-land-slab::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 22px;
+  right: 22px;
+  bottom: -34px;
+  height: 42px;
+  border-radius: 0 0 28px 28px;
+  background: linear-gradient(180deg, rgba(198,181,154,.68), rgba(126,105,78,.38));
+  transform: skewX(-34deg);
+  transform-origin: top left;
+  box-shadow: 0 26px 34px -30px rgba(11,20,36,.60);
+}
+.ws-land-slab::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: auto 0 -20px 0;
+  height: 44px;
+  border-radius: 0 0 32px 32px;
+  background: linear-gradient(180deg, rgba(168,148,118,.34), rgba(110,92,68,.26));
+}
+.ws-reservoir {
+  position: absolute;
+  left: 34px;
+  top: 88px;
+  width: 270px;
+  height: 172px;
+  overflow: hidden;
+  border-radius: 42% 58% 48% 52% / 50% 42% 58% 50%;
+  background:
+    radial-gradient(circle at 24% 22%, rgba(255,255,255,.55), transparent 28%),
+    linear-gradient(135deg, rgba(223,243,249,.98), rgba(31,165,199,.68) 54%, rgba(11,58,130,.74));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.78),
+    inset 0 -18px 30px rgba(6,31,74,.18),
+    0 16px 28px -22px rgba(11,58,130,.45);
+}
+.ws-reservoir::before,
+.ws-reservoir::after,
+.ws-gate-flow::before,
+.ws-gate-flow::after,
+.ws-canal-water::before,
+.ws-canal-water::after {
+  content: "";
+  position: absolute;
+  left: -18%;
+  right: -18%;
+  height: 18px;
+  border-top: 2px solid rgba(255,255,255,.50);
+  border-radius: 50%;
+  animation: ws-water-ripple 4.6s ease-in-out infinite;
+}
+.ws-reservoir::before { top: 34px; }
+.ws-reservoir::after { top: 76px; animation-delay: 1.4s; opacity: .75; }
+.ws-dam-wall {
+  position: absolute;
+  z-index: 6;
+  left: 264px;
+  top: 132px;
+  width: 164px;
+  height: 56px;
+  border-radius: 18px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.54), transparent 44%),
+    repeating-linear-gradient(90deg, rgba(120,100,75,.10) 0 1px, transparent 1px 18px),
+    linear-gradient(135deg, #E1D5BE, #B49B73);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.64),
+    inset 0 -10px 18px rgba(89,73,52,.18),
+    0 16px 28px -22px rgba(11,20,36,.62);
+}
+.ws-dam-wall::before {
+  content: "";
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  top: 11px;
+  height: 32px;
+  border-radius: 10px;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 28px, rgba(255,255,255,.20) 28px 33px),
+    linear-gradient(180deg, rgba(11,58,130,.72), rgba(6,31,74,.86));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.22);
+}
+.ws-dam-wall::after {
+  content: "";
+  position: absolute;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  height: 14px;
+  border-radius: 999px;
+  background:
+    linear-gradient(90deg, rgba(255,255,255,.72), rgba(223,243,249,.92), rgba(31,165,199,.52), transparent);
+  box-shadow: 0 10px 18px -14px rgba(31,165,199,.60);
+}
+.ws-gate-flow {
+  position: absolute;
+  z-index: 5;
+  left: 380px;
+  top: 142px;
+  width: 222px;
+  height: 98px;
+  overflow: hidden;
+  border-radius: 999px 48px 60px 999px / 64px 44px 46px 64px;
+  background:
+    radial-gradient(circle at 16% 40%, rgba(255,255,255,.74), transparent 22%),
+    linear-gradient(90deg, rgba(223,243,249,.95), rgba(31,165,199,.70), rgba(40,118,232,.42));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.66);
+}
+.ws-gate-flow::before {
+  top: 28px;
+}
+.ws-gate-flow::after {
+  top: 54px;
+  animation-delay: 1.1s;
+  opacity: .72;
+}
+.ws-canal-water {
+  position: absolute;
+  z-index: 4;
+  left: 468px;
+  top: 178px;
+  width: 190px;
+  height: 82px;
+  overflow: hidden;
+  border-radius: 38% 62% 52% 48% / 48% 56% 44% 52%;
+  background:
+    radial-gradient(circle at 30% 34%, rgba(255,255,255,.52), transparent 24%),
+    linear-gradient(135deg, rgba(223,243,249,.92), rgba(31,165,199,.62), rgba(27,138,91,.26));
+}
+.ws-canal-water::before { top: 18px; }
+.ws-canal-water::after { top: 43px; animation-delay: 1.7s; opacity: .70; }
+.ws-irrigation-fields {
+  position: absolute;
+  right: 24px;
+  bottom: 44px;
+  width: 188px;
+  height: 108px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.ws-irrigation-fields span {
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.70);
+  background:
+    linear-gradient(135deg, rgba(222,239,230,.92), rgba(27,138,91,.22));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.62);
+}
+.ws-device {
+  position: absolute;
+  z-index: 15;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  transform: rotateZ(30deg) rotateX(-48deg);
+  transform-origin: center bottom;
+}
+.ws-device::before {
+  content: "";
+  width: 20px;
+  height: 70px;
+  border-radius: 999px;
+  background:
+    linear-gradient(90deg, rgba(255,255,255,.76), rgba(11,58,130,.22)),
+    linear-gradient(180deg, var(--surface), var(--surface-3));
+  border: 1px solid rgba(11,58,130,.20);
+  box-shadow: 0 16px 24px -18px rgba(11,20,36,.55);
+}
+.ws-device::after {
+  content: "";
+  position: absolute;
+  top: -9px;
+  width: 38px;
+  height: 20px;
+  border-radius: 8px;
+  background: var(--brand);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.35);
+}
+.ws-device span {
+  padding: 6px 9px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.82);
+  border: 1px solid var(--line);
+  color: var(--ink-soft);
+  font-size: 8px;
+  white-space: nowrap;
+}
+.ws-device--awlr { left: 122px; top: 76px; }
+.ws-device--gate { left: 330px; top: 78px; }
+.ws-device--soil { right: 92px; bottom: 78px; }
+.ws-device--gate::after { background: var(--amber); }
+.ws-device--soil::after { background: var(--green); }
+.ws-hydro-hub {
+  position: absolute;
+  z-index: 20;
+  left: 304px;
+  top: 300px;
+  width: 156px;
+  height: 132px;
+  pointer-events: none;
+}
+.ws-hub-orb {
+  position: absolute;
+  left: 22px;
+  top: 14px;
+  width: 112px;
+  height: 112px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 42% 38%, rgba(255,255,255,.92), rgba(223,243,249,.50) 30%, rgba(40,118,232,.16) 62%, transparent 68%),
+    conic-gradient(from 20deg, rgba(31,165,199,.08), rgba(40,118,232,.38), rgba(27,138,91,.22), rgba(31,165,199,.08));
+  border: 1px solid rgba(255,255,255,.78);
+  box-shadow:
+    0 22px 42px -30px rgba(11,58,130,.52),
+    inset 0 1px 0 rgba(255,255,255,.76);
+  backdrop-filter: blur(12px);
+}
+.ws-hub-orb::before,
+.ws-hub-orb::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+}
+.ws-hub-orb::before {
+  inset: 20px;
+  border: 1px dashed rgba(11,58,130,.28);
+  animation: ws-hub-spin 16s linear infinite;
+}
+.ws-hub-orb::after {
+  left: 50%;
+  top: 50%;
+  width: 18px;
+  height: 18px;
+  background: var(--brand);
+  box-shadow:
+    0 0 0 12px rgba(40,118,232,.10),
+    0 0 28px rgba(40,118,232,.34);
+  transform: translate(-50%, -50%);
+  animation: ws-live-dot 1.45s ease-in-out infinite;
+}
+.ws-hub-scan {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 86px;
+  height: 1px;
+  transform-origin: left center;
+  background: linear-gradient(90deg, rgba(40,118,232,.58), transparent);
+  animation: ws-hub-sweep 5.4s linear infinite;
+}
+.ws-hub-chip {
+  position: absolute;
+  left: 50%;
+  bottom: 6px;
+  transform: translateX(-50%);
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(220,227,238,.84);
+  background: rgba(255,255,255,.86);
+  color: var(--brand);
+  font-size: 8px;
+  letter-spacing: .12em;
+  box-shadow: 0 14px 24px -20px rgba(11,20,36,.48);
+  white-space: nowrap;
+}
+.ws-status-stack {
+  position: absolute;
+  z-index: 21;
+  right: 48px;
+  top: 276px;
+  display: grid;
+  gap: 10px;
+  width: 178px;
+}
+.ws-status-card {
+  border-radius: 18px;
+  padding: 12px 13px;
+}
+.ws-status-label {
+  display: block;
+  font-size: 8px;
+  color: var(--ink-mute);
+}
+.ws-status-card strong {
+  display: block;
+  margin-top: 6px;
+  font-size: 15px;
+  color: var(--ink);
+}
+.ws-status-card em {
+  display: block;
+  margin-top: 3px;
+  font-style: normal;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-soft);
+}
+.ws-field-label {
+  position: absolute;
+  z-index: 16;
+  left: 64px;
+  top: 254px;
+  width: 170px;
+  border-radius: 18px;
+  padding: 12px 13px;
+}
+.ws-field-label span {
+  display: block;
+  font-size: 8px;
+  color: var(--ink-mute);
+}
+.ws-field-label strong {
+  display: block;
+  margin-top: 6px;
+  color: var(--ink);
+  font-size: 16px;
+}
+.ws-field-label em {
+  display: block;
+  margin-top: 3px;
+  font-style: normal;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--water);
+}
+.ws-metrics {
+  left: 30px;
+  right: 30px;
+  bottom: 26px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.ws-metrics > div {
+  border-radius: 18px;
+  padding: 13px 14px;
+}
+.ws-metrics strong {
+  font-size: 24px;
+}
+@keyframes ws-trend {
+  0%, 100% { stroke-dashoffset: 180; opacity: .52; }
+  45%, 70% { stroke-dashoffset: 0; opacity: 1; }
+}
+@keyframes ws-beam {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: -160; }
+}
+@keyframes ws-water-ripple {
+  0%, 100% { transform: translateX(0) scaleX(.96); opacity: .35; }
+  50% { transform: translateX(18px) scaleX(1.04); opacity: .82; }
+}
+@keyframes ws-hub-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes ws-hub-sweep {
+  from { transform: rotate(0deg); opacity: .32; }
+  50% { opacity: .78; }
+  to { transform: rotate(360deg); opacity: .32; }
+}
+
+/* Cover v3: workstation command center inspired by login_page.svg. */
+.water-system-board {
+  overflow: hidden;
+  border-radius: 34px;
+  background:
+    radial-gradient(520px 320px at 50% 18%, rgba(255,255,255,.94), transparent 70%),
+    radial-gradient(460px 300px at 70% 72%, rgba(31,165,199,.14), transparent 72%),
+    linear-gradient(152deg, rgba(255,255,255,.98), rgba(238,244,250,.88) 58%, rgba(222,239,246,.78));
+}
+.water-system-board::after {
+  content: "";
+  position: absolute;
+  left: 86px;
+  right: 86px;
+  bottom: 66px;
+  height: 34px;
+  z-index: 4;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(11,20,36,.20), transparent 68%);
+  filter: blur(8px);
+  pointer-events: none;
+}
+.ws-grid {
+  opacity: .38;
+  background-image:
+    linear-gradient(rgba(11,58,130,.052) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(11,58,130,.052) 1px, transparent 1px);
+  background-size: 42px 42px;
+  mask-image: radial-gradient(circle at 50% 46%, #000 0 62%, transparent 92%);
+}
+.ws-room-haze {
+  z-index: 2;
+  background:
+    radial-gradient(340px 180px at 55% 34%, rgba(166,231,255,.48), transparent 70%),
+    radial-gradient(320px 180px at 42% 66%, rgba(40,118,232,.10), transparent 72%);
+}
+.ws-room-haze::before {
+  left: 116px;
+  right: 116px;
+  top: 108px;
+  height: 322px;
+  border-radius: 22px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.62), rgba(223,243,249,.22)),
+    radial-gradient(380px 190px at 52% 56%, rgba(31,165,199,.20), transparent 72%);
+  border: 1px solid rgba(255,255,255,.70);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.72),
+    0 22px 52px -42px rgba(11,58,130,.28);
+  opacity: .70;
+}
+.ws-room-haze::after {
+  left: 178px;
+  right: 178px;
+  top: auto;
+  bottom: 98px;
+  height: 16px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(11,20,36,.26), transparent 70%);
+  filter: blur(8px);
+  opacity: .70;
+}
+.ws-command-screen {
+  left: 126px;
+  right: auto;
+  top: 116px;
+  width: 508px;
+  height: 318px;
+  padding: 0;
+  overflow: visible;
+  border-radius: 18px;
+  border: 10px solid #172033;
+  background: #172033;
+  box-shadow:
+    0 28px 46px -30px rgba(11,20,36,.60),
+    0 0 0 1px rgba(255,255,255,.54),
+    inset 0 1px 0 rgba(255,255,255,.14);
+  backdrop-filter: none;
+  transform:
+    translate3d(calc(var(--water-x) * 7px), calc(var(--water-y) * 5px), 0)
+    rotateX(calc(var(--water-y) * -.5deg))
+    rotateY(calc(var(--water-x) * .55deg));
+}
+.ws-command-screen::before {
+  inset: 44px 12px 15px;
+  z-index: 0;
+  border-radius: 10px;
+  background:
+    linear-gradient(180deg, rgba(166,231,255,.96), rgba(135,215,238,.96));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.72);
+}
+.ws-command-screen::after {
+  content: "";
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  top: 10px;
+  height: 36px;
+  z-index: 0;
+  border-radius: 10px 10px 0 0;
+  background: #fff;
+  box-shadow: inset 0 -1px 0 rgba(220,227,238,.82);
+}
+.ws-screen-top {
+  position: absolute;
+  left: 28px;
+  right: 28px;
+  top: 17px;
+  z-index: 4;
+  height: 22px;
+  margin: 0;
+  align-items: center;
+}
+.ws-screen-title {
+  gap: 2px;
+}
+.ws-screen-title span {
+  font-size: 7px;
+  line-height: 1;
+  color: var(--brand);
+}
+.ws-screen-title strong {
+  max-width: 310px;
+  overflow: hidden;
+  color: #26314a;
+  font-size: 10px;
+  line-height: 1.1;
+  text-overflow: ellipsis;
+}
+.ws-screen-badge {
+  padding: 4px 7px;
+  font-size: 7px;
+  gap: 5px;
+}
+.ws-screen-badge::before {
+  width: 5px;
+  height: 5px;
+}
+.ws-indonesia-map {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  top: 48px;
+  z-index: 1;
+  width: calc(100% - 24px);
+  height: 198px;
+  border-radius: 0 0 10px 10px;
+  overflow: hidden;
+}
+.ws-map-island {
+  fill: rgba(255,255,255,.96);
+  filter: drop-shadow(0 8px 8px rgba(11,58,130,.08));
+}
+.ws-map-flow {
+  fill: none;
+  stroke: rgba(11,58,130,.36);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-dasharray: 7 10;
+  animation: ws-beam 6.6s linear infinite;
+}
+.ws-map-pin circle:first-child {
+  fill: rgba(11,58,130,.18);
+}
+.ws-map-pin circle:last-child {
+  fill: var(--brand);
+  stroke: rgba(255,255,255,.92);
+  stroke-width: 2;
+}
+.ws-map-pin--water circle:last-child { fill: var(--water); }
+.ws-map-pin--green circle:last-child { fill: var(--green); }
+.ws-map-pin--amber circle:last-child { fill: var(--amber); }
+.ws-screen-kpis {
+  position: absolute;
+  left: 28px;
+  right: 28px;
+  bottom: 22px;
+  z-index: 5;
+  grid-template-columns: 1fr 1fr .9fr;
+  gap: 8px;
+}
+.ws-mini-card {
+  border-color: rgba(255,255,255,.72);
+  background: rgba(255,255,255,.78);
+  border-radius: 10px;
+  padding: 8px 9px;
+  box-shadow: 0 12px 24px -22px rgba(11,20,36,.50);
+}
+.ws-mini-label {
+  margin-bottom: 5px;
+  font-size: 6.8px;
+}
+.ws-mini-value {
+  font-size: 16px;
+}
+.ws-mini-value em {
+  font-size: 8px;
+}
+.ws-mini-trend {
+  height: 24px;
+}
+.ws-mini-bars {
+  height: 25px;
+  gap: 3px;
+}
+.ws-monitor-stand {
+  position: absolute;
+  z-index: 8;
+  left: 304px;
+  top: 428px;
+  width: 150px;
+  height: 86px;
+  background: linear-gradient(180deg, #C5CDDC, #929CAF);
+  clip-path: polygon(23% 0, 77% 0, 90% 100%, 10% 100%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.48);
+}
+.ws-monitor-stand::after {
+  content: "";
+  position: absolute;
+  left: -22px;
+  right: -22px;
+  bottom: 0;
+  height: 18px;
+  border-radius: 999px 999px 6px 6px;
+  background: linear-gradient(180deg, #AAB4C5, #8791A4);
+}
+.ws-keyboard {
+  position: absolute;
+  z-index: 9;
+  left: 184px;
+  bottom: 58px;
+  width: 392px;
+  height: 68px;
+  display: grid;
+  grid-template-columns: repeat(14, 1fr);
+  gap: 7px;
+  align-items: center;
+  padding: 14px 18px;
+  border-radius: 16px 16px 10px 10px;
+  background: linear-gradient(180deg, #C7D0E0, #AEB9CB);
+  clip-path: polygon(8% 0, 92% 0, 100% 100%, 0 100%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.62);
+}
+.ws-keyboard span {
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.88);
+}
+.ws-keyboard span:nth-child(4n) { grid-column: span 2; }
+.ws-telemetry {
+  z-index: 18;
+}
+.ws-beam {
+  stroke-width: 2;
+  opacity: .42;
+  stroke-dasharray: 10 14;
+}
+.ws-float-card {
+  position: absolute;
+  z-index: 34;
+  border-radius: 12px;
+  padding: 10px 12px;
+  color: var(--ink);
+}
+.ws-float-card__title,
+.ws-float-card span,
+.ws-float-card b {
+  font-family: var(--font-mono);
+}
+.ws-float-card__title {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--ink-mute);
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.ws-float-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 4px 0;
+  border-top: 1px solid rgba(220,227,238,.72);
+}
+.ws-float-row:first-of-type { border-top: 0; }
+.ws-float-row span {
+  color: var(--ink-soft);
+  font-size: 7.4px;
+  font-weight: 600;
+}
+.ws-float-row b {
+  color: var(--ink);
+  font-size: 8px;
+}
+.ws-card--params {
+  left: 244px;
+  top: 62px;
+  width: 174px;
+}
+.ws-card--level {
+  left: 58px;
+  top: 214px;
+  width: 148px;
+}
+.ws-card--chart {
+  left: 190px;
+  top: 378px;
+  width: 218px;
+  padding-bottom: 8px;
+}
+.ws-card--chart svg {
+  display: block;
+  width: 100%;
+  height: 54px;
+}
+.ws-card--chart path {
+  fill: none;
+  stroke: var(--brand);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  filter: drop-shadow(0 4px 4px rgba(40,118,232,.12));
+}
+.ws-sticky-note {
+  position: absolute;
+  z-index: 26;
+  width: 70px;
+  height: 58px;
+  padding: 13px 12px;
+  box-shadow: 0 14px 24px -20px rgba(11,20,36,.46);
+}
+.ws-sticky-note span {
+  display: block;
+  height: 2px;
+  margin-bottom: 6px;
+  border-radius: 999px;
+  background: rgba(11,58,130,.46);
+}
+.ws-note--green {
+  right: 112px;
+  top: 156px;
+  background: #93E284;
+  transform: rotate(-14deg);
+}
+.ws-note--yellow {
+  left: 84px;
+  top: 414px;
+  background: #FFD875;
+  transform: rotate(-10deg);
+}
+.ws-note--blue {
+  right: 190px;
+  bottom: 146px;
+  background: #63BFE5;
+  transform: rotate(.5deg);
+}
+.ws-orbit-icon {
+  position: absolute;
+  z-index: 25;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.88);
+  border: 1px solid rgba(220,227,238,.82);
+  box-shadow: 0 16px 30px -24px rgba(11,20,36,.56);
+}
+.ws-orbit-icon::before,
+.ws-orbit-icon::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.ws-icon--drop { left: 104px; top: 50px; }
+.ws-icon--drop::before {
+  width: 18px;
+  height: 24px;
+  border-radius: 50% 50% 55% 55%;
+  background: linear-gradient(180deg, rgba(166,231,255,.94), var(--water));
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.ws-icon--drop::after {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.82);
+  transform: translate(-64%, -74%);
+}
+.ws-icon--thermo { left: 30px; top: 352px; }
+.ws-icon--thermo::before {
+  width: 7px;
+  height: 27px;
+  border: 3px solid #1F2A40;
+  border-bottom: 0;
+  border-radius: 8px 8px 0 0;
+}
+.ws-icon--thermo::after {
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  background: var(--danger);
+  box-shadow: 0 -16px 0 -4px var(--danger);
+  transform: translate(-50%, 0);
+}
+.ws-icon--signal { right: 104px; bottom: 64px; }
+.ws-icon--signal::before {
+  width: 26px;
+  height: 26px;
+  border: 3px solid #1F2A40;
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+}
+.ws-icon--signal::after {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--danger);
+}
+.ws-icon--battery { left: 92px; bottom: 70px; }
+.ws-icon--battery::before {
+  width: 16px;
+  height: 25px;
+  border: 3px solid #1F2A40;
+  border-radius: 3px;
+  background: linear-gradient(180deg, transparent 26%, #22B573 26%);
+}
+.ws-icon--battery::after {
+  width: 9px;
+  height: 4px;
+  border-radius: 2px 2px 0 0;
+  background: #1F2A40;
+  transform: translate(-50%, -18px);
+}
+.ws-icon--map { right: 30px; top: 326px; }
+.ws-icon--map::before {
+  width: 26px;
+  height: 24px;
+  background:
+    linear-gradient(90deg, transparent 31%, #1F2A40 31% 39%, transparent 39% 65%, #1F2A40 65% 73%, transparent 73%),
+    linear-gradient(135deg, #FFF7D7 0 33%, #FFEB8A 33% 66%, #FFF7D7 66%);
+  border: 3px solid #1F2A40;
+  clip-path: polygon(0 12%, 33% 0, 66% 12%, 100% 0, 100% 88%, 66% 100%, 33% 88%, 0 100%);
+}
+.ws-hydro-hub {
+  left: 350px;
+  top: 258px;
+  z-index: 36;
+  width: 92px;
+  height: 78px;
+}
+.ws-hub-orb {
+  left: 24px;
+  top: 0;
+  width: 44px;
+  height: 44px;
+  background:
+    radial-gradient(circle at 44% 38%, rgba(255,255,255,.98), rgba(223,243,249,.86) 42%, rgba(40,118,232,.26) 72%),
+    conic-gradient(from 20deg, rgba(31,165,199,.12), rgba(40,118,232,.42), rgba(27,138,91,.28), rgba(31,165,199,.12));
+}
+.ws-hub-orb::before {
+  inset: 8px;
+}
+.ws-hub-orb::after {
+  width: 10px;
+  height: 10px;
+  box-shadow:
+    0 0 0 7px rgba(40,118,232,.10),
+    0 0 18px rgba(40,118,232,.34);
+}
+.ws-hub-scan {
+  width: 32px;
+}
+.ws-hub-chip {
+  bottom: 10px;
+  padding: 5px 8px;
+  font-size: 6px;
+  background: rgba(255,255,255,.92);
+}
+.ws-status-stack {
+  right: 52px;
+  top: 210px;
+  width: 166px;
+  gap: 8px;
+  z-index: 35;
+}
+.ws-status-card {
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+.ws-status-label {
+  font-size: 7px;
+}
+.ws-status-card strong {
+  margin-top: 5px;
+  font-size: 14px;
+}
+.ws-status-card em {
+  margin-top: 2px;
+  font-size: 8px;
+}
+.ws-metrics {
+  display: none;
+}
+
+/* Cover v4: SCADA water treatment plant network. */
+.water-system-board {
+  overflow: hidden;
+  border-radius: 34px;
+  background:
+    radial-gradient(480px 300px at 18% 22%, rgba(166,231,255,.26), transparent 70%),
+    radial-gradient(520px 340px at 86% 70%, rgba(11,58,130,.12), transparent 72%),
+    linear-gradient(145deg, #F8FBFF 0%, #EEF5FA 52%, #E1EFF6 100%);
+}
+.water-system-board::after {
+  left: 92px;
+  right: 92px;
+  bottom: 42px;
+  height: 30px;
+  z-index: 3;
+  background: radial-gradient(ellipse, rgba(11,20,36,.20), transparent 68%);
+}
+.ws-grid {
+  opacity: .52;
+  background-image:
+    linear-gradient(rgba(11,58,130,.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(11,58,130,.06) 1px, transparent 1px);
+  background-size: 38px 38px;
+  mask-image: radial-gradient(circle at 50% 50%, #000 0 68%, transparent 96%);
+}
+.ws-room-haze {
+  z-index: 2;
+  background:
+    radial-gradient(420px 240px at 50% 45%, rgba(31,165,199,.18), transparent 70%),
+    radial-gradient(360px 220px at 76% 18%, rgba(40,118,232,.10), transparent 74%);
+}
+.ws-room-haze::before {
+  left: 44px;
+  right: 44px;
+  top: 42px;
+  height: 572px;
+  border-radius: 28px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.70), rgba(255,255,255,.42)),
+    repeating-linear-gradient(90deg, rgba(11,58,130,.045) 0 1px, transparent 1px 32px);
+  border: 1px solid rgba(255,255,255,.72);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.80),
+    0 30px 68px -46px rgba(11,58,130,.38);
+  opacity: .78;
+}
+.ws-room-haze::after {
+  left: 120px;
+  right: 120px;
+  top: auto;
+  bottom: 58px;
+  height: 20px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(11,20,36,.22), transparent 70%);
+  filter: blur(10px);
+  opacity: .72;
+}
+.ws-scada-shell {
+  position: absolute;
+  z-index: 24;
+  left: 32px;
+  right: 32px;
+  top: 36px;
+  bottom: 32px;
+  overflow: hidden;
+  border-radius: 28px;
+  border: 1px solid rgba(186,200,220,.72);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.92), rgba(241,246,251,.80)),
+    radial-gradient(420px 220px at 48% 42%, rgba(31,165,199,.14), transparent 70%);
+  box-shadow:
+    0 30px 60px -42px rgba(11,20,36,.48),
+    inset 0 1px 0 rgba(255,255,255,.88);
+}
+.ws-scada-topbar {
+  position: absolute;
+  z-index: 6;
+  left: 16px;
+  right: 16px;
+  top: 14px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 14px;
+  border-radius: 14px;
+  background: #111A2B;
+  color: rgba(255,255,255,.92);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.12);
+}
+.ws-scada-topbar div,
+.ws-scada-topbar span {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.ws-scada-topbar > span {
+  color: #6FE7B0;
+}
+.ws-scada-led {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #31D28A;
+  box-shadow: 0 0 0 5px rgba(49,210,138,.12), 0 0 18px rgba(49,210,138,.52);
+  animation: ws-live-dot 1.45s ease-in-out infinite;
+}
+.ws-scada-diagram {
+  position: absolute;
+  z-index: 3;
+  left: 8px;
+  right: 8px;
+  top: 70px;
+  width: calc(100% - 16px);
+  height: 438px;
+}
+.ws-scada-screen-bg {
+  fill: rgba(248,251,255,.88);
+  stroke: rgba(186,200,220,.76);
+  stroke-width: 1;
+}
+.ws-scada-network {
+  fill: none;
+  stroke: rgba(121,151,177,.32);
+  stroke-width: 18;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.ws-scada-flow-line {
+  fill: none;
+  stroke: #1FA5C7;
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 12 14;
+  marker-end: url(#scadaArrow);
+  animation: scada-flow 2.4s linear infinite;
+}
+.ws-scada-flow-line--delay { animation-delay: .55s; }
+.ws-scada-flow-line--slow { animation-duration: 3.1s; animation-delay: .25s; }
+.ws-scada-source ellipse,
+.ws-scada-source path:first-of-type {
+  fill: url(#scadaTankFill);
+  stroke: rgba(11,58,130,.28);
+  stroke-width: 1.4;
+}
+.ws-scada-source .ws-scada-water {
+  fill: url(#scadaWaterFill);
+  opacity: .82;
+  stroke: none;
+}
+.ws-scada-pump circle {
+  fill: #FFFFFF;
+  stroke: rgba(11,58,130,.36);
+  stroke-width: 2;
+  filter: drop-shadow(0 12px 16px rgba(11,20,36,.14));
+}
+.ws-scada-pump path {
+  fill: var(--brand);
+}
+.ws-scada-text,
+.ws-scada-subtext,
+.ws-wtp-id,
+.ws-wtp-cap,
+.ws-arrow-label {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+}
+.ws-scada-text {
+  fill: var(--ink);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .08em;
+}
+.ws-scada-subtext {
+  fill: var(--ink-mute);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .08em;
+}
+.ws-wtp-node rect:first-child {
+  fill: rgba(255,255,255,.88);
+  stroke: rgba(11,58,130,.22);
+  stroke-width: 1.3;
+  filter: drop-shadow(0 14px 18px rgba(11,20,36,.12));
+}
+.ws-wtp-node circle {
+  fill: rgba(31,165,199,.16);
+  stroke: #1FA5C7;
+  stroke-width: 2;
+}
+.ws-wtp-node rect:not(:first-child) {
+  fill: rgba(40,118,232,.14);
+  stroke: rgba(11,58,130,.24);
+  stroke-width: 1;
+}
+.ws-wtp-node--active rect:first-child {
+  stroke: rgba(31,165,199,.68);
+  fill: rgba(223,243,249,.92);
+}
+.ws-wtp-node--standby rect:first-child {
+  stroke: rgba(217,130,32,.42);
+  fill: rgba(251,234,210,.68);
+}
+.ws-wtp-id {
+  fill: var(--ink);
+  font-size: 17px;
+  font-weight: 900;
+  letter-spacing: .04em;
+}
+.ws-wtp-cap {
+  fill: var(--brand);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .08em;
+}
+.ws-arrow-label {
+  fill: #1FA5C7;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: .10em;
+}
+.ws-command-link {
+  fill: none;
+  stroke: rgba(11,58,130,.50);
+  stroke-width: 2.1;
+  stroke-dasharray: 7 10;
+  stroke-linecap: round;
+  animation: scada-flow 3.2s linear infinite;
+}
+.ws-command-link--delay { animation-delay: .7s; }
+.ws-command-link--slow { animation-duration: 4s; animation-delay: .2s; }
+.ws-scada-command {
+  position: absolute;
+  z-index: 8;
+  right: 24px;
+  top: 86px;
+  width: 168px;
+  border-radius: 16px;
+  padding: 13px;
+  background:
+    radial-gradient(circle at 66% 18%, rgba(40,118,232,.34), transparent 36%),
+    linear-gradient(180deg, #14213A, #081427);
+  color: #fff;
+  box-shadow:
+    0 22px 36px -26px rgba(11,20,36,.62),
+    inset 0 1px 0 rgba(255,255,255,.14);
+}
+.ws-command-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: baseline;
+  margin-bottom: 10px;
+}
+.ws-command-head span,
+.ws-command-head b,
+.ws-command-row span,
+.ws-command-row strong {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+}
+.ws-command-head span {
+  color: rgba(255,255,255,.58);
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: .12em;
+}
+.ws-command-head b {
+  color: #7AE5FF;
+  font-size: 9px;
+  letter-spacing: .08em;
+}
+.ws-command-screenlet {
+  height: 52px;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 5px;
+  align-items: end;
+  padding: 8px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.12);
+}
+.ws-command-screenlet span {
+  height: var(--h);
+  min-height: 8px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #7AE5FF, #2876E8);
+  animation: ws-core-bar 3s ease-in-out infinite;
+  animation-delay: var(--d);
+}
+.ws-command-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 0;
+  border-top: 1px solid rgba(255,255,255,.12);
+}
+.ws-command-row span {
+  color: rgba(255,255,255,.58);
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: .10em;
+}
+.ws-command-row strong {
+  color: #fff;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: .02em;
+  white-space: nowrap;
+}
+.ws-scada-strip {
+  position: absolute;
+  left: 22px;
+  right: 22px;
+  bottom: 20px;
+  z-index: 6;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+.ws-scada-strip div {
+  min-width: 0;
+  border: 1px solid rgba(220,227,238,.88);
+  border-radius: 14px;
+  padding: 10px 11px;
+  background: rgba(255,255,255,.82);
+  box-shadow: 0 14px 24px -22px rgba(11,20,36,.42);
+}
+.ws-scada-strip span {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--ink-mute);
+  font-family: var(--font-mono);
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: .11em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.ws-scada-strip strong {
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 21px;
+  font-weight: 900;
+  letter-spacing: -.05em;
+}
+.ws-scada-strip em {
+  margin-left: 4px;
+  color: var(--ink-mute);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-style: normal;
+  font-weight: 800;
+}
+@keyframes scada-flow {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: -52; }
 }
 
 /* ╔════════════════════════ SLIDE 02 — SHIFT CARD ════════════════════════╗ */
@@ -1742,49 +3809,166 @@ h1, h2, h3, h4, p { margin: 0; }
     </header>
 
     <div class="canvas">
-      <div class="cover__top">
-        <span class="chip chip--ghost">
-          <span class="chip__dot"></span> Beacon Engineering &nbsp;·&nbsp; Water Infrastructure Intelligence
-        </span>
-      </div>
+      <div class="cover-layout">
+        <div class="cover-copy">
+          <div class="cover__top">
+            <span class="chip chip--ghost">
+              <span class="chip__dot"></span> Beacon Engineering &nbsp;·&nbsp; Water Infrastructure Intelligence
+            </span>
+          </div>
 
-      <h1 class="cover__title">
-        Transformasi Digital<br/>
-        Infrastruktur <span class="grad">Air Indonesia</span>
-      </h1>
+          <h1 class="cover__title">
+            Transformasi Digital<br/>
+            Infrastruktur <span class="grad">Air Indonesia</span>
+          </h1>
 
-      <p class="cover__sub">
-        Telemetry, IoT, SCADA, Early Warning, dan AI Insight<br/>
-        untuk <b>Bendungan</b>, <b>JIAT/ATAB</b>, <b>Irigasi</b>, dan <b>Hidrologi</b>.
-      </p>
+          <p class="cover__sub">
+            Telemetry, IoT, SCADA, Early Warning, dan AI Insight<br/>
+            untuk <b>Bendungan</b>, <b>JIAT/ATAB</b>, <b>Irigasi</b>, dan <b>Hidrologi</b>.
+          </p>
 
-      <div class="cover__cta">
-        <span class="cta-line"></span>
-        <span class="cta-text">Program berbasis data untuk mendukung ketahanan air dan pangan nasional.</span>
-      </div>
+          <div class="cover__cta">
+            <span class="cta-line"></span>
+            <span class="cta-text">Program berbasis data untuk mendukung ketahanan air dan pangan nasional.</span>
+          </div>
 
-      <div class="cover__metrics">
-        <div class="metric">
-          <span class="metric__num">Real-time</span>
-          <span class="metric__lbl">Data lapangan, bukan laporan manual</span>
+          <div class="cover__metrics">
+            <div class="metric">
+              <span class="metric__num">Real-time</span>
+              <span class="metric__lbl">Data lapangan, bukan laporan manual</span>
+            </div>
+            <div class="metric">
+              <span class="metric__num">24<span class="x">/</span>7</span>
+              <span class="metric__lbl">Monitoring & alert otomatis</span>
+            </div>
+            <div class="metric">
+              <span class="metric__num">Early</span>
+              <span class="metric__lbl">Warning sebelum krisis terjadi</span>
+            </div>
+            <div class="metric">
+              <span class="metric__num">Executive</span>
+              <span class="metric__lbl">Dashboard untuk pengambil keputusan</span>
+            </div>
+          </div>
+
+          <div class="cover__foot">
+            <span class="foot__pill">Diajukan kepada</span>
+            <span class="foot__txt">Kementerian PU · BBWS/BWS · Dinas SDA · Balai Irigasi · Pemda</span>
+          </div>
         </div>
-        <div class="metric">
-          <span class="metric__num">24<span class="x">/</span>7</span>
-          <span class="metric__lbl">Monitoring & alert otomatis</span>
-        </div>
-        <div class="metric">
-          <span class="metric__num">Early</span>
-          <span class="metric__lbl">Warning sebelum krisis terjadi</span>
-        </div>
-        <div class="metric">
-          <span class="metric__num">Executive</span>
-          <span class="metric__lbl">Dashboard untuk pengambil keputusan</span>
-        </div>
-      </div>
 
-      <div class="cover__foot">
-        <span class="foot__pill">Diajukan kepada</span>
-        <span class="foot__txt">Kementerian PU · BBWS/BWS · Dinas SDA · Balai Irigasi · Pemda</span>
+        <div class="water-cover-art" data-water-cover-art aria-label="Ilustrasi sistem water intelligence terintegrasi">
+          <div class="water-system-board">
+            <div class="ws-grid"></div>
+            <div class="ws-room-haze"></div>
+            <div class="ws-noise"></div>
+
+            <div class="ws-scada-shell">
+              <div class="ws-scada-topbar">
+                <div><span class="ws-scada-led"></span> SCADA WATER TREATMENT PLANT</div>
+                <span>RTU ONLINE · 99.8%</span>
+              </div>
+
+              <svg class="ws-scada-diagram" viewBox="0 0 700 500" preserveAspectRatio="none" aria-hidden="true">
+                <defs>
+                  <marker id="scadaArrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+                    <path d="M 0 0 L 10 5 L 0 10 Z" fill="#1FA5C7" />
+                  </marker>
+                  <linearGradient id="scadaWaterFill" x1="0" x2="1" y1="0" y2="1">
+                    <stop offset="0%" stop-color="#A6E7FF" />
+                    <stop offset="100%" stop-color="#1FA5C7" />
+                  </linearGradient>
+                  <linearGradient id="scadaTankFill" x1="0" x2="0" y1="0" y2="1">
+                    <stop offset="0%" stop-color="#F8FBFF" />
+                    <stop offset="100%" stop-color="#DDE7F4" />
+                  </linearGradient>
+                </defs>
+
+                <rect class="ws-scada-screen-bg" x="18" y="18" width="664" height="448" rx="18" />
+                <path class="ws-scada-network" d="M 104 252 H 192 C 226 252 238 252 265 252 M 265 252 V 122 H 348 M 265 252 H 348 M 265 252 V 382 H 348" />
+                <path class="ws-scada-flow-line" d="M 104 252 H 192 C 226 252 238 252 265 252 M 265 252 V 122 H 342" />
+                <path class="ws-scada-flow-line ws-scada-flow-line--delay" d="M 265 252 H 342" />
+                <path class="ws-scada-flow-line ws-scada-flow-line--slow" d="M 265 252 V 382 H 342" />
+
+                <g class="ws-scada-source">
+                  <ellipse cx="82" cy="220" rx="54" ry="18" />
+                  <path d="M 28 220 V 286 C 28 296 52 304 82 304 C 112 304 136 296 136 286 V 220" />
+                  <ellipse cx="82" cy="286" rx="54" ry="18" />
+                  <path class="ws-scada-water" d="M 36 249 C 55 239, 72 260, 91 249 S 121 242, 130 253 V 286 C 130 292 108 298 82 298 C 56 298 34 292 34 286 Z" />
+                  <text x="82" y="336" text-anchor="middle" class="ws-scada-text">RAW WATER</text>
+                  <text x="82" y="354" text-anchor="middle" class="ws-scada-subtext">INTAKE · 420 L/s</text>
+                </g>
+
+                <g class="ws-scada-pump">
+                  <circle cx="204" cy="252" r="28" />
+                  <path d="M 193 241 L 219 252 L 193 263 Z" />
+                  <text x="204" y="304" text-anchor="middle" class="ws-scada-text">PUMP STATION</text>
+                  <text x="204" y="322" text-anchor="middle" class="ws-scada-subtext">P-01/P-02 AUTO</text>
+                </g>
+
+                <g class="ws-wtp-node">
+                  <rect x="348" y="78" width="190" height="88" rx="14" />
+                  <text x="370" y="108" class="ws-wtp-id">WTP-01</text>
+                  <text x="370" y="130" class="ws-wtp-cap">250 L/s · ONLINE</text>
+                  <circle cx="481" cy="122" r="18" />
+                  <rect x="428" y="112" width="24" height="32" rx="4" />
+                  <rect x="509" y="112" width="18" height="32" rx="4" />
+                  <text x="361" y="184" class="ws-arrow-label">to WTP-01</text>
+                </g>
+
+                <g class="ws-wtp-node ws-wtp-node--active">
+                  <rect x="348" y="208" width="190" height="88" rx="14" />
+                  <text x="370" y="238" class="ws-wtp-id">WTP-02</text>
+                  <text x="370" y="260" class="ws-wtp-cap">180 L/s · STABLE</text>
+                  <circle cx="481" cy="252" r="18" />
+                  <rect x="428" y="242" width="24" height="32" rx="4" />
+                  <rect x="509" y="242" width="18" height="32" rx="4" />
+                  <text x="361" y="314" class="ws-arrow-label">to WTP-02</text>
+                </g>
+
+                <g class="ws-wtp-node ws-wtp-node--standby">
+                  <rect x="348" y="338" width="190" height="88" rx="14" />
+                  <text x="370" y="368" class="ws-wtp-id">WTP-03</text>
+                  <text x="370" y="390" class="ws-wtp-cap">STANDBY · READY</text>
+                  <circle cx="481" cy="382" r="18" />
+                  <rect x="428" y="372" width="24" height="32" rx="4" />
+                  <rect x="509" y="372" width="18" height="32" rx="4" />
+                  <text x="361" y="444" class="ws-arrow-label">to WTP-03</text>
+                </g>
+
+                <path class="ws-command-link" d="M 538 122 C 588 118, 604 142, 623 172" />
+                <path class="ws-command-link ws-command-link--delay" d="M 538 252 C 596 244, 613 226, 629 202" />
+                <path class="ws-command-link ws-command-link--slow" d="M 538 382 C 600 338, 624 288, 632 222" />
+                <text x="576" y="324" class="ws-scada-subtext">telemetry bus</text>
+              </svg>
+
+              <div class="ws-scada-command">
+                <div class="ws-command-head">
+                  <span>Command Center</span>
+                  <b>HMI-01</b>
+                </div>
+                <div class="ws-command-screenlet">
+                  <span style="--h: 38%; --d: 0ms;"></span>
+                  <span style="--h: 66%; --d: 90ms;"></span>
+                  <span style="--h: 45%; --d: 180ms;"></span>
+                  <span style="--h: 78%; --d: 270ms;"></span>
+                  <span style="--h: 54%; --d: 360ms;"></span>
+                  <span style="--h: 70%; --d: 450ms;"></span>
+                </div>
+                <div class="ws-command-row"><span>WTP online</span><strong>03</strong></div>
+                <div class="ws-command-row"><span>Chlorine</span><strong>0.7 ppm</strong></div>
+                <div class="ws-command-row"><span>Alarm</span><strong>0 critical</strong></div>
+              </div>
+
+              <div class="ws-scada-strip">
+                <div><span>Raw Water</span><strong>420</strong><em>L/s</em></div>
+                <div><span>Reservoir</span><strong>78</strong><em>%</em></div>
+                <div><span>Pressure</span><strong>4.2</strong><em>bar</em></div>
+                <div><span>SCADA</span><strong>99.8</strong><em>%</em></div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -4702,7 +6886,37 @@ const _COMP_MAP = {
   ),
 };
 
+function _mountWaterCoverArt() {
+  document.querySelectorAll('[data-water-cover-art]').forEach((art) => {
+    if (art.__waterCoverMounted) return;
+    art.__waterCoverMounted = true;
+
+    const clamp = (v) => Math.max(-1, Math.min(1, v));
+    const resetPointer = () => {
+      art.style.setProperty('--water-x', '0');
+      art.style.setProperty('--water-y', '0');
+      art.classList.remove('is-interacting');
+    };
+    const setPointer = (event) => {
+      const rect = art.getBoundingClientRect();
+      if (!rect.width || !rect.height) return;
+      const x = clamp(((event.clientX - rect.left) / rect.width - 0.5) * 2);
+      const y = clamp(((event.clientY - rect.top) / rect.height - 0.5) * 2);
+      art.style.setProperty('--water-x', x.toFixed(3));
+      art.style.setProperty('--water-y', y.toFixed(3));
+      art.classList.add('is-interacting');
+    };
+
+    art.addEventListener('pointerenter', setPointer);
+    art.addEventListener('pointermove', setPointer);
+    art.addEventListener('pointerleave', resetPointer);
+    art.addEventListener('pointercancel', resetPointer);
+    resetPointer();
+  });
+}
+
 function _mountDecks() {
+  _mountWaterCoverArt();
   document.querySelectorAll('[data-component]').forEach((el) => {
     if (el.__mounted) return;
     const key = el.getAttribute('data-component');
