@@ -292,8 +292,7 @@
 					icon: getSolutionIcon(solution.slug),
 					items: (solution.sub_solutions ?? [])
 						.map((item) => item.abbreviation || item.name)
-						.filter(Boolean)
-						.slice(0, 4),
+						.filter(Boolean),
 					href: `/solusi/${solution.slug}`
 				}))
 			: fallbackSolutionCategories
@@ -456,7 +455,7 @@
 										</div>
 										<p class="text-xs text-[#5C5C5C] mb-2">{cat.desc}</p>
 										<div class="flex flex-wrap gap-1">
-											{#each cat.items.slice(0, 3) as item}
+											{#each cat.items as item}
 												<span class="text-[10px] px-2 py-0.5 rounded-full bg-white text-[#5C5C5C] border border-[#E5E5E5]">{item}</span>
 											{/each}
 										</div>
