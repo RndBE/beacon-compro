@@ -23,6 +23,7 @@
 		<div class="card" style="overflow:auto">
 			<input
 				placeholder="Cari site / kode…"
+				aria-label="Cari site"
 				bind:value={q}
 				style="width:100%;margin-bottom:12px;padding:9px 12px;border-radius:9px;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);font-family:var(--font-mono);font-size:13px"
 			/>
