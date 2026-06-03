@@ -437,7 +437,7 @@
 /* ---- overview main grid ---- */
 .cc-main {
 	display: grid;
-	grid-template-columns: 1.05fr 1.15fr 1fr;
+	grid-template-columns: 1.5fr 1.1fr 1fr;
 	gap: 14px;
 	min-height: 0;
 }
@@ -848,4 +848,309 @@
 		transform: scale(2.3);
 		opacity: 0;
 	}
+}
+
+/* ============================================================
+   Bottom ops section: trend cards, CCTV, EWS, telemetry
+   ============================================================ */
+.demo-ops {
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+}
+.ops-row {
+	display: grid;
+	grid-template-columns: 1.3fr 1fr 1fr;
+	gap: 14px;
+	align-items: stretch;
+}
+@media (max-width: 1100px) {
+	.ops-row {
+		grid-template-columns: 1fr;
+	}
+}
+
+/* ---- trend strip ---- */
+.trend-strip {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: 14px;
+}
+@media (max-width: 1100px) {
+	.trend-strip {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+.trend-card {
+	padding: 14px 16px;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	overflow: hidden;
+}
+.trend-card__label {
+	font-family: var(--font-mono);
+	font-size: 10px;
+	font-weight: 700;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--ink-mute);
+}
+.trend-card__row {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 8px;
+}
+.trend-card__value {
+	font-family: var(--font-mono);
+	font-size: 26px;
+	font-weight: 700;
+	color: var(--ink);
+	letter-spacing: -0.02em;
+	line-height: 1;
+}
+.trend-card__value small {
+	font-size: 12px;
+	font-weight: 500;
+	color: var(--ink-mute);
+	margin-left: 3px;
+}
+.trend-card__delta {
+	font-family: var(--font-mono);
+	font-size: 11px;
+	font-weight: 700;
+}
+.trend-card__delta.up {
+	color: #46d78f;
+}
+.trend-card__delta.down {
+	color: #ff7a66;
+}
+.trend-card__spark {
+	width: 100%;
+	height: 34px;
+	display: block;
+}
+
+/* ---- CCTV ---- */
+.cctv-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 10px;
+}
+.cctv-tile {
+	position: relative;
+	aspect-ratio: 16 / 10;
+	border-radius: 10px;
+	overflow: hidden;
+	border: 1px solid rgba(120, 160, 220, 0.18);
+	background:
+		repeating-linear-gradient(
+			180deg,
+			rgba(120, 160, 220, 0.05) 0px,
+			rgba(120, 160, 220, 0.05) 1px,
+			transparent 1px,
+			transparent 4px
+		),
+		radial-gradient(120% 90% at 30% 20%, rgba(60, 130, 232, 0.22), transparent 60%),
+		linear-gradient(160deg, #0d1f44 0%, #060e22 100%);
+}
+.cctv-tile::after {
+	content: '';
+	position: absolute;
+	left: 0;
+	right: 0;
+	height: 22px;
+	background: linear-gradient(180deg, rgba(120, 200, 255, 0.18), transparent);
+	animation: cctvScan 3.6s linear infinite;
+	pointer-events: none;
+}
+@keyframes cctvScan {
+	0% {
+		top: -22px;
+	}
+	100% {
+		top: 100%;
+	}
+}
+.cctv-tile__rec {
+	position: absolute;
+	top: 8px;
+	left: 9px;
+	font-family: var(--font-mono);
+	font-size: 9px;
+	font-weight: 700;
+	letter-spacing: 0.1em;
+	color: #ff7a66;
+	animation: demoStatusBlink 1.4s ease infinite;
+}
+.cctv-tile__id {
+	position: absolute;
+	top: 8px;
+	right: 9px;
+	font-family: var(--font-mono);
+	font-size: 9px;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	color: var(--ink-soft);
+}
+.cctv-tile__meta {
+	position: absolute;
+	left: 9px;
+	right: 9px;
+	bottom: 8px;
+	display: flex;
+	flex-direction: column;
+	gap: 1px;
+	font-family: var(--font-mono);
+	font-size: 10px;
+	color: #c9d5ec;
+	text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+}
+.cctv-tile__time {
+	font-size: 9px;
+	color: var(--ink-mute);
+}
+
+/* ---- EWS ---- */
+.ews-scale {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 6px;
+	margin: 4px 0 14px;
+}
+.ews-step {
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+}
+.ews-step__bar {
+	height: 6px;
+	border-radius: 3px;
+	background: rgba(120, 160, 220, 0.16);
+}
+.ews-step__label {
+	font-family: var(--font-mono);
+	font-size: 10px;
+	font-weight: 700;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var(--ink-mute);
+}
+.ews-step--reached[data-lvl='1'] .ews-step__bar {
+	background: #ffd27a;
+}
+.ews-step--reached[data-lvl='2'] .ews-step__bar {
+	background: #ffb454;
+}
+.ews-step--reached[data-lvl='0'] .ews-step__bar {
+	background: #46d78f;
+}
+.ews-step--active .ews-step__bar {
+	box-shadow: 0 0 12px rgba(255, 180, 84, 0.7);
+	animation: demoStatusBlink 1.4s ease infinite;
+}
+.ews-step--active .ews-step__label {
+	color: #ffb454;
+}
+.ews-headline {
+	font-family: var(--font-sans);
+	font-size: 15px;
+	font-weight: 700;
+	color: var(--ink);
+	margin-bottom: 10px;
+}
+.ews-meta {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	margin-bottom: 14px;
+}
+.ews-meta > div {
+	display: flex;
+	gap: 10px;
+}
+.ews-meta__k {
+	flex: 0 0 78px;
+	font-family: var(--font-mono);
+	font-size: 10px;
+	font-weight: 700;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--ink-mute);
+	padding-top: 1px;
+}
+.ews-meta__v {
+	font-size: 12px;
+	color: var(--ink-2);
+	line-height: 1.35;
+}
+.ews-conf__head {
+	display: flex;
+	justify-content: space-between;
+	font-family: var(--font-mono);
+	font-size: 11px;
+	color: var(--ink-mute);
+	margin-bottom: 5px;
+}
+.ews-conf__bar {
+	height: 6px;
+	border-radius: 3px;
+	background: rgba(120, 160, 220, 0.16);
+	overflow: hidden;
+}
+.ews-conf__bar span {
+	display: block;
+	height: 100%;
+	border-radius: 3px;
+	background: linear-gradient(90deg, #2876e8, #3cc3f2);
+}
+
+/* ---- telemetry health ---- */
+.tele-rows {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+.tele-row {
+	display: grid;
+	grid-template-columns: 1fr auto;
+	gap: 4px 10px;
+	align-items: baseline;
+}
+.tele-row__k {
+	font-family: var(--font-mono);
+	font-size: 12px;
+	color: var(--ink-soft);
+}
+.tele-row__v {
+	font-family: var(--font-mono);
+	font-size: 13px;
+	font-weight: 700;
+	text-align: right;
+}
+.tele-row__v--ok {
+	color: #46d78f;
+}
+.tele-row__v--warn {
+	color: #ffb454;
+}
+.tele-bar {
+	grid-column: 1 / -1;
+	height: 5px;
+	border-radius: 3px;
+	background: rgba(120, 160, 220, 0.16);
+	overflow: hidden;
+}
+.tele-bar__fill {
+	display: block;
+	height: 100%;
+	border-radius: 3px;
+}
+.tele-bar__fill--ok {
+	background: linear-gradient(90deg, #1f8a5b, #46d78f);
+}
+.tele-bar__fill--warn {
+	background: linear-gradient(90deg, #d98220, #ffb454);
 }

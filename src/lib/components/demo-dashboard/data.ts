@@ -131,3 +131,54 @@ export const TB_SENSORS: TbSensor[] = [
 ];
 
 export const TB_GEOJSON_URL = '/demo/tulang-bawang.geojson';
+
+/* ---- Bottom ops section: trends, CCTV, EWS, telemetry (Overview) ---- */
+export interface TrendCard {
+	label: string;
+	value: string;
+	unit: string;
+	delta: string;
+	up: boolean;
+	spark: number[];
+}
+
+export const TREND_CARDS: TrendCard[] = [
+	{ label: 'Debit Sungai', value: '128', unit: 'm³/s', delta: '6.2%', up: true, spark: [98, 104, 101, 110, 115, 112, 120, 118, 124, 122, 128, 128] },
+	{ label: 'Curah Hujan 7h', value: '512', unit: 'mm', delta: '18%', up: true, spark: [120, 160, 140, 210, 260, 300, 340, 320, 400, 460, 500, 512] },
+	{ label: 'TMA Rata-rata', value: '2.31', unit: 'm', delta: '0.4%', up: false, spark: [2.45, 2.42, 2.4, 2.38, 2.41, 2.39, 2.36, 2.34, 2.35, 2.33, 2.32, 2.31] },
+	{ label: 'Beban Pompa', value: '78', unit: '%', delta: '3.1%', up: true, spark: [62, 65, 63, 68, 70, 72, 71, 74, 76, 75, 77, 78] }
+];
+
+export interface CctvFeed {
+	id: string;
+	name: string;
+}
+
+export const CCTV_FEEDS: CctvFeed[] = [
+	{ id: 'CAM-01', name: 'Sungai · Menggala' },
+	{ id: 'CAM-02', name: 'Pintu Air · Banjar Margo' }
+];
+
+export const EWS_LEVELS = ['Normal', 'Waspada', 'Siaga', 'Awas'] as const;
+export const EWS_ACTIVE = 2; // index → Siaga
+export const EWS_INFO = {
+	headline: 'Siaga Banjir · Way Tulang Bawang',
+	eta: '12–16 jam',
+	area: '3 kecamatan · Banjar Margo, Gedung Aji, Rawa Pitu',
+	confidence: 87
+};
+
+export interface TelemetryRow {
+	label: string;
+	value: string;
+	tone: 'ok' | 'warn';
+	pct: number;
+}
+
+export const TELEMETRY_ROWS: TelemetryRow[] = [
+	{ label: 'Uptime · 30h', value: '99.6%', tone: 'ok', pct: 99.6 },
+	{ label: 'Latency sync', value: '1.2s', tone: 'ok', pct: 86 },
+	{ label: 'Paket diterima · 24h', value: '18.4k', tone: 'ok', pct: 92 },
+	{ label: 'Gateway online', value: '4 / 4', tone: 'ok', pct: 100 },
+	{ label: 'RTU online', value: '42 / 44', tone: 'warn', pct: 95 }
+];
