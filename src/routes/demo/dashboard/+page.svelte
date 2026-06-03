@@ -25,18 +25,19 @@
 			<div style="flex:1;min-height:300px"><RainfallBars compact /></div>
 		</div>
 		<div class="cc-col">
-			<div style="flex:1.15;min-height:300px"><PumpGrid compact /></div>
+			<div style="flex:1.15;min-height:300px"><CctvMonitor /></div>
 			<div style="flex:1;min-height:270px"><WqPanel compact /></div>
 		</div>
 	</div>
-	<AiInsight />
 
 	<div class="demo-ops">
 		<TrendCards />
 		<div class="ops-row">
-			<CctvMonitor />
+			<PumpGrid />
 			<EwsPanel />
 			<TelemetryHealth />
 		</div>
 	</div>
+
+	<AiInsight />
 </div>
