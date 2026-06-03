@@ -1,5 +1,5 @@
 <script lang="ts">
-	import logoBeacon from '$lib/assets/logo_be.png';
+	import BrandMark from '$lib/components/demo-dashboard/BrandMark.svelte';
 </script>
 
 <svelte:head>
@@ -9,10 +9,9 @@
 <div class="demo-login">
 	<form class="demo-login__card" method="POST">
 		<div class="demo-login__brand">
-			<img src={logoBeacon} alt="Beacon" />
-			<span>Command Center</span>
+			<BrandMark />
 		</div>
-		<p class="demo-login__sub">Executive Dashboard · Infrastruktur Air Nasional</p>
+		<p class="demo-login__sub">Executive Dashboard · Tulang Bawang, Lampung</p>
 
 		<div class="demo-login__field">
 			<label for="email">Email</label>

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { NAV } from './data';
-	import logoBeacon from '$lib/assets/logo_be.png';
+	import BrandMark from './BrandMark.svelte';
 	import {
 		LayoutDashboard,
 		MapPin,
@@ -32,8 +32,7 @@
 
 <aside class="demo-side">
 	<div class="demo-side__brand">
-		<img src={logoBeacon} alt="Beacon" />
-		<span>Command Center</span>
+		<BrandMark />
 	</div>
 	<nav class="demo-side__nav">
 		{#each NAV as item (item.href)}
