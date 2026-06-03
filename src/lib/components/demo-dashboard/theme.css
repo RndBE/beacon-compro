@@ -761,3 +761,91 @@
 		display: none;
 	}
 }
+
+/* ---- Tulang Bawang Leaflet map (Overview) ---- */
+.demo-deck .tb-leaflet {
+	position: absolute;
+	inset: 0;
+	border-radius: 12px;
+	overflow: hidden;
+}
+.demo-deck .leaflet-container {
+	background: #07112a;
+	font-family: var(--font-sans);
+}
+.demo-deck .leaflet-control-zoom a {
+	background: rgba(255, 255, 255, 0.06);
+	color: #c9d5ec;
+	border-color: rgba(120, 160, 220, 0.2);
+}
+.demo-deck .leaflet-control-zoom a:hover {
+	background: rgba(255, 255, 255, 0.12);
+	color: #eaf1fb;
+}
+.demo-deck .leaflet-popup-content-wrapper,
+.demo-deck .leaflet-popup-tip {
+	background: #0b1b3a;
+	color: #eaf1fb;
+	border: 1px solid rgba(120, 160, 220, 0.25);
+	box-shadow: 0 12px 40px rgba(6, 15, 35, 0.45);
+}
+.demo-deck .leaflet-popup-content {
+	font-family: var(--font-sans);
+	font-size: 12px;
+	line-height: 1.45;
+	color: var(--ink-2);
+}
+.demo-deck .leaflet-popup-close-button {
+	color: var(--ink-mute);
+}
+
+/* sensor markers (ported from tulang-bawang slide 3) */
+.tb-div-icon {
+	background: none;
+	border: 0;
+}
+.tb-marker {
+	position: relative;
+	display: grid;
+	place-items: center;
+	width: 40px;
+	height: 40px;
+}
+.tb-marker__core {
+	position: relative;
+	z-index: 2;
+	width: 24px;
+	height: 24px;
+	border-radius: 50%;
+	display: grid;
+	place-items: center;
+	font-family: var(--font-mono);
+	font-size: 9px;
+	font-weight: 700;
+	letter-spacing: 0.02em;
+	color: #07112a;
+	background: var(--c, #2876e8);
+	border: 2px solid rgba(7, 17, 42, 0.85);
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+}
+.tb-marker__pulse {
+	position: absolute;
+	inset: 8px;
+	border-radius: 50%;
+	background: var(--s, #46d78f);
+	opacity: 0.35;
+	animation: tbPulse 2.2s ease-out infinite;
+}
+.tb-marker--alarm .tb-marker__core {
+	animation: demoStatusBlink 1s ease infinite;
+}
+@keyframes tbPulse {
+	0% {
+		transform: scale(0.55);
+		opacity: 0.45;
+	}
+	100% {
+		transform: scale(2.3);
+		opacity: 0;
+	}
+}

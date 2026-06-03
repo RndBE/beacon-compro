@@ -1,6 +1,6 @@
 <script lang="ts">
 	import KpiRow from '$lib/components/demo-dashboard/KpiRow.svelte';
-	import NationalMap from '$lib/components/demo-dashboard/NationalMap.svelte';
+	import TulangBawangMap from '$lib/components/demo-dashboard/TulangBawangMap.svelte';
 	import AwlrChart from '$lib/components/demo-dashboard/AwlrChart.svelte';
 	import RainfallBars from '$lib/components/demo-dashboard/RainfallBars.svelte';
 	import PumpGrid from '$lib/components/demo-dashboard/PumpGrid.svelte';
@@ -15,7 +15,7 @@
 <div style="display:flex;flex-direction:column;gap:14px;min-height:calc(100vh - 120px)">
 	<KpiRow />
 	<div class="cc-main" style="flex:1">
-		<NationalMap />
+		<TulangBawangMap />
 		<div class="cc-col">
 			<div style="flex:1;min-height:260px"><AwlrChart compact /></div>
 			<div style="flex:1;min-height:260px"><RainfallBars compact /></div>
