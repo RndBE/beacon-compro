@@ -933,93 +933,152 @@
 	display: block;
 }
 
-/* ---- CCTV ---- */
+/* ---- CCTV (single swipeable carousel) ---- */
 .cctv {
 	height: 100%;
 	display: flex;
 	flex-direction: column;
 	min-height: 0;
 }
-.cctv-grid {
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	grid-template-rows: 1fr;
-	gap: 10px;
-	flex: 1;
-	min-height: 0;
-}
-.cctv-tile {
+.cctv-stage {
 	position: relative;
-	min-height: 120px;
+	flex: 1;
+	min-height: 140px;
 	border-radius: 10px;
 	overflow: hidden;
 	border: 1px solid rgba(120, 160, 220, 0.18);
-	background:
-		repeating-linear-gradient(
-			180deg,
-			rgba(120, 160, 220, 0.05) 0px,
-			rgba(120, 160, 220, 0.05) 1px,
-			transparent 1px,
-			transparent 4px
-		),
-		radial-gradient(120% 90% at 30% 20%, rgba(60, 130, 232, 0.22), transparent 60%),
-		linear-gradient(160deg, #0d1f44 0%, #060e22 100%);
+	background: #060e22;
+	cursor: grab;
+	touch-action: pan-y;
+	user-select: none;
 }
-.cctv-tile::after {
-	content: '';
-	position: absolute;
-	left: 0;
-	right: 0;
-	height: 22px;
-	background: linear-gradient(180deg, rgba(120, 200, 255, 0.18), transparent);
-	animation: cctvScan 3.6s linear infinite;
+.cctv-stage:active {
+	cursor: grabbing;
+}
+.cctv-track {
+	display: flex;
+	height: 100%;
+	width: 100%;
+	transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.cctv-track--drag {
+	transition: none;
+}
+.cctv-slide {
+	position: relative;
+	flex: 0 0 100%;
+	height: 100%;
+	overflow: hidden;
+}
+.cctv-slide img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+	filter: saturate(0.9) contrast(1.05) brightness(0.82);
 	pointer-events: none;
 }
-@keyframes cctvScan {
-	0% {
-		top: -22px;
-	}
-	100% {
-		top: 100%;
-	}
-}
-.cctv-tile__rec {
+.cctv-slide::after {
+	content: '';
 	position: absolute;
-	top: 8px;
-	left: 9px;
+	inset: 0;
+	background:
+		radial-gradient(120% 90% at 50% 0%, rgba(8, 17, 42, 0.15), transparent 55%),
+		linear-gradient(0deg, rgba(6, 14, 34, 0.85) 0%, transparent 38%);
+	pointer-events: none;
+}
+.cctv-slide__rec {
+	position: absolute;
+	top: 9px;
+	left: 11px;
 	font-family: var(--font-mono);
-	font-size: 9px;
+	font-size: 10px;
 	font-weight: 700;
 	letter-spacing: 0.1em;
 	color: #ff7a66;
+	text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
 	animation: demoStatusBlink 1.4s ease infinite;
 }
-.cctv-tile__id {
+.cctv-slide__id {
 	position: absolute;
-	top: 8px;
-	right: 9px;
+	top: 9px;
+	right: 11px;
 	font-family: var(--font-mono);
-	font-size: 9px;
+	font-size: 10px;
 	font-weight: 700;
 	letter-spacing: 0.08em;
-	color: var(--ink-soft);
+	color: #eaf1fb;
+	text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
 }
-.cctv-tile__meta {
+.cctv-slide__meta {
 	position: absolute;
-	left: 9px;
-	right: 9px;
-	bottom: 8px;
+	left: 11px;
+	right: 11px;
+	bottom: 10px;
 	display: flex;
 	flex-direction: column;
 	gap: 1px;
 	font-family: var(--font-mono);
-	font-size: 10px;
-	color: #c9d5ec;
-	text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+	font-size: 12px;
+	font-weight: 600;
+	color: #eaf1fb;
+	text-shadow: 0 1px 5px rgba(0, 0, 0, 0.75);
 }
-.cctv-tile__time {
-	font-size: 9px;
-	color: var(--ink-mute);
+.cctv-slide__time {
+	font-size: 10px;
+	font-weight: 500;
+	color: #c9d5ec;
+}
+.cctv-nav {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 30px;
+	height: 30px;
+	display: grid;
+	place-items: center;
+	border-radius: 50%;
+	border: 1px solid rgba(120, 160, 220, 0.28);
+	background: rgba(7, 17, 42, 0.55);
+	color: #eaf1fb;
+	font-size: 18px;
+	line-height: 1;
+	cursor: pointer;
+	backdrop-filter: blur(4px);
+	opacity: 0;
+	transition: opacity 0.2s, background 0.2s;
+}
+.cctv-stage:hover .cctv-nav {
+	opacity: 1;
+}
+.cctv-nav:hover {
+	background: rgba(40, 118, 232, 0.55);
+}
+.cctv-nav--prev {
+	left: 9px;
+}
+.cctv-nav--next {
+	right: 9px;
+}
+.cctv-dots {
+	display: flex;
+	justify-content: center;
+	gap: 7px;
+	padding-top: 10px;
+}
+.cctv-dot {
+	width: 7px;
+	height: 7px;
+	border-radius: 999px;
+	border: 0;
+	padding: 0;
+	background: rgba(120, 160, 220, 0.3);
+	cursor: pointer;
+	transition: width 0.2s, background 0.2s;
+}
+.cctv-dot--active {
+	width: 18px;
+	background: #3cc3f2;
 }
 
 /* ---- EWS ---- */

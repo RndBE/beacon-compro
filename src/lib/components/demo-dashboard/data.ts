@@ -152,11 +152,31 @@ export const TREND_CARDS: TrendCard[] = [
 export interface CctvFeed {
 	id: string;
 	name: string;
+	img: string;
 }
 
+// Image URLs are free-licensed photos from Wikimedia Commons (verified to load).
 export const CCTV_FEEDS: CctvFeed[] = [
-	{ id: 'CAM-01', name: 'Sungai · Menggala' },
-	{ id: 'CAM-02', name: 'Pintu Air · Banjar Margo' }
+	{
+		id: 'CAM-01',
+		name: 'Sungai · Menggala',
+		img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/3._Hilir_sungai_Pesisir_Barat%2C_Lampung_2016.jpg/960px-3._Hilir_sungai_Pesisir_Barat%2C_Lampung_2016.jpg'
+	},
+	{
+		id: 'CAM-02',
+		name: 'Pintu Air · Banjar Margo',
+		img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Pintu_Air_Di_Saluran_Irigasi_Sekunder_Di_Jl.Soeprapto_Kebumen_Jateng_Indonesia.jpg/960px-Pintu_Air_Di_Saluran_Irigasi_Sekunder_Di_Jl.Soeprapto_Kebumen_Jateng_Indonesia.jpg'
+	},
+	{
+		id: 'CAM-03',
+		name: 'Bendung · Rawa Pitu',
+		img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Saluran_Air_Irigasi_Sawah_Dari_Bendung_Bedegolan_Di_Kutowinangun_Kebumen.jpg/960px-Saluran_Air_Irigasi_Sawah_Dari_Bendung_Bedegolan_Di_Kutowinangun_Kebumen.jpg'
+	},
+	{
+		id: 'CAM-04',
+		name: 'Saluran Irigasi · Penawar Aji',
+		img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Pintu_Air_Saluran_Irigasi_Di_Ambal_Kebumen_Jateng_Indonesia.jpg/960px-Pintu_Air_Saluran_Irigasi_Di_Ambal_Kebumen_Jateng_Indonesia.jpg'
+	}
 ];
 
 export const EWS_LEVELS = ['Normal', 'Waspada', 'Siaga', 'Awas'] as const;
