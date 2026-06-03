@@ -1,15 +1,13 @@
 <script lang="ts">
+	import Sidebar from '$lib/components/demo-dashboard/Sidebar.svelte';
+	import TopBar from '$lib/components/demo-dashboard/TopBar.svelte';
 	let { children } = $props();
 </script>
 
 <div class="demo-app">
-	<aside class="demo-side">
-		<div class="demo-side__brand"><span>Command Center</span></div>
-		<form class="demo-side__logout" method="POST" action="/demo/logout">
-			<button type="submit">Keluar</button>
-		</form>
-	</aside>
+	<Sidebar />
 	<div class="demo-app__main">
+		<TopBar />
 		<div class="demo-app__content">
 			{@render children()}
 		</div>
