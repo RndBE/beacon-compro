@@ -467,15 +467,12 @@
 								{@const isActiveStage = activeId === stageProduct.id}
 								{@const shouldFloatStage = !stageProduct.image && stageProduct.id !== "bl-1100"}
 								{@const isVideoStage = stageProduct.media_type === "video"}
-								<!-- Subtle Inner Container for 3D Asset -->
+								<!-- 3D Asset Stage (no card chrome) -->
 								<div
-									class="absolute inset-0 w-full h-full rounded-[2.5rem] overflow-hidden group flex flex-col items-center justify-center transition-all duration-700 ease-out {isActiveStage
+									class="absolute inset-0 w-full h-full overflow-hidden group flex flex-col items-center justify-center transition-all duration-700 ease-out {isActiveStage
 										? 'opacity-100 translate-y-0 scale-100'
 										: 'opacity-0 translate-y-8 scale-[0.98]'}"
 									style="
-										background: rgba(255,255,255,0.015);
-										border: 1px solid rgba(255,255,255,0.03);
-										box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
 										pointer-events: {isActiveStage ? 'auto' : 'none'};
 										contain: layout paint;
 									"
@@ -512,7 +509,9 @@
 															srcset={stageProduct.image_srcset ?? undefined}
 															sizes="(min-width: 1024px) 760px, 90vw"
 															alt={`${stageProduct.name} Data Logger`}
-															class="relative z-10 h-full max-h-[680px] w-full max-w-none object-contain scale-[1.3]"
+															class="relative z-10 h-full w-full max-w-none object-contain {idx === 0
+												? 'max-h-[500px] scale-[0.92]'
+												: 'max-h-[460px] scale-[0.85]'}"
 															draggable="false"
 															loading="eager"
 															decoding="async"

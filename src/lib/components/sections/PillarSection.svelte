@@ -73,10 +73,10 @@
 	// Fallback hardcoded data
 	const fallbackPillars = $derived([
 		{ icon: Droplets, name: 'Water Security', hook: solutionHook('water-security', '', $locale), products: productLabelsMap['water-security'], cta: $locale === 'EN' ? 'Explore' : 'Eksplorasi', href: '/solusi/water-security', image: 'https://picsum.photos/seed/hydro1/1200/800' },
-		{ icon: CloudSun, name: 'Weather Forecast', hook: solutionHook('weather-forecast', '', $locale), products: productLabelsMap['weather-forecast'], cta: $locale === 'EN' ? 'Explore' : 'Eksplorasi', href: '/solusi/weather-forecast', image: 'https://picsum.photos/seed/weather2/1200/800' },
+		{ icon: CloudSun, name: 'Weather Forecast', hook: solutionHook('weather-forecast', '', $locale), products: productLabelsMap['weather-forecast'], cta: $locale === 'EN' ? 'Explore' : 'Eksplorasi', href: '/solusi/weather-climate-intelligence', image: 'https://picsum.photos/seed/weather2/1200/800' },
 		{ icon: Siren, name: 'Early Warning', hook: solutionHook('early-warning', '', $locale), products: productLabelsMap['early-warning'], cta: $locale === 'EN' ? 'Explore' : 'Eksplorasi', href: '/solusi/early-warning', image: 'https://picsum.photos/seed/warning3/1200/800' },
 		{ icon: Activity, name: 'Infrastructure Security', hook: solutionHook('infrastructure-security', '', $locale), products: productLabelsMap['infrastructure-security'], cta: $locale === 'EN' ? 'Explore' : 'Eksplorasi', href: '/solusi/infrastructure-security', image: 'https://picsum.photos/seed/infrastructure-security/1200/800' },
-		{ icon: MonitorPlay, name: 'STESY Platform', hook: solutionHook('stesy', '', $locale), products: productLabelsMap['stesy'], cta: $locale === 'EN' ? 'Learn More' : 'Pelajari', href: '/solusi/stesy', image: 'https://picsum.photos/seed/dashboard5/1200/800' }
+		{ icon: MonitorPlay, name: 'STESY Platform', hook: solutionHook('stesy', '', $locale), products: productLabelsMap['stesy'], cta: $locale === 'EN' ? 'Learn More' : 'Pelajari', href: '/solusi/digital-monitoring-platform', image: 'https://picsum.photos/seed/dashboard5/1200/800' }
 	]);
 
 	const pillars = $derived(

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onMount } from "svelte";
   import {
     ArrowRight,
     Check,
@@ -6,13 +7,31 @@
     Download,
     ChevronRight,
     Waves,
+    Gauge,
+    Radio,
+    HardDrive,
+    LayoutDashboard,
+    Activity,
+    ShieldCheck,
+    Droplets,
+    Factory,
+    Sun,
   } from "@lucide/svelte";
-  import Ornaments from "$lib/components/Ornaments.svelte";
 	import { locale } from "$lib/i18n";
   import { mapTrackRecords } from "$lib/loaders/sub-solution";
   import productImage from "$lib/assets/product_awlr.webp";
 
   let { data } = $props();
+
+  const ACCENT = "#C8102E";
+  const ACCENT_SOFT = "#FF4D6D";
+  const LIVE = "#1B7F3A";
+
+  const ss = $derived(data.subSolutionDetail?.sub_solution ?? null);
+  const mainContent = $derived(
+    ss?.main_content?.trim() ||
+      "<p>Pengukuran ketinggian muka air otomatis, 100% online, terkirim langsung ke STESY. Akurasi ±1mm, IP68, solar-powered — siap di pos hidrologi manapun di Indonesia.</p>",
+  );
 
   let activeVariant = $state(0);
   let activeSpecComponent = $state(0);
@@ -126,14 +145,6 @@
     activeSpecComponent = 0;
   });
 
-  const useCases = [
-    "Sistem irigasi yang harus presisi",
-    "Bendungan yang tidak boleh kehilangan data sehari pun",
-    "Sungai yang melayani jutaan jiwa",
-    "Sumur pantau yang tersebar dan sulit diakses",
-    "Pos hidrologi BBWS/BWS standar SNI",
-  ];
-
   const fallbackProjects = [
     {
       name: "Bendungan Cipanas",
@@ -155,32 +166,90 @@
     mapTrackRecords(data.subSolutionDetail?.track_records, fallbackProjects),
   );
 
-  const features = [
-    {
-      title: "Akurasi Lab-Grade",
-      desc: "Sensor pressure transducer dengan akurasi ±1mm, melebihi standar SNI untuk pos hidrologi.",
-    },
-    {
-      title: "Real-time 24/7",
-      desc: "Data terkirim setiap interval yang dikonfigurasi langsung ke dashboard STESY.",
-    },
-    {
-      title: "Tahan Iklim Tropis",
-      desc: "IP68 waterproof, teruji di banjir, sungai deras, dan suhu ekstrem Indonesia.",
-    },
-    {
-      title: "Solar Powered",
-      desc: "Panel surya + baterai backup — beroperasi tanpa listrik PLN di lokasi remote.",
-    },
-    {
-      title: "Multi-Konektivitas",
-      desc: "4G/LTE, GSM, dan opsi satelit untuk area tanpa sinyal seluler.",
-    },
-    {
-      title: "Alert Otomatis",
-      desc: "Alarm threshold otomatis via SMS dan notifikasi STESY saat level kritis.",
-    },
+  const copy = $derived(
+    $locale === "EN"
+      ? {
+          home: "Home", solutions: "Solutions", parent: "Water Security",
+          eyebrow: "Water Security · Hydrology",
+          title1: "Because every centimetre", title2: "counts.",
+          consult: "Consult AWLR", other: "Other Solutions", live: "LIVE",
+          fig: "FIG.03 — WATER LEVEL", lvl: "WATER LEVEL", fill: "RANGE", status: "ONLINE",
+          chainBadge: "Signal Chain", chainTitle: "From the water surface to your dashboard",
+          chainDesc:
+            "A pressure transducer reads the stage to the millimetre, logged on-site and streamed over 4G / satellite into STESY — no day of data ever lost.",
+          capBadge: "Capabilities", capTitle: "Hydrology-grade, built for the tropics",
+          appBadge: "Where it works", appTitle: "For every gauge that must never go dark",
+          appDesc: "Dams, rivers, irrigation channels, monitoring wells, and SNI hydrology posts.",
+          trackBadge: "Track Record", trackTitle: "Already deployed at",
+          ctaBadge: "Next Step", ctaTitle: "Gauge your water with AWLR",
+          ctaDesc: "Our engineers will design the right hydrology post and integrate it into your STESY dashboard.",
+          ctaPrimary: "Consult AWLR", ctaSecondary: "Explore Other Products",
+        }
+      : {
+          home: "Beranda", solutions: "Solusi", parent: "Water Security",
+          eyebrow: "Water Security · Hidrologi",
+          title1: "Karena setiap sentimeter", title2: "berarti.",
+          consult: "Konsultasi AWLR", other: "Solusi Lain", live: "LIVE",
+          fig: "FIG.03 — MUKA AIR", lvl: "MUKA AIR", fill: "RANGE", status: "ONLINE",
+          chainBadge: "Rantai Sinyal", chainTitle: "Dari permukaan air hingga dashboard Anda",
+          chainDesc:
+            "Pressure transducer membaca tinggi muka air hingga milimeter, direkam di lokasi dan dialirkan lewat 4G / satelit ke STESY — tak ada satu hari data pun hilang.",
+          capBadge: "Kemampuan", capTitle: "Sekelas hidrologi, dibangun untuk tropis",
+          appBadge: "Penerapan", appTitle: "Untuk setiap pos yang tak boleh padam",
+          appDesc: "Bendungan, sungai, saluran irigasi, sumur pantau, dan pos hidrologi SNI.",
+          trackBadge: "Track Record", trackTitle: "Sudah Terpasang Di",
+          ctaBadge: "Langkah Selanjutnya", ctaTitle: "Pantau muka air Anda dengan AWLR",
+          ctaDesc: "Tim engineer kami akan merancang pos hidrologi yang tepat dan mengintegrasikannya ke dashboard STESY.",
+          ctaPrimary: "Konsultasi AWLR", ctaSecondary: "Jelajahi Produk Lain",
+        },
+  );
+
+  const consultUrl = $derived(
+    `https://wa.me/628112632151?text=${encodeURIComponent(
+      $locale === "EN"
+        ? "Hello Beacon Marketing CS, I would like to consult about AWLR (Automatic Water Level Recorder)."
+        : "Halo CS Marketing Beacon, saya ingin konsultasi tentang AWLR (Automatic Water Level Recorder).",
+    )}`,
+  );
+
+  // ── Live water level (stilling well) ──
+  let mounted = $state(false);
+  let level = $state(0); // percent of range
+  const depthM = $derived(Math.round((level / 100) * 12 * 100) / 100); // 0–12 m
+
+  onMount(() => {
+    mounted = true;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const r = () => Math.round((44 + Math.random() * 34) * 10) / 10; // 44–78 %
+    level = r();
+    if (reduce) return;
+    const id = setInterval(() => {
+      level = r();
+    }, 2500);
+    return () => clearInterval(id);
+  });
+
+  const chain = [
+    { icon: Waves, k: "01", t: $locale === "EN" ? "Level Sensor" : "Sensor Level", d: $locale === "EN" ? "Pressure transducer" : "Pressure transducer" },
+    { icon: HardDrive, k: "02", t: "Datalogger", d: $locale === "EN" ? "On-site logging" : "Perekaman lokasi" },
+    { icon: Radio, k: "03", t: $locale === "EN" ? "Transmission" : "Transmisi", d: "4G/LTE · Satellite" },
+    { icon: LayoutDashboard, k: "04", t: "STESY", d: "Dashboard" },
   ];
+
+  const capabilities = $derived([
+    { icon: Gauge, value: "±1", unit: "mm", label: $locale === "EN" ? "Lab-grade accuracy" : "Akurasi lab-grade" },
+    { icon: Waves, value: "0–30", unit: "m", label: $locale === "EN" ? "Measurement range" : "Range pengukuran" },
+    { icon: ShieldCheck, value: "IP68", unit: "", label: $locale === "EN" ? "Submersible, flood-proof" : "Terendam, tahan banjir" },
+    { icon: Sun, value: "Solar", unit: "", label: $locale === "EN" ? "Off-grid powered" : "Mandiri tanpa PLN" },
+  ]);
+
+  const applications = $derived([
+    { icon: Waves, label: $locale === "EN" ? "Dams" : "Bendungan" },
+    { icon: Activity, label: $locale === "EN" ? "Rivers" : "Sungai" },
+    { icon: Droplets, label: $locale === "EN" ? "Irrigation" : "Irigasi" },
+    { icon: Gauge, label: $locale === "EN" ? "Monitoring Wells" : "Sumur Pantau" },
+    { icon: Factory, label: $locale === "EN" ? "Hydrology Posts" : "Pos Hidrologi" },
+  ]);
 </script>
 
 <svelte:head>
@@ -192,200 +261,149 @@
 </svelte:head>
 
 <!-- Breadcrumb -->
-<div class="bg-[#FAFAFA] border-b" style="border-color: #E5E5E5;">
+<div class="border-b" style="background: #100A0B; border-color: rgba(200,16,46,0.18);">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
-    <nav class="flex items-center gap-1.5 text-xs" style="color: #9A9A9A;">
-      <a href="/" class="hover:text-[#C8102E] transition-colors">{$locale === "EN" ? "Home" : "Beranda"}</a>
+    <nav class="flex items-center gap-1.5 text-xs font-mono" style="color: #8a767a;">
+      <a href="/" class="hover:text-[#FF4D6D] transition-colors">{copy.home}</a>
       <ChevronRight size={11} />
-      <a href="/solusi" class="hover:text-[#C8102E] transition-colors">{$locale === "EN" ? "Solutions" : "Solusi"}</a
-      >
+      <a href="/solusi" class="hover:text-[#FF4D6D] transition-colors">{copy.solutions}</a>
       <ChevronRight size={11} />
-      <a
-        href="/solusi/water-security"
-        class="hover:text-[#C8102E] transition-colors">Water Security</a
-      >
+      <a href="/solusi/water-security" class="hover:text-[#FF4D6D] transition-colors">{copy.parent}</a>
       <ChevronRight size={11} />
-      <span style="color: #C8102E;" class="font-medium">AWLR</span>
+      <span class="font-semibold" style="color: {ACCENT_SOFT};">AWLR</span>
     </nav>
   </div>
 </div>
 
-<!-- Hero -->
-<section
-  class="relative pt-24 pb-16 lg:pt-32 lg:pb-24 bg-[#FAFAFA] border-b border-[#E5E5E5] overflow-hidden"
->
-  <!-- Subtle Grid Pattern -->
-  <div
-    class="absolute inset-0 z-0 opacity-[0.03]"
-    style="background-image: radial-gradient(#000 1px, transparent 1px); background-size: 24px 24px;"
-  ></div>
-  <div class="relative z-10 max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-12">
-    <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-      <div class="space-y-8">
-        <div
-          class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest"
-          style="background: rgba(200,16,46,0.08); color: #C8102E; border: 1px solid rgba(200,16,46,0.15);"
-        >
-          <span class="w-1.5 h-1.5 rounded-full" style="background: #C8102E;"
-          ></span>
-          Water Security
-          <span class="mx-1" style="color: #C8102E; opacity: 0.5;">/</span>
-          Produk Unggulan
-        </div>
+<!-- HERO -->
+<section class="relative overflow-hidden" style="background: #0C0809;">
+  <div class="awlr-grid absolute inset-0 pointer-events-none"></div>
+  <div class="absolute -top-40 right-[-10%] w-[680px] h-[680px] rounded-full pointer-events-none" style="background: radial-gradient(circle, rgba(200,16,46,0.18) 0%, transparent 62%);"></div>
+  <div class="absolute inset-x-0 top-0 h-px" style="background: linear-gradient(90deg, transparent, rgba(200,16,46,0.55), transparent);"></div>
 
-        <h1
-          class="font-heading text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-[1.05] tracking-tighter text-zinc-950"
-        >
-          Karena Setiap Sentimeter <br />
-          <span style="color: #C8102E;">Berarti</span>
+  <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-24 lg:pt-28 lg:pb-32">
+    <div class="grid lg:grid-cols-[1.05fr_0.95fr] gap-14 lg:gap-10 items-center">
+      <div>
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[10px] font-mono font-bold uppercase tracking-[0.18em] mb-8" style="background: rgba(200,16,46,0.1); color: #FF8095; border: 1px solid rgba(200,16,46,0.28); opacity: {mounted ? 1 : 0}; transform: translateY({mounted ? 0 : 10}px); transition: all .7s cubic-bezier(.16,1,.3,1) .05s;">
+          <ShieldCheck size={13} />{copy.eyebrow}
+        </div>
+        <h1 class="font-heading font-extrabold tracking-tighter text-white leading-[0.98] text-5xl sm:text-6xl lg:text-[64px]" style="opacity: {mounted ? 1 : 0}; transform: translateY({mounted ? 0 : 18}px); transition: all .8s cubic-bezier(.16,1,.3,1) .15s;">
+          {copy.title1}<br /><span class="awlr-gradient">{copy.title2}</span>
         </h1>
-
-        <div>
-          <span class="font-heading text-2xl font-bold text-zinc-950">AWLR</span
-          >
-          <span class="text-base ml-2 text-zinc-500 font-medium"
-            >— Automatic Water Level Recorder</span
-          >
+        <div class="mt-7 flex items-baseline gap-3" style="opacity: {mounted ? 1 : 0}; transition: opacity .8s ease .3s;">
+          <span class="font-heading text-2xl font-bold" style="color: {ACCENT_SOFT};">AWLR</span>
+          <span class="text-sm text-zinc-500 font-mono">Automatic Water Level Recorder</span>
         </div>
-
-        <p
-          class="text-lg leading-relaxed text-zinc-600 max-w-[50ch] font-medium"
-        >
-          Pengukuran ketinggian muka air otomatis, 100% online, terkirim
-          langsung ke STESY. Akurasi ±1mm, IP68, solar-powered — siap di pos
-          hidrologi manapun di Indonesia.
-        </p>
-
-        <div class="flex flex-wrap gap-4 pt-2">
-          <a
-            href="https://wa.me/628112632151?text=Halo%20CS%20Marketing%20Beacon%2C%20saya%20ingin%20konsultasi%20tentang%20AWLR."
-            target="_blank"
-            rel="noopener"
-            class="inline-flex items-center gap-2 px-6 py-3 rounded-[12px] text-sm font-semibold text-white transition-all hover:scale-[1.02]"
-            style="background: linear-gradient(135deg, #C8102E, #A50D25); box-shadow: 0 4px 12px rgba(200,16,46,0.25);"
-          >
-            <MessageCircle size={15} />
-            {$locale === "EN" ? "Consult AWLR" : "Konsultasi AWLR"}
+        <div class="awlr-lead mt-5 max-w-[46ch] text-lg leading-relaxed text-zinc-400" style="opacity: {mounted ? 1 : 0}; transform: translateY({mounted ? 0 : 12}px); transition: all .8s cubic-bezier(.16,1,.3,1) .4s;">
+          {@html mainContent}
+        </div>
+        <div class="mt-10 flex flex-wrap gap-3" style="opacity: {mounted ? 1 : 0}; transform: translateY({mounted ? 0 : 12}px); transition: all .8s cubic-bezier(.16,1,.3,1) .5s;">
+          <a href={consultUrl} target="_blank" rel="noopener" class="btn-tactile inline-flex items-center gap-2 px-6 py-3.5 rounded-xl text-sm font-bold text-white" style="background: linear-gradient(135deg, #C8102E, #A50D25); box-shadow: 0 10px 30px -10px rgba(200,16,46,0.7);">
+            <MessageCircle size={16} />{copy.consult}
           </a>
-          <button
-            class="inline-flex items-center gap-2 px-6 py-3 rounded-[12px] text-sm font-semibold transition-all hover:bg-[#FBE9EC]"
-            style="border: 1.5px solid #E5E5E5; color: #1A1A1A;"
-          >
-            <Download size={15} />
-            Download Datasheet
-          </button>
+          <a href="/solusi/water-security" class="btn-tactile inline-flex items-center gap-2 px-6 py-3.5 rounded-xl text-sm font-bold text-zinc-200 transition-colors hover:text-white" style="border: 1px solid rgba(255,255,255,0.14); background: rgba(255,255,255,0.03);">
+            {copy.other}<ArrowRight size={15} />
+          </a>
         </div>
       </div>
 
-      <!-- Product Visual -->
-      <div class="relative flex justify-center">
-        <div
-          class="relative w-64 h-80 rounded-3xl overflow-hidden"
-          style="background: linear-gradient(180deg, #0EA5E9 0%, #0369A1 100%); box-shadow: 0 20px 60px rgba(14,165,233,0.2);"
-        >
-          <div
-            class="absolute inset-0 flex flex-col items-center justify-center p-6 text-white"
-          >
-            <Waves size={48} class="mb-4 opacity-80" />
-            <span class="font-heading text-3xl font-extrabold">AWLR</span>
-            <span class="text-xs mt-1 opacity-70 uppercase tracking-widest"
-              >BL-1100</span
-            >
-            <div class="mt-6 w-full space-y-2">
-              <div class="flex justify-between text-xs opacity-80">
-                <span>Water Level</span>
-                <span class="font-mono tabular-nums">3.42 m</span>
+      <!-- Live water level (stilling well) -->
+      <div class="relative flex justify-center lg:justify-end" style="opacity: {mounted ? 1 : 0}; transform: scale({mounted ? 1 : 0.94}); transition: all .9s cubic-bezier(.16,1,.3,1) .35s;">
+        <div class="awlr-instrument relative w-[360px] max-w-full rounded-[28px] p-6">
+          <div class="flex items-center justify-between mb-6">
+            <span class="font-mono text-[10px] font-bold tracking-[0.2em] text-zinc-500">{copy.fig}</span>
+            <span class="inline-flex items-center gap-1.5 font-mono text-[10px] font-bold tracking-[0.2em] text-zinc-300">
+              <span class="relative flex h-2 w-2">
+                <span class="absolute inline-flex h-full w-full rounded-full opacity-60 animate-ping" style="background: {LIVE};"></span>
+                <span class="relative inline-flex h-2 w-2 rounded-full" style="background: {LIVE};"></span>
+              </span>{copy.live}
+            </span>
+          </div>
+
+          <div class="flex items-stretch gap-5">
+            <!-- stilling well -->
+            <div class="awlr-well">
+              <div class="awlr-water" style="height: {level}%;"><div class="awlr-surface"></div></div>
+              {#each [20, 40, 60, 80] as g}
+                <div class="awlr-tick" style="bottom: {g}%;"></div>
+              {/each}
+            </div>
+            <!-- readouts -->
+            <div class="flex-1 flex flex-col justify-center gap-3">
+              <div class="awlr-readout">
+                <span class="font-mono text-[9px] tracking-[0.2em] text-zinc-500">{copy.lvl}</span>
+                <span class="font-mono text-xl font-bold tabular-nums" style="color: {ACCENT_SOFT};">{depthM.toFixed(2)} <span class="text-xs text-zinc-500">m</span></span>
               </div>
-              <div class="h-1 rounded-full bg-white/20">
-                <div
-                  class="h-full rounded-full bg-white/80"
-                  style="width: 68%;"
-                ></div>
+              <div class="awlr-readout">
+                <span class="font-mono text-[9px] tracking-[0.2em] text-zinc-500">{copy.fill}</span>
+                <span class="font-mono text-xl font-bold tabular-nums text-white">{level.toFixed(1)}<span class="text-xs text-zinc-500"> %</span></span>
               </div>
-              <div class="flex justify-between text-xs opacity-80">
-                <span>Status</span>
-                <span class="flex items-center gap-1"
-                  ><span class="w-1.5 h-1.5 rounded-full bg-green-400"
-                  ></span>Online</span
-                >
+              <div class="awlr-readout">
+                <span class="font-mono text-[9px] tracking-[0.2em] text-zinc-500">STATUS</span>
+                <span class="inline-flex items-center gap-1.5 font-mono text-sm font-bold" style="color: {LIVE};">
+                  <span class="w-1.5 h-1.5 rounded-full" style="background: {LIVE};"></span>{copy.status}
+                </span>
               </div>
             </div>
           </div>
-        </div>
-        <div
-          class="absolute -bottom-3 -right-3 px-4 py-2 rounded-xl bg-white text-xs font-semibold"
-          style="border: 1px solid #E5E5E5; box-shadow: 0 4px 12px rgba(0,0,0,0.06); color: #C8102E;"
-        >
-          ±1mm Accuracy
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- "Untuk Anda yang..." -->
-<section class="relative py-16 lg:py-20 bg-white overflow-hidden">
-  <Ornaments />
-  <div class="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-    <h2
-      class="font-heading text-2xl sm:text-3xl font-bold mb-8"
-      style="color: #1A1A1A;"
-    >
-      Untuk Anda yang Bertanggung Jawab Atas...
-    </h2>
-    <div class="flex flex-wrap justify-center gap-3">
-      {#each useCases as useCase}
-        <div
-          class="px-5 py-3 rounded-xl text-sm font-medium bg-[#FAFAFA] transition-all hover:bg-[#FBE9EC] hover:-translate-y-0.5"
-          style="border: 1px solid #E5E5E5; color: #3A3A3A;"
-        >
-          {useCase}
+<!-- SIGNAL CHAIN -->
+<section class="relative py-20 lg:py-28 bg-white overflow-hidden">
+  <div class="absolute inset-0 pointer-events-none opacity-[0.5]" style="background: radial-gradient(60% 60% at 50% 0%, rgba(200,16,46,0.05), transparent 70%);"></div>
+  <div class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-2xl mb-14">
+      <span class="font-mono text-xs font-bold uppercase tracking-[0.2em]" style="color: {ACCENT};">{copy.chainBadge}</span>
+      <h2 class="font-heading text-3xl sm:text-4xl font-bold mt-3 leading-[1.12]" style="color: #1A1A1A; letter-spacing: -0.02em;">{copy.chainTitle}</h2>
+      <p class="text-base leading-relaxed mt-4" style="color: #5C5C5C;">{copy.chainDesc}</p>
+    </div>
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-3">
+      {#each chain as step, i}
+        {@const Icon = step.icon}
+        <div class="group relative rounded-2xl p-6 bg-white transition-all duration-300 hover:-translate-y-1" style="border: 1px solid #E5E5E5;">
+          {#if i < chain.length - 1}
+            <div class="hidden lg:flex absolute top-0 bottom-0 right-[-6px] translate-x-1/2 z-20 items-center">
+              <div class="flex items-center justify-center w-[26px] h-[26px] rounded-full bg-white text-[#C8102E]" style="border: 1px solid #E5E5E5; box-shadow: 0 2px 6px rgba(0,0,0,0.05);"><ArrowRight size={13} strokeWidth={2.5} /></div>
+            </div>
+          {/if}
+          <div class="flex items-center justify-between mb-5">
+            <div class="w-11 h-11 rounded-xl flex items-center justify-center transition-transform group-hover:scale-110" style="background: rgba(200,16,46,0.09);">
+              <Icon size={20} style="color: {ACCENT};" />
+            </div>
+            <span class="font-mono text-[11px] font-bold tracking-widest text-[#CFCFCF]">{step.k}</span>
+          </div>
+          <h3 class="font-heading text-lg font-bold" style="color: #1A1A1A;">{step.t}</h3>
+          <p class="text-xs font-mono mt-1" style="color: #9A9A9A;">{step.d}</p>
         </div>
       {/each}
     </div>
   </div>
 </section>
 
-<!-- 6 Keunggulan -->
-<section
-  class="relative py-16 lg:py-24 overflow-hidden"
-  style="background: linear-gradient(180deg, #FAFAFA 0%, #FFF5F6 100%);"
->
-  <Ornaments variant="dense" />
+<!-- CAPABILITIES -->
+<section class="relative py-20 lg:py-24 overflow-hidden" style="background: #130A0C;">
+  <div class="awlr-grid absolute inset-0 pointer-events-none opacity-60"></div>
   <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="text-center mb-12">
-      <span
-        class="text-xs font-semibold uppercase tracking-widest"
-        style="color: #C8102E;">Keunggulan</span
-      >
-      <h2
-        class="font-heading text-3xl sm:text-4xl font-bold mt-3"
-        style="color: #1A1A1A;"
-      >
-        {$locale === "EN" ? "Why AWLR Beacon" : "Mengapa AWLR Beacon"}
-      </h2>
+    <div class="max-w-2xl mb-12">
+      <span class="font-mono text-xs font-bold uppercase tracking-[0.2em]" style="color: {ACCENT_SOFT};">{copy.capBadge}</span>
+      <h2 class="font-heading text-3xl sm:text-4xl font-bold mt-3 text-white leading-[1.12]" style="letter-spacing: -0.02em;">{copy.capTitle}</h2>
     </div>
-    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {#each features as feat, i}
-        <div
-          class="group p-6 rounded-2xl bg-white hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
-          style="border: 1px solid #E5E5E5;"
-        >
-          <div
-            class="w-10 h-10 rounded-lg flex items-center justify-center mb-4 transition-transform group-hover:scale-110"
-            style="background: #FBE9EC;"
-          >
-            <Check size={18} style="color: #C8102E;" />
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      {#each capabilities as cap}
+        {@const Icon = cap.icon}
+        <div class="rounded-2xl p-6 transition-transform duration-300 hover:-translate-y-1" style="background: rgba(255,255,255,0.025); border: 1px solid rgba(200,16,46,0.18);">
+          <div class="w-11 h-11 rounded-xl flex items-center justify-center mb-5" style="background: rgba(200,16,46,0.13);">
+            <Icon size={20} style="color: {ACCENT_SOFT};" />
           </div>
-          <h3
-            class="font-heading text-base font-bold mb-2 group-hover:text-[#C8102E] transition-colors"
-            style="color: #1A1A1A;"
-          >
-            {feat.title}
-          </h3>
-          <p class="text-sm leading-relaxed" style="color: #5C5C5C;">
-            {feat.desc}
-          </p>
+          <div class="flex items-baseline gap-1.5">
+            <span class="font-heading text-3xl font-extrabold text-white tabular-nums tracking-tight">{cap.value}</span>
+            {#if cap.unit}<span class="text-sm font-medium text-zinc-500">{cap.unit}</span>{/if}
+          </div>
+          <p class="text-xs mt-2 leading-snug" style="color: #B49AA0;">{cap.label}</p>
         </div>
       {/each}
     </div>
@@ -782,105 +800,70 @@
   </div>
 </section>
 
-<!-- Sudah Terpasang Di -->
-<section class="relative py-16 lg:py-20 bg-white overflow-hidden">
-  <Ornaments />
-  <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="text-center mb-10">
-      <span
-        class="text-xs font-semibold uppercase tracking-widest"
-        style="color: #C8102E;">Track Record</span
-      >
-      <h2 class="font-heading text-3xl font-bold mt-3" style="color: #1A1A1A;">
-        Sudah Terpasang Di
-      </h2>
+<!-- APPLICATIONS -->
+<section class="relative py-20 lg:py-28 bg-[#FAFAFA] overflow-hidden">
+  <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-2xl mb-14">
+      <span class="font-mono text-xs font-bold uppercase tracking-[0.2em]" style="color: {ACCENT};">{copy.appBadge}</span>
+      <h2 class="font-heading text-3xl sm:text-4xl font-bold mt-3 leading-[1.12]" style="color: #1A1A1A; letter-spacing: -0.02em;">{copy.appTitle}</h2>
+      <p class="text-base leading-relaxed mt-4" style="color: #5C5C5C;">{copy.appDesc}</p>
     </div>
-    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-      {#each projects as proj}
-        <div
-          class="p-5 rounded-2xl bg-[#FAFAFA] hover:bg-[#FBE9EC] transition-all"
-          style="border: 1px solid #E5E5E5;"
-        >
-          <div class="flex items-center gap-2 mb-2">
-            <span
-              class="text-[10px] font-semibold px-2 py-0.5 rounded-md text-white tabular-nums"
-              style="background: #C8102E;">{proj.year}</span
-            >
-            <div
-              class="w-1.5 h-1.5 rounded-full bg-[#1B7F3A] animate-pulse-dot"
-            ></div>
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+      {#each applications as app}
+        {@const Icon = app.icon}
+        <div class="group flex flex-col items-center justify-center gap-3 rounded-2xl py-7 px-3 bg-white text-center transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_18px_40px_-22px_rgba(200,16,46,0.5)]" style="border: 1px solid #E5E5E5;">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:scale-110" style="background: rgba(200,16,46,0.07);">
+            <Icon size={22} style="color: {ACCENT};" />
           </div>
-          <h3 class="font-heading text-sm font-bold" style="color: #1A1A1A;">
-            {proj.name}
-          </h3>
-          <p class="text-xs mt-1" style="color: #5C5C5C;">{proj.client}</p>
-          {#if proj.location}
-            <p class="text-[11px] mt-1" style="color: #8A8A8A;">
-              {proj.location}
-            </p>
-          {/if}
+          <span class="text-xs font-semibold leading-tight" style="color: #3A3A3A;">{app.label}</span>
         </div>
       {/each}
     </div>
   </div>
 </section>
 
-<!-- Premium Floating CTA (SKILL: Cockpit Mode) -->
+<!-- TRACK RECORD -->
+<section class="relative py-16 lg:py-24 bg-white overflow-hidden">
+  <div class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-2xl mb-12">
+      <span class="font-mono text-xs font-bold uppercase tracking-[0.2em]" style="color: {ACCENT};">{copy.trackBadge}</span>
+      <h2 class="font-heading text-3xl sm:text-4xl font-bold mt-3" style="color: #1A1A1A; letter-spacing: -0.02em;">{copy.trackTitle}</h2>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      {#each projects as proj}
+        <div class="p-5 rounded-2xl bg-[#FAFAFA] transition-all hover:-translate-y-1 hover:shadow-[0_16px_36px_-22px_rgba(200,16,46,0.45)]" style="border: 1px solid #E5E5E5;">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="font-mono text-[10px] font-bold px-2 py-0.5 rounded-md text-white tabular-nums" style="background: {ACCENT};">{proj.year}</span>
+            <div class="w-1.5 h-1.5 rounded-full animate-pulse-dot" style="background: {LIVE};"></div>
+          </div>
+          <h3 class="font-heading text-sm font-bold" style="color: #1A1A1A;">{proj.name}</h3>
+          <p class="text-xs mt-1" style="color: #5C5C5C;">{proj.client}</p>
+          {#if proj.location}<p class="text-[11px] mt-1 font-mono" style="color: #8A8A8A;">{proj.location}</p>{/if}
+        </div>
+      {/each}
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
 <section class="relative py-20 bg-white">
   <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-    <div
-      class="relative overflow-hidden rounded-[2.5rem] bg-zinc-950 p-10 sm:p-16 lg:p-20 shadow-2xl flex flex-col lg:flex-row items-center justify-between gap-12 group"
-      style="box-shadow: 0 40px 80px -20px rgba(0,0,0,0.25), inset 0 2px 4px rgba(255,255,255,0.05);"
-    >
-      <!-- Subtle glow / Liquid Glass refraction -->
-      <div
-        class="absolute inset-0 bg-gradient-to-br from-[#C8102E]/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none z-0"
-      ></div>
-      <div
-        class="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-[#C8102E]/10 blur-3xl pointer-events-none z-0"
-      ></div>
-
+    <div class="relative overflow-hidden rounded-[2.5rem] p-10 sm:p-16 lg:p-20 flex flex-col lg:flex-row items-center justify-between gap-12 group" style="background: #1A0A0D; box-shadow: 0 40px 80px -24px rgba(26,10,13,0.55);">
+      <div class="awlr-grid absolute inset-0 pointer-events-none opacity-50"></div>
+      <div class="absolute -top-32 -left-24 w-96 h-96 rounded-full blur-3xl pointer-events-none" style="background: rgba(200,16,46,0.18);"></div>
       <div class="relative z-10 text-center lg:text-left flex-1 max-w-2xl">
-        <span
-          class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest mb-6"
-          style="background: rgba(200,16,46,0.15); color: #FF4D6D; border: 1px solid rgba(200,16,46,0.3);"
-        >
-          <span
-            class="w-1.5 h-1.5 rounded-full"
-            style="background: #FF4D6D; box-shadow: 0 0 10px #FF4D6D;"
-          ></span>
-          Next Step
+        <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-mono font-bold uppercase tracking-[0.2em] mb-6" style="background: rgba(200,16,46,0.16); color: #FF8095; border: 1px solid rgba(200,16,46,0.32);">
+          <span class="w-1.5 h-1.5 rounded-full" style="background: {ACCENT_SOFT}; box-shadow: 0 0 10px {ACCENT_SOFT};"></span>{copy.ctaBadge}
         </span>
-        <h2
-          class="font-heading text-4xl sm:text-5xl font-extrabold text-white tracking-tighter mb-4"
-        >
-          Mulai Proyek dengan AWLR
-        </h2>
-        <p class="text-lg text-zinc-400 font-medium">
-          Tim engineer kami akan merancang arsitektur telemetri yang tepat dan
-          menghitung kebutuhan riil proyek Anda.
-        </p>
+        <h2 class="font-heading text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tighter mb-4">{copy.ctaTitle}</h2>
+        <p class="text-lg text-zinc-400 font-medium">{copy.ctaDesc}</p>
       </div>
-
-      <div
-        class="relative z-10 flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto shrink-0"
-      >
-        <a
-          href="https://wa.me/628112632151?text=Halo%20CS%20Marketing%20Beacon%2C%20saya%20ingin%20konsultasi%20tentang%20AWLR%20untuk%20proyek%20saya."
-          target="_blank"
-          rel="noopener"
-          class="w-full sm:w-auto inline-flex justify-center items-center gap-2 px-8 py-4 rounded-full text-sm font-bold text-zinc-950 bg-white transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(255,255,255,0.1)] btn-tactile"
-        >
-          <MessageCircle size={18} />
-          {$locale === "EN" ? "Consult AWLR" : "Konsultasi AWLR"}
+      <div class="relative z-10 flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto shrink-0">
+        <a href={consultUrl} target="_blank" rel="noopener" class="btn-tactile w-full sm:w-auto inline-flex justify-center items-center gap-2 px-8 py-4 rounded-full text-sm font-bold text-white" style="background: linear-gradient(135deg, #C8102E, #A50D25); box-shadow: 0 10px 30px -10px rgba(200,16,46,0.7);">
+          <MessageCircle size={18} />{copy.ctaPrimary}
         </a>
-        <a
-          href="/solusi/water-security"
-          class="w-full sm:w-auto inline-flex justify-center items-center gap-2 px-8 py-4 rounded-full text-sm font-bold text-white transition-all hover:bg-zinc-800 btn-tactile"
-          style="border: 1px solid rgba(255,255,255,0.15);"
-        >
-          <ArrowRight size={18} />
-          {$locale === "EN" ? "Explore Other Products" : "Jelajahi Produk Lain"}
+        <a href="/solusi/water-security" class="btn-tactile w-full sm:w-auto inline-flex justify-center items-center gap-2 px-8 py-4 rounded-full text-sm font-bold text-white transition-colors hover:bg-white/5" style="border: 1px solid rgba(255,255,255,0.15);">
+          <ArrowRight size={18} />{copy.ctaSecondary}
         </a>
       </div>
     </div>
@@ -888,6 +871,47 @@
 </section>
 
 <style>
+  .awlr-gradient { background: linear-gradient(100deg, #FF4D6D 0%, #C8102E 55%, #A50D25 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .awlr-lead :global(p) { margin: 0; }
+  .awlr-grid {
+    background-image: linear-gradient(rgba(200,16,46,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(200,16,46,0.07) 1px, transparent 1px);
+    background-size: 38px 38px;
+    mask-image: radial-gradient(120% 100% at 50% 0%, #000 30%, transparent 78%);
+    -webkit-mask-image: radial-gradient(120% 100% at 50% 0%, #000 30%, transparent 78%);
+  }
+  .awlr-instrument {
+    background: linear-gradient(180deg, rgba(200,16,46,0.05), rgba(12,8,9,0.6));
+    border: 1px solid rgba(200,16,46,0.22);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 40px 80px -30px rgba(0,0,0,0.8);
+    backdrop-filter: blur(6px);
+  }
+  .awlr-well {
+    position: relative;
+    width: 116px;
+    min-height: 210px;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(200,16,46,0.22);
+    overflow: hidden;
+    box-shadow: inset 0 0 30px rgba(0,0,0,0.5);
+  }
+  .awlr-water {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    background: linear-gradient(180deg, #FF4D6D 0%, #C8102E 55%, #8c0c20 100%);
+    transition: height 2.2s cubic-bezier(0.25,0.8,0.3,1);
+  }
+  .awlr-surface {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: rgba(255,200,210,0.85);
+    box-shadow: 0 0 12px rgba(255,77,109,0.9);
+  }
+  .awlr-tick { position: absolute; left: 0; width: 7px; height: 1px; background: rgba(255,255,255,0.18); }
+  .awlr-readout { display: flex; flex-direction: column; gap: 2px; border-radius: 12px; padding: 10px 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(200,16,46,0.16); }
+  @media (prefers-reduced-motion: reduce) { .awlr-water { transition: none; } }
+
   .variant-showcase {
     animation: variantRise 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
   }

@@ -1,5 +1,7 @@
 // Dummy data for the demo executive dashboard (Tulang Bawang).
 
+import tbSensors from './tulang-bawang-sensors.json';
+
 export type SiteStatus = 'ok' | 'warn' | 'alarm';
 
 export interface Pump {
@@ -115,18 +117,7 @@ export const TB_TYPE_META: Record<TbSensorType, { short: string; color: string }
 	CMD: { short: 'CC', color: '#6AA0FF' }
 };
 
-export const TB_SENSORS: TbSensor[] = [
-	{ id: 'AWLR-01', lat: -4.444, lng: 105.264, type: 'AWLR', name: 'Way Tulang Bawang · Menggala', status: 'ok', value: '2.14', unit: 'm' },
-	{ id: 'AWLR-02', lat: -4.279, lng: 105.382, type: 'AWLR', name: 'Way Tulang Bawang · Banjar Margo', status: 'warn', value: '3.42', unit: 'm' },
-	{ id: 'AWLR-04', lat: -4.383, lng: 105.740, type: 'AWLR', name: 'Saluran Irigasi · Rawa Pitu', status: 'ok', value: '0.92', unit: 'm' },
-	{ id: 'ARR-01', lat: -4.167, lng: 105.302, type: 'ARR', name: 'Curah Hujan · Banjar Agung', status: 'ok', value: '12.4', unit: 'mm/h' },
-	{ id: 'ARR-02', lat: -4.477, lng: 105.438, type: 'ARR', name: 'Curah Hujan · Gedung Aji', status: 'warn', value: '32.1', unit: 'mm/h' },
-	{ id: 'WQ-01', lat: -4.501, lng: 105.823, type: 'WQ', name: 'Kualitas Air · Outlet Industri', status: 'ok', value: '7.2', unit: 'pH' },
-	{ id: 'WQ-03', lat: -4.62, lng: 105.78, type: 'WQ', name: 'Sungai Hilir · Rawajitu', status: 'alarm', value: '5.1', unit: 'pH' },
-	{ id: 'SCADA-01', lat: -4.442, lng: 105.842, type: 'SCADA', name: 'Udang Manis Industrial Utility', status: 'ok', value: '98.4', unit: '%' },
-	{ id: 'CCTV-01', lat: -4.417, lng: 105.330, type: 'CCTV', name: 'CCTV Sungai · Menggala', status: 'ok', value: 'LIVE', unit: '' },
-	{ id: 'CMD', lat: -4.442, lng: 105.264, type: 'CMD', name: 'Command Center · Menggala', status: 'ok', value: 'HUB', unit: '' }
-];
+export const TB_SENSORS = tbSensors as TbSensor[];
 
 export const TB_GEOJSON_URL = '/demo/tulang-bawang.geojson';
 

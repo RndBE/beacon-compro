@@ -39,10 +39,10 @@
 
 	const needsBase = [
 		{ solution: 'Water Security', solutionSlug: 'water-security', icon: Droplets, color: '#0EA5E9', products: ['AWLR', 'AWGC', 'AFMR', 'ADR', 'AWQR', 'AVWR'], statValue: '6' },
-		{ solution: 'Weather & Climate Intelligence', solutionSlug: 'weather-forecast', icon: CloudSun, color: '#6366F1', products: ['ARR', 'AWR'], statValue: '2' },
+		{ solution: 'Weather & Climate Intelligence', solutionSlug: 'weather-climate-intelligence', icon: CloudSun, color: '#6366F1', products: ['ARR', 'AWR'], statValue: '2' },
 		{ solution: 'Early Warning System', solutionSlug: 'early-warning', icon: Siren, color: '#DC2626', products: ['EWS'], statValue: '< 3s' },
 		{ solution: 'Infrastructure Security', solutionSlug: 'infrastructure-security', icon: ShieldCheck, color: '#059669', products: ['APLR'], statValue: 'IP67' },
-		{ solution: 'STESY Platform', solutionSlug: 'stesy', icon: MonitorPlay, color: '#1A1A1A', products: ['STESY Web', 'STESY Mobile'], statValue: '24/7' },
+		{ solution: 'STESY Platform', solutionSlug: 'digital-monitoring-platform', icon: MonitorPlay, color: '#1A1A1A', products: ['STESY Web', 'STESY Mobile'], statValue: '24/7' },
 	];
 
 	const needs = $derived(

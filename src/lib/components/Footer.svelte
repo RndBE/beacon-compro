@@ -9,10 +9,10 @@
 
 	const fallbackSolutions = [
 		{ name: 'Water Security', slug: 'water-security' },
-		{ name: 'Weather Forecast', slug: 'weather-forecast' },
+		{ name: 'Weather & Climate Intelligence', slug: 'weather-climate-intelligence' },
 		{ name: 'Early Warning', slug: 'early-warning' },
 		{ name: 'Infrastructure Security', slug: 'infrastructure-security' },
-		{ name: 'STESY', slug: 'stesy' }
+		{ name: 'Digital Monitoring Platform', slug: 'digital-monitoring-platform' }
 	];
 
 	const footerSolutions = $derived(

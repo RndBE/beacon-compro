@@ -208,14 +208,14 @@
 
 				<div class="mt-9 flex flex-col gap-3 sm:flex-row">
 					<a
-						href="/solusi/stesy"
+						href="/solusi/digital-monitoring-platform"
 						class="btn-tactile inline-flex items-center justify-center gap-2 rounded-xl bg-[#C8102E] px-6 py-3 text-sm font-bold text-white shadow-[0_14px_28px_-18px_rgba(200,16,46,0.8)] hover:bg-[#A50D25]"
 					>
 						{$locale === 'EN' ? 'View STESY Demo' : 'Lihat Demo STESY'}
 						<ArrowRight size={15} strokeWidth={2} />
 					</a>
 					<a
-						href="/solusi/stesy"
+						href="/solusi/digital-monitoring-platform"
 						class="btn-tactile inline-flex items-center justify-center gap-2 rounded-xl border border-[#E0D3D5] bg-white/60 px-6 py-3 text-sm font-bold text-[#272123] backdrop-blur transition-colors hover:bg-white"
 					>
 						{$locale === 'EN' ? 'Learn More' : 'Pelajari Lebih Lanjut'}
