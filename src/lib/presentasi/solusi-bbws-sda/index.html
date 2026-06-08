@@ -2745,18 +2745,22 @@ h1, h2, h3, h4, p { margin: 0; }
 .slide--vision {
   background: linear-gradient(180deg, var(--surface-2), var(--surface-3));
 }
+.slide--vision .h-display--xl {
+  max-width: 1360px;
+  font-size: 84px;
+}
 
 .flow {
   display: flex;
   align-items: stretch;
   gap: 10px;
-  margin-top: 64px;
-  margin-bottom: 48px;
+  margin-top: 34px;
+  margin-bottom: 24px;
 }
 .flow__step {
   flex: 1; min-width: 0;
   display: flex; flex-direction: column; gap: 12px;
-  padding: 32px 26px;
+  padding: 24px 20px;
   background:
     linear-gradient(180deg, rgba(255,246,211,.96), rgba(255,255,255,.96) 32%),
     var(--surface);
@@ -2780,7 +2784,7 @@ h1, h2, h3, h4, p { margin: 0; }
 .flow__t {
   font-family: var(--font-sans);
   font-weight: 700;
-  font-size: 19px;
+  font-size: 17px;
   color: var(--ink);
   letter-spacing: -0.01em;
 }
@@ -2806,12 +2810,75 @@ h1, h2, h3, h4, p { margin: 0; }
 }
 .vision-foot {
   font-family: var(--font-sans);
-  font-size: 22px;
+  font-size: 19px;
   color: var(--ink-soft);
   max-width: 1100px;
   font-weight: 500;
-  margin: 0;
+  margin: 10px 0 0;
   line-height: 1.4;
+}
+.data-pillars {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  max-width: 1320px;
+}
+.data-pillar {
+  position: relative;
+  min-height: 126px;
+  padding: 22px 24px 22px 96px;
+  border: 1px solid rgba(55,71,116,.24);
+  border-radius: 18px;
+  background:
+    linear-gradient(180deg, rgba(255,246,211,.96), rgba(255,255,255,.96) 34%),
+    var(--surface);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+.data-pillar::before {
+  content: "01";
+  position: absolute;
+  left: 24px;
+  top: 24px;
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(40,118,232,.14), rgba(31,165,199,.12));
+  border: 1px solid rgba(40,118,232,.24);
+  color: var(--brand);
+  font-family: var(--font-mono);
+  font-weight: 900;
+  letter-spacing: .06em;
+}
+.data-pillar--quality::before {
+  content: "02";
+  background: linear-gradient(135deg, rgba(55,71,116,.13), rgba(234,182,48,.14));
+  border-color: rgba(55,71,116,.24);
+}
+.data-pillar span {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--brand);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.data-pillar--quality span { color: var(--ink-2); }
+.data-pillar b {
+  display: block;
+  color: var(--ink);
+  font-size: 23px;
+  line-height: 1.12;
+}
+.data-pillar p {
+  margin: 8px 0 0;
+  color: var(--ink-soft);
+  font-size: 16px;
+  line-height: 1.38;
 }
 
 /* ╔════════════════════════ PRODUCT SLIDES (07-13) ════════════════════════╗ */
@@ -4599,9 +4666,9 @@ h1, h2, h3, h4, p { margin: 0; }
       <div class="col-left">
         <div class="eyebrow"><span class="num">02</span> Executive Summary</div>
         <h2 class="h-display">Pengelola SDA membutuhkan <span class="grad">ekosistem solusi</span>, bukan satu aplikasi tunggal.</h2>
-        <p class="lede">Solusi Beacon dimulai dari assessment, pemilihan sensor, datalogger, konektivitas, dashboard STESY, alert, laporan, sampai pemeliharaan. Dashboard hanyalah layar akhir dari sistem data yang benar.</p>
+        <p class="lede">Solusi Beacon dimulai dari assessment, pemilihan sensor, datalogger, konektivitas, dashboard STESY, alert, laporan, sampai pemeliharaan. Fokusnya adalah data quantity yang lengkap dan data quality yang valid.</p>
       </div>
-      <div class="col-right"><div class="shift-card"><div class="shift-card__head"><span class="shift-card__eye">KONDISI UMUM</span><span class="shift-card__eye shift-card__eye--to">SOLUSI BEACON</span></div><div class="shift-row"><span class="shift-from">Pengukuran manual dan tersebar</span><span class="shift-arrow">→</span><span class="shift-to">Telemetry real-time</span></div><div class="shift-row"><span class="shift-from">Data tidak seragam antar bidang</span><span class="shift-arrow">→</span><span class="shift-to">Normalisasi dan single data hub</span></div><div class="shift-row"><span class="shift-from">Alarm terlambat divalidasi</span><span class="shift-arrow">→</span><span class="shift-to">EWS berbasis ambang dan bukti visual</span></div><div class="shift-row"><span class="shift-from">Pelaporan butuh rekap manual</span><span class="shift-arrow">→</span><span class="shift-to">Executive report otomatis</span></div><div class="shift-row"><span class="shift-from">Pemeliharaan reaktif</span><span class="shift-arrow">→</span><span class="shift-to">O&M berbasis status perangkat</span></div></div></div>
+      <div class="col-right"><div class="shift-card"><div class="shift-card__head"><span class="shift-card__eye">KONDISI UMUM</span><span class="shift-card__eye shift-card__eye--to">SOLUSI BEACON</span></div><div class="shift-row"><span class="shift-from">Pengukuran manual dan tersebar</span><span class="shift-arrow">→</span><span class="shift-to">Telemetry real-time</span></div><div class="shift-row"><span class="shift-from">Data quantity banyak gap</span><span class="shift-arrow">→</span><span class="shift-to">Cakupan, interval, dan uptime terukur</span></div><div class="shift-row"><span class="shift-from">Data quality sulit dipercaya</span><span class="shift-arrow">→</span><span class="shift-to">Validasi, anomali, dan metadata sensor</span></div><div class="shift-row"><span class="shift-from">Pelaporan butuh rekap manual</span><span class="shift-arrow">→</span><span class="shift-to">Executive report otomatis</span></div><div class="shift-row"><span class="shift-from">Pemeliharaan reaktif</span><span class="shift-arrow">→</span><span class="shift-to">O&M berbasis status perangkat</span></div></div></div>
     </div>
     <footer class="chrome chrome--bot"><div class="left"><span>Executive Summary · Solusi end-to-end</span></div><div class="right"><span class="dot"></span><span>02 / 18</span></div></footer>
   </section>
@@ -4619,21 +4686,21 @@ h1, h2, h3, h4, p { margin: 0; }
   <section data-screen-label="04 Masalah Utama">
     <div class="slide-grid"></div>
     <header class="chrome chrome--top"><div class="brand-mark"><img class="brand-logo" src="logo_be.png" alt="Beacon Engineering" /></div><div>Masalah Utama · 04 / 18</div></header>
-    <div class="canvas"><div class="eyebrow eyebrow--alert"><span class="num">04</span> Masalah Utama</div><h2 class="h-display">Tantangan yang harus dijawab oleh <span class="grad-warn">paket solusi</span>.</h2><div class="pain-grid"><div class="pain"><span class="pain__no">01</span><span class="pain__t">Pos pantau belum seluruhnya real-time</span><span class="pain__d">Data TMA, hujan, debit, dan kualitas air masih sering terlambat.</span></div><div class="pain"><span class="pain__no">02</span><span class="pain__t">Instrumen lama dan baru belum terintegrasi</span><span class="pain__d">Vendor, format, dan protokol berbeda sulit dibaca lintas bidang.</span></div><div class="pain"><span class="pain__no">03</span><span class="pain__t">Bukti visual belum menyatu dengan alarm</span><span class="pain__d">CCTV, foto lapangan, dan data sensor sering diperiksa terpisah.</span></div><div class="pain"><span class="pain__no">04</span><span class="pain__t">Bendungan dan irigasi butuh status aset</span><span class="pain__d">Operasi gate, pompa, dam safety, dan pemenuhan air perlu histori.</span></div><div class="pain"><span class="pain__no">05</span><span class="pain__t">Peringatan dini belum actionable</span><span class="pain__d">Alarm perlu level, konteks, kanal eskalasi, dan SOP tindak lanjut.</span></div><div class="pain"><span class="pain__no">06</span><span class="pain__t">Pelaporan masih menyita waktu teknis</span><span class="pain__d">Ringkasan pimpinan dan laporan PPK perlu otomatis dari data valid.</span></div></div></div>
+    <div class="canvas"><div class="eyebrow eyebrow--alert"><span class="num">04</span> Masalah Utama</div><h2 class="h-display">Tantangan data yang harus dijawab oleh <span class="grad-warn">paket solusi</span>.</h2><div class="pain-grid"><div class="pain"><span class="pain__no">01</span><span class="pain__t">Data quantity belum lengkap dan rutin</span><span class="pain__d">Cakupan pos, interval TMA, hujan, debit, dan kualitas air masih sering memiliki gap.</span></div><div class="pain"><span class="pain__no">02</span><span class="pain__t">Data quality belum konsisten</span><span class="pain__d">Kalibrasi, nilai wajar, metadata, dan status sensor belum selalu tervalidasi sebelum dipakai.</span></div><div class="pain"><span class="pain__no">03</span><span class="pain__t">Instrumen lama dan baru belum terintegrasi</span><span class="pain__d">Vendor, format, dan protokol berbeda sulit dibaca lintas bidang.</span></div><div class="pain"><span class="pain__no">04</span><span class="pain__t">Bukti visual belum menyatu dengan alarm</span><span class="pain__d">CCTV, foto lapangan, dan data sensor sering diperiksa terpisah.</span></div><div class="pain"><span class="pain__no">05</span><span class="pain__t">Peringatan dini belum actionable</span><span class="pain__d">Alarm perlu level, konteks, kanal eskalasi, dan SOP tindak lanjut.</span></div><div class="pain"><span class="pain__no">06</span><span class="pain__t">Pelaporan masih menyita waktu teknis</span><span class="pain__d">Ringkasan pimpinan dan laporan PPK perlu otomatis dari data yang lengkap dan valid.</span></div></div></div>
     <footer class="chrome chrome--bot"><div class="left"><span>Masalah utama · Data, alat, alert, laporan</span></div><div class="right"><span class="dot"></span><span>04 / 18</span></div></footer>
   </section>
 
   <section class="slide--vision" data-screen-label="05 Pendekatan Solusi">
     <div class="slide-grid"></div>
     <header class="chrome chrome--top"><div class="brand-mark"><img class="brand-logo" src="logo_be.png" alt="Beacon Engineering" /></div><div>Pendekatan Solusi · 05 / 18</div></header>
-    <div class="canvas"><div class="eyebrow"><span class="num">05</span> Pendekatan End-to-End</div><h2 class="h-display h-display--xl">Dari <span class="strike">pengadaan alat</span><br/>menjadi <span class="grad">sistem monitoring yang berjalan.</span></h2><div class="flow"><div class="flow__step"><span class="flow__ico">⌖</span><span class="flow__t">Survey & Assessment</span><span class="flow__d">Lokasi · risiko · sinyal · daya</span></div><div class="flow__arr"></div><div class="flow__step"><span class="flow__ico">⚙</span><span class="flow__t">Desain Instrumentasi</span><span class="flow__d">Sensor · logger · enclosure</span></div><div class="flow__arr"></div><div class="flow__step"><span class="flow__ico">📡</span><span class="flow__t">Telemetry</span><span class="flow__d">GSM · LoRa · radio · VSAT</span></div><div class="flow__arr"></div><div class="flow__step"><span class="flow__ico">☁</span><span class="flow__t">Data Hub STESY</span><span class="flow__d">Validasi · histori · API</span></div><div class="flow__arr"></div><div class="flow__step flow__step--accent"><span class="flow__ico">🛠</span><span class="flow__t">O&M</span><span class="flow__d">Training · maintenance · optimasi</span></div></div><p class="vision-foot">Nilai utama: setiap solusi dipasang dengan alur operasional, bukan berhenti di instalasi perangkat.</p></div>
+    <div class="canvas"><div class="eyebrow"><span class="num">05</span> Pendekatan End-to-End</div><h2 class="h-display h-display--xl">Dari <span class="strike">pengadaan alat</span><br/>menjadi <span class="grad">sistem data yang lengkap dan benar.</span></h2><div class="flow"><div class="flow__step"><span class="flow__ico">⌖</span><span class="flow__t">Survey & Assessment</span><span class="flow__d">Lokasi · risiko · sinyal · daya</span></div><div class="flow__arr"></div><div class="flow__step"><span class="flow__ico">⚙</span><span class="flow__t">Desain Instrumentasi</span><span class="flow__d">Sensor · logger · enclosure</span></div><div class="flow__arr"></div><div class="flow__step"><span class="flow__ico">📡</span><span class="flow__t">Telemetry</span><span class="flow__d">Interval · buffer · uptime</span></div><div class="flow__arr"></div><div class="flow__step"><span class="flow__ico">☁</span><span class="flow__t">Data Hub STESY</span><span class="flow__d">Quantity · quality · histori</span></div><div class="flow__arr"></div><div class="flow__step flow__step--accent"><span class="flow__ico">🛠</span><span class="flow__t">O&M</span><span class="flow__d">Training · maintenance · optimasi</span></div></div><div class="data-pillars"><div class="data-pillar"><span>Data Quantity</span><b>Lengkap, rutin, dan menjangkau seluruh titik prioritas</b><p>Cakupan pos pantau, interval pengiriman, kontinuitas telemetry, dan kelengkapan parameter.</p></div><div class="data-pillar data-pillar--quality"><span>Data Quality</span><b>Akurat, tervalidasi, dan siap dipertanggungjawabkan</b><p>Kalibrasi, nilai wajar, deteksi anomali, metadata, serta status sensor sebelum masuk laporan.</p></div></div><p class="vision-foot">Quantity x Quality menjadi dasar keputusan SDA yang tepat, cepat, dan dapat dipertanggungjawabkan.</p></div>
     <footer class="chrome chrome--bot"><div class="left"><span>Pendekatan · Survey hingga maintenance</span></div><div class="right"><span class="dot"></span><span>05 / 18</span></div></footer>
   </section>
 
   <section data-screen-label="06 Portofolio Solusi">
     <div class="slide-grid"></div>
     <header class="chrome chrome--top"><div class="brand-mark"><img class="brand-logo" src="logo_be.png" alt="Beacon Engineering" /></div><div>Portofolio Solusi · 06 / 18</div></header>
-    <div class="canvas"><div class="eyebrow"><span class="num">06</span> Apa yang Bisa Ditawarkan</div><h2 class="h-display">Satu portofolio solusi untuk operasi SDA lintas bidang.</h2><div class="solution-grid"><div class="solution-card"><span>01 Assessment</span><b>Survey & desain sistem</b><p>Inventarisasi pos, prioritas wilayah, KPI, dan rekomendasi arsitektur.</p></div><div class="solution-card solution-card--green"><span>02 Hidrologi</span><b>AWLR, ARR, AWS</b><p>Data TMA, debit, hujan, dan iklim sebagai dasar operasi.</p></div><div class="solution-card solution-card--amber"><span>03 Bendungan</span><b>Dam monitoring</b><p>Elevasi, inflow/outflow, gate, rembesan, deformasi, dan safety.</p></div><div class="solution-card solution-card--red"><span>04 EWS</span><b>Peringatan dini</b><p>Alert berbasis ambang, sirine, WhatsApp/SMS, dan SOP eskalasi.</p></div><div class="solution-card"><span>05 Irigasi</span><b>Debit dan pintu air</b><p>Pemenuhan kebutuhan air, operasi pintu, dan histori distribusi.</p></div><div class="solution-card solution-card--green"><span>06 JIAT/ATAB</span><b>Air tanah & air baku</b><p>Pompa, sumur pantau, runtime, energi, dan konservasi sumber air.</p></div><div class="solution-card solution-card--amber"><span>07 Water Quality</span><b>AWQR</b><p>pH, DO, TDS, turbidity, suhu, DHL, dan deteksi pencemaran.</p></div><div class="solution-card solution-card--red"><span>08 SCADA</span><b>Remote operation</b><p>Kontrol pompa, gate, interlock, dan audit setiap aksi operasi.</p></div></div></div>
+    <div class="canvas"><div class="eyebrow"><span class="num">06</span> Apa yang Bisa Ditawarkan</div><h2 class="h-display">Portofolio solusi untuk data quantity, data quality, dan operasi SDA.</h2><div class="solution-grid"><div class="solution-card"><span>01 Assessment</span><b>Survey & desain sistem</b><p>Inventarisasi pos, prioritas wilayah, KPI, dan target mutu data.</p></div><div class="solution-card solution-card--green"><span>02 Data Quantity</span><b>AWLR, ARR, AWS, Flow</b><p>TMA, debit, hujan, iklim, tampungan, inflow/outflow, dan kontinuitas telemetry.</p></div><div class="solution-card solution-card--amber"><span>03 Bendungan</span><b>Dam monitoring</b><p>Elevasi, gate, rembesan, deformasi, CCTV, histori, dan safety.</p></div><div class="solution-card solution-card--red"><span>04 EWS</span><b>Peringatan dini</b><p>Alert berbasis ambang, validasi sensor, sirine, WhatsApp/SMS, dan SOP eskalasi.</p></div><div class="solution-card"><span>05 Irigasi</span><b>Debit dan pintu air</b><p>Pemenuhan kebutuhan air, operasi pintu, dan histori distribusi.</p></div><div class="solution-card solution-card--green"><span>06 JIAT/ATAB</span><b>Air tanah & air baku</b><p>Pompa, sumur pantau, runtime, energi, debit, dan konservasi sumber air.</p></div><div class="solution-card solution-card--amber"><span>07 Data Quality</span><b>AWQR + validasi data</b><p>Parameter mutu air, kalibrasi, nilai wajar, metadata, dan deteksi anomali.</p></div><div class="solution-card solution-card--red"><span>08 SCADA</span><b>Remote operation</b><p>Kontrol pompa, gate, interlock, audit aksi, dan status aset operasional.</p></div></div></div>
     <footer class="chrome chrome--bot"><div class="left"><span>Portofolio solusi Beacon</span></div><div class="right"><span class="dot"></span><span>06 / 18</span></div></footer>
   </section>
 
@@ -4703,14 +4770,14 @@ h1, h2, h3, h4, p { margin: 0; }
   <section data-screen-label="16 Dashboard STESY + AI">
     <div class="slide-grid"></div>
     <header class="chrome chrome--top"><div class="brand-mark"><img class="brand-logo" src="logo_be.png" alt="Beacon Engineering" /></div><div>Solusi 10 · STESY + AI · 16 / 18</div></header>
-    <div class="canvas canvas--cmdctr"><div class="cmdctr-header"><div class="cmdctr-header__row"><span class="prod-tag">SOLUSI 10 · DATA HUB, DASHBOARD & AI</span><span class="cmdctr-header__meta"><span class="cmdctr-header__live"><span class="cmdctr-pulse"></span>LIVE DATA WORKSPACE</span><span class="cmdctr-header__sep">·</span><span>Operator · PPK · Pimpinan</span></span></div><div class="cmdctr-header__main"><h2 class="cmdctr-header__title">Dashboard STESY menjadi <span class="grad">ruang kerja seluruh solusi.</span></h2><p class="cmdctr-header__lede">Peta pos, grafik, alarm, CCTV, status perangkat, laporan, dan AI insight disatukan agar data lapangan bisa langsung berubah menjadi keputusan operasional.</p></div></div><div class="cmdctr-deck" data-component="live-dashboard"></div><div class="scope-band scope-band--tight"><span>AI daily brief</span><span>Event report banjir</span><span>Anomali perangkat</span><span>Audit tindakan</span><span>Export pimpinan</span></div></div>
+    <div class="canvas canvas--cmdctr"><div class="cmdctr-header"><div class="cmdctr-header__row"><span class="prod-tag">SOLUSI 10 · DATA HUB, DASHBOARD & AI</span><span class="cmdctr-header__meta"><span class="cmdctr-header__live"><span class="cmdctr-pulse"></span>LIVE DATA WORKSPACE</span><span class="cmdctr-header__sep">·</span><span>Operator · PPK · Pimpinan</span></span></div><div class="cmdctr-header__main"><h2 class="cmdctr-header__title">Dashboard STESY menjadi <span class="grad">ruang kerja seluruh solusi.</span></h2><p class="cmdctr-header__lede">Peta pos, grafik, alarm, CCTV, status perangkat, laporan, dan AI insight disatukan dengan kontrol quantity dan quality agar data lapangan bisa langsung berubah menjadi keputusan operasional.</p></div></div><div class="cmdctr-deck" data-component="live-dashboard"></div><div class="scope-band scope-band--tight"><span>Data quantity coverage</span><span>Data quality checks</span><span>Anomali perangkat</span><span>Audit tindakan</span><span>Export pimpinan</span></div></div>
     <footer class="chrome chrome--bot"><div class="left"><span>Solusi 10 · Dashboard STESY, Data Hub & AI Insight</span></div><div class="right"><span class="dot"></span><span>16 / 18</span></div></footer>
   </section>
 
   <section class="slide--arch" data-screen-label="17 Implementasi">
     <div class="slide-grid"></div>
     <header class="chrome chrome--top"><div class="brand-mark"><img class="brand-logo" src="logo_be.png" alt="Beacon Engineering" /></div><div>Implementasi · 17 / 18</div></header>
-    <div class="canvas compact-implementation"><div class="eyebrow"><span class="num">17</span> Arsitektur + Paket + Pilot</div><h2 class="h-display">Mulai kecil, validasi cepat, lalu scale-up lintas bidang SDA.</h2><div class="compact-grid"><div class="compact-card compact-card--wide"><span class="compact-k">Arsitektur modular</span><div class="mini-flow"><span>Sensor & CCTV</span><i></i><span>Logger / RTU</span><i></i><span>Telemetry</span><i></i><span>STESY Data Hub</span><i></i><span>Dashboard · Alert · AI Report</span></div><p>Lapisan lapangan, edge, konektivitas, data hub, API, analytics, dan output dibuat bertahap agar perangkat eksisting tetap bisa diintegrasikan.</p></div><div class="compact-card"><span class="compact-k">Assessment</span><strong>2-4 minggu</strong><p>Inventarisasi pos, survey sinyal/daya/akses, prioritas lokasi, KPI, BoQ, dan desain teknis awal.</p></div><div class="compact-card compact-card--accent"><span class="compact-k">Pilot</span><strong>90 hari</strong><p>5-10 titik prioritas: DAS hulu-hilir, bendungan, irigasi, air baku, EWS, dashboard, alert, dan training operator.</p></div><div class="compact-card"><span class="compact-k">Scale-up</span><strong>6-24 bulan</strong><p>Ekspansi multi bidang dan wilayah: SCADA, CCTV, AI insight, role access, API, serta maintenance berkala.</p></div></div><div class="scope-band"><span>Workshop kebutuhan</span><span>Assessment lapangan</span><span>Desain teknis & RAB</span><span>Instalasi pilot</span><span>Uji fungsi</span><span>Evaluasi KPI</span><span>Scale-up</span></div></div>
+    <div class="canvas compact-implementation"><div class="eyebrow"><span class="num">17</span> Arsitektur + Paket + Pilot</div><h2 class="h-display">Mulai kecil, validasi cepat, lalu scale-up lintas bidang SDA.</h2><div class="compact-grid"><div class="compact-card compact-card--wide"><span class="compact-k">Arsitektur modular</span><div class="mini-flow"><span>Sensor & CCTV</span><i></i><span>Logger / RTU</span><i></i><span>Telemetry</span><i></i><span>Quantity + Quality Data Hub</span><i></i><span>Dashboard · Alert · AI Report</span></div><p>Lapisan lapangan, edge, konektivitas, data hub, API, analytics, dan output dibuat bertahap agar perangkat eksisting tetap bisa diintegrasikan.</p></div><div class="compact-card"><span class="compact-k">Assessment</span><strong>2-4 minggu</strong><p>Inventarisasi pos, survey sinyal/daya/akses, prioritas lokasi, KPI quantity, target quality, BoQ, dan desain teknis awal.</p></div><div class="compact-card compact-card--accent"><span class="compact-k">Pilot</span><strong>90 hari</strong><p>5-10 titik prioritas: data quantity, data quality, bendungan, irigasi, air baku, EWS, dashboard, alert, dan training operator.</p></div><div class="compact-card"><span class="compact-k">Scale-up</span><strong>6-24 bulan</strong><p>Ekspansi multi bidang dan wilayah: SCADA, CCTV, AI insight, role access, API, quality control, serta maintenance berkala.</p></div></div><div class="scope-band"><span>Workshop kebutuhan</span><span>Assessment lapangan</span><span>Target quantity</span><span>Target quality</span><span>Instalasi pilot</span><span>Evaluasi KPI</span><span>Scale-up</span></div></div>
     <footer class="chrome chrome--bot"><div class="left"><span>Implementasi · Arsitektur, paket, pilot, roadmap</span></div><div class="right"><span class="dot"></span><span>17 / 18</span></div></footer>
   </section>
 
