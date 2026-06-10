@@ -91,6 +91,10 @@
 	:global(.article-content ul) {
 		margin-bottom: 1.5rem;
 	}
+	/* Editor blok (TipTap) menyimpan isi list sebagai <li><p>…</p></li> */
+	:global(.article-content li p) {
+		margin-bottom: 0;
+	}
 
 	:global(.article-content .beacon-article-figure) {
 		margin: 2rem 0;
