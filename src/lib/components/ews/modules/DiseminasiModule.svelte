@@ -11,7 +11,7 @@
   import { data, activeAlerts } from '$lib/ews/stores';
   import { SIAGA_COLOR, siagaLabel } from '$lib/ews/status';
   import { num, timeHM, dateShort } from '$lib/ews/format';
-  import type { ChannelKind } from '$lib/ews/types';
+  import type { ChannelKind, Channel, Siaga } from '$lib/ews/types';
 
   import Panel from '$lib/components/ews/ui/Panel.svelte';
   import KpiCard from '$lib/components/ews/ui/KpiCard.svelte';
@@ -45,11 +45,11 @@
 
   // --- broadcast log: derive channels per alert ---
   // For siaga/awas alerts: all online channels. For waspada: push+wa+telegram. For normal: none shown.
-  function alertChannels(toLevel: string): string[] {
-    const online = d.channels.filter((c) => c.online).map((c) => c.label);
+  function alertChannels(toLevel: Siaga, channels: Channel[]): string[] {
+    const online = channels.filter((c) => c.online).map((c) => c.label);
     if (toLevel === 'awas' || toLevel === 'siaga') return online;
-    if (toLevel === 'waspada') return d.channels.filter((c) => c.online && c.kind !== 'sirine').map((c) => c.label);
-    return d.channels.filter((c) => c.online && (c.kind === 'push' || c.kind === 'wa')).map((c) => c.label);
+    if (toLevel === 'waspada') return channels.filter((c) => c.online && c.kind !== 'sirine').map((c) => c.label);
+    return channels.filter((c) => c.online && (c.kind === 'push' || c.kind === 'wa')).map((c) => c.label);
   }
 
   // only show alerts with a meaningful dissemination (to != normal, or explicitly flagged)
@@ -87,7 +87,7 @@
 
     <KpiCard label="Log diseminasi" value={String(logAlerts.length)} unit="notifikasi" icon={ShieldCheck}>
       {#snippet footer()}
-        <span class="text-[10px] text-ink-dim">sejak jam terakhir</span>
+        <span class="text-[10px] text-ink-dim">peringatan terkini</span>
       {/snippet}
     </KpiCard>
   </div>
@@ -131,7 +131,7 @@
       <p class="text-[11px] text-ink-dim">Tidak ada data kanal.</p>
     {:else}
       <div class="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-        {#each d.channels as ch (ch.kind)}
+        {#each d.channels as ch (ch.label)}
           {@const ChanIcon = CHANNEL_ICON[ch.kind]}
           {@const iconColor = CHANNEL_COLOR[ch.kind]}
           <div
@@ -183,7 +183,7 @@
           </thead>
           <tbody>
             {#each logAlerts as alert (alert.id)}
-              {@const chans = alertChannels(alert.to)}
+              {@const chans = alertChannels(alert.to, d.channels)}
               <tr class="border-b border-line-soft transition-colors hover:bg-[var(--surface-hover)]">
                 <td class="px-3.5 py-2.5">
                   <p class="font-medium text-ink-strong">{alert.nama}</p>
