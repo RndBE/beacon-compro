@@ -1,0 +1,27 @@
+const ID = 'id-ID';
+
+export function num(v: number, digits = 1): string {
+	return new Intl.NumberFormat(ID, {
+		minimumFractionDigits: digits,
+		maximumFractionDigits: digits
+	}).format(v);
+}
+
+export function fmtUnit(v: number, unit: string, digits = 1): string {
+	return `${num(v, digits)} ${unit}`;
+}
+
+export function timeHM(t: number): string {
+	return new Intl.DateTimeFormat(ID, {
+		hour: '2-digit',
+		minute: '2-digit',
+		hour12: false
+	}).format(new Date(t));
+}
+
+export function dateShort(t: number): string {
+	return new Intl.DateTimeFormat(ID, {
+		day: '2-digit',
+		month: 'short'
+	}).format(new Date(t));
+}
