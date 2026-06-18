@@ -124,8 +124,7 @@
 							{@const on = !hiddenKinds.includes(row.key)}
 							<button
 								onclick={() => toggleKind(row.key)}
-								class="group flex items-center gap-2 rounded-md px-1.5 py-1 transition-colors"
-								style="hover:background:rgba(255,255,255,0.05)"
+								class="group flex items-center gap-2 rounded-md px-1.5 py-1 transition-colors hover:bg-white/5"
 							>
 								<span
 									class="grid h-3.5 w-3.5 shrink-0 place-items-center rounded-[4px] border transition-colors"

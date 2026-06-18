@@ -173,7 +173,7 @@
 	$effect(() => {
 		// read reactive deps
 		const ms = markers;
-		const hk = hiddenKinds;
+		const hk = (hiddenKinds ?? []).join('|');
 		void hk;
 		if (map && markerLayer && L) syncMarkers(ms);
 	});
