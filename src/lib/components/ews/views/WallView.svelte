@@ -357,7 +357,7 @@
       <div class="flex items-center gap-3 p-3">
         <WallDonut
           counts={$statusCounts}
-          centerValue={String(d.pos.length + d.longsor.length + d.sirens.length + d.shelters.length)}
+          centerValue={String($markers.length)}
           centerLabel="Total Aset"
           centerStatus={$overallStatus}
         />

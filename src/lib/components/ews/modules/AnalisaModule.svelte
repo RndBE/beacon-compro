@@ -19,7 +19,7 @@
 
   import { data } from '$lib/ews/stores';
   import { SIAGA_COLOR } from '$lib/ews/status';
-  import { num, fmtUnit, signed } from '$lib/ews/format';
+  import { num, signed } from '$lib/ews/format';
   import { riseRatePerHour, delta, minMax, lastN } from '$lib/ews/series';
   import type { Pos, HistPoint, Siaga } from '$lib/ews/types';
 

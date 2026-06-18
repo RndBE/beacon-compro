@@ -8,6 +8,7 @@
   import ShieldCheck from '@lucide/svelte/icons/shield-check';
   import Activity from '@lucide/svelte/icons/activity';
 
+  import { goto } from '$app/navigation';
   import { data, activeAlerts } from '$lib/ews/stores';
   import { SIAGA_COLOR, siagaLabel } from '$lib/ews/status';
   import { num, timeHM, dateShort } from '$lib/ews/format';
@@ -99,7 +100,11 @@
     {:else}
       <div class="grid grid-cols-1 gap-px bg-line sm:grid-cols-2 xl:grid-cols-3">
         {#each d.sirens as siren (siren.id)}
-          <div class="bg-panel p-3.5">
+          <button
+            type="button"
+            onclick={() => goto('/demo/ews/sirine/' + siren.id)}
+            class="w-full bg-panel p-3.5 text-left transition-colors hover:bg-[var(--surface-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent"
+          >
             <div class="mb-2 flex items-start justify-between gap-2">
               <div class="min-w-0">
                 <p class="truncate text-[12px] font-semibold text-ink-strong">{siren.nama}</p>
@@ -119,7 +124,7 @@
                 Uji: {timeHM(siren.lastTest)} · {dateShort(siren.lastTest)}
               </span>
             </div>
-          </div>
+          </button>
         {/each}
       </div>
     {/if}

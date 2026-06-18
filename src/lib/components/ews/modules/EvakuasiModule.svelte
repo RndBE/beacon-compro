@@ -15,7 +15,7 @@
   import BasinMap from '$lib/components/ews/map/BasinMap.svelte';
 
   import { data, markers } from '$lib/ews/stores';
-  import { siagaRank } from '$lib/ews/status';
+  import { siagaRank, SIAGA_COLOR } from '$lib/ews/status';
   import { num } from '$lib/ews/format';
   import { goto } from '$app/navigation';
   import type { Shelter } from '$lib/ews/types';
@@ -105,7 +105,7 @@
                 value={sh.terisi}
                 min={0}
                 max={sh.kapasitas}
-                color={nearFull ? '#B5322C' : '#1F8A5C'}
+                color={nearFull ? SIAGA_COLOR['awas'] : SIAGA_COLOR['normal']}
                 height={6}
               />
             </div>
@@ -135,7 +135,7 @@
     <Panel title="Aset Pompa" subtitle="{pompa.filter((a) => a.operasional).length} / {pompa.length} operasional" icon={Waves} flush>
       <div class="grid grid-cols-1 gap-px bg-line sm:grid-cols-2 xl:grid-cols-4">
         {#each pompa as a (a.id)}
-          {@const condColor = a.kondisi >= 70 ? '#1F8A5C' : a.kondisi >= 40 ? '#C77A1B' : '#B5322C'}
+          {@const condColor = a.kondisi >= 70 ? SIAGA_COLOR['normal'] : a.kondisi >= 40 ? SIAGA_COLOR['waspada'] : SIAGA_COLOR['awas']}
           <div class="flex flex-col gap-2 bg-panel p-3.5">
             <div class="flex items-center justify-between">
               <div>
@@ -169,7 +169,7 @@
     <Panel title="Aset Tanggul" subtitle="{tanggul.filter((a) => a.operasional).length} / {tanggul.length} operasional" icon={Wrench} flush>
       <div class="grid grid-cols-1 gap-px bg-line sm:grid-cols-2 xl:grid-cols-4">
         {#each tanggul as a (a.id)}
-          {@const condColor = a.kondisi >= 70 ? '#1F8A5C' : a.kondisi >= 40 ? '#C77A1B' : '#B5322C'}
+          {@const condColor = a.kondisi >= 70 ? SIAGA_COLOR['normal'] : a.kondisi >= 40 ? SIAGA_COLOR['waspada'] : SIAGA_COLOR['awas']}
           <div class="flex flex-col gap-2 bg-panel p-3.5">
             <div class="flex items-center justify-between">
               <div>

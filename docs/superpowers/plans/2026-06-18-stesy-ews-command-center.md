@@ -54,8 +54,8 @@ src/lib/components/ews/
   theme.css  # BE-DS tokens scoped under .stesy (dark + light)
 
 src/routes/demo/ews/
-  +layout@.svelte         # layout reset to root
-  +layout.svelte          # STESY shell
+  +layout@.svelte         # layout reset to root + STESY shell (SINGLE file; SvelteKit
+                          #   forbids both +layout.svelte and +layout@.svelte in one dir)
   +page.svelte            # redirect -> ringkasan
   login/+page.svelte
   ringkasan/+page.svelte
@@ -753,7 +753,7 @@ describe('etaToNextSiagaHours', () => {
 		// value 2.6 (waspada), next = siaga 3.0, rising 0.2 m/h over history
 		const hist: HistPoint[] = [
 			{ t: 0, v: 2.2 },
-			{ t: 3_600_000, v: 2.6 }
+			{ t: 7_200_000, v: 2.6 } // 0.4 m rise over 2h = 0.2 m/h
 		];
 		const eta = etaToNextSiagaHours(2.6, T, hist);
 		expect(eta).toBeCloseTo(2.0, 1); // (3.0-2.6)/0.2 = 2h
@@ -1086,7 +1086,7 @@ git commit -m "feat(ews): port UI primitive components"
 - Create: `src/lib/components/ews/layout/TopBar.svelte`, `TabNav.svelte`, `Logo.svelte`, `Emblem.svelte`
 - Create: `src/lib/ews/config/nav.ts`
 - Create: `src/lib/ews/theme.ts`
-- Modify: `src/routes/demo/ews/+layout.svelte`
+- Modify: `src/routes/demo/ews/+layout@.svelte` (the single merged reset+shell layout created in Task 2 — add the shell markup to it; do NOT create a separate `+layout.svelte`)
 - Reference: `/Users/tessa/Documents/allinone/src/lib/components/layout/*`, `config/nav.ts`, `theme.ts`, `App.svelte`
 
 **Interfaces:**
@@ -1118,10 +1118,10 @@ export function toggleTheme() {
 
 - [ ] **Step 2: Port layout components** (standard transforms). TopBar uses `goto` for the wall-mode button (`/demo/ews/wall`) and shows `Clock`, `overallStatus` badge, theme toggle, logout (opens `LogoutModal`). TabNav renders `NAV_ITEMS`, active by pathname.
 
-- [ ] **Step 3: Wire the shell** in `+layout.svelte`:
+- [ ] **Step 3: Wire the shell** into the existing `src/routes/demo/ews/+layout@.svelte` (created in Task 2 as the reset layout; replace its placeholder body with this shell — keep it as `+layout@.svelte`, do not add a separate `+layout.svelte`):
 ```svelte
 <script lang="ts">
-	import './../../../lib/components/ews/theme.css';
+	import '$lib/components/ews/theme.css';
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';

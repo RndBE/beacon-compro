@@ -15,8 +15,9 @@
   let imgError = $state(false);
 
   // Jam live (diperbarui tiap detik, hanya di browser)
-  let nowMs = $state(Date.now());
+  let nowMs = $state(0);
   onMount(() => {
+    nowMs = Date.now();
     const id = setInterval(() => { nowMs = Date.now(); }, 1000);
     return () => clearInterval(id);
   });
