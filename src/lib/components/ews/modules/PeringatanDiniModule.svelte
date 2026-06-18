@@ -51,19 +51,21 @@
     return `${sign}${num(Math.abs(r), 2)} ${pos.unit}/jam`;
   }
 
-  function etaLabel(pos: Pos): string {
+  function etaInfo(pos: Pos): { label: string; level: Siaga | undefined } {
     const eta = etaToNextSiagaHours(pos.value, pos.thresholds, pos.history);
-    if (eta === null) return '—';
+    if (eta === null) return { label: '—', level: undefined };
     const nextStatus: Siaga =
       pos.value < pos.thresholds.waspada
         ? 'waspada'
         : pos.value < pos.thresholds.siaga
           ? 'siaga'
           : 'awas';
-    return `≈ ${num(eta, 1)} jam menuju ${siagaLabel(nextStatus)}`;
+    return { label: `≈ ${num(eta, 1)} jam menuju ${siagaLabel(nextStatus)}`, level: nextStatus };
   }
 
   const SIAGA_LEVELS: Siaga[] = ['awas', 'siaga', 'waspada', 'normal'];
+  // Only awas/siaga/waspada count as critical — normal is excluded
+  const CRITICAL_LEVELS: Siaga[] = ['awas', 'siaga', 'waspada'];
 </script>
 
 <div class="flex flex-col gap-3">
@@ -111,7 +113,7 @@
     <KpiCard label="Status kritis" value={String(siagaCounts.awas + siagaCounts.siaga)} unit="pos" icon={AlertTriangle}>
       {#snippet footer()}
         <span class="text-[10px] text-ink-dim">
-          {#each SIAGA_LEVELS.filter((s) => siagaCounts[s] > 0) as s}
+          {#each CRITICAL_LEVELS.filter((s) => siagaCounts[s] > 0) as s}
             <span style="color:{SIAGA_COLOR[s]}">{siagaLabel(s)}: {siagaCounts[s]}</span>
             {' '}
           {/each}
@@ -130,10 +132,12 @@
           const order: Record<Siaga, number> = { awas: 3, siaga: 2, waspada: 1, normal: 0 };
           return order[b.status] - order[a.status];
         }) as pos (pos.id)}
+          {@const ei = etaInfo(pos)}
           <InstrumentCard
             {pos}
             riseRateLabel={riseLabel(pos)}
-            etaLabel={etaLabel(pos)}
+            etaLabel={ei.label}
+            etaLevel={ei.level}
             onclick={() => goto('/demo/ews/pos/' + pos.id)}
           />
         {/each}
@@ -148,10 +152,12 @@
     {:else}
       <div class="grid grid-cols-1 gap-2.5 p-3.5 sm:grid-cols-2 xl:grid-cols-3">
         {#each [...arrPos].sort((a, b) => b.value - a.value) as pos (pos.id)}
+          {@const ei = etaInfo(pos)}
           <InstrumentCard
             {pos}
             riseRateLabel={riseLabel(pos)}
-            etaLabel={etaLabel(pos)}
+            etaLabel={ei.label}
+            etaLevel={ei.level}
             onclick={() => goto('/demo/ews/pos/' + pos.id)}
           />
         {/each}

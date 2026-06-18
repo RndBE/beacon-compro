@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Pos } from '$lib/ews/types';
+  import type { Pos, Siaga } from '$lib/ews/types';
   import { SIAGA_COLOR, siagaLabel } from '$lib/ews/status';
   import { fmtUnit } from '$lib/ews/format';
   import Sparkline from '$lib/components/ews/ui/Sparkline.svelte';
@@ -12,13 +12,20 @@
     riseRateLabel?: string;
     /** ETA label, e.g. "≈ 2,0 jam menuju Siaga" or "—" */
     etaLabel?: string;
+    /** The Siaga level the station is approaching (for ETA pill color) */
+    etaLevel?: Siaga;
     onclick?: () => void;
   }
-  let { pos, riseRateLabel, etaLabel, onclick }: Props = $props();
+  let { pos, riseRateLabel, etaLabel, etaLevel, onclick }: Props = $props();
 
   const color = $derived(SIAGA_COLOR[pos.status]);
   const sparkPoints = $derived(pos.history.map((p) => p.v));
   const isBars = $derived(pos.kind === 'arr');
+
+  // Safe ETA label — undefined behaves like '—' so the stabil fallback always renders
+  const eta = $derived(etaLabel ?? '—');
+  // ETA pill color: use approaching level when provided, else fall back to waspada/accent
+  const etaPillColor = $derived(etaLevel ? SIAGA_COLOR[etaLevel] : SIAGA_COLOR.waspada);
 </script>
 
 <svelte:element
@@ -59,14 +66,15 @@
   <LevelBar value={pos.value} thresholds={pos.thresholds} height={8} />
 
   <!-- ETA to next Siaga — headline feature -->
-  {#if etaLabel && etaLabel !== '—'}
+  {#if eta !== '—'}
     <div
-      class="flex items-center gap-1.5 rounded-lg border border-waspada/30 bg-waspada/8 px-2.5 py-1.5 text-[10.5px] font-medium text-waspada"
+      class="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-[10.5px] font-medium"
+      style="border: 1px solid {etaPillColor}4d; background: {etaPillColor}14; color: {etaPillColor};"
     >
-      <span class="h-1.5 w-1.5 shrink-0 rounded-full bg-waspada"></span>
-      {etaLabel}
+      <span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background: {etaPillColor};"></span>
+      {eta}
     </div>
-  {:else if etaLabel === '—'}
+  {:else}
     <div class="text-[10px] text-ink-dim">stabil</div>
   {/if}
 </svelte:element>
