@@ -279,10 +279,10 @@
   border-radius: 9999px;
   flex-shrink: 0;
 }
-.stesy .status-dot.normal   { background-color: var(--normal); }
-.stesy .status-dot.waspada  { background-color: var(--waspada); }
-.stesy .status-dot.siaga    { background-color: var(--siaga); }
-.stesy .status-dot.awas     { background-color: var(--awas); }
+.stesy .status-dot.normal   { background-color: var(--normal); color: var(--normal); }
+.stesy .status-dot.waspada  { background-color: var(--waspada); color: var(--waspada); }
+.stesy .status-dot.siaga    { background-color: var(--siaga); color: var(--siaga); }
+.stesy .status-dot.awas     { background-color: var(--awas); color: var(--awas); }
 
 /* Pulse animation for active/awas state */
 .stesy .status-dot.pulse {
