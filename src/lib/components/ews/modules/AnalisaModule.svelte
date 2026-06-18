@@ -69,14 +69,8 @@
     }))
   );
 
-  // ARR series for MultiChart (first arr station, bars=true single-series)
-  // Show all arr stations as separate sparklines; main chart shows first arr
-  const primaryArr = $derived(arrList[0] ?? null);
-  const arrSeries = $derived(
-    primaryArr
-      ? [{ name: primaryArr.nama, color: '#4f9bee', points: primaryArr.history }]
-      : []
-  );
+  // ARR series: shown as per-station Sparklines in the rainfall section.
+  // (primaryArr and arrSeries removed — no longer used)
 
   // -------------------------------------------------------------------------
   // Per-station TMA statistics
@@ -171,8 +165,9 @@
     }
     const nn = pts.length;
     const num2 = nn * sumXY - sumX * sumY;
-    const den = Math.sqrt((nn * sumX2 - sumX * sumX) * (nn * sumY2 - sumY * sumY));
-    const r = den < 1e-9 ? 0 : num2 / den;
+    const varX = nn * sumX2 - sumX * sumX;
+    const varY = nn * sumY2 - sumY * sumY;
+    const r = (varX < 1e-9 || varY < 1e-9) ? 0 : num2 / Math.sqrt(varX * varY);
     return { pts, r, xName: corrArrPos.nama, yName: corrTmaPos.nama };
   });
 
@@ -253,18 +248,46 @@
     };
   });
 
-  // Combined history + forecast for MultiChart
+  // Combined history + forecast for MultiChart.
+  //
+  // Fix: MultiChart is INDEX-based — it maps each point to x = i/(len-1).
+  // Passing a separate 6-point forecast series would squeeze it to indices 0–5
+  // (left ~10% of the chart). Instead we build TWO index-aligned 54-point series
+  // so the projection is placed at indices 48–53, i.e. rightward of history:
+  //
+  //   historySeries54: 48 observed points + 6 copies of the last observed value
+  //     (flat tail — the "history" line hugs the current level during forecast)
+  //   forecastSeries54: 48 copies of the last observed value + 6 projected points
+  //     (the "proyeksi" line coincides with history over 0–47, then diverges)
+  //
+  // Both series are 54 points long, so len = 54 and each index maps correctly.
   const fcstCombined = $derived.by<{
     histSeries: { name: string; color: string; points: HistPoint[] }[];
     fcstSeries: { name: string; color: string; points: HistPoint[] }[];
     thresholds: { value: number; color: string; label: string }[];
   } | null>(() => {
     if (!fcstPos || !fcstData) return null;
+    const hist = fcstData.historySeries;
+    const fcast = fcstData.forecastSeries;
+    const lastPt = hist[hist.length - 1];
+
+    // history series: observed points then flat tail at current value
+    const histPts54: HistPoint[] = [
+      ...hist,
+      ...fcast.map((fp) => ({ t: fp.t, v: lastPt.v })),
+    ];
+
+    // forecast series: flat at current value over history window, then projected
+    const fcstPts54: HistPoint[] = [
+      ...hist.map((hp) => ({ t: hp.t, v: lastPt.v })),
+      ...fcast,
+    ];
+
     const histSeries = [
-      { name: fcstPos.nama, color: '#4f9bee', points: fcstData.historySeries },
+      { name: fcstPos.nama, color: '#4f9bee', points: histPts54 },
     ];
     const fcstSeries = [
-      { name: 'Proyeksi', color: '#9b6bc2', points: fcstData.forecastSeries },
+      { name: 'Proyeksi', color: '#9b6bc2', points: fcstPts54 },
     ];
     const t = fcstPos.thresholds;
     const thresholds = [
@@ -500,7 +523,7 @@
                 </div>
               </div>
             </div>
-          {:else if fcstData.rate <= 0}
+          {:else if Math.abs(fcstData.rate) < 1e-6 || fcstData.rate < 0}
             <div class="mb-3 flex items-center gap-2 rounded-lg border border-line bg-surface px-3 py-2">
               <span class="h-2 w-2 rounded-full" style="background:{SIAGA_COLOR.normal}"></span>
               <span class="text-[11.5px] text-ink-muted">TMA stabil atau menurun ({signed(fcstData.rate, 3)} m/jam).</span>
@@ -512,7 +535,7 @@
             </div>
           {/if}
 
-          <!-- Combined chart: history + forecast -->
+          <!-- Combined chart: history + forecast (54 index-aligned points each) -->
           <MultiChart
             series={[...fcstCombined.histSeries, ...fcstCombined.fcstSeries]}
             height={220}
@@ -520,6 +543,7 @@
             digits={2}
             thresholds={fcstCombined.thresholds}
           />
+          <p class="mt-1 text-[9.5px] text-ink-dim">6 titik terakhir = proyeksi linear (estimasi)</p>
 
           <!-- Threshold ETA table -->
           <div class="mt-3 space-y-1.5 border-t border-line-soft pt-3">
