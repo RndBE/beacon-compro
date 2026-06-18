@@ -1,5 +1,7 @@
 const ID = 'id-ID';
 
+
+
 export function num(v: number, digits = 1): string {
 	return new Intl.NumberFormat(ID, {
 		minimumFractionDigits: digits,
@@ -26,4 +28,11 @@ export function dateShort(t: number): string {
 		month: 'short',
 		timeZone: 'Asia/Jakarta'
 	}).format(new Date(t));
+}
+
+export function signed(value: number, digits = 1): string {
+	const s = num(Math.abs(value), digits);
+	if (value > 0) return `+${s}`;
+	if (value < 0) return `−${s}`;
+	return s;
 }
