@@ -15,7 +15,7 @@
 	let isLogin = $derived($page.url.pathname.startsWith('/demo/ews/login'));
 
 	onMount(() => {
-		if (!get(isAuthed) && !get(page).url.pathname.includes('/login')) goto('/demo/ews/login');
+		if (!get(isAuthed) && !get(page).url.pathname.startsWith('/demo/ews/login')) goto('/demo/ews/login');
 		const stop = startSimulation();
 		return stop;
 	});

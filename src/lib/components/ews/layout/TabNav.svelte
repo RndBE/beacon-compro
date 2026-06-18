@@ -8,7 +8,7 @@
     class="mx-auto flex w-full max-w-[1700px] items-center gap-1 overflow-x-auto px-3 sm:px-4"
   >
     {#each NAV_ITEMS as item}
-      {@const active = $page.url.pathname.startsWith(item.href)}
+      {@const active = $page.url.pathname === item.href || $page.url.pathname.startsWith(item.href + '/')}
       <a
         href={item.href}
         class="group relative flex items-center gap-2 whitespace-nowrap px-3 py-2.5 text-[12.5px] font-medium transition-colors {active
