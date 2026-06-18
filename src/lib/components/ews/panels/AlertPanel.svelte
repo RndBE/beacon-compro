@@ -14,7 +14,7 @@
   }
   let { max = 12, items }: Props = $props();
 
-  const feed = $derived((items ?? $activeAlerts).slice(0, max));
+  const feed = $derived([...(items ?? $activeAlerts)].sort((a, b) => b.t - a.t).slice(0, max));
 </script>
 
 <div class="flex h-full flex-col gap-1.5 overflow-y-auto pr-0.5">
