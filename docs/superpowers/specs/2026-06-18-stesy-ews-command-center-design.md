@@ -29,7 +29,7 @@ the interactive demo).
 | AI backend | **OpenAI**, ported as-is into a SvelteKit API route (adds the `openai` dependency). |
 | Theme | **Dark + light toggle** for dashboard; videowall forced dark. |
 | Access | **Demo login gate** (any credentials work). |
-| Geography | Seeded around real deployed projects: **Cimanuk / Sumedang basin — EWS Tomo, EWS Tolengas, Bendungan Karedok**. |
+| Geography | Seeded around **Yogyakarta (DIY)**: Kali Code / Gajah Wong / Winongo / Opak (flood), Kali Boyong–Gendol–Kuning (Merapi lahar), Kulon Progo / Gunungkidul (landslide). |
 
 ## 3. Source & target context
 
@@ -149,9 +149,13 @@ ticks ~4s; derived data regenerates from the clock; 48-point histories shift; st
 re-derived; alerts are generated on threshold crossings and Siaga escalation. **Browser-only**
 — started in `onMount`/under a `browser` guard so SSR never touches `window`/timers.
 
-**Seed geography:** stations placed around the **Cimanuk / Sumedang basin** (Tomo, Tolengas,
-Karedok). A basin/district boundary **GeoJSON** is placed in `static/demo/ews/`; if no real
-boundary is readily available, a hand-made stand-in polygon is generated for the demo.
+**Seed geography:** stations placed around **Yogyakarta (DIY)** — flood/water-level on Kali
+Code, Gajah Wong, Winongo and Opak; lahar stations on Kali Boyong, Gendol and Kuning (Merapi);
+landslide sensors in Kulon Progo (Menoreh) and Gunungkidul; sirens along Kali Code; shelters
+and evacuation routes in Sleman (Merapi) and Bantul; a faultline/seismic context for the
+earthquake feed (Opak fault). A DIY administrative-boundary **GeoJSON** (province or
+Yogyakarta-city + Sleman/Bantul) is placed in `static/demo/ews/`; sourced from a public
+dataset (see §12), with a hand-made stand-in polygon only as a last resort.
 
 ## 8. Design system & assets
 
@@ -204,6 +208,8 @@ beacon-compro has no test runner today. The plan:
 
 - Confirm the root layout's `/demo` Header/Footer skip behaves as expected for `/demo/ews/*`
   (it should, being a prefix match) and that the `+layout@.svelte` reset composes cleanly.
-- Source or generate the Cimanuk/Sumedang boundary GeoJSON.
+- Source the **Yogyakarta (DIY)** boundary GeoJSON from a public dataset (e.g. the
+  `superpikar/indonesia-geojson` / GADM-derived Indonesian province boundaries), simplify if
+  large, and place it in `static/demo/ews/`. Hand-made stand-in only if none is reachable.
 - Verify Leaflet usage is fully browser-guarded under SSR (the existing `TulangBawangMap`
   pattern in the repo is the reference).
