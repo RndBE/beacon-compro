@@ -7,7 +7,7 @@
   import { goto } from '$app/navigation';
   import { data } from '$lib/ews/stores';
   import { SIAGA_COLOR, siagaLabel } from '$lib/ews/status';
-  import { num, fmtUnit, signed } from '$lib/ews/format';
+  import { num, fmtUnit } from '$lib/ews/format';
   import { riseRatePerHour } from '$lib/ews/series';
   import { etaToNextSiagaHours } from '$lib/ews/derive';
   import type { Pos, Siaga } from '$lib/ews/types';
