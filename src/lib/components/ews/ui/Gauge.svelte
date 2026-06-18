@@ -2,8 +2,10 @@
   import { num } from '$lib/ews/format';
 
   interface Props {
-    /** 0–100 */
+    /** raw reading */
     value: number;
+    /** maximum value (default 100); value/max drives the fill */
+    max?: number;
     label?: string;
     sublabel?: string;
     color?: string;
@@ -13,6 +15,7 @@
   }
   let {
     value,
+    max = 100,
     label,
     sublabel,
     color = '#4f9bee',
@@ -24,8 +27,8 @@
   const sw = 7;
   const r = $derived((size - sw) / 2);
   const c = $derived(2 * Math.PI * r);
-  const clamped = $derived(Math.max(0, Math.min(100, value)));
-  const dash = $derived((clamped / 100) * c);
+  const pct = $derived(Math.max(0, Math.min(100, (value / max) * 100)));
+  const dash = $derived((pct / 100) * c);
 </script>
 
 <div class="flex flex-col items-center gap-1.5">
@@ -55,7 +58,7 @@
       class="absolute inset-0 flex flex-col items-center justify-center text-center"
     >
       <span class="font-mono text-[17px] font-semibold leading-none text-ink-strong">
-        {num(clamped, digits)}<span class="text-[10px] text-ink-muted">{unit}</span>
+        {num(value, digits)}<span class="text-[10px] text-ink-muted">{unit}</span>
       </span>
       {#if sublabel}
         <span class="mt-0.5 text-[9px] text-ink-dim">{sublabel}</span>

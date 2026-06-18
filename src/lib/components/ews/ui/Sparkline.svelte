@@ -1,3 +1,7 @@
+<script lang="ts" module>
+  let _uidN = 0;
+</script>
+
 <script lang="ts">
   import { splinePath } from '$lib/ews/series';
 
@@ -23,7 +27,7 @@
   }: Props = $props();
 
   const W = 100;
-  const uid = `sl-${Math.round(Math.random() * 1e9).toString(36)}`;
+  const uid = `sl-${_uidN++}`;
 
   const geom = $derived.by(() => {
     const pts = points.length ? points : [0, 0];

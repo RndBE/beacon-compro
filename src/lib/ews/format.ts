@@ -1,7 +1,5 @@
 const ID = 'id-ID';
 
-
-
 export function num(v: number, digits = 1): string {
 	return new Intl.NumberFormat(ID, {
 		minimumFractionDigits: digits,

@@ -1,3 +1,7 @@
+<script lang="ts" module>
+  let _uidN = 0;
+</script>
+
 <script lang="ts">
   import type { HistPoint } from '$lib/ews/types';
   import { num } from '$lib/ews/format';
@@ -54,7 +58,7 @@
 
   let w = $state(720);
   let hoverX = $state<number | null>(null);
-  const uid = `mx-${Math.round(Math.random() * 1e9).toString(36)}`;
+  const uid = `mx-${_uidN++}`;
 
   const padL = 46;
   const padR = 14;
