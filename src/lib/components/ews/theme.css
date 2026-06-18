@@ -1,0 +1,337 @@
+/* ==========================================================================
+   STESY — Command-Center Theme
+   Beacon Engineering Design System tokens, scoped under .stesy.
+   Dark (default) + Light variant (.stesy.theme-light).
+   DO NOT import @theme here — this file lives alongside the site's
+   layout.css and must not affect global Tailwind tokens.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   DARK (default) — navy command-center palette
+   Sources: BE-DS colors_and_type.css (#1C1C41 navy family)
+            allinone/src/app.css (command-center atmosphere)
+   -------------------------------------------------------------------------- */
+.stesy {
+  color-scheme: dark;
+
+  /* Surfaces */
+  --bg:        #0d0d23;   /* deeper than navy for max contrast on wall */
+  --surface:   #1C1C41;   /* be-navy — primary brand surface */
+  --panel:     #2E2E4D;   /* be-indigo — elevated panel */
+  --panel-2:   #232347;   /* between navy and indigo — secondary elevation */
+
+  /* Lines / Dividers */
+  --line:      rgba(87, 87, 148, 0.38);   /* be-violet at low opacity */
+  --line-soft: rgba(87, 87, 148, 0.15);   /* hairline / subtle dividers */
+
+  /* Ink (text) */
+  --ink:        rgba(255, 255, 255, 0.82);   /* be-fg-inv-2 */
+  --ink-strong: #ffffff;                      /* be-fg-inv */
+  --ink-muted:  rgba(255, 255, 255, 0.48);   /* be-fg-inv-3 */
+  --ink-dim:    rgba(255, 255, 255, 0.28);   /* meta / disabled */
+
+  /* Accents */
+  --accent: #C8A878;   /* BE-DS --be-accent (warm brass) */
+  --signal: #3E8BFF;   /* BE-DS --be-signal (active telemetry blue) */
+
+  /* Status — mirrors status.ts SIAGA_COLOR exactly */
+  --normal:   #1F8A5C;
+  --waspada:  #C77A1B;
+  --siaga:    #E08A3C;
+  --awas:     #B5322C;
+
+  /* Shadows (from BE-DS) */
+  --sh-1: 0 1px 2px rgba(16, 16, 48, 0.28), 0 1px 1px rgba(16, 16, 48, 0.18);
+  --sh-2: 0 4px 12px rgba(16, 16, 48, 0.42), 0 1px 2px rgba(16, 16, 48, 0.24);
+  --sh-3: 0 12px 32px rgba(16, 16, 48, 0.58), 0 2px 6px rgba(16, 16, 48, 0.28);
+
+  /* Motion (from BE-DS) */
+  --ease-standard: cubic-bezier(0.2, 0.0, 0.0, 1);
+  --ease-out:      cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in:       cubic-bezier(0.4, 0, 1, 1);
+  --dur-1: 120ms;
+  --dur-2: 200ms;
+  --dur-3: 320ms;
+  --dur-4: 560ms;
+
+  /* Typography */
+  font-family: 'Montserrat', system-ui, sans-serif;
+  color: var(--ink);
+  background-color: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* --------------------------------------------------------------------------
+   LIGHT VARIANT — for interactive dashboard panels
+   Same status + accent hues; overrides surface + ink only.
+   Videowall stays dark — theme-light is only for the operator UI.
+   -------------------------------------------------------------------------- */
+.stesy.theme-light {
+  color-scheme: light;
+
+  /* Surfaces (from BE-DS light palette) */
+  --bg:       #F6F6FA;   /* be-paper-dim */
+  --surface:  #FFFFFF;   /* be-paper */
+  --panel:    #FFFFFF;   /* be-paper — elevated panels also white */
+  --panel-2:  #ECECF2;   /* be-bg-3 — secondary cards */
+
+  /* Lines */
+  --line:      #D9D9D9;              /* be-line */
+  --line-soft: rgba(217, 217, 217, 0.5);
+
+  /* Ink (text) */
+  --ink:        #1C1C41;   /* be-fg-2 (navy) — body text on light */
+  --ink-strong: #0B0B1F;   /* be-fg-1 — headings */
+  --ink-muted:  #5A5A78;   /* be-fg-3 */
+  --ink-dim:    #8C8CA3;   /* be-fg-4 */
+
+  /* Shadows lighter for light mode */
+  --sh-1: 0 1px 2px rgba(16, 16, 48, 0.06), 0 1px 1px rgba(16, 16, 48, 0.04);
+  --sh-2: 0 4px 12px rgba(16, 16, 48, 0.08), 0 1px 2px rgba(16, 16, 48, 0.06);
+  --sh-3: 0 12px 32px rgba(16, 16, 48, 0.12), 0 2px 6px rgba(16, 16, 48, 0.06);
+
+  color: var(--ink);
+  background-color: var(--bg);
+}
+
+/* --------------------------------------------------------------------------
+   Typography helpers
+   -------------------------------------------------------------------------- */
+
+/* Monospace — for telemetry data values */
+.stesy .mono {
+  font-family: 'JetBrains Mono', 'SF Mono', ui-monospace, monospace;
+  font-size: 0.875rem;   /* 14px */
+  font-variant-numeric: tabular-nums;
+}
+
+/* Overline label (sensor IDs, section headers) */
+.stesy .overline {
+  font-family: 'Montserrat', system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 0.6875rem;   /* 11px */
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+/* Caption / metadata */
+.stesy .caption {
+  font-family: 'Montserrat', system-ui, sans-serif;
+  font-weight: 400;
+  font-size: 0.75rem;   /* 12px */
+  color: var(--ink-muted);
+}
+
+/* --------------------------------------------------------------------------
+   Atmosphere helpers — re-scoped from allinone/src/app.css under .stesy.
+   Values adapted to BE-DS palette (navy + brass accent instead of PU blue).
+   -------------------------------------------------------------------------- */
+
+/* Faint grid texture for panels that want atmosphere */
+.stesy .grid-texture {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+/* Frosted glass panel — adapted from allinone .glass, retuned for navy/brass.
+   Bloom and border use brass (#C8A878) instead of azur for BE-DS coherence. */
+.stesy .glass {
+  background:
+    linear-gradient(180deg,
+      rgba(200, 168, 120, 0.28) 0,
+      rgba(200, 168, 120, 0.06) 2px,
+      rgba(200, 168, 120, 0) 5px),
+    radial-gradient(125% 85% at 13% -12%,
+      rgba(87, 87, 148, 0.22) 0%,
+      rgba(46, 46, 77, 0.10) 35%,
+      transparent 65%),
+    linear-gradient(180deg,
+      rgba(87, 87, 148, 0.14) 0,
+      rgba(87, 87, 148, 0) 42%),
+    linear-gradient(180deg,
+      rgba(28, 28, 65, 0.32),
+      rgba(13, 13, 35, 0.42)),
+    rgba(18, 18, 48, 0.55);
+
+  backdrop-filter: blur(18px) saturate(1.35);
+  -webkit-backdrop-filter: blur(18px) saturate(1.35);
+
+  border: 1px solid rgba(200, 168, 120, 0.20);
+  border-top-color:  rgba(200, 168, 120, 0.38);
+  border-left-color: rgba(200, 168, 120, 0.26);
+
+  box-shadow:
+    0 20px 54px -18px rgba(0, 0, 0, 0.86),
+    0 4px 14px -8px rgba(0, 0, 0, 0.50),
+    0 0 22px -6px rgba(200, 168, 120, 0.18),
+    inset 0 1px 0 rgba(228, 220, 200, 0.14),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.36),
+    inset 0 -20px 30px -24px rgba(0, 0, 0, 0.48);
+}
+
+/* Stronger glass for priority panels / header dock */
+.stesy .glass-strong {
+  background:
+    linear-gradient(180deg,
+      rgba(200, 168, 120, 0.32) 0,
+      rgba(200, 168, 120, 0.08) 2px,
+      rgba(200, 168, 120, 0) 5px),
+    radial-gradient(120% 80% at 14% -10%,
+      rgba(87, 87, 148, 0.18) 0%,
+      rgba(46, 46, 77, 0.08) 35%,
+      transparent 65%),
+    linear-gradient(180deg,
+      rgba(87, 87, 148, 0.11) 0,
+      rgba(87, 87, 148, 0) 40%),
+    linear-gradient(180deg,
+      rgba(22, 22, 52, 0.30),
+      rgba(10, 10, 28, 0.44)),
+    rgba(14, 14, 40, 0.68);
+
+  backdrop-filter: blur(21px) saturate(1.28);
+  -webkit-backdrop-filter: blur(21px) saturate(1.28);
+
+  border: 1px solid rgba(200, 168, 120, 0.18);
+  border-top-color:  rgba(200, 168, 120, 0.40);
+  border-left-color: rgba(200, 168, 120, 0.26);
+
+  box-shadow:
+    0 24px 64px -22px rgba(0, 0, 0, 0.92),
+    0 5px 16px -8px rgba(0, 0, 0, 0.55),
+    0 0 26px -6px rgba(200, 168, 120, 0.20),
+    inset 0 1px 0 rgba(232, 224, 208, 0.16),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.40),
+    inset 0 -22px 34px -26px rgba(0, 0, 0, 0.52);
+}
+
+/* Fallback: no backdrop-filter support */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .stesy .glass {
+    background: rgba(18, 18, 48, 0.97);
+  }
+  .stesy .glass-strong {
+    background: rgba(14, 14, 40, 0.985);
+  }
+}
+
+/* Reduced transparency: drop blur, use solid panels */
+@media (prefers-reduced-transparency: reduce) {
+  .stesy .glass {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: rgba(18, 18, 48, 0.98);
+  }
+  .stesy .glass-strong {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: rgba(14, 14, 40, 0.99);
+  }
+}
+
+/* HUD bracket corners — command-center corner accent marks.
+   Uses --accent (brass) to stay on BE-DS palette (not azur). */
+.stesy .hud-bracket {
+  position: relative;
+}
+.stesy .hud-bracket::before,
+.stesy .hud-bracket::after {
+  content: '';
+  position: absolute;
+  width: 13px;
+  height: 13px;
+  border: 1.5px solid var(--accent);
+  opacity: 0.80;
+  pointer-events: none;
+  z-index: 2;
+}
+.stesy .hud-bracket::before {
+  top: -1px;
+  left: -1px;
+  border-right: none;
+  border-bottom: none;
+  border-top-left-radius: 6px;
+}
+.stesy .hud-bracket::after {
+  bottom: -1px;
+  right: -1px;
+  border-left: none;
+  border-top: none;
+  border-bottom-right-radius: 6px;
+}
+
+/* HUD bracket variant using signal blue (telemetry active state) */
+.stesy .hud-bracket-signal::before,
+.stesy .hud-bracket-signal::after {
+  border-color: var(--signal);
+}
+
+/* --------------------------------------------------------------------------
+   Status dot helpers — quick colorized indicators
+   -------------------------------------------------------------------------- */
+.stesy .status-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  flex-shrink: 0;
+}
+.stesy .status-dot.normal   { background-color: var(--normal); }
+.stesy .status-dot.waspada  { background-color: var(--waspada); }
+.stesy .status-dot.siaga    { background-color: var(--siaga); }
+.stesy .status-dot.awas     { background-color: var(--awas); }
+
+/* Pulse animation for active/awas state */
+.stesy .status-dot.pulse {
+  animation: stesy-pulse 1.8s ease-out infinite;
+}
+
+@keyframes stesy-pulse {
+  0% {
+    box-shadow: 0 0 0 0 currentColor;
+    opacity: 1;
+  }
+  70% {
+    box-shadow: 0 0 0 6px currentColor;
+    opacity: 0;
+  }
+  100% {
+    box-shadow: 0 0 0 0 currentColor;
+    opacity: 0;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Motion helpers
+   -------------------------------------------------------------------------- */
+@keyframes stesy-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.stesy .fade-up {
+  animation: stesy-fade-up 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Scrollbar — subtle dark scrollbar inside .stesy panels */
+.stesy * {
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+.stesy *::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.stesy *::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 4px;
+}
