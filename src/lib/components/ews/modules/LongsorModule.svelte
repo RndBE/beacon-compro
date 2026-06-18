@@ -34,8 +34,8 @@
 
   const highestRisk = $derived(
     [...sensors].sort((a, b) => {
-      const rA = Math.max(a.movementMm / a.movementThreshold, a.rainAccumMm / a.rainThreshold);
-      const rB = Math.max(b.movementMm / b.movementThreshold, b.rainAccumMm / b.rainThreshold);
+      const rA = Math.max(ratio(a.movementMm, a.movementThreshold), ratio(a.rainAccumMm, a.rainThreshold));
+      const rB = Math.max(ratio(b.movementMm, b.movementThreshold), ratio(b.rainAccumMm, b.rainThreshold));
       return rB - rA;
     })[0] ?? null
   );
@@ -45,6 +45,10 @@
   );
 
   // ── helpers ───────────────────────────────────────────────────
+  function ratio(val: number, thr: number): number {
+    return thr > 0 ? val / thr : 0;
+  }
+
   function zoneLabel(status: Siaga): string {
     const z: Record<Siaga, string> = {
       normal: 'Zona Aman',
@@ -145,7 +149,7 @@
           <div class="flex items-start justify-around gap-3">
             <Gauge
               value={sensor.movementMm}
-              max={sensor.movementThreshold}
+              max={Math.max(1, sensor.movementThreshold)}
               label="Pergerakan"
               sublabel="{num(sensor.movementMm, 1)} / {num(sensor.movementThreshold, 0)} mm"
               color={SIAGA_COLOR[sensor.status]}
@@ -155,7 +159,7 @@
             />
             <Gauge
               value={sensor.rainAccumMm}
-              max={sensor.rainThreshold}
+              max={Math.max(1, sensor.rainThreshold)}
               label="Akumulasi Hujan"
               sublabel="{num(sensor.rainAccumMm, 0)} / {num(sensor.rainThreshold, 0)} mm"
               color={SIAGA_COLOR[sensor.status]}
