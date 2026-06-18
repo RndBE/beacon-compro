@@ -106,9 +106,6 @@
 
   // ── auto-tour interval ──
   onMount(() => {
-    // fullscreen listener
-    document.addEventListener('fullscreenchange', onFsChange);
-
     const id = setInterval(() => {
       if (tourPaused) return;
       const ms = $markers;
@@ -117,14 +114,13 @@
       const priority = ms.filter((m) => m.status !== 'normal');
       const pool = priority.length > 0 ? priority : ms;
       tourIndex = (tourIndex + 1) % pool.length;
-      const next = pool[tourIndex % pool.length];
+      const next = pool[tourIndex];
       tourCenter = [next.lat, next.lng];
       tourZoom = 13;
     }, 7000);
 
     return () => {
       clearInterval(id);
-      document.removeEventListener('fullscreenchange', onFsChange);
     };
   });
 
@@ -211,13 +207,15 @@
     Peta Operasional DIY · Auto-tour {tourPaused ? 'dijeda' : 'aktif'}
   </div>
 
-  <!-- Layer & filter controls -->
-  <WallMapControls
-    markers={$markers}
-    {hiddenKinds}
-    {toggleKind}
-    reset={resetFilters}
-  />
+  <!-- Layer & filter controls (offset below HUD header ~64px) -->
+  <div class="absolute left-3 top-[64px] z-[615]">
+    <WallMapControls
+      markers={$markers}
+      {hiddenKinds}
+      {toggleKind}
+      reset={resetFilters}
+    />
+  </div>
 
   <!-- ════ HUD HEADER BAR ════ -->
   <header

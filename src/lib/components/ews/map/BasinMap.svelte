@@ -177,6 +177,16 @@
 		void hk;
 		if (map && markerLayer && L) syncMarkers(ms);
 	});
+
+	// fly to new center/zoom when props change (enables auto-tour in WallView)
+	$effect(() => {
+		const lat = center[0];
+		const lng = center[1];
+		const z = zoom;
+		if (map && L) {
+			map.flyTo([lat, lng], z, { duration: 1.2 });
+		}
+	});
 </script>
 
 <div class="relative h-full w-full">
