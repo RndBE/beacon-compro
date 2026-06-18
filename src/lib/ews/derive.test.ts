@@ -9,6 +9,7 @@ describe('deriveTmaStatus', () => {
 		expect(deriveTmaStatus(2.0, T)).toBe('normal');
 		expect(deriveTmaStatus(2.5, T)).toBe('waspada');
 		expect(deriveTmaStatus(3.0, T)).toBe('siaga');
+		expect(deriveTmaStatus(4.0, T)).toBe('awas');
 		expect(deriveTmaStatus(4.1, T)).toBe('awas');
 	});
 });
@@ -18,6 +19,7 @@ describe('deriveLandslideStatus', () => {
 		expect(deriveLandslideStatus(1, 10, 10, 100)).toBe('normal');
 		expect(deriveLandslideStatus(11, 10, 10, 100)).toBe('awas');
 		expect(deriveLandslideStatus(1, 10, 80, 100)).toBe('waspada'); // 80% rain
+		expect(deriveLandslideStatus(9, 10, 10, 100)).toBe('siaga'); // movement ratio 0.9
 	});
 });
 
