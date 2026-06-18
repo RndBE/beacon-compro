@@ -30,10 +30,11 @@
   const totalJiwa = $derived(d.areas.reduce((s, a) => s + a.jiwa, 0));
 
   // ── Tempat Pengungsian ────────────────────────────────────────────
-  const shelters = $derived([...d.shelters].sort((a, b) => b.terisi / b.kapasitas - a.terisi / a.kapasitas));
+  const fillRatio = (sh) => (sh.kapasitas > 0 ? sh.terisi / sh.kapasitas : 0);
+  const shelters = $derived([...d.shelters].sort((a, b) => fillRatio(b) - fillRatio(a)));
   const totalKapasitas = $derived(d.shelters.reduce((s, sh) => s + sh.kapasitas, 0));
   const totalTerisi = $derived(d.shelters.reduce((s, sh) => s + sh.terisi, 0));
-  const nearFullCount = $derived(d.shelters.filter((sh) => sh.terisi / sh.kapasitas > 0.9).length);
+  const nearFullCount = $derived(d.shelters.filter((sh) => fillRatio(sh) > 0.9).length);
 
   // ── Peta Evakuasi ─────────────────────────────────────────────────
   const evakMarkers = $derived(m.filter((mk) => mk.kind === 'shelter' || mk.kind === 'op'));
@@ -109,7 +110,7 @@
             </div>
           </div>
           <div class="shrink-0 text-right">
-            <div class="font-mono text-[13px] font-semibold text-ink-strong tnum">{num(pct, 0)}%</div>
+            <div class="font-mono text-[13px] font-semibold text-ink-strong tnum">{num(Math.min(pct, 100), 0)}%</div>
             <div class="text-[9px] text-ink-dim">{num(sh.terisi, 0)} / {num(sh.kapasitas, 0)} jiwa</div>
           </div>
         </div>
