@@ -7,9 +7,7 @@
 	import X from '@lucide/svelte/icons/x';
 	import { activeAlerts, overallStatus } from '$lib/ews/stores';
 	import { SIAGA_COLOR, siagaLabel } from '$lib/ews/status';
-	import { sendChat } from './chatClient';
-
-	const NONAKTIF_MSG = 'Asisten AI sedang nonaktif pada demo ini.';
+	import { sendChat, NONAKTIF_MSG } from './chatClient';
 
 	interface ChatMessage {
 		id: string;

@@ -8,7 +8,8 @@ const SYSTEM = `Anda asisten STESY, pusat komando peringatan dini bencana (banji
 export const POST: RequestHandler = async ({ request }) => {
 	const key = env.OPENAI_API_KEY;
 	if (!key) throw error(503, 'AI nonaktif: OPENAI_API_KEY belum diset.');
-	const { messages = [], context } = await request.json();
+	const body = await request.json().catch(() => ({})) as any;
+	const { messages = [], context } = body;
 	const client = new OpenAI({ apiKey: key });
 	const ctx = context ? `Konteks langsung: ${JSON.stringify(context)}` : '';
 	const res = await client.chat.completions.create({
