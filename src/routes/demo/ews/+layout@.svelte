@@ -9,6 +9,7 @@
 	import { theme } from '$lib/ews/theme';
 	import TopBar from '$lib/components/ews/layout/TopBar.svelte';
 	import TabNav from '$lib/components/ews/layout/TabNav.svelte';
+	import InteractiveChatbot from '$lib/components/ews/chat/InteractiveChatbot.svelte';
 
 	let { children } = $props();
 	let isWall = $derived($page.url.pathname.startsWith('/demo/ews/wall'));
@@ -33,6 +34,7 @@
 	{#if !isWall && !isLogin}
 		<TopBar />
 		<TabNav />
+		<InteractiveChatbot />
 	{/if}
 	{@render children()}
 </div>

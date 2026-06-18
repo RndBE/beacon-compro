@@ -43,6 +43,9 @@
   // Layout
   import Logo from '$lib/components/ews/layout/Logo.svelte';
 
+  // Chat
+  import WallChatbot from '$lib/components/ews/chat/WallChatbot.svelte';
+
   import type { AssetKind, MapMarker } from '$lib/ews/types';
   import type { Pos, LandslideSensor, SirenNode, Shelter, OpAsset } from '$lib/ews/types';
   type AnyAsset = Pos | LandslideSensor | SirenNode | Shelter | OpAsset;
@@ -511,6 +514,9 @@
       </span>
     </div>
   </div>
+
+  <!-- ════ WALL CHATBOT ════ -->
+  <WallChatbot />
 
   <!-- ════ DETAIL DRAWER ════ -->
   <DetailDrawer
