@@ -51,6 +51,12 @@
 		{ h: 48, label: '48 jam' },
 	];
 
+	// Reset period when navigating to a different asset
+	$effect(() => {
+		asset?.id; // track the displayed asset
+		period = 48;
+	});
+
 	// Single-asset marker for the mini-map
 	const singleMarker = $derived<MapMarker[]>(
 		$markers.filter((m) => m.id === asset.id)
@@ -161,7 +167,7 @@
 		return labels[level];
 	}
 
-	function etaNextLevel(value: number, status: Siaga): Siaga {
+	function etaNextLevel(status: Siaga): Siaga {
 		if (status === 'normal') return 'waspada';
 		if (status === 'waspada') return 'siaga';
 		if (status === 'siaga') return 'awas';
@@ -279,7 +285,7 @@
 
 						<!-- ETA -->
 						{#if posEta !== null && posEta > 0}
-							{@const nextLevel = etaNextLevel(pos.value, pos.status)}
+							{@const nextLevel = etaNextLevel(pos.status)}
 							<div
 								class="mt-3 flex items-center gap-2 rounded-lg px-2.5 py-2 text-[11px] font-medium"
 								style="background:{SIAGA_COLOR[nextLevel]}14;border:1px solid {SIAGA_COLOR[nextLevel]}44;color:{SIAGA_COLOR[nextLevel]}"
@@ -298,7 +304,7 @@
 		<!-- InstrumentCard (using InstrumentCard which accepts Pos) -->
 		<Panel title="Kartu Instrumen" subtitle="Pos {pos.nama} · {pos.sungai}" icon={ChartColumn} accent>
 			<div class="grid grid-cols-1 gap-2.5 sm:grid-cols-2 xl:grid-cols-3">
-				<InstrumentCard pos={pos} riseRateLabel={posRiseRate !== 0 ? `${num(posRiseRate, 2)} ${pos.unit}/jam` : undefined} etaLabel={posEta !== null && posEta > 0 ? `≈ ${num(posEta, 1)} jam menuju ${nextSiagaLabel(etaNextLevel(pos.value, pos.status))}` : undefined} etaLevel={posEta !== null && posEta > 0 ? etaNextLevel(pos.value, pos.status) : undefined} />
+				<InstrumentCard pos={pos} riseRateLabel={posRiseRate !== 0 ? `${num(posRiseRate, 2)} ${pos.unit}/jam` : undefined} etaLabel={posEta !== null && posEta > 0 ? `≈ ${num(posEta, 1)} jam menuju ${nextSiagaLabel(etaNextLevel(pos.status))}` : undefined} etaLevel={posEta !== null && posEta > 0 ? etaNextLevel(pos.status) : undefined} />
 			</div>
 		</Panel>
 
