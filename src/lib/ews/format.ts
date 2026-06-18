@@ -15,13 +15,15 @@ export function timeHM(t: number): string {
 	return new Intl.DateTimeFormat(ID, {
 		hour: '2-digit',
 		minute: '2-digit',
-		hour12: false
+		hour12: false,
+		timeZone: 'Asia/Jakarta'
 	}).format(new Date(t));
 }
 
 export function dateShort(t: number): string {
 	return new Intl.DateTimeFormat(ID, {
 		day: '2-digit',
-		month: 'short'
+		month: 'short',
+		timeZone: 'Asia/Jakarta'
 	}).format(new Date(t));
 }
