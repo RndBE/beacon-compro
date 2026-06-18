@@ -18,6 +18,7 @@
   import { siagaRank } from '$lib/ews/status';
   import { num } from '$lib/ews/format';
   import { goto } from '$app/navigation';
+  import type { Shelter } from '$lib/ews/types';
 
   const d = $derived($data);
   const m = $derived($markers);
@@ -30,7 +31,7 @@
   const totalJiwa = $derived(d.areas.reduce((s, a) => s + a.jiwa, 0));
 
   // ── Tempat Pengungsian ────────────────────────────────────────────
-  const fillRatio = (sh) => (sh.kapasitas > 0 ? sh.terisi / sh.kapasitas : 0);
+  const fillRatio = (sh: Shelter) => (sh.kapasitas > 0 ? sh.terisi / sh.kapasitas : 0);
   const shelters = $derived([...d.shelters].sort((a, b) => fillRatio(b) - fillRatio(a)));
   const totalKapasitas = $derived(d.shelters.reduce((s, sh) => s + sh.kapasitas, 0));
   const totalTerisi = $derived(d.shelters.reduce((s, sh) => s + sh.terisi, 0));
