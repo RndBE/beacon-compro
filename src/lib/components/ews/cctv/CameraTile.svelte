@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
   import VideoOff from '@lucide/svelte/icons/video-off';
   import type { Camera } from '$lib/ews/data/cameras';
 
@@ -15,7 +16,6 @@
 
   // Jam live (diperbarui tiap detik, hanya di browser)
   let nowMs = $state(Date.now());
-  import { onMount } from 'svelte';
   onMount(() => {
     const id = setInterval(() => { nowMs = Date.now(); }, 1000);
     return () => clearInterval(id);

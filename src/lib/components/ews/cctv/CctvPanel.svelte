@@ -26,7 +26,7 @@
 
   onMount(() => {
     const t = setInterval(() => {
-      idx = (idx + PER_PAGE) % CAMERAS.length;
+      if (cams.length > 0) idx = (idx + PER_PAGE) % cams.length;
     }, 8000);
     return () => clearInterval(t);
   });
