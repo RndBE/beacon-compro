@@ -189,6 +189,32 @@ const POS_DEFS: PosDef[] = [
 		amplitude: 0.5,
 		thresholds: { waspada: 1.0, siaga: 1.5, awas: 2.0 }
 	},
+	// Kali Gendol (Merapi lahar, TMA)
+	{
+		id: 'pos-gendol',
+		nama: 'Pos Lahar Kali Gendol — Kepuharjo',
+		kind: 'tma',
+		sungai: 'Kali Gendol',
+		lat: -7.638,
+		lng: 110.447,
+		unit: 'm',
+		baseValue: 0.75,
+		amplitude: 0.55,
+		thresholds: { waspada: 1.0, siaga: 1.5, awas: 2.0 }
+	},
+	// Kali Kuning (Merapi lahar, TMA)
+	{
+		id: 'pos-kuning',
+		nama: 'Pos Lahar Kali Kuning — Cangkringan',
+		kind: 'tma',
+		sungai: 'Kali Kuning',
+		lat: -7.618,
+		lng: 110.455,
+		unit: 'm',
+		baseValue: 0.70,
+		amplitude: 0.45,
+		thresholds: { waspada: 1.0, siaga: 1.5, awas: 2.0 }
+	},
 	// ARR – Sleman (hujan)
 	{
 		id: 'arr-sleman-mlati',
@@ -373,7 +399,6 @@ const QUAKE_DEFS: QuakeDef[] = [
 
 export function buildData(clock: number): DemoData {
 	const alerts: AlertItem[] = [];
-	let alertSeq = 0;
 
 	// --- Pos ---
 	const pos: Pos[] = POS_DEFS.map((def) => {
@@ -475,13 +500,15 @@ export function buildData(clock: number): DemoData {
 	}));
 
 	// --- Alerts: one per non-normal asset ---
-	let seq = mulberry32(((clock / 1000) & 0xffffffff) ^ hashStr('alerts'));
+	// alertPrng draws are positional — do not reorder loops or insert draws between them; determinism depends on call order.
+	const alertPrng = mulberry32(((clock / 1000) & 0xffffffff) ^ hashStr('alerts'));
+	let alertIdx = 0;
 
 	for (const p of pos) {
 		if (p.status !== 'normal') {
-			const tOffset = Math.floor(seq() * 30 * 60 * 1000);
+			const tOffset = Math.floor(alertPrng() * 30 * 60 * 1000);
 			alerts.push({
-				id: `al-pos-${p.id}-${alertSeq++}`,
+				id: `al-pos-${p.id}-${alertIdx++}`,
 				t: clock - tOffset,
 				kind: p.kind === 'arr' ? 'arr' : 'tma',
 				refId: p.id,
@@ -495,9 +522,9 @@ export function buildData(clock: number): DemoData {
 
 	for (const l of longsor) {
 		if (l.status !== 'normal') {
-			const tOffset = Math.floor(seq() * 30 * 60 * 1000);
+			const tOffset = Math.floor(alertPrng() * 30 * 60 * 1000);
 			alerts.push({
-				id: `al-longsor-${l.id}-${alertSeq++}`,
+				id: `al-longsor-${l.id}-${alertIdx++}`,
 				t: clock - tOffset,
 				kind: 'longsor',
 				refId: l.id,
@@ -511,9 +538,9 @@ export function buildData(clock: number): DemoData {
 
 	for (const s of sirens) {
 		if (s.status !== 'normal') {
-			const tOffset = Math.floor(seq() * 30 * 60 * 1000);
+			const tOffset = Math.floor(alertPrng() * 30 * 60 * 1000);
 			alerts.push({
-				id: `al-sirine-${s.id}-${alertSeq++}`,
+				id: `al-sirine-${s.id}-${alertIdx++}`,
 				t: clock - tOffset,
 				kind: 'sirine',
 				refId: s.id,
