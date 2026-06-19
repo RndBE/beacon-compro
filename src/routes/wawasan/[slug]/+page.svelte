@@ -48,7 +48,6 @@
 		ctaTitle="Punya Kebutuhan Serupa?"
 		ctaDesc="Bicara dengan tim engineer kami untuk merancang solusi yang tepat untuk proyek Anda."
 		ctaButtonLabel="Konsultasi Sekarang"
-		ctaWhatsApp={`https://wa.me/628112632151?text=Halo%20CS%20Marketing%20Beacon%2C%20saya%20tertarik%20setelah%20membaca%20artikel%20${article.title}.`}
 		ctaSecondary={{ href: '/solusi', label: 'Lihat Semua Solusi' }}
 		relatedArticles={formattedRelated}
 	>
@@ -417,6 +416,118 @@
 		font-size: 0.78rem;
 		font-weight: 750;
 		padding: 0.45rem 0.7rem;
+	}
+
+	:global(.article-content .beacon-callout-warning) {
+		border-left-color: #d97706;
+		background: #fffbeb;
+	}
+
+	:global(.article-content .beacon-callout-warning strong) {
+		color: #b45309;
+	}
+
+	:global(.article-content .beacon-callout-tip) {
+		border-left-color: #0d9488;
+		background: #f0fdfa;
+	}
+
+	:global(.article-content .beacon-callout-tip strong) {
+		color: #0f766e;
+	}
+
+	:global(.article-content .beacon-takeaways) {
+		margin: 1.75rem 0;
+		border: 1px solid #fecdd3;
+		border-radius: 16px;
+		background: #fff7f8;
+		padding: 1.25rem 1.4rem;
+	}
+
+	:global(.article-content .beacon-takeaways > strong) {
+		display: block;
+		margin-bottom: 0.75rem;
+		color: #be123c;
+		font-size: 0.72rem;
+		font-weight: 800;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+	}
+
+	:global(.article-content .beacon-takeaways ul) {
+		display: grid;
+		gap: 0.5rem;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	:global(.article-content .beacon-takeaways li) {
+		position: relative;
+		margin: 0;
+		padding-left: 1.6rem;
+		color: #374151;
+		line-height: 1.6;
+	}
+
+	:global(.article-content .beacon-takeaways li::before) {
+		content: "✓";
+		position: absolute;
+		top: 0;
+		left: 0;
+		color: #c8102e;
+		font-weight: 800;
+	}
+
+	:global(.article-content .beacon-faq) {
+		display: grid;
+		gap: 0.75rem;
+		margin: 1.75rem 0;
+	}
+
+	:global(.article-content .beacon-faq > div) {
+		border: 1px solid #e5e7eb;
+		border-radius: 16px;
+		background: #ffffff;
+		padding: 1.1rem 1.25rem;
+	}
+
+	:global(.article-content .beacon-faq strong) {
+		display: block;
+		margin-bottom: 0.4rem;
+		color: #111827;
+		font-weight: 700;
+		line-height: 1.4;
+	}
+
+	:global(.article-content .beacon-faq p) {
+		margin: 0;
+		color: #4b5563;
+	}
+
+	:global(.article-content .beacon-stat) {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		gap: 0.5rem 1.25rem;
+		margin: 1.75rem 0;
+		border-left: 4px solid #c8102e;
+		border-radius: 16px;
+		background: #fff1f2;
+		padding: 1.25rem 1.4rem;
+	}
+
+	:global(.article-content .beacon-stat strong) {
+		flex: none;
+		color: #c8102e;
+		font-size: clamp(2rem, 5vw, 2.75rem);
+		font-weight: 800;
+		line-height: 1.05;
+	}
+
+	:global(.article-content .beacon-stat span) {
+		color: #4b5563;
+		line-height: 1.55;
 	}
 
 	@media (max-width: 640px) {
