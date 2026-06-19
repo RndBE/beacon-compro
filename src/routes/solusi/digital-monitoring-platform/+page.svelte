@@ -21,6 +21,7 @@
 	} from '@lucide/svelte';
 	import Ornaments from '$lib/components/Ornaments.svelte';
 	import { locale } from '$lib/i18n';
+	import { openChat } from '$lib/stores/chat';
 
 	let mounted = $state(false);
 	let { data } = $props();
@@ -43,7 +44,7 @@
 			primaryCta: 'Minta Demo STESY',
 			secondaryCta: 'Detail Produk',
 			demoText:
-				'Halo CS Marketing Beacon, saya ingin minta demo STESY dengan fitur AI analysis.',
+				'Halo CS Sales Beacon, saya ingin minta demo STESY dengan fitur AI analysis.',
 			previewAlt: 'Tampilan sistem STESY sementara',
 			onlineLabel: '347 pos online',
 			commandTitle: 'DAS Monitoring',
@@ -67,7 +68,7 @@
 				'Strukturnya mengikuti kebutuhan operasional lapangan: lihat status pos, buka peta, analisis data, ekspor laporan, lalu tindak lanjuti alarm.',
 			moduleCta: 'Lihat Demo Dashboard',
 			moduleDemoText:
-				'Halo CS Marketing Beacon, saya ingin melihat demo dashboard STESY.',
+				'Halo CS Sales Beacon, saya ingin melihat demo dashboard STESY.',
 			platformBadge: 'Cross-Platform Support',
 			platformTitle: 'Akses STESY dari Android, Apple, dan browser modern.',
 			platformDescription:
@@ -83,7 +84,7 @@
 			ctaPrimary: 'Konsultasi Setup',
 			ctaSecondary: 'Jelajahi Perangkat',
 			setupText:
-				'Halo CS Marketing Beacon, saya ingin setup STESY untuk monitoring telemetri.',
+				'Halo CS Sales Beacon, saya ingin setup STESY untuk monitoring telemetri.',
 			heroStats: [
 				{ label: 'Android', value: 'Beacon View', detail: 'Ponsel & tablet' },
 				{ label: 'Apple', value: 'iPhone / iPad', detail: 'Tim lapangan dan manajemen' },
@@ -354,9 +355,6 @@
 	let benefits = $derived(copy.benefits);
 	let platformSupport = $derived(copy.platformSupport);
 	let supportedFields = $derived(copy.supportedFields);
-	let demoUrl = $derived(`https://wa.me/628112632151?text=${encodeURIComponent(copy.demoText)}`);
-	let moduleDemoUrl = $derived(`https://wa.me/628112632151?text=${encodeURIComponent(copy.moduleDemoText)}`);
-	let setupUrl = $derived(`https://wa.me/628112632151?text=${encodeURIComponent(copy.setupText)}`);
 </script>
 
 <svelte:head>
@@ -403,16 +401,15 @@
 				</p>
 
 				<div class="flex flex-col sm:flex-row gap-3 mb-10">
-					<a
-						href={demoUrl}
-						target="_blank"
-						rel="noopener"
+					<button
+						type="button"
+						onclick={openChat}
 						class="btn-tactile inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-[14px] text-sm font-semibold text-white"
 						style="background: linear-gradient(135deg, #C8102E, #A50D25); box-shadow: 0 12px 24px -14px rgba(200,16,46,0.7);"
 					>
 						<MessageCircle size={17} />
 						{copy.primaryCta}
-					</a>
+					</button>
 					<a
 						href="/solusi/{solutionSlug}/smart-telemetry-system"
 						class="btn-tactile inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-[14px] text-sm font-semibold bg-white"
@@ -648,16 +645,15 @@
 				<p class="text-base leading-relaxed mb-8" style="color: #5C5C5C;">
 					{copy.moduleDescription}
 				</p>
-				<a
-					href={moduleDemoUrl}
-					target="_blank"
-					rel="noopener"
+				<button
+					type="button"
+					onclick={openChat}
 					class="btn-tactile inline-flex items-center gap-2 rounded-[14px] px-6 py-3 text-sm font-semibold text-white"
 					style="background: #1A1A1A;"
 				>
 					{copy.moduleCta}
 					<ArrowRight size={16} />
-				</a>
+				</button>
 			</div>
 
 			<div class="lg:col-span-8 grid md:grid-cols-2 gap-5">
@@ -756,16 +752,15 @@
 					</p>
 				</div>
 				<div class="lg:col-span-5 flex flex-col sm:flex-row lg:flex-col gap-3">
-					<a
-						href={setupUrl}
-						target="_blank"
-						rel="noopener"
+					<button
+						type="button"
+						onclick={openChat}
 						class="btn-tactile inline-flex items-center justify-center gap-2 rounded-[14px] bg-white px-7 py-4 text-sm font-bold"
 						style="color: #1A1A1A;"
 					>
 						<MessageCircle size={18} />
 						{copy.ctaPrimary}
-					</a>
+					</button>
 					<a
 						href="/solusi"
 						class="btn-tactile inline-flex items-center justify-center gap-2 rounded-[14px] px-7 py-4 text-sm font-bold text-white"

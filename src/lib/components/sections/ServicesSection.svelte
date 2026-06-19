@@ -3,6 +3,7 @@
 	import { BrainCircuit, Wrench, MonitorSmartphone, Users, ArrowUpRight } from '@lucide/svelte';
 	import Ornaments from '$lib/components/Ornaments.svelte';
 	import { locale } from '$lib/i18n';
+	import { openChat } from '$lib/stores/chat';
 
 	let visible = $state(false);
 	let activeService = $state(0);
@@ -124,18 +125,14 @@
 							{#if activeService === i}
 								<div class="mt-4 border-t border-[#C8102E]/10 pt-4">
 									<p class="text-sm leading-relaxed text-zinc-600">{service.detail}</p>
-									<a
-										href={$locale === 'EN'
-											? `https://wa.me/628112632151?text=${encodeURIComponent(`Hello Beacon Marketing CS, I am interested in the ${service.title} service.`)}`
-											: `https://wa.me/628112632151?text=${encodeURIComponent(`Halo CS Marketing Beacon, saya tertarik dengan layanan ${service.title}.`)}`}
+									<button
+										type="button"
 										class="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-[#C8102E] px-5 py-3 text-sm font-bold text-white transition active:scale-[0.98]"
-										target="_blank"
-										rel="noopener"
-										onclick={(event) => event.stopPropagation()}
+										onclick={(event) => { event.stopPropagation(); openChat(); }}
 									>
 										{$locale === 'EN' ? 'Consult Services' : 'Konsultasi Layanan'}
 										<ArrowUpRight size={17} />
-									</a>
+									</button>
 								</div>
 							{/if}
 						</div>
@@ -218,14 +215,11 @@
 							</div>
 
 							<div class="pt-8">
-								<a
-									href={$locale === 'EN'
-										? `https://wa.me/628112632151?text=${encodeURIComponent(`Hello Beacon Marketing CS, I am interested in the ${service.title} service.`)}`
-										: `https://wa.me/628112632151?text=${encodeURIComponent(`Halo CS Marketing Beacon, saya tertarik dengan layanan ${service.title}.`)}`}
+								<button
+									type="button"
+									onclick={openChat}
 									class="group relative inline-flex items-center gap-3 px-8 py-4 rounded-2xl text-sm font-bold text-white overflow-hidden transition-transform active:scale-95"
 									style="background: #C8102E; box-shadow: 0 12px 24px -8px rgba(200,16,46,0.4);"
-									target="_blank"
-									rel="noopener"
 								>
 									<!-- Perpetual Shimmer Effect -->
 									<div class="absolute inset-0 pointer-events-none translate-x-[-100%] group-hover:animate-shimmer" style="background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent); background-size: 200% 100%;"></div>
@@ -235,7 +229,7 @@
 										{$locale === 'EN' ? `Ask About ${service.title}` : `Tanya Soal ${service.title}`}
 										<ArrowUpRight size={18} class="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
 									</span>
-								</a>
+								</button>
 							</div>
 						</div>
 					</div>

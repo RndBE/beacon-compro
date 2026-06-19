@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { MessageCircle, Mail, MapPin, Clock, ArrowRight } from '@lucide/svelte';
 	import { locale } from '$lib/i18n';
+	import { openChat } from '$lib/stores/chat';
 
 	let visible = $state(false);
 
@@ -80,13 +81,11 @@
 					transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1) 0.15s, transform 0.8s cubic-bezier(0.16,1,0.3,1) 0.15s;
 				"
 			>
-				<!-- WhatsApp CTA — primary (Perpetual Shimmer & Liquid Glass) -->
-				<a
-					href={$locale === 'EN'
-						? 'https://wa.me/628112632151?text=Hello%20Beacon%20Marketing%20CS%2C%20I%20am%20interested%20in%20your%20telemetry%20solutions.'
-						: 'https://wa.me/628112632151?text=Halo%20CS%20Marketing%20Beacon%2C%20saya%20tertarik%20dengan%20solusi%20telemetri%20Anda.'}
-					target="_blank" rel="noopener"
-					class="group relative flex items-center gap-6 p-7 rounded-[2rem] overflow-hidden transition-all duration-500 active:scale-95"
+				<!-- AI Chat CTA — primary (Perpetual Shimmer & Liquid Glass) -->
+				<button
+					type="button"
+					onclick={openChat}
+					class="group relative flex items-center gap-6 p-7 rounded-[2rem] overflow-hidden transition-all duration-500 active:scale-95 text-left w-full"
 					style="background: #C8102E; box-shadow: 0 20px 40px -10px rgba(200,16,46,0.3);"
 				>
 					<!-- Perpetual Shimmer Effect -->
@@ -98,11 +97,11 @@
 						<MessageCircle size={26} class="text-white" />
 					</div>
 					<div class="flex-1 relative z-10">
-						<span class="block text-xl font-bold text-white tracking-tight">{$locale === 'EN' ? 'WhatsApp Chat' : 'Chat WhatsApp'}</span>
-						<span class="block text-xs font-medium mt-1 text-white/70">{$locale === 'EN' ? 'Response in under 1 hour' : 'Respons dalam waktu kurang dari 1 jam'}</span>
+						<span class="block text-xl font-bold text-white tracking-tight">{$locale === 'EN' ? 'AI Chat' : 'Chat AI'}</span>
+						<span class="block text-xs font-medium mt-1 text-white/70">{$locale === 'EN' ? 'Instant answers from Beacon AI' : 'Jawaban instan dari Beacon AI'}</span>
 					</div>
 					<ArrowRight size={22} class="text-white relative z-10 group-hover:translate-x-2 transition-transform duration-500" />
-				</a>
+				</button>
 
 				<!-- Email CTA — secondary (Deep Glassmorphism) -->
 				<a

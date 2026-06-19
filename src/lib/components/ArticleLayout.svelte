@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { ArrowLeft, Clock, Calendar, Tag, MessageCircle, ArrowRight, ChevronRight, Share2 } from '@lucide/svelte';
 	import Ornaments from '$lib/components/Ornaments.svelte';
+	import { openChat } from '$lib/stores/chat';
 
 	type RelatedArticle = {
 		href: string;
@@ -22,7 +23,6 @@
 		ctaTitle = 'Punya Kebutuhan Serupa?',
 		ctaDesc = 'Bicara dengan tim engineer kami untuk solusi yang tepat.',
 		ctaButtonLabel = 'Konsultasi',
-		ctaWhatsApp = 'https://wa.me/628112632151',
 		ctaSecondary = { href: '/solusi', label: 'Lihat Solusi' },
 		relatedArticles = [] as RelatedArticle[],
 		children
@@ -37,7 +37,6 @@
 		ctaTitle?: string;
 		ctaDesc?: string;
 		ctaButtonLabel?: string;
-		ctaWhatsApp?: string;
 		ctaSecondary?: { href: string; label: string };
 		relatedArticles?: RelatedArticle[];
 		children: any;
@@ -148,12 +147,12 @@
 					<div class="p-5 rounded-2xl" style="background: rgba(200,16,46,0.03); border: 1px solid rgba(200,16,46,0.08);">
 						<span class="text-xs font-bold" style="color: #1A1A1A;">Butuh solusi serupa?</span>
 						<p class="text-[11px] mt-1 leading-relaxed" style="color: #5C5C5C;">Bicara langsung dengan tim engineer Beacon.</p>
-						<a href={ctaWhatsApp} target="_blank" rel="noopener"
+						<button type="button" onclick={openChat}
 							class="inline-flex items-center gap-1.5 mt-3 px-4 py-2 rounded-lg text-[11px] font-semibold text-white active:scale-[0.98] transition-transform"
 							style="background: #C8102E;">
 							<MessageCircle size={12} />
 							{ctaButtonLabel}
-						</a>
+						</button>
 					</div>
 
 					<!-- Related (compact) -->
@@ -186,11 +185,11 @@
 				<p class="text-sm leading-relaxed" style="color: #9A9A9A; max-width: 45ch;">{ctaDesc}</p>
 			</div>
 			<div class="flex flex-col sm:flex-row gap-3">
-				<a href={ctaWhatsApp} target="_blank" rel="noopener"
+				<button type="button" onclick={openChat}
 					class="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl text-sm font-semibold text-white active:scale-[0.98] transition-transform"
 					style="background: linear-gradient(135deg, #C8102E, #A50D25); box-shadow: 0 4px 16px rgba(200,16,46,0.35);">
 					<MessageCircle size={15} /> {ctaButtonLabel}
-				</a>
+				</button>
 				<a href={ctaSecondary.href}
 					class="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl text-sm font-semibold active:scale-[0.98] transition-transform"
 					style="border: 1px solid rgba(255,255,255,0.15); color: #FAFAFA;">

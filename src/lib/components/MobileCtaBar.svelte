@@ -1,30 +1,21 @@
 <script lang="ts">
-	import { MessageCircle } from '@lucide/svelte';
+	import { Sparkles } from '@lucide/svelte';
 	import { locale } from '$lib/i18n';
-
-	let { contextMessage = 'Halo CS Marketing Beacon, saya tertarik dengan solusi telemetri Anda.' } : { contextMessage?: string } = $props();
-
-	const waMessage = $derived(
-		contextMessage === 'Halo CS Marketing Beacon, saya tertarik dengan solusi telemetri Anda.' && $locale === 'EN'
-			? 'Hello Beacon Marketing CS, I am interested in your telemetry solutions.'
-			: contextMessage
-	);
-	const waUrl = $derived(`https://wa.me/628112632151?text=${encodeURIComponent(waMessage)}`);
+	import { openChat } from '$lib/stores/chat';
 </script>
 
 <!-- Mobile Sticky CTA Strip -->
 <div class="fixed bottom-0 left-0 right-0 z-40 lg:hidden" style="backdrop-filter: blur(12px); background: rgba(255,255,255,0.95); border-top: 1px solid #E5E5E5;">
 	<div class="flex h-[60px]">
-		<a
-			href={waUrl}
-			target="_blank"
-			rel="noopener"
+		<button
+			type="button"
+			onclick={openChat}
 			class="flex-1 flex items-center justify-center gap-2 text-sm font-semibold text-white"
 			style="background: #C8102E;"
 		>
-			<MessageCircle size={16} />
-			CS Marketing
-		</a>
+			<Sparkles size={16} />
+			{$locale === 'EN' ? 'AI Chat' : 'Chat AI'}
+		</button>
 		<a
 			href="tel:02744986899"
 			class="flex-1 flex items-center justify-center gap-2 text-sm font-semibold text-[#1A1A1A] border-l border-[#E5E5E5]"

@@ -14,6 +14,7 @@
 	import Ornaments from '$lib/components/Ornaments.svelte';
 	import { locale } from '$lib/i18n';
 	import { storageUrl } from '$lib/api';
+	import { openChat } from '$lib/stores/chat';
 	import type { SolutionDetailResponse } from '$lib/loaders/solution';
 
 	let { detail }: { detail: SolutionDetailResponse | null } = $props();
@@ -71,14 +72,6 @@
 	};
 	const SolutionIcon = $derived(iconMap[sol?.slug ?? ''] ?? Activity);
 	const iconUrl = $derived(storageUrl(sol?.icon));
-
-	const consultUrl = $derived(
-		`https://wa.me/628112632151?text=${encodeURIComponent(
-			$locale === 'EN'
-				? `Hello Beacon Marketing CS, I would like to consult about ${sol?.name ?? 'Beacon'}.`
-				: `Halo CS Marketing Beacon, saya ingin konsultasi tentang ${sol?.name ?? 'Beacon'}.`
-		)}`
-	);
 </script>
 
 <svelte:head>
@@ -213,15 +206,14 @@
 					<p class="text-lg text-zinc-400 font-medium">{copy.ctaDesc}</p>
 				</div>
 				<div class="relative z-10 flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto shrink-0">
-					<a
-						href={consultUrl}
-						target="_blank"
-						rel="noopener"
+					<button
+						type="button"
+						onclick={openChat}
 						class="w-full sm:w-auto inline-flex justify-center items-center gap-2 px-8 py-4 rounded-full text-sm font-bold text-zinc-950 bg-white transition-all hover:scale-105 active:scale-95 btn-tactile"
 					>
 						<MessageCircle size={18} />
 						{copy.consult}
-					</a>
+					</button>
 					<a
 						href="/solusi"
 						class="w-full sm:w-auto inline-flex justify-center items-center gap-2 px-8 py-4 rounded-full text-sm font-bold text-white transition-all hover:bg-zinc-800 btn-tactile"

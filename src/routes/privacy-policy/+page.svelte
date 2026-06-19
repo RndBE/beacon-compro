@@ -38,7 +38,7 @@
 			],
 			contactTitle: "Kontak Privasi",
 			contactPrefix: "Untuk pertanyaan terkait kebijakan privasi, hubungi",
-			contactMiddle: "atau WhatsApp",
+			contactMiddle: "atau telepon",
 		},
 		EN: {
 			metaTitle: "Privacy Policy | Beacon Engineering",
@@ -76,7 +76,7 @@
 			],
 			contactTitle: "Privacy Contact",
 			contactPrefix: "For questions about this privacy policy, contact",
-			contactMiddle: "or WhatsApp",
+			contactMiddle: "or phone",
 		},
 	};
 
@@ -131,7 +131,7 @@
 					{copy.contactPrefix}
 					<a class="font-semibold text-[#C8102E] hover:text-zinc-950" href="mailto:info@bejogja.com">info@bejogja.com</a>
 					{copy.contactMiddle}
-					<a class="font-semibold text-[#C8102E] hover:text-zinc-950" href="https://wa.me/628112632151">+62 811 2632 151</a>.
+					<a class="font-semibold text-[#C8102E] hover:text-zinc-950" href="tel:02744986899">(0274) 4986899</a>.
 				</p>
 			</div>
 		</div>

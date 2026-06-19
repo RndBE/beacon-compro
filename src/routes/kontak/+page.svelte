@@ -13,6 +13,8 @@
 		ArrowRight,
 	} from "@lucide/svelte";
 	import { locale } from "$lib/i18n";
+	import { openChat } from "$lib/stores/chat";
+	import { PUBLIC_API_BASE } from "$env/static/public";
 
 	let formData = $state({
 		name: "",
@@ -22,6 +24,10 @@
 		subject: "",
 		message: "",
 	});
+
+	let submitting = $state(false);
+	let submitStatus = $state<"idle" | "success" | "error">("idle");
+	let submitError = $state("");
 
 	const pageCopy = {
 		ID: {
@@ -65,17 +71,17 @@
 					value: "Senin - Jumat, 08:00 - 17:00 WIB",
 				},
 			],
-			quickCtaTitle: "Chat CS Marketing",
-			quickCtaDesc: "Respons cepat di jam kerja",
+			quickCtaTitle: "Chat AI",
+			quickCtaDesc: "Asisten virtual Beacon, jawaban instan",
 			quickCtaText:
-				"Halo CS Marketing Beacon, saya ingin konsultasi tentang solusi telemetri.",
+				"Halo CS Sales Beacon, saya ingin konsultasi tentang solusi telemetri.",
 			formTitle: "Kirim Permintaan Konsultasi",
 			form: {
 				name: "Nama Lengkap *",
 				namePlaceholder: "Nama Anda",
 				email: "Email *",
 				emailPlaceholder: "email@perusahaan.com",
-				phone: "Telepon / WhatsApp",
+				phone: "Telepon",
 				phonePlaceholder: "081xxxxxxxxx",
 				company: "Perusahaan / Instansi",
 				companyPlaceholder: "BBWS / BUMN / Swasta",
@@ -84,7 +90,12 @@
 				message: "Pesan *",
 				messagePlaceholder: "Ceritakan kebutuhan monitoring Anda...",
 				submit: "Kirim Permintaan Konsultasi",
-				note: "* Form ini akan mengarahkan Anda ke WhatsApp untuk komunikasi lebih cepat.",
+				submitting: "Mengirim...",
+				note: "* Tim kami akan menindaklanjuti permintaan Anda melalui email atau telepon.",
+				successTitle: "Permintaan terkirim!",
+				successDesc: "Terima kasih. Tim engineer kami akan segera menghubungi Anda.",
+				errorGeneric: "Gagal mengirim permintaan. Silakan coba lagi.",
+				errorNetwork: "Koneksi terganggu. Periksa internet Anda dan coba lagi.",
 			},
 			subjects: [
 				{ value: "AWLR", label: "Konsultasi AWLR" },
@@ -97,7 +108,7 @@
 				{ value: "Infrastructure Security", label: "Infrastructure Security" },
 				{ value: "Lainnya", label: "Lainnya" },
 			],
-			formWhatsAppIntro: "Halo CS Marketing Beacon,",
+			formWhatsAppIntro: "Halo CS Sales Beacon,",
 			formFields: {
 				name: "Nama",
 				email: "Email",
@@ -107,7 +118,7 @@
 				message: "Pesan",
 			},
 			partnershipText:
-				"Halo CS Marketing Beacon, saya ingin berdiskusi tentang kemitraan dengan Beacon Engineering.",
+				"Halo CS Sales Beacon, saya ingin berdiskusi tentang kemitraan dengan Beacon Engineering.",
 			partnershipBadge: "Open Partnership",
 			partnershipTitle:
 				"Kemitraan untuk proyek monitoring yang siap masuk lapangan.",
@@ -208,8 +219,8 @@
 					value: "Monday - Friday, 08:00 - 17:00 WIB",
 				},
 			],
-			quickCtaTitle: "Chat CS Marketing",
-			quickCtaDesc: "Fast response during working hours",
+			quickCtaTitle: "AI Chat",
+			quickCtaDesc: "Beacon virtual assistant, instant answers",
 			quickCtaText:
 				"Hello Beacon Marketing CS, I would like to consult about telemetry solutions.",
 			formTitle: "Send a Consultation Request",
@@ -218,7 +229,7 @@
 				namePlaceholder: "Your name",
 				email: "Email *",
 				emailPlaceholder: "email@company.com",
-				phone: "Phone / WhatsApp",
+				phone: "Phone",
 				phonePlaceholder: "+62 8xx xxxx xxxx",
 				company: "Company / Institution",
 				companyPlaceholder: "Agency / SOE / Private Company",
@@ -227,7 +238,12 @@
 				message: "Message *",
 				messagePlaceholder: "Tell us about your monitoring requirements...",
 				submit: "Send Consultation Request",
-				note: "* This form will redirect you to WhatsApp for faster communication.",
+				submitting: "Sending...",
+				note: "* Our team will follow up on your request via email or phone.",
+				successTitle: "Request sent!",
+				successDesc: "Thank you. Our engineering team will contact you shortly.",
+				errorGeneric: "Failed to send your request. Please try again.",
+				errorNetwork: "Connection issue. Check your internet and try again.",
 			},
 			subjects: [
 				{ value: "AWLR", label: "AWLR Consultation" },
@@ -313,12 +329,6 @@
 	};
 
 	const copy = $derived(pageCopy[$locale]);
-	const partnershipWhatsAppUrl = $derived(
-		`https://wa.me/628112632151?text=${encodeURIComponent(copy.partnershipText)}`
-	);
-	const quickWhatsAppUrl = $derived(
-		`https://wa.me/628112632151?text=${encodeURIComponent(copy.quickCtaText)}`
-	);
 	const partnershipMailUrl = $derived(
 		`mailto:info@bejogja.com?subject=${encodeURIComponent(copy.partnershipSubject)}`
 	);
@@ -326,22 +336,53 @@
 	const partnershipReadiness = $derived(copy.partnershipReadiness);
 	const contactItems = $derived(copy.contactItems);
 
-	function handleSubmit(e: Event) {
+	async function handleSubmit(e: Event) {
 		e.preventDefault();
-		const msg = [
-			copy.formWhatsAppIntro,
-			"",
-			`${copy.formFields.name}: ${formData.name}`,
-			`${copy.formFields.email}: ${formData.email}`,
-			`${copy.formFields.phone}: ${formData.phone}`,
-			`${copy.formFields.company}: ${formData.company}`,
-			`${copy.formFields.subject}: ${formData.subject}`,
-			`${copy.formFields.message}: ${formData.message}`,
-		].join("\n");
-		window.open(
-			`https://wa.me/628112632151?text=${encodeURIComponent(msg)}`,
-			"_blank",
-		);
+		if (submitting) return;
+
+		submitting = true;
+		submitStatus = "idle";
+		submitError = "";
+
+		try {
+			const res = await fetch(`${PUBLIC_API_BASE}/contact`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					Accept: "application/json",
+				},
+				body: JSON.stringify({
+					name: formData.name,
+					email: formData.email,
+					phone: formData.phone,
+					company: formData.company,
+					subject: formData.subject,
+					message: formData.message,
+				}),
+			});
+
+			const data = await res.json().catch(() => ({}));
+
+			if (res.ok) {
+				submitStatus = "success";
+				formData = {
+					name: "",
+					email: "",
+					phone: "",
+					company: "",
+					subject: "",
+					message: "",
+				};
+			} else {
+				submitStatus = "error";
+				submitError = data?.message || data?.error || copy.form.errorGeneric;
+			}
+		} catch {
+			submitStatus = "error";
+			submitError = copy.form.errorNetwork;
+		} finally {
+			submitting = false;
+		}
 	}
 </script>
 
@@ -543,7 +584,7 @@
 							</div>
 						{/each}
 
-						<!-- WhatsApp contact -->
+						<!-- AI Assistant contact -->
 						<div class="flex items-start gap-4">
 							<div
 								class="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
@@ -557,12 +598,13 @@
 							<div>
 								<span
 									class="text-sm font-semibold block"
-									style="color: #1A1A1A;">CS Marketing</span
+									style="color: #1A1A1A;">{$locale === "EN" ? "AI Assistant" : "Asisten AI"}</span
 								>
-								<a
-									href="https://wa.me/628112632151"
+								<button
+									type="button"
+									onclick={openChat}
 									class="text-sm hover:text-[#C8102E] transition-colors block"
-									style="color: #5C5C5C;">+62 811 2632 151</a
+									style="color: #5C5C5C;">{$locale === "EN" ? "Ask Beacon AI" : "Tanya Beacon AI"}</button
 								>
 							</div>
 						</div>
@@ -570,11 +612,10 @@
 				</div>
 
 				<!-- Quick CTA — SKILL: btn-tactile -->
-				<a
-					href={quickWhatsAppUrl}
-					target="_blank"
-					rel="noopener"
-					class="group flex items-center gap-4 p-5 rounded-[20px] btn-tactile"
+				<button
+					type="button"
+					onclick={openChat}
+					class="group flex items-center gap-4 p-5 rounded-[20px] btn-tactile w-full text-left"
 					style="background: linear-gradient(135deg, #C8102E, #A50D25); box-shadow: 0 8px 24px rgba(200,16,46,0.2);"
 				>
 					<div
@@ -597,7 +638,7 @@
 						size={16}
 						class="text-white/50 group-hover:translate-x-1 transition-transform ml-auto"
 					/>
-				</a>
+				</button>
 			</div>
 
 			<!-- Right: Form — 7 cols -->
@@ -724,12 +765,33 @@
 
 						<button
 							type="submit"
-							class="btn-tactile inline-flex items-center gap-2 px-7 py-3.5 rounded-[14px] text-sm font-semibold text-white"
+							disabled={submitting}
+							class="btn-tactile inline-flex items-center gap-2 px-7 py-3.5 rounded-[14px] text-sm font-semibold text-white disabled:opacity-60 disabled:cursor-not-allowed"
 							style="background: linear-gradient(135deg, #C8102E, #A50D25); box-shadow: 0 4px 12px rgba(200,16,46,0.25);"
 						>
-							<Send size={16} />
-							{copy.form.submit}
+							<Send size={16} class={submitting ? "animate-pulse" : ""} />
+							{submitting ? copy.form.submitting : copy.form.submit}
 						</button>
+
+						{#if submitStatus === "success"}
+							<div
+								class="flex items-start gap-3 rounded-[14px] px-4 py-3"
+								style="background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.25);"
+							>
+								<CheckCircle2 size={18} class="shrink-0 mt-0.5 text-[#16A34A]" />
+								<div>
+									<span class="block text-sm font-semibold text-[#15803D]">{copy.form.successTitle}</span>
+									<span class="block text-xs text-[#15803D]/80">{copy.form.successDesc}</span>
+								</div>
+							</div>
+						{:else if submitStatus === "error"}
+							<div
+								class="rounded-[14px] px-4 py-3"
+								style="background: rgba(200,16,46,0.06); border: 1px solid rgba(200,16,46,0.25);"
+							>
+								<span class="text-xs font-medium text-[#C8102E]">{submitError}</span>
+							</div>
+						{/if}
 
 						<p class="text-xs" style="color: #9A9A9A;">
 							{copy.form.note}
@@ -798,16 +860,15 @@
 				</div>
 
 				<div class="flex flex-col sm:flex-row gap-3">
-					<a
-						href={partnershipWhatsAppUrl}
-						target="_blank"
-						rel="noopener"
+					<button
+						type="button"
+						onclick={openChat}
 						class="btn-tactile inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-[14px] text-sm font-semibold text-white"
 						style="background: linear-gradient(135deg, #C8102E, #A50D25); box-shadow: 0 8px 20px rgba(200,16,46,0.18);"
 					>
 						<MessageCircle size={16} />
 						{copy.partnershipPrimary}
-					</a>
+					</button>
 					<a
 						href={partnershipMailUrl}
 						class="btn-tactile inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-[14px] text-sm font-semibold bg-white"
@@ -895,10 +956,9 @@
 								{/each}
 							</div>
 
-							<a
-								href={partnershipWhatsAppUrl}
-								target="_blank"
-								rel="noopener"
+							<button
+								type="button"
+								onclick={openChat}
 								class="group mt-9 inline-flex items-center gap-2 text-sm font-semibold text-white"
 							>
 								{copy.startDiscussion}
@@ -906,7 +966,7 @@
 									size={15}
 									class="group-hover:translate-x-1 transition-transform"
 								/>
-							</a>
+							</button>
 						</div>
 					</div>
 				</div>

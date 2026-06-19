@@ -3,6 +3,7 @@
 	import logoBeacon from '$lib/assets/logo_be.png';
 	import InstagramFeed from './InstagramFeed.svelte';
 	import { locale, translations as tr } from '$lib/i18n';
+	import { openChat } from '$lib/stores/chat';
 	import type { SolutionSummary } from '$lib/api';
 
 	let { solutions = null }: { solutions?: SolutionSummary[] | null } = $props();
@@ -227,12 +228,13 @@
 						<div class="pt-1">
 							<span
 								class="block text-[10px] uppercase tracking-widest text-zinc-600 font-bold mb-1"
-								>CS Marketing</span
+								>{$locale === 'EN' ? 'AI Assistant' : 'Asisten AI'}</span
 							>
-							<a
-								href="https://wa.me/628112632151"
-								class="text-sm font-medium text-zinc-400 hover:text-white transition-colors tabular-nums"
-								>+62 811 2632 151</a
+							<button
+								type="button"
+								onclick={openChat}
+								class="text-sm font-medium text-zinc-400 hover:text-white transition-colors"
+								>{$locale === 'EN' ? 'Ask Beacon AI' : 'Tanya Beacon AI'}</button
 							>
 						</div>
 					</li>

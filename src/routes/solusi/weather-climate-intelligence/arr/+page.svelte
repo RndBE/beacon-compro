@@ -17,6 +17,7 @@
 		Sun
 	} from '@lucide/svelte';
 	import { locale } from '$lib/i18n';
+	import { openChat } from '$lib/stores/chat';
 	import ProductVariantDossier from '$lib/components/ProductVariantDossier.svelte';
 	import { mapTrackRecords } from '$lib/loaders/sub-solution';
 
@@ -109,14 +110,6 @@
 				}
 	);
 
-	const consultUrl = $derived(
-		`https://wa.me/628112632151?text=${encodeURIComponent(
-			$locale === 'EN'
-				? 'Hello Beacon Marketing CS, I would like to consult about ARR (Automatic Rain Recorder).'
-				: 'Halo CS Marketing Beacon, saya ingin konsultasi tentang ARR (Automatic Rain Recorder).'
-		)}`
-	);
-
 	// ── Live rain gauge ──
 	let mounted = $state(false);
 	let rate = $state(0); // mm/h
@@ -202,9 +195,9 @@
 					{@html mainContent}
 				</div>
 				<div class="mt-10 flex flex-wrap gap-3" style="opacity: {mounted ? 1 : 0}; transform: translateY({mounted ? 0 : 12}px); transition: all .8s cubic-bezier(.16,1,.3,1) .5s;">
-					<a href={consultUrl} target="_blank" rel="noopener" class="btn-tactile inline-flex items-center gap-2 px-6 py-3.5 rounded-xl text-sm font-bold text-white" style="background: linear-gradient(135deg, #C8102E, #A50D25); box-shadow: 0 10px 30px -10px rgba(200,16,46,0.7);">
+					<button type="button" onclick={openChat} class="btn-tactile inline-flex items-center gap-2 px-6 py-3.5 rounded-xl text-sm font-bold text-white" style="background: linear-gradient(135deg, #C8102E, #A50D25); box-shadow: 0 10px 30px -10px rgba(200,16,46,0.7);">
 						<MessageCircle size={16} />{copy.consult}
-					</a>
+					</button>
 					<a href="/solusi/weather-climate-intelligence" class="btn-tactile inline-flex items-center gap-2 px-6 py-3.5 rounded-xl text-sm font-bold text-zinc-200 transition-colors hover:text-white" style="border: 1px solid rgba(255,255,255,0.14); background: rgba(255,255,255,0.03);">
 						{copy.other}<ArrowRight size={15} />
 					</a>
@@ -378,9 +371,9 @@
 				<p class="text-lg text-zinc-400 font-medium">{copy.ctaDesc}</p>
 			</div>
 			<div class="relative z-10 flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto shrink-0">
-				<a href={consultUrl} target="_blank" rel="noopener" class="btn-tactile w-full sm:w-auto inline-flex justify-center items-center gap-2 px-8 py-4 rounded-full text-sm font-bold text-white" style="background: linear-gradient(135deg, #C8102E, #A50D25); box-shadow: 0 10px 30px -10px rgba(200,16,46,0.7);">
+				<button type="button" onclick={openChat} class="btn-tactile w-full sm:w-auto inline-flex justify-center items-center gap-2 px-8 py-4 rounded-full text-sm font-bold text-white" style="background: linear-gradient(135deg, #C8102E, #A50D25); box-shadow: 0 10px 30px -10px rgba(200,16,46,0.7);">
 					<MessageCircle size={18} />{copy.ctaPrimary}
-				</a>
+				</button>
 				<a href="/solusi/weather-climate-intelligence" class="btn-tactile w-full sm:w-auto inline-flex justify-center items-center gap-2 px-8 py-4 rounded-full text-sm font-bold text-white transition-colors hover:bg-white/5" style="border: 1px solid rgba(255,255,255,0.15);">
 					<ArrowRight size={18} />{copy.ctaSecondary}
 				</a>

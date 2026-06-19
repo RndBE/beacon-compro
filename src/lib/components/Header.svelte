@@ -5,6 +5,7 @@
 	import { PUBLIC_API_BASE } from '$env/static/public';
 	import logoBeacon from '$lib/assets/logo_be.png';
 	import { locale, translations as tr } from '$lib/i18n';
+	import { openChat } from '$lib/stores/chat';
 	import {
 		storageUrl,
 		type ArticleSummary,
@@ -341,14 +342,6 @@
 			: fallbackLatestArticle
 	);
 
-	const waConsultUrl = $derived(
-		`https://wa.me/628112632151?text=${encodeURIComponent(
-			$locale === 'EN'
-				? 'Hello Beacon Marketing CS, I am interested in your telemetry solutions.'
-				: 'Halo CS Marketing Beacon, saya tertarik dengan solusi telemetri Anda.'
-		)}`
-	);
-
 	function resultTypeLabel(type: string): string {
 		const labelMap: Record<string, string> = {
 			'Solusi': tr['nav.solutions'][$locale],
@@ -388,10 +381,6 @@
 			<a href="tel:02744986899" class="flex items-center gap-1.5 hover:text-white transition-colors">
 				<Phone size={12} class="text-[#C8102E]" />
 				<span class="hidden md:inline tabular-nums">(0274) 4986899</span>
-			</a>
-			<a href="https://wa.me/628112632151" class="flex items-center gap-1.5 hover:text-white transition-colors">
-				<MessageCircle size={12} class="text-[#C8102E]" />
-				<span class="tabular-nums">CS Marketing +62 811 2632 151</span>
 			</a>
 			<a href="mailto:info@bejogja.com" class="hidden lg:flex items-center gap-1.5 hover:text-white transition-colors">
 				<Mail size={12} class="text-[#C8102E]" />
@@ -472,13 +461,14 @@
 								</div>
 								<div class="text-right">
 									<p class="text-xs text-[#5C5C5C] mb-2">{tr['mega.solutions.consult'][$locale]}</p>
-									<a
-										href={waConsultUrl}
+									<button
+										type="button"
+										onclick={openChat}
 										class="inline-flex items-center gap-1 text-xs font-semibold text-[#C8102E] hover:underline"
 									>
 										<MessageCircle size={12} />
-										CS Marketing
-									</a>
+										{tr['nav.cta'][$locale]}
+									</button>
 								</div>
 							</div>
 						</div>
@@ -613,8 +603,9 @@
 					</kbd>
 				</button>
 
-				<a
-					href={waConsultUrl}
+				<button
+					type="button"
+					onclick={openChat}
 					class="hidden lg:inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 btn-tactile"
 					style="
 						background: linear-gradient(135deg, #C8102E 0%, #A50D25 100%);
@@ -622,11 +613,9 @@
 						box-shadow: 0 8px 20px -8px rgba(200,16,46,0.5), inset 0 1px 1px rgba(255,255,255,0.3);
 						letter-spacing: -0.01em;
 					"
-					target="_blank"
-					rel="noopener"
 				>
 					{tr['nav.cta'][$locale]}
-				</a>
+				</button>
 
 				<!-- Mobile Menu Button -->
 				<button
@@ -903,10 +892,6 @@
 					<Phone size={16} class="text-[#C8102E]" />
 					(0274) 4986899
 				</a>
-				<a href="https://wa.me/628112632151" class="flex items-center gap-3 text-sm text-[#5C5C5C]">
-					<MessageCircle size={16} class="text-[#C8102E]" />
-					CS Marketing +62 811 2632 151
-				</a>
 				<a href="mailto:info@bejogja.com" class="flex items-center gap-3 text-sm text-[#5C5C5C]">
 					<Mail size={16} class="text-[#C8102E]" />
 					info@bejogja.com
@@ -915,15 +900,14 @@
 
 			<!-- Mobile CTA -->
 			<div class="mt-6">
-				<a
-					href={waConsultUrl}
+				<button
+					type="button"
+					onclick={() => { toggleMobileMenu(); openChat(); }}
 					class="block w-full text-center py-3.5 rounded-xl text-white font-semibold text-sm transition-all"
 					style="background: #C8102E; box-shadow: 0 4px 12px rgba(200,16,46,0.2);"
-					target="_blank"
-					rel="noopener"
 				>
 					{tr['mobile.cta'][$locale]}
-				</a>
+				</button>
 			</div>
 		</div>
 	</div>

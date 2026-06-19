@@ -3,6 +3,7 @@
 	import { ArrowRight, ChevronRight, MessageCircle } from '@lucide/svelte';
 	import { solutions as fallbackSolutions } from '$lib/data/solutions';
 	import { locale } from '$lib/i18n';
+	import { openChat } from '$lib/stores/chat';
 
 	let { data } = $props();
 	const pageCopy = {
@@ -22,7 +23,7 @@
 			ctaDesc: 'Tim engineer kami akan merancang arsitektur telemetri yang tepat dan menghitung kebutuhan riil proyek Anda.',
 			ctaPrimary: 'Konsultasi Beacon',
 			ctaSecondary: 'Jelajahi Produk Lain',
-			whatsappText: 'Halo CS Marketing Beacon, saya ingin konsultasi tentang Beacon untuk proyek saya.',
+			whatsappText: 'Halo CS Sales Beacon, saya ingin konsultasi tentang Beacon untuk proyek saya.',
 			defaultStatLabel: 'Produk'
 		},
 		EN: {
@@ -46,7 +47,6 @@
 		}
 	};
 	const copy = $derived(pageCopy[$locale]);
-	const consultationUrl = $derived(`https://wa.me/628112632151?text=${encodeURIComponent(copy.whatsappText)}`);
 
 	// Merge API data with editorial metadata (icons, taglines, stats, colors)
 	const solutions = $derived(
@@ -338,11 +338,11 @@
 			</div>
 
 			<div class="relative z-10 flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto shrink-0">
-				<a href={consultationUrl} target="_blank" rel="noopener"
+				<button type="button" onclick={openChat}
 					class="w-full sm:w-auto inline-flex justify-center items-center gap-2 px-8 py-4 rounded-full text-sm font-bold text-zinc-950 bg-white transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(255,255,255,0.1)] btn-tactile">
 					<MessageCircle size={18} />
 					{copy.ctaPrimary}
-				</a>
+				</button>
 				<a href="/solusi" class="w-full sm:w-auto inline-flex justify-center items-center gap-2 px-8 py-4 rounded-full text-sm font-bold text-white transition-all hover:bg-zinc-800 btn-tactile" style="border: 1px solid rgba(255,255,255,0.15);">
 					<ArrowRight size={18} />
 					{copy.ctaSecondary}

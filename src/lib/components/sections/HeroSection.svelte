@@ -14,6 +14,7 @@
 	} from "@lucide/svelte";
 	import Ornaments from "$lib/components/Ornaments.svelte";
 	import { locale } from "$lib/i18n";
+	import { openChat } from "$lib/stores/chat";
 	import { tweened } from "svelte/motion";
 	import { cubicOut } from "svelte/easing";
 
@@ -351,10 +352,9 @@
 					class:animate-fade-in-up={mounted}
 					style:animation-delay="200ms"
 				>
-					<a
-						href="https://wa.me/628112632151"
-						target="_blank"
-						rel="noopener"
+					<button
+						type="button"
+						onclick={openChat}
 						class="group relative inline-flex items-center justify-center gap-3 px-8 py-4 rounded-2xl text-sm font-semibold text-white overflow-hidden transition-all duration-300 hover:scale-[0.98] active:scale-95"
 						style="background: #C8102E; box-shadow: 0 10px 30px -10px rgba(200,16,46,0.4);"
 					>
@@ -375,7 +375,7 @@
 								class="group-hover:translate-x-1 transition-transform"
 							/>
 						</span>
-					</a>
+					</button>
 					<a
 						href="#pilar-solusi"
 						class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl text-sm font-semibold text-zinc-700 bg-white border border-zinc-200/60 shadow-sm transition-all duration-300 hover:bg-zinc-50 hover:text-zinc-950 hover:-translate-y-0.5 hover:shadow-md"

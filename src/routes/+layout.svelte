@@ -3,7 +3,7 @@
 	import { page } from '$app/stores';
 	import Header from '$lib/components/Header.svelte';
 	import Footer from '$lib/components/Footer.svelte';
-	import WhatsAppFloat from '$lib/components/WhatsAppFloat.svelte';
+	import MobileCtaBar from '$lib/components/MobileCtaBar.svelte';
 	import Chatbot from '$lib/components/Chatbot.svelte';
 	import { locale, translations as tr } from '$lib/i18n';
 
@@ -28,7 +28,7 @@
 			{@render children()}
 		</main>
 		<Footer solutions={data.solutions} />
-		<WhatsAppFloat />
+		<MobileCtaBar />
 		<Chatbot />
 	</div>
 {/if}

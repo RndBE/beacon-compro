@@ -181,7 +181,7 @@ Beacon Engineering siap memulai **pilot project 3 bulan** bersama Pemerintah Kab
 **Kontak — Beacon Engineering**
 *Telemetry · IoT · SCADA · Dashboard*
 - Alamat: Kadirojo I, Purwomartani, Kalasan, Sleman, DIY 55571
-- Telepon: (0274) 4986899 · CS Marketing: +62 811 2632 151
+- Telepon: (0274) 4986899 · CS Sales: +62 811 2632 151
 - Email: info@bejogja.com
 - Jam Operasional: Senin–Jumat, 08:00–17:00 WIB
 

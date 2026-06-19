@@ -14,8 +14,8 @@
 	} from "@lucide/svelte";
 	import { PUBLIC_API_BASE } from "$env/static/public";
 	import { locale } from "$lib/i18n";
+	import { chatOpen } from "$lib/stores/chat";
 
-	let isOpen = $state(false);
 	let message = $state("");
 	let isLoading = $state(false);
 	let sessionToken = $state<string | null>(null);
@@ -82,11 +82,16 @@
 	});
 
 	function toggleChat() {
-		isOpen = !isOpen;
-		if (isOpen && isLiveMode()) {
+		chatOpen.update((v) => !v);
+	}
+
+	// Start polling whenever the chat is open in live mode — covers both the
+	// FAB toggle and external opens via openChat() from other components.
+	$effect(() => {
+		if ($chatOpen && isLiveMode()) {
 			startPolling();
 		}
-	}
+	});
 
 	function scrollToBottom() {
 		if (chatAreaRef) {
@@ -398,7 +403,7 @@
 <div
 	class="fixed bottom-[84px] lg:bottom-6 right-6 z-[999] flex max-w-[calc(100vw-3rem)] items-center gap-3"
 >
-	{#if !isOpen}
+	{#if !$chatOpen}
 		<button
 			type="button"
 			class="group flex max-w-[180px] items-center gap-3 rounded-2xl border border-white/70 bg-white/95 px-3 py-3 text-left shadow-[0_18px_40px_-18px_rgba(0,0,0,0.35)] backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:border-[#C8102E]/30 hover:shadow-[0_20px_44px_-18px_rgba(200,16,46,0.35)] sm:max-w-[220px] sm:px-4"
@@ -426,33 +431,33 @@
 		type="button"
 		class="relative w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-500 hover:scale-105 active:scale-95 group shadow-2xl"
 		style="
-			background: {isOpen
+			background: {$chatOpen
 			? '#18181B'
 			: 'linear-gradient(135deg, #C8102E 0%, #910B20 100%)'};
-			border: 1px solid {isOpen ? '#27272A' : '#E11D48'};
-			box-shadow: {isOpen
+			border: 1px solid {$chatOpen ? '#27272A' : '#E11D48'};
+			box-shadow: {$chatOpen
 			? 'none'
 			: '0 10px 30px -10px rgba(200,16,46,0.6), inset 0 2px 4px rgba(255,255,255,0.2)'};
 		"
 		onclick={toggleChat}
-		aria-label={isOpen ? copy("Tutup chat AI", "Close AI chat") : copy("Buka chat AI", "Open AI chat")}
-		aria-expanded={isOpen}
+		aria-label={$chatOpen ? copy("Tutup chat AI", "Close AI chat") : copy("Buka chat AI", "Open AI chat")}
+		aria-expanded={$chatOpen}
 	>
-		{#if !isOpen}
+		{#if !$chatOpen}
 			<div
 				class="absolute inset-0 rounded-2xl bg-[#C8102E] opacity-50 animate-ping"
 				style="animation-duration: 3s;"
 			></div>
 		{/if}
 		<div
-			class="absolute inset-0 flex items-center justify-center text-white transition-transform duration-300 {isOpen
+			class="absolute inset-0 flex items-center justify-center text-white transition-transform duration-300 {$chatOpen
 				? 'rotate-90 scale-0 opacity-0'
 				: 'rotate-0 scale-100 opacity-100'}"
 		>
 			<Bot size={24} />
 		</div>
 		<div
-			class="absolute inset-0 flex items-center justify-center text-white transition-transform duration-300 {isOpen
+			class="absolute inset-0 flex items-center justify-center text-white transition-transform duration-300 {$chatOpen
 				? 'rotate-0 scale-100 opacity-100'
 				: '-rotate-90 scale-0 opacity-0'}"
 		>
@@ -465,9 +470,9 @@
 <div
 	class="fixed bottom-[150px] lg:bottom-24 right-6 z-[998] w-[380px] max-w-[calc(100vw-3rem)] rounded-[2rem] overflow-hidden origin-bottom-right transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] bg-zinc-950"
 	style="
-		opacity: {isOpen ? 1 : 0};
-		transform: scale({isOpen ? 1 : 0.95}) translateY({isOpen ? 0 : 20}px);
-		pointer-events: {isOpen ? 'auto' : 'none'};
+		opacity: {$chatOpen ? 1 : 0};
+		transform: scale({$chatOpen ? 1 : 0.95}) translateY({$chatOpen ? 0 : 20}px);
+		pointer-events: {$chatOpen ? 'auto' : 'none'};
 		box-shadow: 0 40px 80px -20px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.1);
 		border: 1px solid rgba(255,255,255,0.08);
 	"

@@ -37,7 +37,7 @@
 			],
 			contactTitle: "Pertanyaan Ketentuan",
 			contactPrefix: "Untuk klarifikasi penggunaan situs atau layanan, hubungi",
-			contactMiddle: "atau WhatsApp",
+			contactMiddle: "atau telepon",
 		},
 		EN: {
 			metaTitle: "Terms of Service | Beacon Engineering",
@@ -74,7 +74,7 @@
 			],
 			contactTitle: "Terms Questions",
 			contactPrefix: "For clarification about website or service use, contact",
-			contactMiddle: "or WhatsApp",
+			contactMiddle: "or phone",
 		},
 	};
 
@@ -129,7 +129,7 @@
 					{copy.contactPrefix}
 					<a class="font-semibold text-[#C8102E] hover:text-zinc-950" href="mailto:info@bejogja.com">info@bejogja.com</a>
 					{copy.contactMiddle}
-					<a class="font-semibold text-[#C8102E] hover:text-zinc-950" href="https://wa.me/628112632151">+62 811 2632 151</a>.
+					<a class="font-semibold text-[#C8102E] hover:text-zinc-950" href="tel:02744986899">(0274) 4986899</a>.
 				</p>
 			</div>
 		</div>

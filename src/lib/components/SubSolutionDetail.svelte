@@ -18,6 +18,7 @@
 	import Ornaments from '$lib/components/Ornaments.svelte';
 	import { locale } from '$lib/i18n';
 	import { storageUrl } from '$lib/api';
+	import { openChat } from '$lib/stores/chat';
 	import { mapTrackRecords, type SubSolutionDetailResponse } from '$lib/loaders/sub-solution';
 
 	let { detail }: { detail: SubSolutionDetailResponse | null } = $props();
@@ -111,13 +112,6 @@
 		return v;
 	}
 
-	const consultUrl = $derived(
-		`https://wa.me/628112632151?text=${encodeURIComponent(
-			$locale === 'EN'
-				? `Hello Beacon Marketing CS, I would like to consult about ${label}.`
-				: `Halo CS Marketing Beacon, saya ingin konsultasi tentang ${label}.`
-		)}`
-	);
 </script>
 
 <svelte:head>
@@ -183,16 +177,15 @@
 					</div>
 
 					<div class="flex flex-wrap gap-4 pt-2">
-						<a
-							href={consultUrl}
-							target="_blank"
-							rel="noopener"
+						<button
+							type="button"
+							onclick={openChat}
 							class="inline-flex items-center gap-2 px-6 py-3 rounded-[12px] text-sm font-semibold text-white transition-all btn-tactile"
 							style="background: linear-gradient(135deg, {color}, {color}cc); box-shadow: 0 4px 14px {color}40;"
 						>
 							<MessageCircle size={15} />
 							{copy.consult} {ss.abbreviation}
-						</a>
+						</button>
 						{#if ss.link_3d}
 							<a
 								href={ss.link_3d}
@@ -468,15 +461,14 @@
 				</div>
 
 				<div class="relative z-10 flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto shrink-0">
-					<a
-						href={consultUrl}
-						target="_blank"
-						rel="noopener"
+					<button
+						type="button"
+						onclick={openChat}
 						class="w-full sm:w-auto inline-flex justify-center items-center gap-2 px-8 py-4 rounded-full text-sm font-bold text-zinc-950 bg-white transition-all hover:scale-105 active:scale-95 btn-tactile"
 					>
 						<MessageCircle size={18} />
 						{copy.consult} {ss.abbreviation}
-					</a>
+					</button>
 					<a
 						href={solutionHref}
 						class="w-full sm:w-auto inline-flex justify-center items-center gap-2 px-8 py-4 rounded-full text-sm font-bold text-white transition-all hover:bg-zinc-800 btn-tactile"
@@ -500,15 +492,14 @@
 			<h1 class="font-heading text-3xl sm:text-4xl font-extrabold mb-4" style="color: #1A1A1A;">{copy.soonTitle}</h1>
 			<p class="text-base leading-relaxed mb-8" style="color: #5C5C5C;">{copy.soonDesc}</p>
 			<div class="flex flex-col sm:flex-row gap-3 justify-center">
-				<a
-					href={consultUrl}
-					target="_blank"
-					rel="noopener"
+				<button
+					type="button"
+					onclick={openChat}
 					class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-[12px] text-sm font-semibold text-white btn-tactile"
 					style="background: linear-gradient(135deg, #C8102E, #A50D25); box-shadow: 0 4px 14px rgba(200,16,46,0.35);"
 				>
-					<MessageCircle size={15} /> CS Marketing
-				</a>
+					<MessageCircle size={15} /> {copy.consult}
+				</button>
 				<a
 					href="/solusi"
 					class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-[12px] text-sm font-semibold transition-all hover:bg-[#FBE9EC] btn-tactile"
