@@ -135,14 +135,14 @@
     color: var(--beacon-red-dark);
   }
 
-  /* Scroll progress bar */
+  /* Header layers: backdrop 1000, chrome 1030, mobile 1100, search 1200, skip link 10000. */
   .scroll-progress {
     position: fixed;
     top: 0;
     left: 0;
     height: 3px;
     background: linear-gradient(90deg, var(--beacon-red), var(--beacon-red-dark));
-    z-index: 9999;
+    z-index: 1150;
     transition: width 0.1s linear;
   }
 }
