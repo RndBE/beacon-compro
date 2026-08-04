@@ -401,7 +401,7 @@
 
 <!-- FAB -->
 <div
-	class="fixed bottom-[84px] lg:bottom-6 right-6 z-[999] flex max-w-[calc(100vw-3rem)] items-center gap-3"
+	class="fixed bottom-6 right-6 z-[999] flex max-w-[calc(100vw-3rem)] items-center gap-3"
 >
 	{#if !$chatOpen}
 		<button
@@ -468,7 +468,7 @@
 
 <!-- Chatbot Window -->
 <div
-	class="fixed bottom-[150px] lg:bottom-24 right-6 z-[998] w-[380px] max-w-[calc(100vw-3rem)] rounded-[2rem] overflow-hidden origin-bottom-right transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] bg-zinc-950"
+	class="fixed bottom-24 right-6 z-[998] w-[380px] max-w-[calc(100vw-3rem)] rounded-[2rem] overflow-hidden origin-bottom-right transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] bg-zinc-950"
 	style="
 		opacity: {$chatOpen ? 1 : 0};
 		transform: scale({$chatOpen ? 1 : 0.95}) translateY({$chatOpen ? 0 : 20}px);
