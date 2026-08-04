@@ -40,25 +40,60 @@ export const solutionHooks: Record<string, Copy> = {
 
 const dataLoggerDescriptions: Record<string, Copy> = {
 	'bl-2000': {
-		ID: 'Flagship telemetry dengan edge computing, multi-channel, dan redundansi satelit. Dirancang untuk infrastruktur kritis yang membutuhkan keandalan absolut.',
-		EN: 'Flagship telemetry with edge computing, multi-channel inputs, and satellite redundancy. Built for critical infrastructure that demands absolute reliability.'
+		ID: 'Dukungan multisensor penuh, dapat dikoneksikan dengan modul kontrolling, modul AI, serta HMI untuk memantau dan mengonfigurasi langsung di lapangan.',
+		EN: 'Full multisensor support, connectable to controlling modules, AI modules, and an HMI for monitoring and configuring the unit directly in the field.'
 	},
 	'bl-1100': {
-		ID: 'Reliabilitas industrial untuk lingkungan ekstrem. Integrasi mulus dengan ratusan sensor dengan konsumsi daya minimal berkat teknologi solar-first.',
-		EN: 'Industrial reliability for extreme environments. Smooth integration with hundreds of sensors and minimal power use through solar-first technology.'
+		ID: 'Beberapa kanal sensor dalam satu enklosur dan siap dipasangkan dengan modul kontrolling. Dukungan protokol komunikasi selengkap BL 2000.',
+		EN: 'Several sensor channels in a single enclosure, ready to pair with a controlling module. Communication protocol support as complete as the BL 2000.'
 	},
 	'bl-110': {
-		ID: 'Solusi kompak dan terjangkau untuk pemantauan presisi. Pilihan paling logis untuk jaringan pengamatan padat tanpa mengorbankan akurasi data.',
-		EN: 'A compact and cost-efficient solution for precision monitoring. A practical choice for dense observation networks without sacrificing data accuracy.'
+		ID: 'Satu kanal sensor dengan opsi modul kontrolling dan pilihan protokol komunikasi selengkap BL 1100, dengan konsumsi daya yang lebih efisien.',
+		EN: 'A single sensor channel with an optional controlling module and communication protocols as complete as the BL 1100, at a more efficient power draw.'
 	},
 	'bl-11': {
-		ID: 'Spesialis pemantauan titik tunggal. Ukuran sekecil kotak korek api, namun ditenagai konektivitas NB-IoT dengan baterai tahan hingga 5 tahun.',
-		EN: 'A specialist for single-point monitoring. Matchbox-sized, powered by NB-IoT connectivity and a battery life of up to 5 years.'
+		ID: 'Pilihan paling terjangkau untuk satu sensor, dengan komunikasi lewat jaringan seluler.',
+		EN: 'The most affordable option for a single sensor, communicating over the cellular network.'
+	}
+};
+
+const dataLoggerTaglines: Record<string, Copy> = {
+	'bl-2000': { ID: 'Logger seri high-end', EN: 'High-end series logger' },
+	'bl-1100': { ID: 'Logger multisensor', EN: 'Multisensor logger' },
+	'bl-110': { ID: 'Logger single sensor, hemat daya', EN: 'Single-sensor logger, low power' },
+	'bl-11': { ID: 'Logger entry-level', EN: 'Entry-level logger' }
+};
+
+/**
+ * Capability badges per logger. `comms` is rendered as the accented trailing
+ * badge because the supported uplinks are the main differentiator between tiers.
+ */
+const dataLoggerBadges: Record<string, { features: string[]; comms: string }> = {
+	'bl-2000': {
+		features: ['MULTISENSOR', 'MODUL KONTROL', 'MODUL AI', 'HMI'],
+		comms: 'SELULER · SATELIT · LORA · RADIO'
+	},
+	'bl-1100': {
+		features: ['MULTISENSOR', 'MODUL KONTROL'],
+		comms: 'SELULER · SATELIT · LORA · RADIO'
+	},
+	'bl-110': {
+		features: ['SINGLE SENSOR', 'MODUL KONTROL', 'HEMAT DAYA'],
+		comms: 'SELULER · SATELIT · LORA · RADIO'
+	},
+	'bl-11': {
+		features: ['SINGLE SENSOR'],
+		comms: 'SELULER'
 	}
 };
 
 const featureTranslations: Record<string, string> = {
-	'SATELIT READY': 'SATELLITE READY'
+	'SATELIT READY': 'SATELLITE READY',
+	'MODUL KONTROL': 'CONTROL MODULE',
+	'MODUL AI': 'AI MODULE',
+	'HEMAT DAYA': 'LOW POWER',
+	'SELULER': 'CELLULAR',
+	'SELULER · SATELIT · LORA · RADIO': 'CELLULAR · SATELLITE · LORA · RADIO'
 };
 
 const projectTranslations: Record<string, { name?: string; location?: string; category?: string }> = {
@@ -151,9 +186,20 @@ export function dataLoggerDescription(product: HomepageDataLogger, locale: Local
 	return pick(dataLoggerDescriptions[product.id], locale, product.desc);
 }
 
+export function dataLoggerTagline(product: HomepageDataLogger, locale: Locale): string {
+	return pick(dataLoggerTaglines[product.id], locale, product.tagline);
+}
+
 export function dataLoggerFeature(feature: string, locale: Locale): string {
 	if (locale !== 'EN') return feature;
 	return featureTranslations[feature] ?? feature;
+}
+
+/** Curated badges for a known logger, falling back to whatever the CMS supplies. */
+export function dataLoggerBadgeSet(product: HomepageDataLogger): { features: string[]; comms: string | null } {
+	const known = dataLoggerBadges[product.id];
+	if (known) return { features: known.features, comms: known.comms };
+	return { features: product.features ?? [], comms: null };
 }
 
 export function projectName(project: FeaturedProject | { name: string }, locale: Locale): string {

@@ -1,677 +1,823 @@
 <script lang="ts">
-	import { onMount } from "svelte";
-	import { Plus, Cpu } from "@lucide/svelte";
-	import { locale } from "$lib/i18n";
-	import { dataLoggerDescription, dataLoggerFeature } from "$lib/homepage-copy";
-	import type { HomepageDataLogger } from "$lib/api";
+	import { onMount } from 'svelte';
+	import { locale } from '$lib/i18n';
+	import {
+		dataLoggerBadgeSet,
+		dataLoggerDescription,
+		dataLoggerFeature,
+		dataLoggerTagline
+	} from '$lib/homepage-copy';
+	import { LOGGER_MODELS, LoggerStage, type StageStatus } from '$lib/loggers/stage';
+	import type { HomepageDataLogger } from '$lib/api';
 
-	let {
-		dataLoggers = undefined,
-	}: { dataLoggers?: HomepageDataLogger[] | null } = $props();
+	let { dataLoggers = undefined }: { dataLoggers?: HomepageDataLogger[] | null } = $props();
 
-	// Svelte 5 state
+	let activeIndex = $state(0);
+	let progress = $state(0);
+	let status = $state<StageStatus>('loading');
+	let statusLabel = $state('');
 	let visible = $state(false);
-	let activeId = $state("bl-2000");
 
-	// Viewport Tracking State
-	let innerHeight = $state(0);
-	let innerWidth = $state(0);
-	let sectionRef: HTMLElement | undefined = $state();
+	let stageHost: HTMLDivElement | undefined = $state();
+	let stage: LoggerStage | null = null;
 
-	const fallbackProducts: HomepageDataLogger[] = [
-		{
-			id: "bl-2000",
-			name: "BL-2000",
-			tagline: "Pro beyond limits.",
-			desc: "Flagship telemetry dengan edge computing, multi-channel, dan redundansi satelit. Dirancang untuk infrastruktur kritis yang membutuhkan keandalan absolut.",
-			features: ["QUAD-CHANNEL", "EDGE AI", "SATELIT READY"],
-			image: null,
-			media_type: null,
-		},
-		{
-			id: "bl-1100",
-			name: "BL-1100",
-			tagline: "The industrial standard.",
-			desc: "Reliabilitas industrial untuk lingkungan ekstrem. Integrasi mulus dengan ratusan sensor dengan konsumsi daya minimal berkat teknologi solar-first.",
-			features: ["IP68 RUGGED", "DUAL COMMS", "SOLAR READY"],
-			image: null,
-			media_type: null,
-		},
-		{
-			id: "bl-110",
-			name: "BL-110",
-			tagline: "Compact yet powerful.",
-			desc: "Solusi kompak dan terjangkau untuk pemantauan presisi. Pilihan paling logis untuk jaringan pengamatan padat tanpa mengorbankan akurasi data.",
-			features: ["COMPACT", "LOW POWER", "PLUG & PLAY"],
-			image: null,
-			media_type: null,
-		},
-		{
-			id: "bl-11",
-			name: "BL-11",
-			tagline: "Micro monitoring.",
-			desc: "Spesialis pemantauan titik tunggal. Ukuran sekecil kotak korek api, namun ditenagai konektivitas NB-IoT dengan baterai tahan hingga 5 tahun.",
-			features: ["NBIOT", "5YR BATTERY", "NANO SIZE"],
-			image: null,
-			media_type: null,
-		},
-	];
-
+	// The 3D assemblies define the roster and its order; CMS rows only enrich the
+	// copy for loggers we already ship geometry for.
+	const bySlug = $derived(new Map((dataLoggers ?? []).map((row) => [row.id, row])));
 	const products = $derived(
-		dataLoggers === null || dataLoggers === undefined
-			? fallbackProducts
-			: dataLoggers,
+		LOGGER_MODELS.map(
+			(model): HomepageDataLogger =>
+				bySlug.get(model.id) ?? {
+					id: model.id,
+					name: model.label,
+					tagline: null,
+					desc: null,
+					features: [],
+					image: null,
+					media_type: null
+				}
+		)
 	);
 
-	function updateActiveFromScroll() {
-		if (innerWidth < 1024) return;
-		if (!products.length) return;
-		if (!sectionRef) return;
+	const active = $derived(products[activeIndex] ?? products[0]);
 
-		const rect = sectionRef.getBoundingClientRect();
-		const maxScroll = rect.height - innerHeight;
-
-		if (maxScroll <= 0) return;
-
-		const progress = Math.min(1, Math.max(0, -rect.top / maxScroll));
-		const index = Math.min(
-			products.length - 1,
-			Math.floor(progress * products.length),
-		);
-		const nextActiveId = products[index].id;
-
-		if (nextActiveId !== activeId) {
-			activeId = nextActiveId;
-		}
+	/** BL-2000 → "BL 2000": a hair space reads better than a hyphen at badge size. */
+	function displayName(name: string) {
+		return name.replace(/-/g, ' ');
 	}
 
-	// Action untuk efek tilt 3D khusus di dalam container Apple-style ini
-	function tilt(node: HTMLElement, enabled: boolean = true) {
-		const handleMove = (e: MouseEvent) => {
-			if (!enabled) return;
-			const rect = node.getBoundingClientRect();
-			const x = e.clientX - rect.left;
-			const y = e.clientY - rect.top;
-			const centerX = rect.width / 2;
-			const centerY = rect.height / 2;
+	function selectLogger(index: number) {
+		if (index === activeIndex) return;
+		activeIndex = index;
+		progress = 0;
+		stage?.select(index);
+	}
 
-			const rotateX = ((y - centerY) / centerY) * -8;
-			const rotateY = ((x - centerX) / centerX) * 8;
-
-			node.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
-		};
-
-		const handleLeave = () => {
-			if (!enabled) return;
-			node.style.transform = `perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)`;
-		};
-
-		node.addEventListener("mousemove", handleMove);
-		node.addEventListener("mouseleave", handleLeave);
-
-		return {
-			update(newEnabled: boolean) {
-				enabled = newEnabled;
-				if (!enabled) {
-					node.style.transform = `perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)`;
-				}
-			},
-			destroy() {
-				node.removeEventListener("mousemove", handleMove);
-				node.removeEventListener("mouseleave", handleLeave);
-			},
-		};
+	function onTabKeydown(event: KeyboardEvent, index: number) {
+		const step = event.key === 'ArrowRight' ? 1 : event.key === 'ArrowLeft' ? -1 : 0;
+		if (!step) return;
+		event.preventDefault();
+		const next = (index + step + products.length) % products.length;
+		selectLogger(next);
+		document.getElementById(`logger-tab-${next}`)?.focus();
 	}
 
 	onMount(() => {
+		const section = document.getElementById('data-loggers-section');
+		if (!section) return;
+
+		let booted = false;
 		const observer = new IntersectionObserver(
 			(entries) => {
-				if (entries[0].isIntersecting) {
-					visible = true;
-					observer.disconnect();
+				const entry = entries[0];
+				if (entry.isIntersecting) visible = true;
+				if (entry.isIntersecting && !booted && stageHost) {
+					booted = true;
+					stage = new LoggerStage({
+						host: stageHost,
+						onProgress: (u) => (progress = u),
+						onCycle: (index) => {
+							activeIndex = index;
+							progress = 0;
+						},
+						onStatus: (next, label) => {
+							status = next;
+							statusLabel = label;
+						}
+					});
+					stage.setPaused(false);
+					void stage.boot();
 				}
+				stage?.setPaused(!entry.isIntersecting);
 			},
-			{ threshold: 0.1 },
+			{ rootMargin: '240px 0px', threshold: 0 }
 		);
-
-		const el = document.getElementById("data-loggers-section");
-		if (el) observer.observe(el);
-
-		let frame = 0;
-		const requestScrollUpdate = () => {
-			if (frame) return;
-			frame = requestAnimationFrame(() => {
-				frame = 0;
-				updateActiveFromScroll();
-			});
-		};
-
-		window.addEventListener("scroll", requestScrollUpdate, { passive: true });
-		window.addEventListener("resize", requestScrollUpdate, { passive: true });
-		requestScrollUpdate();
+		observer.observe(section);
 
 		return () => {
 			observer.disconnect();
-			window.removeEventListener("scroll", requestScrollUpdate);
-			window.removeEventListener("resize", requestScrollUpdate);
-			if (frame) cancelAnimationFrame(frame);
+			stage?.destroy();
+			stage = null;
 		};
 	});
-
-	$effect(() => {
-		if (!products.length) return;
-		if (!products.some((product) => product.id === activeId)) {
-			activeId = products[0].id;
-		}
-	});
-
-	$effect(() => {
-		innerHeight;
-		innerWidth;
-		products.length;
-		updateActiveFromScroll();
-	});
-
-	function scrollToProduct(index: number) {
-		const product = products[index];
-		if (!product) return;
-
-		// On mobile, just change the state instantly
-		if (innerWidth < 1024) {
-			activeId = product.id;
-			return;
-		}
-
-		// On desktop, scroll the window to the correct part of the sticky track
-		if (!sectionRef) return;
-		const rect = sectionRef.getBoundingClientRect();
-		const maxScroll = rect.height - innerHeight;
-
-		// Target the middle of the product's scroll segment
-		const targetProgress = (index + 0.5) / products.length;
-		const targetScrollY =
-			window.scrollY + rect.top + maxScroll * targetProgress;
-
-		window.scrollTo({ top: targetScrollY, behavior: "smooth" });
-	}
-
 </script>
 
-<svelte:window bind:innerHeight bind:innerWidth />
+<section
+	id="data-loggers-section"
+	class="logger-section"
+	class:is-visible={visible}
+	aria-label={$locale === 'EN' ? 'Beacon Logger product family' : 'Keluarga produk Beacon Logger'}
+>
+	<!-- ambient colour wash behind the stage -->
+	<div class="logger-blobs" aria-hidden="true">
+		<div class="logger-blob logger-blob-a"></div>
+		<div class="logger-blob logger-blob-b"></div>
+		<div class="logger-blob logger-blob-c"></div>
+	</div>
 
-{#if products.length > 0}
-<section id="data-loggers-section" class="relative w-full py-24 bg-[#F9FAFB]">
-	<!-- Background Mesh Gradient Simulation (Whole Section) -->
-	<div
-		class="absolute top-0 inset-x-0 h-[600px] pointer-events-none opacity-40 mix-blend-multiply"
-		style="background: radial-gradient(circle at 50% -20%, rgba(200,16,46,0.1) 0%, transparent 70%);"
-	></div>
+	<div class="logger-ghost" aria-hidden="true">
+		{#key activeIndex}
+			<span class="logger-ghost-word">{active.name}</span>
+		{/key}
+	</div>
 
-	<!-- Desktop Sticky Track / Mobile Normal Wrapper -->
-	<div
-		class="w-full relative"
-		style={innerWidth >= 1024 ? `height: ${products.length * 100}vh;` : ""}
-		bind:this={sectionRef}
-	>
-		<!-- Sticky Container on Desktop -->
-		<div
-			class="w-full lg:sticky lg:top-0 lg:h-screen lg:flex lg:flex-col lg:justify-center relative z-10"
-		>
+	<!-- WebGL canvas is mounted here by LoggerStage -->
+	<div bind:this={stageHost} class="logger-stage"></div>
+
+	<div class="logger-vignette" aria-hidden="true"></div>
+	<div class="logger-scrim" aria-hidden="true"></div>
+
+	<div class="logger-content">
+		<div class="logger-top">
+			<div class="logger-pill logger-rise" style="--rise-delay: 90ms;">
+				<span class="logger-pill-dot"></span>
+				<span class="logger-pill-text">
+					{$locale === 'EN' ? 'PRODUCT FAMILY — BEACON LOGGER' : 'KELUARGA PRODUK — BEACON LOGGER'}
+				</span>
+			</div>
+			<div class="logger-pill logger-pill-muted logger-rise" style="--rise-delay: 200ms;">
+				<span class="logger-pill-text">
+					{$locale === 'EN' ? 'ASSEMBLED IN INDONESIA' : 'DIRAKIT DI INDONESIA'}
+				</span>
+			</div>
+		</div>
+
+		<div class="logger-headline logger-rise" style="--rise-delay: 310ms;">
+			<h2>
+				Data Logger<br /><span class="logger-accent-word">Series.</span>
+			</h2>
+			<p>
+				{$locale === 'EN'
+					? 'From a high-end multisensor logger down to the most compact single-sensor unit — designed, assembled, and tested in Indonesia.'
+					: 'Dari logger high-end multisensor sampai unit paling ringkas untuk satu sensor — dirancang, dirakit, dan diuji di Indonesia.'}
+			</p>
+		</div>
+
+		<div class="logger-spacer"></div>
+
+		<div class="logger-panel-group">
 			<div
-				class="relative z-10 max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-12 w-full"
+				class="logger-card logger-rise"
+				style="--rise-delay: 420ms;"
+				id="logger-panel"
+				role="tabpanel"
+				aria-labelledby="logger-tab-{activeIndex}"
+				aria-live="polite"
 			>
-				<!-- HEADER SECTION (Inside sticky track) -->
-				<div
-					class="mb-8 lg:mb-10 flex flex-col items-center text-center lg:items-start lg:text-left"
-					style="
-						opacity: {visible ? 1 : 0};
-						transform: translateY({visible ? 0 : 30}px);
-						transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1);
-					"
-				>
-					<div
-						class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest mb-4 lg:mb-6"
-						style="background: white; color: #1A1A1A; border: 1px solid #E5E5E5; box-shadow: 0 4px 12px rgba(0,0,0,0.03);"
-					>
-						<span
-							class="w-1.5 h-1.5 rounded-full animate-pulse"
-							style="background: #C8102E;"
-						></span>
-						{$locale === "EN" ? "Hardware Ecosystem" : "Hardware Ecosystem"}
-					</div>
-					<h2
-						class="font-heading text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tighter text-zinc-950 leading-none"
-					>
-						{$locale === "EN" ? "Data Logger" : "Data Logger"} <span
-							class="text-transparent bg-clip-text"
-							style="background-image: linear-gradient(135deg, #1A1A1A 0%, #737373 100%);"
-							>Series.</span
-						>
-					</h2>
-					<p
-						class="mt-4 lg:mt-6 text-lg md:text-xl text-zinc-500 max-w-2xl leading-relaxed"
-					>
-						{$locale === "EN"
-							? "Designed from scratch for uncompromising stability. Built with industrial-grade materials and high precision."
-							: "Dirancang dari nol untuk stabilitas tanpa kompromi. Dibuat dari material kelas industri dengan presisi tinggi."}
-					</p>
+				<div class="logger-card-sheen" aria-hidden="true"></div>
+
+				<div class="logger-card-head">
+					<span class="logger-card-badge">{active.name}</span>
+					<span class="logger-card-rule"></span>
 				</div>
 
-				<!-- Massive Dark Container for Accordion & 3D Stage -->
-				<div
-					class="bg-[#050505] rounded-[3rem] p-6 sm:p-10 lg:p-12 shadow-[0_40px_80px_-20px_rgba(0,0,0,0.2)] relative overflow-hidden border border-zinc-800 lg:min-h-[65vh] flex flex-col justify-center"
-					style="
-						opacity: {visible ? 1 : 0};
-						transform: translateY({visible ? 0 : 40}px);
-						transition: opacity 1s cubic-bezier(0.16,1,0.3,1) 0.2s, transform 1s cubic-bezier(0.16,1,0.3,1) 0.2s;
-					"
-				>
-					<div
-						class="absolute inset-0 pointer-events-none opacity-80 data-logger-panel-bg"
-					></div>
-
-					<!-- Split Layout -->
-					<div
-						class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start relative z-10"
-					>
-						<!-- Left: Product Selection Accordion Menu (4 cols) -->
-						<div class="lg:col-span-4 flex flex-col gap-4">
-							{#each products as product, idx}
-								<div class="flex flex-col items-start">
-									<!-- The Pill Button -->
-									<button
-										type="button"
-										class="inline-flex items-center gap-3 px-5 py-3 rounded-full transition-all duration-300 backdrop-blur-md border outline-none cursor-pointer"
-										aria-label={$locale === "EN" ? `Show ${product.name}` : `Tampilkan ${product.name}`}
-										style="
-											background: {activeId === product.id
-											? 'rgba(255,255,255,0.1)'
-											: 'rgba(255,255,255,0.05)'};
-											border-color: {activeId === product.id
-											? 'rgba(255,255,255,0.2)'
-											: 'rgba(255,255,255,0.1)'};
-											box-shadow: {activeId === product.id
-											? '0 10px 20px -5px rgba(0,0,0,0.5)'
-											: 'none'};
-										"
-										onmouseover={(e) => {
-											if (activeId !== product.id) {
-												e.currentTarget.style.background =
-													"rgba(255,255,255,0.08)";
-											}
-										}}
-										onfocus={(e) => {
-											if (activeId !== product.id) {
-												e.currentTarget.style.background =
-													"rgba(255,255,255,0.08)";
-											}
-										}}
-										onmouseout={(e) => {
-											if (activeId !== product.id) {
-												e.currentTarget.style.background =
-													"rgba(255,255,255,0.05)";
-											}
-										}}
-										onblur={(e) => {
-											if (activeId !== product.id) {
-												e.currentTarget.style.background =
-													"rgba(255,255,255,0.05)";
-											}
-										}}
-										onclick={() => scrollToProduct(idx)}
-									>
-										{#if activeId === product.id}
-											<div
-												class="w-5 h-5 rounded-full bg-[#FF5F56] flex items-center justify-center shadow-[0_0_12px_rgba(255,95,86,0.6)] border border-white/20"
-											></div>
-										{:else}
-											<div
-												class="w-5 h-5 rounded-full border border-white/30 flex items-center justify-center text-white/60"
-											>
-												<Plus
-													size={14}
-													strokeWidth={2.5}
-												/>
-											</div>
-										{/if}
-										<span
-											class="text-sm font-semibold text-white tracking-wide"
-											>{product.name}</span
-										>
-									</button>
-
-									<!-- The Expanded Content (Liquid Glass) -->
-									{#if activeId === product.id}
-										<div
-											class="mt-4 ml-2 overflow-hidden w-full"
-										>
-											<div
-												class="p-6 rounded-3xl bg-zinc-900/85 border border-white/10 shadow-[0_20px_40px_rgba(0,0,0,0.35)] relative"
-											>
-												<!-- Inner Refraction -->
-												<div
-													class="absolute inset-0 rounded-3xl border border-white/5 pointer-events-none shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]"
-												></div>
-
-												<p
-													class="text-[15px] text-zinc-400 leading-relaxed font-medium relative z-10"
-												>
-													{#if product.tagline}
-														<strong
-															class="text-white font-semibold"
-															>{product.tagline}</strong
-														>
-														{" "}
-													{/if}
-													{dataLoggerDescription(product, $locale)}
-												</p>
-												<!-- Feature Badges -->
-												<div
-													class="flex flex-wrap gap-2 mt-5 relative z-10"
-												>
-													{#each product.features as feature}
-														<span
-															class="px-3 py-1.5 rounded-full text-[10px] font-mono font-bold tracking-wider uppercase bg-white/10 text-zinc-200 border border-white/10 shadow-sm"
-														>
-															{dataLoggerFeature(feature, $locale)}
-														</span>
-													{/each}
-												</div>
-											</div>
-
-											<!-- Mobile-only: Inline product image right after description -->
-											<div class="mt-6 lg:hidden">
-												<div
-													class="relative w-full aspect-square max-w-[320px] mx-auto rounded-[2rem] overflow-hidden flex items-center justify-center"
-													style="background: rgba(255,255,255,0.015); border: 1px solid rgba(255,255,255,0.05);"
-												>
-													{#if product.image}
-														{#if product.media_type === 'video'}
-															<video
-																src={product.image}
-																class="w-full h-full object-contain p-4"
-																autoplay
-																muted
-																loop
-																playsinline
-															></video>
-														{:else}
-															<img
-																src={product.image}
-																srcset={product.image_srcset ?? undefined}
-																sizes="320px"
-																alt="{product.name}"
-																class="w-full h-full object-contain p-4"
-																draggable="false"
-																loading="lazy"
-																decoding="async"
-															/>
-														{/if}
-													{:else if product.id === 'bl-2000'}
-														<!-- Compact BL-2000 mockup for mobile -->
-														<div class="relative w-[240px] h-[170px] rounded-[2rem] bg-[#111111] shadow-xl border-t border-x border-zinc-700/50 flex flex-col justify-end p-5 overflow-hidden">
-															<div class="absolute inset-0 opacity-40 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-zinc-500 via-[#111] to-[#050505] pointer-events-none"></div>
-															<div class="w-full h-16 bg-black rounded-xl border border-zinc-800 p-3 flex items-center gap-3 shadow-[inset_0_2px_10px_rgba(0,0,0,0.8)] relative overflow-hidden">
-																<div class="w-2.5 h-2.5 bg-[#C8102E] rounded-full animate-pulse shadow-[0_0_10px_#C8102E]"></div>
-																<div class="text-[11px] font-mono text-zinc-400 flex-1 leading-tight relative z-10">
-																	SYS_OK / 99.9%<br/>CH_01: ACTIVE
-																</div>
-															</div>
-															<div class="flex justify-between px-2 mt-3">
-																{#each Array(4) as _}
-																	<div class="w-7 h-7 rounded-full bg-black border border-zinc-800 shadow-[inset_0_2px_6px_rgba(0,0,0,0.9)]"></div>
-																{/each}
-															</div>
-														</div>
-													{:else if product.id === 'bl-1100'}
-														<div class="relative w-[220px] h-[260px] bg-black rounded-[2rem] flex items-center justify-center p-6 shadow-xl border border-zinc-800/50 overflow-hidden">
-															<div class="absolute inset-0 bg-gradient-to-t from-zinc-900/50 to-transparent pointer-events-none"></div>
-															<img
-																src="/images/bl-1100.webp"
-																alt="BL-1100"
-																class="w-full h-full object-contain relative z-10"
-																draggable="false"
-																loading="lazy"
-															/>
-														</div>
-													{:else if product.id === 'bl-110'}
-														<div class="relative w-[180px] h-[180px] rounded-full bg-zinc-100 shadow-xl border-[3px] border-white flex items-center justify-center">
-															<div class="absolute w-full h-full rounded-full border-[8px] border-zinc-300/50 pointer-events-none"></div>
-															<div class="w-[100px] h-[100px] rounded-full bg-white shadow-[inset_0_6px_12px_rgba(0,0,0,0.1)] flex items-center justify-center border border-zinc-200">
-																<div class="w-4 h-4 bg-[#1B7F3A] rounded-full animate-pulse shadow-[0_0_15px_#1B7F3A]"></div>
-															</div>
-														</div>
-													{:else}
-														<!-- BL-11 micro -->
-														<div class="relative w-[110px] h-[180px] rounded-[1.2rem] bg-[#111] shadow-xl border-t border-zinc-700 flex flex-col items-center pt-6">
-															<div class="w-16 h-16 rounded-xl bg-black border border-zinc-800 shadow-[inset_0_2px_10px_rgba(0,0,0,0.8)] flex items-center justify-center">
-																<Cpu size={32} class="text-zinc-600" strokeWidth={1} />
-															</div>
-															<div class="w-10 h-1.5 bg-[#27C93F] mt-6 rounded-full shadow-[0_0_10px_#27C93F] opacity-90"></div>
-															<div class="mt-auto mb-5 text-[9px] font-mono text-zinc-500 tracking-widest">NBIOT_LINK</div>
-														</div>
-													{/if}
-												</div>
-											</div>
-										</div>
-									{/if}
-								</div>
-							{/each}
+				<div class="logger-card-body">
+					{#each products as product, index (product.id)}
+						{@const badges = dataLoggerBadgeSet(product)}
+						<div class="logger-detail" class:is-active={index === activeIndex} aria-hidden={index !== activeIndex}>
+							<div class="logger-detail-title">{dataLoggerTagline(product, $locale)}</div>
+							<p class="logger-detail-desc">{dataLoggerDescription(product, $locale)}</p>
+							<div class="logger-detail-badges">
+								{#each badges.features as feature}
+									<span class="logger-badge">{dataLoggerFeature(feature, $locale)}</span>
+								{/each}
+								{#if badges.comms}
+									<span class="logger-badge logger-badge-comms">
+										{dataLoggerFeature(badges.comms, $locale)}
+									</span>
+								{/if}
+							</div>
 						</div>
-
-						<!-- Right: 3D Asset Stage (8 cols) — desktop only -->
-						<div
-							class="lg:col-span-8 relative hidden lg:flex h-full lg:min-h-[500px] w-full items-center justify-center"
-						>
-							{#each products as stageProduct, idx}
-								{@const isActiveStage = activeId === stageProduct.id}
-								{@const shouldFloatStage = !stageProduct.image && stageProduct.id !== "bl-1100"}
-								{@const isVideoStage = stageProduct.media_type === "video"}
-								<!-- 3D Asset Stage (no card chrome) -->
-								<div
-									class="absolute inset-0 w-full h-full overflow-hidden group flex flex-col items-center justify-center transition-all duration-700 ease-out {isActiveStage
-										? 'opacity-100 translate-y-0 scale-100'
-										: 'opacity-0 translate-y-8 scale-[0.98]'}"
-									style="
-										pointer-events: {isActiveStage ? 'auto' : 'none'};
-										contain: layout paint;
-									"
-								>
-									<!-- Large 3D Mockup Container with tilt -->
-									<div
-										class="w-full h-full flex flex-col items-center justify-center relative z-10"
-										use:tilt={shouldFloatStage && isActiveStage}
-									>
-										<!-- Floating infinite animation wrapper -->
-										<div
-											class="relative w-full max-w-[720px] aspect-square flex items-center justify-center {shouldFloatStage && isActiveStage
-												? 'animate-float'
-												: ''}"
-										>
-											{#if stageProduct.image}
-												<div
-													class="relative flex h-full w-full max-w-[820px] items-center justify-center overflow-visible p-2 lg:p-4"
-												>
-													{#if isVideoStage}
-														<video
-															src={stageProduct.image}
-															class="relative z-10 h-full max-h-[520px] w-full object-contain"
-															autoplay={isActiveStage}
-															muted
-															loop
-															playsinline
-															preload="metadata"
-															aria-label={`${stageProduct.name} Data Logger`}
-														></video>
-													{:else}
-														<img
-															src={stageProduct.image}
-															srcset={stageProduct.image_srcset ?? undefined}
-															sizes="(min-width: 1024px) 760px, 90vw"
-															alt={`${stageProduct.name} Data Logger`}
-															class="relative z-10 h-full w-full max-w-none object-contain {idx === 0
-												? 'max-h-[500px] scale-[0.92]'
-												: 'max-h-[460px] scale-[0.85]'}"
-															draggable="false"
-															loading="eager"
-															decoding="async"
-															fetchpriority={idx === 0 ? "high" : "low"}
-														/>
-													{/if}
-													<div
-														class="pointer-events-none absolute bottom-8 left-1/2 z-0 h-12 w-2/3 -translate-x-1/2 rounded-full bg-black/45 blur-xl"
-													></div>
-												</div>
-											{:else if stageProduct.id === "bl-2000"}
-												<!-- Pro Hardware Mockup (Large) -->
-												<div
-													class="relative w-[360px] h-[250px] rounded-[3rem] bg-[#111111] shadow-[0_40px_80px_rgba(0,0,0,0.8)] border-t border-x border-zinc-700/50 flex flex-col justify-end p-8 overflow-hidden"
-												>
-													<!-- Metallic Texture -->
-													<div
-														class="absolute inset-0 opacity-40 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-zinc-500 via-[#111] to-[#050505] pointer-events-none"
-													></div>
-													<div
-														class="absolute inset-0 shadow-[inset_0_2px_4px_rgba(255,255,255,0.1)] rounded-[3rem] pointer-events-none"
-													></div>
-
-													<!-- Antenna -->
-													<div
-														class="absolute -top-24 right-12 w-5 h-32 bg-zinc-800 rounded-t-full border border-zinc-600 shadow-xl"
-													></div>
-
-													<!-- Screen/Display -->
-													<div
-														class="w-full h-28 bg-black rounded-2xl mb-6 border border-zinc-800 p-5 flex items-center gap-5 shadow-[inset_0_4px_20px_rgba(0,0,0,0.8)] relative overflow-hidden"
-													>
-														<div
-															class="absolute inset-0 opacity-10"
-															style="background: repeating-linear-gradient(0deg, transparent, transparent 2px, #fff 2px, #fff 4px);"
-														></div>
-														<div
-															class="w-3 h-3 bg-[#C8102E] rounded-full animate-pulse shadow-[0_0_15px_#C8102E]"
-														></div>
-														<div
-															class="text-[13px] font-mono text-zinc-400 flex-1 leading-tight relative z-10"
-														>
-															SYS_OK / 99.9%<br
-															/>CH_01: ACTIVE<br
-															/>UPLINK: SAT_RDY
-														</div>
-														<svg
-															class="w-20 h-10 opacity-70 relative z-10"
-															viewBox="0 0 40 20"
-															fill="none"
-														>
-															<path
-																d="M0,10 L10,10 L15,2 L25,18 L30,10 L40,10"
-																stroke="#FF5F56"
-																stroke-width="2"
-																stroke-linejoin="round"
-															/>
-														</svg>
-													</div>
-													<!-- Ports -->
-													<div
-														class="flex justify-between px-4"
-													>
-														{#each Array(4) as _}
-															<div
-																class="w-10 h-10 rounded-full bg-black border border-zinc-800 shadow-[inset_0_2px_10px_rgba(0,0,0,0.9)]"
-															></div>
-														{/each}
-													</div>
-												</div>
-											{:else if stageProduct.id === "bl-1100"}
-												<!-- Single Image Viewer for BL-1100 -->
-												<div
-													class="relative w-[340px] h-[380px] bg-black rounded-[2.5rem] flex items-center justify-center p-8 shadow-[0_40px_80px_rgba(0,0,0,0.8)] border border-zinc-800/50 overflow-hidden"
-												>
-													<!-- Subtle gradient to give depth to the black background -->
-													<div
-														class="absolute inset-0 bg-gradient-to-t from-zinc-900/50 to-transparent pointer-events-none"
-													></div>
-													<img
-														src="/images/bl-1100.webp"
-														alt="BL-1100 Data Logger"
-														class="w-full h-full object-contain relative z-10"
-														draggable="false"
-														loading="eager"
-														decoding="async"
-													/>
-												</div>
-											{:else if stageProduct.id === "bl-110"}
-												<!-- Compact Hardware Mockup (Large) -->
-												<div
-													class="relative w-[280px] h-[280px] rounded-full bg-zinc-100 shadow-[0_40px_80px_rgba(0,0,0,0.3)] border-[3px] border-white flex items-center justify-center"
-												>
-													<div
-														class="absolute w-full h-full rounded-full border-[12px] border-zinc-300/50 pointer-events-none"
-													></div>
-													<div
-														class="w-[160px] h-[160px] rounded-full bg-white shadow-[inset_0_10px_20px_rgba(0,0,0,0.1)] flex items-center justify-center border border-zinc-200"
-													>
-														<div
-															class="w-5 h-5 bg-[#1B7F3A] rounded-full animate-pulse shadow-[0_0_25px_#1B7F3A]"
-														></div>
-													</div>
-												</div>
-											{:else}
-												<!-- Micro Hardware Mockup (Large) -->
-												<div
-													class="relative w-[160px] h-[260px] rounded-[1.5rem] bg-[#111] shadow-[0_40px_80px_rgba(0,0,0,0.6)] border-t border-zinc-700 flex flex-col items-center pt-10"
-												>
-													<div
-														class="w-24 h-24 rounded-2xl bg-black border border-zinc-800 shadow-[inset_0_4px_16px_rgba(0,0,0,0.8)] flex items-center justify-center"
-													>
-														<Cpu
-															size={44}
-															class="text-zinc-600"
-															strokeWidth={1}
-														/>
-													</div>
-													<div
-														class="w-16 h-2 bg-[#27C93F] mt-10 rounded-full shadow-[0_0_15px_#27C93F] opacity-90"
-													></div>
-													<div
-														class="mt-auto mb-8 text-[11px] font-mono text-zinc-500 tracking-widest"
-													>
-														NBIOT_LINK
-													</div>
-												</div>
-											{/if}
-										</div>
-									</div>
-								</div>
-							{/each}
-						</div>
-					</div>
+					{/each}
 				</div>
+			</div>
+
+			<div
+				class="logger-tabs logger-rise"
+				style="--rise-delay: 530ms;"
+				role="tablist"
+				aria-label={$locale === 'EN' ? 'Choose a logger' : 'Pilih logger'}
+			>
+				{#each products as product, index (product.id)}
+					<button
+						id="logger-tab-{index}"
+						type="button"
+						role="tab"
+						class="logger-tab"
+						class:is-active={index === activeIndex}
+						aria-selected={index === activeIndex}
+						aria-controls="logger-panel"
+						tabindex={index === activeIndex ? 0 : -1}
+						onclick={() => selectLogger(index)}
+						onkeydown={(event) => onTabKeydown(event, index)}
+					>
+						<span class="logger-tab-index">{String(index + 1).padStart(2, '0')}</span>
+						<span class="logger-tab-name">{displayName(product.name)}</span>
+						<span class="logger-tab-glow" aria-hidden="true"></span>
+						<span class="logger-tab-track" aria-hidden="true">
+							<span
+								class="logger-tab-progress"
+								style="width: {index === activeIndex ? progress * 100 : 0}%;"
+							></span>
+						</span>
+					</button>
+				{/each}
 			</div>
 		</div>
 	</div>
+
+	{#if status !== 'ready'}
+		<div class="logger-status" role="status">
+			{#if status === 'error'}
+				{$locale === 'EN' ? 'UNABLE TO LOAD 3D VIEW' : 'GAGAL MEMUAT TAMPILAN 3D'}
+			{:else}
+				{$locale === 'EN' ? 'LOADING' : 'MEMUAT'}{statusLabel ? ` ${statusLabel}` : ''}…
+			{/if}
+		</div>
+	{/if}
 </section>
-{/if}
 
 <style>
-	@keyframes float {
-		0% {
-			transform: translateY(0px);
-		}
-		50% {
-			transform: translateY(-15px);
-		}
-		100% {
-			transform: translateY(0px);
-		}
-	}
-	.animate-float {
-		animation: float 6s ease-in-out infinite;
+	.logger-section {
+		--logger-accent: #c8102e;
+		--logger-ink: #f4f3f0;
+		position: relative;
+		box-sizing: border-box;
+		width: 100%;
+		min-height: 860px;
+		color: var(--logger-ink);
+		background: #07080b;
+		overflow: hidden;
+		isolation: isolate;
 	}
 
-	.data-logger-panel-bg {
-		background:
-			radial-gradient(circle at 85% 10%, rgba(200, 16, 46, 0.12), transparent 38%),
-			radial-gradient(circle at 8% 92%, rgba(255, 255, 255, 0.06), transparent 34%);
+	@media (min-width: 1024px) {
+		.logger-section {
+			min-height: clamp(700px, 100vh, 980px);
+		}
+	}
+
+	/* ---- ambient background ---- */
+	.logger-blobs {
+		position: absolute;
+		inset: -8%;
+		pointer-events: none;
+		filter: blur(44px);
+		opacity: 0.85;
+	}
+
+	.logger-blob {
+		position: absolute;
+		border-radius: 50%;
+	}
+
+	.logger-blob-a {
+		left: 38%;
+		top: 6%;
+		width: 52%;
+		height: 62%;
+		background: radial-gradient(circle at 50% 50%, rgba(200, 16, 46, 0.34) 0%, rgba(200, 16, 46, 0) 68%);
+		animation: logger-blob-a 24s ease-in-out infinite;
+	}
+
+	.logger-blob-b {
+		left: -6%;
+		top: 34%;
+		width: 48%;
+		height: 58%;
+		background: radial-gradient(circle at 50% 50%, rgba(72, 110, 168, 0.24) 0%, rgba(72, 110, 168, 0) 68%);
+		animation: logger-blob-b 31s ease-in-out infinite;
+	}
+
+	.logger-blob-c {
+		left: 22%;
+		top: 52%;
+		width: 56%;
+		height: 52%;
+		background: radial-gradient(circle at 50% 50%, rgba(255, 214, 170, 0.14) 0%, rgba(255, 214, 170, 0) 70%);
+		animation: logger-blob-c 27s ease-in-out infinite;
+	}
+
+	@keyframes logger-blob-a {
+		0%, 100% { transform: translate3d(-4%, 0, 0) scale(1); }
+		50% { transform: translate3d(9%, -7%, 0) scale(1.14); }
+	}
+	@keyframes logger-blob-b {
+		0%, 100% { transform: translate3d(6%, 4%, 0) scale(1.08); }
+		50% { transform: translate3d(-8%, -5%, 0) scale(0.94); }
+	}
+	@keyframes logger-blob-c {
+		0%, 100% { transform: translate3d(0, 6%, 0) scale(0.96); }
+		50% { transform: translate3d(-6%, -4%, 0) scale(1.16); }
+	}
+
+	/* ---- oversized model name watermark ---- */
+	.logger-ghost {
+		position: absolute;
+		inset: 0;
+		pointer-events: none;
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+		padding-right: clamp(20px, 3vw, 56px);
+	}
+
+	.logger-ghost-word {
+		font-size: clamp(56px, 10vw, 168px);
+		font-weight: 800;
+		letter-spacing: -0.05em;
+		line-height: 1;
+		color: rgba(244, 243, 240, 0.045);
+		white-space: nowrap;
+		animation: logger-ghost-in 620ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+	}
+
+	@media (max-width: 1023px) {
+		/* narrow screens put the model in a mid-section band, so the watermark
+		   centres with it instead of hugging the right edge behind the headline */
+		.logger-ghost {
+			justify-content: center;
+			padding-right: 0;
+		}
+		.logger-ghost-word {
+			color: rgba(244, 243, 240, 0.03);
+		}
+	}
+
+	@keyframes logger-ghost-in {
+		from { opacity: 0; transform: translateY(-4%) scale(1.06); }
+		to { opacity: 1; transform: translateY(-4%) scale(1); }
+	}
+
+	/* ---- stage + overlays ---- */
+	.logger-stage {
+		position: absolute;
+		inset: 0;
+		cursor: grab;
+		touch-action: pan-y;
+	}
+
+	.logger-vignette {
+		position: absolute;
+		inset: 0;
+		pointer-events: none;
+		background: radial-gradient(115% 88% at 60% 46%, rgba(7, 8, 11, 0) 42%, rgba(5, 6, 9, 0.72) 100%);
+	}
+
+	/* keeps the copy legible over the model: horizontal on wide screens where the
+	   model sits to the right, vertical on narrow ones where it sits mid-band */
+	.logger-scrim {
+		position: absolute;
+		inset: 0;
+		pointer-events: none;
+		/* the clear window is a plateau, not a single stop, and it spans the band
+		   the model actually occupies on a phone (~44-60% of the section) — the
+		   old single 40% stop put the model on the ramp down into the 0.42 shelf */
+		background: linear-gradient(
+			180deg,
+			rgba(7, 8, 11, 0.94) 0%,
+			rgba(7, 8, 11, 0.7) 20%,
+			rgba(7, 8, 11, 0.08) 44%,
+			rgba(7, 8, 11, 0.1) 60%,
+			rgba(7, 8, 11, 0.55) 74%,
+			rgba(7, 8, 11, 0.93) 100%
+		);
+	}
+
+	@media (min-width: 1024px) {
+		.logger-scrim {
+			background: linear-gradient(
+				90deg,
+				rgba(7, 8, 11, 0.92) 0%,
+				rgba(7, 8, 11, 0.8) 30%,
+				rgba(7, 8, 11, 0.5) 52%,
+				rgba(7, 8, 11, 0.16) 68%,
+				rgba(7, 8, 11, 0) 80%
+			);
+		}
+	}
+
+	/* ---- content ---- */
+	.logger-content {
+		position: relative;
+		box-sizing: border-box;
+		min-height: inherit;
+		height: 100%;
+		/* top clears the fixed header (condensed pill sits ~78px tall, but stays
+		   generous in case it renders expanded); bottom keeps the spec card
+		   from sitting flush against the section edge */
+		padding: clamp(144px, 8vw, 168px) clamp(26px, 3.4vw, 54px) clamp(40px, 5vw, 72px);
+		display: flex;
+		flex-direction: column;
+		gap: clamp(24px, 5vh, 64px);
+		pointer-events: none;
+	}
+
+	.logger-top {
+		display: flex;
+		align-items: flex-start;
+		justify-content: flex-start;
+		gap: 12px;
+		flex-wrap: wrap;
+	}
+
+	@media (min-width: 640px) {
+		.logger-top {
+			justify-content: space-between;
+			gap: 20px;
+		}
+	}
+
+	.logger-pill {
+		display: flex;
+		align-items: center;
+		gap: 11px;
+		padding: 9px 15px 9px 12px;
+		border-radius: 999px;
+		border: 1px solid rgba(255, 255, 255, 0.14);
+		background: linear-gradient(135deg, rgba(255, 255, 255, 0.11), rgba(255, 255, 255, 0.035));
+		backdrop-filter: blur(18px) saturate(1.6);
+		-webkit-backdrop-filter: blur(18px) saturate(1.6);
+		box-shadow:
+			0 12px 34px -18px rgba(0, 0, 0, 0.9),
+			inset 0 1px 0 rgba(255, 255, 255, 0.24);
+	}
+
+	.logger-pill-muted {
+		padding: 9px 15px;
+		border-color: rgba(255, 255, 255, 0.1);
+		background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+		box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18);
+	}
+
+	.logger-pill-dot {
+		flex: none;
+		width: 6px;
+		height: 6px;
+		border-radius: 999px;
+		background: var(--logger-accent);
+		box-shadow: 0 0 14px var(--logger-accent);
+		animation: logger-breathe 3.4s ease-in-out infinite;
+	}
+
+	@keyframes logger-breathe {
+		0%, 100% { opacity: 0.55; }
+		50% { opacity: 1; }
+	}
+
+	.logger-pill-text {
+		font-family: var(--font-mono, ui-monospace, 'SF Mono', Menlo, monospace);
+		font-size: 10px;
+		font-weight: 600;
+		line-height: 1;
+		letter-spacing: 0.2em;
+		color: #d6d9de;
+	}
+
+	.logger-pill-muted .logger-pill-text {
+		letter-spacing: 0.16em;
+		color: #9ba0a8;
+	}
+
+	.logger-headline {
+		max-width: 660px;
+	}
+
+	.logger-headline h2 {
+		margin: 0;
+		font-size: clamp(34px, 4.4vw, 64px);
+		font-weight: 700;
+		letter-spacing: -0.035em;
+		line-height: 1.02;
+		text-wrap: balance;
+	}
+
+	.logger-accent-word {
+		color: var(--logger-accent);
+	}
+
+	.logger-headline p {
+		margin: 16px 0 0;
+		max-width: 470px;
+		font-size: 14.5px;
+		line-height: 1.65;
+		color: #a4a9b1;
+		text-wrap: pretty;
+	}
+
+	.logger-spacer {
+		flex: 1 1 auto;
+		min-height: clamp(120px, 22vh, 200px);
+	}
+
+	@media (min-width: 1024px) {
+		.logger-spacer {
+			min-height: clamp(8px, 2vh, 56px);
+		}
+	}
+
+	.logger-panel-group {
+		display: flex;
+		flex-direction: column-reverse;
+		align-items: flex-start;
+		gap: 16px;
+	}
+
+	/* ---- spec card ---- */
+	.logger-card {
+		pointer-events: auto;
+		position: relative;
+		width: 100%;
+		max-width: 520px;
+		box-sizing: border-box;
+		padding: 22px 26px 24px;
+		border-radius: 22px;
+		border: 1px solid rgba(255, 255, 255, 0.13);
+		background: linear-gradient(
+			150deg,
+			rgba(255, 255, 255, 0.1) 0%,
+			rgba(255, 255, 255, 0.045) 42%,
+			rgba(255, 255, 255, 0.022) 100%
+		);
+		backdrop-filter: blur(30px) saturate(1.7);
+		-webkit-backdrop-filter: blur(30px) saturate(1.7);
+		box-shadow:
+			0 34px 80px -28px rgba(0, 0, 0, 0.92),
+			inset 0 1px 0 rgba(255, 255, 255, 0.26),
+			inset 0 -1px 0 rgba(255, 255, 255, 0.06);
+		overflow: hidden;
+	}
+
+	.logger-card-sheen {
+		position: absolute;
+		left: -14%;
+		top: -60%;
+		width: 38%;
+		height: 170%;
+		pointer-events: none;
+		background: linear-gradient(
+			90deg,
+			rgba(255, 255, 255, 0) 0%,
+			rgba(255, 255, 255, 0.075) 50%,
+			rgba(255, 255, 255, 0) 100%
+		);
+		filter: blur(8px);
+		animation: logger-sheen 9s ease-in-out infinite;
+	}
+
+	@keyframes logger-sheen {
+		0% { transform: translateX(-130%) skewX(-12deg); }
+		55%, 100% { transform: translateX(240%) skewX(-12deg); }
+	}
+
+	.logger-card-head {
+		position: relative;
+		display: flex;
+		align-items: center;
+		gap: 10px;
+	}
+
+	.logger-card-badge {
+		font-family: var(--font-mono, ui-monospace, 'SF Mono', Menlo, monospace);
+		font-size: 11px;
+		font-weight: 800;
+		line-height: 1;
+		letter-spacing: 0.08em;
+		color: var(--logger-accent);
+	}
+
+	.logger-card-rule {
+		flex: 1 1 auto;
+		height: 1px;
+		background: linear-gradient(90deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0));
+	}
+
+	.logger-card-body {
+		position: relative;
+		margin-top: 14px;
+		min-height: 196px;
+	}
+
+	@media (min-width: 640px) {
+		.logger-card-body {
+			min-height: 168px;
+		}
+	}
+
+	.logger-detail {
+		position: absolute;
+		left: 0;
+		top: 0;
+		right: 0;
+		opacity: 0;
+		transform: translateY(14px);
+		filter: blur(7px);
+		pointer-events: none;
+		transition:
+			opacity 420ms ease,
+			transform 520ms cubic-bezier(0.2, 0.8, 0.2, 1),
+			filter 420ms ease;
+	}
+
+	.logger-detail.is-active {
+		opacity: 1;
+		transform: translateY(0);
+		filter: blur(0);
+		pointer-events: auto;
+	}
+
+	.logger-detail-title {
+		font-size: 24px;
+		font-weight: 700;
+		letter-spacing: -0.022em;
+		line-height: 1.14;
+	}
+
+	.logger-detail-desc {
+		margin: 11px 0 0;
+		font-size: 13.5px;
+		line-height: 1.62;
+		color: #a4a9b1;
+		text-wrap: pretty;
+	}
+
+	.logger-detail-badges {
+		margin-top: 16px;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px;
+	}
+
+	.logger-badge {
+		padding: 6px 11px;
+		border-radius: 999px;
+		border: 1px solid rgba(255, 255, 255, 0.14);
+		background: rgba(255, 255, 255, 0.05);
+		font-family: var(--font-mono, ui-monospace, 'SF Mono', Menlo, monospace);
+		font-size: 9.5px;
+		font-weight: 600;
+		line-height: 1;
+		letter-spacing: 0.12em;
+		color: #d0d3d9;
+	}
+
+	.logger-badge-comms {
+		border-color: rgba(227, 52, 63, 0.36);
+		background: rgba(200, 16, 46, 0.14);
+		color: #f08a90;
+	}
+
+	/* ---- tabs ---- */
+	.logger-tabs {
+		pointer-events: auto;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		gap: 7px;
+	}
+
+	.logger-tab {
+		appearance: none;
+		cursor: pointer;
+		position: relative;
+		overflow: hidden;
+		text-align: left;
+		display: flex;
+		align-items: center;
+		gap: 9px;
+		padding: 9px 14px 10px;
+		border-radius: 11px;
+		border: 1px solid rgba(255, 255, 255, 0.11);
+		background: linear-gradient(140deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.022));
+		backdrop-filter: blur(22px) saturate(1.5);
+		-webkit-backdrop-filter: blur(22px) saturate(1.5);
+		box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18);
+		color: var(--logger-ink);
+		transition:
+			transform 380ms cubic-bezier(0.2, 0.8, 0.2, 1),
+			background 320ms ease,
+			border-color 320ms ease,
+			box-shadow 320ms ease;
+	}
+
+	.logger-tab:hover:not(.is-active),
+	.logger-tab:focus-visible:not(.is-active) {
+		transform: translateY(-3px);
+		border-color: rgba(255, 255, 255, 0.24);
+		background: linear-gradient(140deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.04));
+	}
+
+	.logger-tab.is-active {
+		transform: translateY(-4px);
+		border-color: rgba(255, 255, 255, 0.26);
+		background: linear-gradient(140deg, rgba(200, 16, 46, 0.2), rgba(255, 255, 255, 0.05));
+		box-shadow:
+			0 22px 54px -26px rgba(0, 0, 0, 0.95),
+			0 0 0 1px rgba(200, 16, 46, 0.18),
+			inset 0 1px 0 rgba(255, 255, 255, 0.3);
+	}
+
+	.logger-tab-index {
+		flex: none;
+		font-family: var(--font-mono, ui-monospace, 'SF Mono', Menlo, monospace);
+		font-size: 9.5px;
+		font-weight: 600;
+		line-height: 1;
+		letter-spacing: 0.1em;
+		color: #71767e;
+	}
+
+	.logger-tab-name {
+		font-size: 15px;
+		font-weight: 800;
+		letter-spacing: -0.015em;
+		line-height: 1;
+	}
+
+	.logger-tab-glow {
+		position: absolute;
+		left: 0;
+		top: 0;
+		bottom: 0;
+		width: 2px;
+		border-radius: 2px;
+		background: var(--logger-accent);
+		box-shadow: 0 0 16px var(--logger-accent);
+		opacity: 0;
+		transition: opacity 320ms ease;
+	}
+
+	.logger-tab.is-active .logger-tab-glow {
+		opacity: 1;
+	}
+
+	.logger-tab-track {
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		height: 2px;
+		background: rgba(255, 255, 255, 0.07);
+	}
+
+	.logger-tab-progress {
+		display: block;
+		height: 100%;
+		background: linear-gradient(90deg, rgba(200, 16, 46, 0.2), var(--logger-accent));
+		transition: width 140ms linear;
+	}
+
+	/* ---- status + reveal ---- */
+	.logger-status {
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 50%;
+		text-align: center;
+		pointer-events: none;
+		font-family: var(--font-mono, ui-monospace, 'SF Mono', Menlo, monospace);
+		font-size: 10px;
+		font-weight: 600;
+		line-height: 1;
+		letter-spacing: 0.2em;
+		color: #71767e;
+	}
+
+	.logger-rise {
+		opacity: 0;
+		transform: translateY(22px);
+		filter: blur(10px);
+		transition:
+			opacity 760ms cubic-bezier(0.2, 0.8, 0.2, 1) var(--rise-delay, 0ms),
+			transform 900ms cubic-bezier(0.2, 0.8, 0.2, 1) var(--rise-delay, 0ms),
+			filter 760ms ease var(--rise-delay, 0ms);
+	}
+
+	.logger-section.is-visible .logger-rise {
+		opacity: 1;
+		transform: translateY(0);
+		filter: blur(0);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.logger-blob,
+		.logger-pill-dot,
+		.logger-card-sheen,
+		.logger-ghost-word {
+			animation: none;
+		}
+
+		.logger-rise,
+		.logger-detail,
+		.logger-tab,
+		.logger-tab-progress {
+			transition: none;
+		}
+
+		.logger-rise {
+			opacity: 1;
+			transform: none;
+			filter: none;
+		}
 	}
 </style>

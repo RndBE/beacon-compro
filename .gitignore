@@ -21,3 +21,6 @@ Thumbs.db
 # Vite
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+# 3D working files (SketchUp exports, source photos) — app uses src/lib/loggers/
+data_logger_series

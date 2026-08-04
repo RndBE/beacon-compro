@@ -18,7 +18,7 @@
 		{ id: 'mengapa-beacon', surface: 'light', short: '02', label: { ID: 'Keunggulan', EN: 'Why Beacon' } },
 		{ id: 'pilar-solusi', surface: 'dark', short: '03', label: { ID: 'Pilar Solusi', EN: 'Solution Pillars' } },
 		{ id: 'stesy-spotlight', surface: 'light', short: '04', label: { ID: 'STESY', EN: 'STESY' } },
-		{ id: 'data-loggers-section', surface: 'light', short: '05', label: { ID: 'Data Logger', EN: 'Data Loggers' } },
+		{ id: 'data-loggers-section', surface: 'dark', short: '05', label: { ID: 'Data Logger', EN: 'Data Loggers' } },
 		{ id: 'bukti-lapangan', surface: 'light', short: '06', label: { ID: 'Proyek', EN: 'Projects' } },
 		{ id: 'logo-klien', surface: 'light', short: '07', label: { ID: 'Klien', EN: 'Clients' } },
 		{ id: 'suara-mitra', surface: 'light', short: '08', label: { ID: 'Testimoni', EN: 'Testimonials' } },
