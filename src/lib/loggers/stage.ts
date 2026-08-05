@@ -155,18 +155,18 @@ export const LOGGER_MODELS: ModelMeta[] = [
 // ---- cinematic camera spline -------------------------------------------
 const WIND = 2 * TAU;
 const PATH = [
-	{ th: 0.0, ph: 1.28, d: 1.12, ty: 0.012, fov: 31, roll: 0 },
-	{ th: 1.02, ph: 1.18, d: 1.08, ty: 0.015, fov: 31, roll: 0.005 },
-	{ th: 2.1, ph: 1.0, d: 1.1, ty: 0.02, fov: 32, roll: 0.008 },
-	{ th: 3.16, ph: 0.8, d: 1.05, ty: 0.025, fov: 35, roll: 0.005 },
-	{ th: 4.2, ph: 0.56, d: 1.1, ty: 0.028, fov: 38, roll: 0 },
-	{ th: 5.24, ph: 0.34, d: 1.12, ty: 0.024, fov: 37, roll: -0.005 },
-	{ th: 6.3, ph: 0.22, d: 1.12, ty: 0.016, fov: 34, roll: -0.008 },
-	{ th: 7.35, ph: 0.34, d: 1.1, ty: 0.014, fov: 31, roll: -0.006 },
-	{ th: 8.4, ph: 0.7, d: 1.14, ty: 0.026, fov: 28, roll: -0.002 },
-	{ th: 9.44, ph: 1.1, d: 1.18, ty: 0.032, fov: 27, roll: 0.002 },
-	{ th: 10.48, ph: 1.32, d: 1.12, ty: 0.03, fov: 28, roll: 0.006 },
-	{ th: 11.52, ph: 1.16, d: 1.1, ty: 0.018, fov: 30, roll: 0.003 }
+	{ th: 0.0, ph: 1.28, d: 1.12, ty: 0.042, fov: 31, roll: 0 },
+	{ th: 1.02, ph: 1.18, d: 1.08, ty: 0.045, fov: 31, roll: 0.005 },
+	{ th: 2.1, ph: 1.0, d: 1.1, ty: 0.05, fov: 32, roll: 0.008 },
+	{ th: 3.16, ph: 0.8, d: 1.05, ty: 0.055, fov: 35, roll: 0.005 },
+	{ th: 4.2, ph: 0.56, d: 1.1, ty: 0.058, fov: 38, roll: 0 },
+	{ th: 5.24, ph: 0.34, d: 1.12, ty: 0.054, fov: 37, roll: -0.005 },
+	{ th: 6.3, ph: 0.22, d: 1.12, ty: 0.046, fov: 34, roll: -0.008 },
+	{ th: 7.35, ph: 0.34, d: 1.1, ty: 0.044, fov: 31, roll: -0.006 },
+	{ th: 8.4, ph: 0.7, d: 1.14, ty: 0.056, fov: 28, roll: -0.002 },
+	{ th: 9.44, ph: 1.1, d: 1.18, ty: 0.062, fov: 27, roll: 0.002 },
+	{ th: 10.48, ph: 1.32, d: 1.12, ty: 0.06, fov: 28, roll: 0.006 },
+	{ th: 11.52, ph: 1.16, d: 1.1, ty: 0.048, fov: 30, roll: 0.003 }
 ];
 const NK = PATH.length;
 const CAM_KEYS = ['th', 'ph', 'd', 'ty', 'fov', 'roll'] as const;
