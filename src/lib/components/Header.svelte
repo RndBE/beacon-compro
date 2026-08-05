@@ -58,7 +58,6 @@
 	
 	let searchOpen = $state(false);
 	let searchQuery = $state('');
-	let currentLang = $derived($locale);
 	let {
 		solutions = null,
 		latestArticle = null
@@ -469,6 +468,11 @@
 				{tr['topbar.tagline'][$locale]}
 			</span>
 			<div class="flex items-center gap-5 text-[11px] font-medium text-zinc-300 ml-auto sm:ml-0">
+				<div class="utility-lang" role="group" aria-label={$locale === 'EN' ? 'Choose language' : 'Pilih bahasa'}>
+					<button type="button" onclick={() => $locale = 'ID'} class:active={$locale === 'ID'} aria-pressed={$locale === 'ID'} aria-label={$locale === 'EN' ? 'Use Indonesian language' : 'Gunakan bahasa Indonesia'}>ID</button>
+					<span aria-hidden="true">/</span>
+					<button type="button" onclick={() => $locale = 'EN'} class:active={$locale === 'EN'} aria-pressed={$locale === 'EN'} aria-label="Use English language">EN</button>
+				</div>
 				<a href="tel:02744986899" class="flex items-center gap-1.5 hover:text-white transition-colors">
 					<Phone size={12} class="text-[#C8102E]" />
 					<span class="hidden md:inline tabular-nums">(0274) 4986899</span>
@@ -633,22 +637,6 @@
 			</nav>
 
 			<div class="header-actions">
-				<a
-					href="https://katalog.inaproc.id/arta-teknologi-comunindo"
-					target="_blank"
-					rel="noopener"
-					class="inaproc-badge"
-					aria-label="INAPROC Katalog Elektronik"
-				>
-					<img src={logoInaproc} alt="INAPROC Katalog Elektronik" class="inaproc-logo" />
-				</a>
-
-				<div class="language-switcher hidden lg:flex" role="group" aria-label={$locale === 'EN' ? 'Choose language' : 'Pilih bahasa'}>
-					<div class="language-indicator" style="transform: translateX({currentLang === 'EN' ? '26px' : '0'});"></div>
-					<button type="button" onclick={() => $locale = 'ID'} class:active={$locale === 'ID'} aria-pressed={$locale === 'ID'} aria-label={$locale === 'EN' ? 'Use Indonesian language' : 'Gunakan bahasa Indonesia'}>ID</button>
-					<button type="button" onclick={() => $locale = 'EN'} class:active={$locale === 'EN'} aria-pressed={$locale === 'EN'} aria-label="Use English language">EN</button>
-				</div>
-
 				<button type="button" class="search-trigger hidden lg:flex" aria-label={$locale === 'EN' ? 'Open search' : 'Buka pencarian'} onclick={openSearch}>
 					<Search size={16} />
 					<span class="search-label">{tr['nav.search'][$locale]}</span>
@@ -671,6 +659,16 @@
 				>
 					{#if mobileMenuOpen}<X size={19} />{:else}<Menu size={19} />{/if}
 				</button>
+
+				<a
+					href="https://katalog.inaproc.id/arta-teknologi-comunindo"
+					target="_blank"
+					rel="noopener"
+					class="inaproc-badge"
+					aria-label="INAPROC Katalog Elektronik"
+				>
+					<img src={logoInaproc} alt="INAPROC Katalog Elektronik" class="inaproc-logo" />
+				</a>
 			</div>
 		</div>
 	</header>
@@ -914,14 +912,14 @@
 	.mega-card { display: block; padding: .75rem; border-radius: 10px; transition: background .18s ease; }
 	.mega-card:hover { background: #fbe9ec; }
 	.header-actions { justify-self: end; display: flex; align-items: center; gap: .55rem; }
-	.inaproc-badge { display: flex; align-items: center; opacity: .9; transition: opacity .18s ease; }
+	.inaproc-badge { display: flex; align-items: center; margin-left: .35rem; padding-left: .9rem; border-left: 1px solid rgba(26,26,26,.12); opacity: .9; transition: opacity .18s ease; }
 	.inaproc-badge:hover { opacity: 1; }
 	.inaproc-logo { height: 36px; width: auto; transition: height .42s cubic-bezier(.16,1,.3,1); }
 	.site-chrome.is-condensed .inaproc-logo { height: 28px; }
-	.language-switcher { position: relative; align-items: center; padding: 3px; border: 1px solid #e5e5e5; border-radius: 10px; background: #fafafa; }
-	.language-switcher button { position: relative; z-index: 1; width: 26px; height: 22px; color: #9a9a9a; font: 700 .625rem var(--font-mono); transition: color .18s ease; }
-	.language-switcher button.active { color: #c8102e; }
-	.language-indicator { position: absolute; inset: 3px auto 3px 3px; width: 26px; border: 1px solid #e5e5e5; border-radius: 7px; background: #fff; box-shadow: 0 2px 5px rgba(26,26,26,.08); transition: transform .3s cubic-bezier(.16,1,.3,1); }
+	.utility-lang { display: flex; align-items: center; gap: .3rem; color: #71717a; font: 700 .65rem var(--font-mono); letter-spacing: .05em; }
+	.utility-lang button { color: #71717a; transition: color .18s ease; }
+	.utility-lang button:hover { color: #e5e5e5; }
+	.utility-lang button.active { color: #fff; }
 	.search-trigger { align-items: center; gap: .45rem; min-height: 36px; padding: .45rem .6rem; color: #5c5c5c; border: 1px solid #e5e5e5; border-radius: 10px; background: #fafafa; transition: color .18s ease, background .18s ease; }
 	.search-trigger:hover { color: #1a1a1a; background: #fff; }
 	.search-label { font-size: .75rem; font-weight: 600; }
