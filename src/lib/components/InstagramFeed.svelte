@@ -104,7 +104,7 @@
 	<div class="lg:col-span-8">
 		{#if loading}
 			<div class="grid grid-cols-2 sm:grid-cols-4 auto-rows-[8.5rem] sm:auto-rows-[9.5rem] gap-3">
-				{#each Array(4) as _, i}
+				{#each Array(5) as _, i}
 					<div
 						class={`relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] ${i === 0 ? 'col-span-2 row-span-2' : ''}`}
 						style={`animation-delay: ${i * 90}ms;`}
@@ -173,7 +173,7 @@
 			</div>
 		{:else}
 			<div class="grid grid-cols-2 sm:grid-cols-4 auto-rows-[8.5rem] sm:auto-rows-[9.5rem] gap-3">
-				{#each posts.slice(0, 4) as post, i (post.id)}
+				{#each posts.slice(0, 5) as post, i (post.id)}
 					<a
 						href={post.permalink}
 						target="_blank"
