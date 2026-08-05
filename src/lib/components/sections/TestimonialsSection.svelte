@@ -53,7 +53,7 @@
 	];
 
 	const displayTestimonials = $derived(
-		testimonials && testimonials.length > 0
+		(testimonials && testimonials.length > 0
 			? testimonials.map((item) => ({
 					name: item.name,
 					title: testimonialTitle(item, $locale),
@@ -66,7 +66,10 @@
 					...item,
 					title: testimonialTitle(item, $locale),
 					quote: testimonialQuote(item, $locale),
-				})),
+				}))
+		)
+			.toSorted((a, b) => b.quote.length - a.quote.length)
+			.slice(0, 4),
 	);
 
 	onMount(() => {
