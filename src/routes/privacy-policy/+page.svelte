@@ -9,11 +9,15 @@
 			badge: "Legal",
 			title: "Kebijakan Privasi",
 			desc: "Kebijakan ini menjelaskan bagaimana PT Arta Teknologi Comunindo mengelola data yang diterima melalui situs dan kanal komunikasi Beacon Engineering.",
-			updated: "Terakhir diperbarui: 6 Mei 2026",
+			updated: "Terakhir diperbarui: 5 Agustus 2026",
 			sections: [
 				{
 					title: "Data yang Kami Kumpulkan",
 					body: "Kami dapat menerima nama, alamat email, nomor telepon, instansi, kebutuhan proyek, dan isi pesan yang dikirim melalui formulir kontak, WhatsApp, email, atau kanal komunikasi resmi Beacon Engineering.",
+				},
+				{
+					title: "Cookie dan Analitik",
+					body: "Dengan persetujuan Anda melalui banner cookie, kami menggunakan Google Analytics (Google LLC) untuk memahami cara situs ini digunakan — halaman yang dikunjungi, perangkat, dan perkiraan lokasi dari alamat IP. Data ini diproses oleh Google dan dapat ditransfer ke server di luar Indonesia. Anda dapat menolak cookie analitik ini kapan saja; situs tetap berfungsi penuh tanpanya.",
 				},
 				{
 					title: "Cara Data Digunakan",
@@ -47,11 +51,15 @@
 			badge: "Legal",
 			title: "Privacy Policy",
 			desc: "This policy explains how PT Arta Teknologi Comunindo manages data received through the Beacon Engineering website and official communication channels.",
-			updated: "Last updated: May 6, 2026",
+			updated: "Last updated: August 5, 2026",
 			sections: [
 				{
 					title: "Data We Collect",
 					body: "We may receive names, email addresses, phone numbers, institutions, project requirements, and message contents submitted through contact forms, WhatsApp, email, or Beacon Engineering's official communication channels.",
+				},
+				{
+					title: "Cookies and Analytics",
+					body: "With your consent via the cookie banner, we use Google Analytics (Google LLC) to understand how this site is used — pages visited, device, and an approximate location derived from your IP address. This data is processed by Google and may be transferred to servers outside Indonesia. You may decline these analytics cookies at any time; the site remains fully functional without them.",
 				},
 				{
 					title: "How Data Is Used",

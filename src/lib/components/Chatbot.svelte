@@ -15,6 +15,7 @@
 	import { PUBLIC_API_BASE } from "$env/static/public";
 	import { locale } from "$lib/i18n";
 	import { chatOpen } from "$lib/stores/chat";
+	import { cookieBannerVisible } from "$lib/stores/consent";
 
 	let message = $state("");
 	let isLoading = $state(false);
@@ -401,7 +402,7 @@
 
 <!-- FAB -->
 <div
-	class="fixed bottom-6 right-6 z-[999] flex max-w-[calc(100vw-3rem)] items-center gap-3"
+	class="fixed {$cookieBannerVisible ? 'bottom-[150px]' : 'bottom-6'} right-6 z-[999] flex max-w-[calc(100vw-3rem)] items-center gap-3 transition-[bottom] duration-300 sm:bottom-6"
 >
 	{#if !$chatOpen}
 		<button
@@ -468,7 +469,7 @@
 
 <!-- Chatbot Window -->
 <div
-	class="fixed bottom-24 right-6 z-[998] w-[380px] max-w-[calc(100vw-3rem)] rounded-[2rem] overflow-hidden origin-bottom-right transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] bg-zinc-950"
+	class="fixed {$cookieBannerVisible ? 'bottom-[210px]' : 'bottom-24'} right-6 z-[998] w-[380px] max-w-[calc(100vw-3rem)] rounded-[2rem] overflow-hidden origin-bottom-right transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] bg-zinc-950 sm:bottom-24"
 	style="
 		opacity: {$chatOpen ? 1 : 0};
 		transform: scale({$chatOpen ? 1 : 0.95}) translateY({$chatOpen ? 0 : 20}px);

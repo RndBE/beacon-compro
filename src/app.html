@@ -15,15 +15,8 @@
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-		<!-- Google tag (gtag.js) -->
-		<script async src="https://www.googletagmanager.com/gtag/js?id=G-QVY6EE8QQQ"></script>
-		<script>
-			window.dataLayer = window.dataLayer || [];
-			function gtag(){dataLayer.push(arguments);}
-			gtag('js', new Date());
-
-			gtag('config', 'G-QVY6EE8QQQ');
-		</script>
+		<!-- Google Analytics loads only after the visitor accepts the cookie banner —
+		     see src/lib/analytics.ts + src/lib/components/CookieConsent.svelte -->
 
 		%sveltekit.head%
 	</head>

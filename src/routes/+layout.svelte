@@ -4,6 +4,7 @@
 	import Header from '$lib/components/Header.svelte';
 	import Footer from '$lib/components/Footer.svelte';
 	import Chatbot from '$lib/components/Chatbot.svelte';
+	import CookieConsent from '$lib/components/CookieConsent.svelte';
 	import { locale, translations as tr } from '$lib/i18n';
 
 	let { children, data } = $props();
@@ -28,5 +29,6 @@
 		</main>
 		<Footer solutions={data.solutions} />
 		<Chatbot />
+		<CookieConsent />
 	</div>
 {/if}
