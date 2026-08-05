@@ -4,6 +4,7 @@
 	import { goto } from '$app/navigation';
 	import { PUBLIC_API_BASE } from '$env/static/public';
 	import logoBeacon from '$lib/assets/logo_be.png';
+	import logoInaproc from '$lib/assets/logo_inaproc.png';
 	import { locale, translations as tr } from '$lib/i18n';
 	import { openChat } from '$lib/stores/chat';
 	import {
@@ -632,6 +633,16 @@
 			</nav>
 
 			<div class="header-actions">
+				<a
+					href="https://katalog.inaproc.id/arta-teknologi-comunindo"
+					target="_blank"
+					rel="noopener"
+					class="inaproc-badge"
+					aria-label="INAPROC Katalog Elektronik"
+				>
+					<img src={logoInaproc} alt="INAPROC Katalog Elektronik" class="inaproc-logo" />
+				</a>
+
 				<div class="language-switcher hidden lg:flex" role="group" aria-label={$locale === 'EN' ? 'Choose language' : 'Pilih bahasa'}>
 					<div class="language-indicator" style="transform: translateX({currentLang === 'EN' ? '26px' : '0'});"></div>
 					<button type="button" onclick={() => $locale = 'ID'} class:active={$locale === 'ID'} aria-pressed={$locale === 'ID'} aria-label={$locale === 'EN' ? 'Use Indonesian language' : 'Gunakan bahasa Indonesia'}>ID</button>
@@ -878,13 +889,13 @@
 {/if}
 
 <style>
-	.header-reserve { height: 116px; }
+	.header-reserve { height: 128px; }
 	.site-chrome { position: fixed; inset: 0 0 auto; z-index: 1030; pointer-events: none; }
 	.site-chrome :global(a), .site-chrome :global(button), .site-chrome .masthead, .site-chrome .utility-bar { pointer-events: auto; }
-	.chrome-container { width: 100%; max-width: 1280px; margin-inline: auto; padding-inline: 2rem; }
+	.chrome-container { width: 100%; max-width: 1280px; margin-inline: auto; padding-left: 2rem; padding-right: 1.25rem; }
 	.utility-bar { height: 36px; overflow: hidden; background: linear-gradient(90deg, #1a1a1a 0%, #2d0a10 100%); border-bottom: 1px solid rgba(255,255,255,.05); transition: height .42s cubic-bezier(.16,1,.3,1), opacity .24s ease, transform .42s cubic-bezier(.16,1,.3,1); }
 	.utility-inner { height: 36px; display: flex; align-items: center; justify-content: space-between; }
-	.masthead { width: 100%; height: 80px; margin: 0 auto; background: rgba(255,255,255,.98); border: 1px solid transparent; border-bottom-color: #e5e5e5; transition: width .42s cubic-bezier(.16,1,.3,1), height .42s cubic-bezier(.16,1,.3,1), margin .42s cubic-bezier(.16,1,.3,1), border-radius .42s cubic-bezier(.16,1,.3,1), background .26s ease, box-shadow .26s ease; }
+	.masthead { width: 100%; height: 92px; margin: 0 auto; background: rgba(255,255,255,.98); border: 1px solid transparent; border-bottom-color: #e5e5e5; transition: width .42s cubic-bezier(.16,1,.3,1), height .42s cubic-bezier(.16,1,.3,1), margin .42s cubic-bezier(.16,1,.3,1), border-radius .42s cubic-bezier(.16,1,.3,1), background .26s ease, box-shadow .26s ease; }
 	.masthead-grid { height: 100%; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; transition: padding .42s cubic-bezier(.16,1,.3,1); }
 	.brand-link { justify-self: start; display: flex; align-items: center; min-width: 0; }
 	.brand-logo { height: 36px; width: auto; transition: height .42s cubic-bezier(.16,1,.3,1), opacity .2s ease; }
@@ -903,6 +914,10 @@
 	.mega-card { display: block; padding: .75rem; border-radius: 10px; transition: background .18s ease; }
 	.mega-card:hover { background: #fbe9ec; }
 	.header-actions { justify-self: end; display: flex; align-items: center; gap: .55rem; }
+	.inaproc-badge { display: flex; align-items: center; opacity: .9; transition: opacity .18s ease; }
+	.inaproc-badge:hover { opacity: 1; }
+	.inaproc-logo { height: 36px; width: auto; transition: height .42s cubic-bezier(.16,1,.3,1); }
+	.site-chrome.is-condensed .inaproc-logo { height: 28px; }
 	.language-switcher { position: relative; align-items: center; padding: 3px; border: 1px solid #e5e5e5; border-radius: 10px; background: #fafafa; }
 	.language-switcher button { position: relative; z-index: 1; width: 26px; height: 22px; color: #9a9a9a; font: 700 .625rem var(--font-mono); transition: color .18s ease; }
 	.language-switcher button.active { color: #c8102e; }
@@ -916,7 +931,7 @@
 	.mobile-toggle { width: 38px; height: 38px; place-items: center; border: 1px solid rgba(26,26,26,.18); border-radius: 10px; color: #1a1a1a; background: transparent; transition: color .18s ease, border-color .18s ease, background .18s ease; }
 	.mobile-toggle:hover { color: #c8102e; border-color: rgba(200,16,46,.35); background: #fbe9ec; }
 	.site-chrome.is-condensed .utility-bar { height: 0; opacity: 0; transform: translateY(-100%); pointer-events: none; }
-	.site-chrome.is-condensed .masthead { width: min(1280px, calc(100% - 32px)); height: 64px; margin-top: 14px; border-color: rgba(26,26,26,.1); border-radius: 999px; background: rgba(255,255,255,.82); box-shadow: inset 0 1px 0 rgba(255,255,255,.95), 0 8px 26px -14px rgba(26,26,26,.3); backdrop-filter: blur(14px) saturate(130%); -webkit-backdrop-filter: blur(14px) saturate(130%); }
+	.site-chrome.is-condensed .masthead { width: min(1280px, calc(100% - 32px)); height: 72px; margin-top: 14px; border-color: rgba(26,26,26,.1); border-radius: 999px; background: rgba(255,255,255,.82); box-shadow: inset 0 1px 0 rgba(255,255,255,.95), 0 8px 26px -14px rgba(26,26,26,.3); backdrop-filter: blur(14px) saturate(130%); -webkit-backdrop-filter: blur(14px) saturate(130%); }
 	.site-chrome.is-condensed .brand-logo { height: 28px; }
 	.mega-backdrop { position: fixed; inset: 0; z-index: 1000; border: 0; background: rgba(255,255,255,.58); backdrop-filter: blur(12px) saturate(108%); -webkit-backdrop-filter: blur(12px) saturate(108%); }
 	.mobile-backdrop { position: fixed; inset: 0; z-index: 1080; border: 0; background: rgba(255,255,255,.52); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
@@ -950,15 +965,16 @@
 		.desktop-chat { width: 36px; height: 36px; justify-content: center; padding: 0; }
 	}
 	@media (max-width: 1023px) {
-		.header-reserve { height: 100px; }
+		.header-reserve { height: 108px; }
 		.chrome-container { padding-inline: 1rem; }
-		.masthead { height: 64px; }
+		.masthead { height: 72px; }
 		.masthead-grid { display: flex; justify-content: space-between; }
 		.brand-logo { height: 30px; }
+		.inaproc-logo { height: 28px; }
 		.mobile-toggle { display: grid; }
-		.site-chrome.is-condensed .masthead { height: 58px; }
+		.site-chrome.is-condensed .masthead { height: 64px; }
 		.site-chrome.is-condensed .brand-logo { height: 27px; }
-		.site-chrome.is-condensed ~ .mobile-panel { top: 80px; }
+		.site-chrome.is-condensed ~ .mobile-panel { top: 84px; }
 	}
 	@media (max-width: 560px) {
 		.chrome-container { padding-inline: .875rem; }
