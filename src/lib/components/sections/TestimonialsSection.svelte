@@ -50,7 +50,7 @@
 			title: "PPKom Operasi & Pemeliharaan Pos Hidrologi",
 			quote: "Akurasi dan konektivitas perangkat Beacon sudah teruji di berbagai kondisi lapangan yang ekstrem. Data terkirim real-time 24 jam, dan ketika ada kendala, tim support selalu bisa diandalkan untuk penyelesaian cepat.",
 			initials: "SA",
-			org: "BBWS Serayu Opak",
+			org: "Bidang SDA dan Drainase Dinas PU, P&ESDM DIY",
 			photo: null,
 			logo: null,
 		},

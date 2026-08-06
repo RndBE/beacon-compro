@@ -397,7 +397,7 @@
 			{
 				name: "Seto Ariwibowo, ST. MT.",
 				position: "PPKom Operasi & Pemeliharaan Pos Hidrologi",
-				organization: "BBWS Serayu Opak",
+				organization: "Bidang SDA dan Drainase Dinas PU, P&ESDM DIY",
 				quote: "Akurasi dan konektivitas perangkat Beacon sudah teruji di berbagai kondisi lapangan yang ekstrem. Data terkirim real-time 24 jam, dan ketika ada kendala, tim support selalu bisa diandalkan untuk penyelesaian cepat.",
 				initials: "SA",
 				photo: null,
@@ -423,7 +423,7 @@
 			{
 				name: "Seto Ariwibowo, ST. MT.",
 				position: "Commitment-Making Officer for Hydrology Station Operations & Maintenance",
-				organization: "BBWS Serayu Opak",
+				organization: "Bidang SDA dan Drainase Dinas PU, P&ESDM DIY",
 				quote: "Beacon's device accuracy and connectivity have been proven across extreme field conditions. Data is transmitted in real time around the clock, and the support team can always be relied on for fast resolution.",
 				initials: "SA",
 				photo: null,
