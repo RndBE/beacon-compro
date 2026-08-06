@@ -107,6 +107,13 @@
 		object-fit: cover;
 	}
 
+	:global(.article-content .beacon-article-figure figcaption) {
+		margin-top: 0.75rem;
+		color: #6b7280;
+		font-size: 0.875rem;
+		line-height: 1.6;
+	}
+
 	:global(.article-content .beacon-callout) {
 		margin: 1.75rem 0;
 		border-left: 4px solid #c8102e;
