@@ -17,6 +17,7 @@
 		initials: string;
 		org: string;
 		photo: string | null;
+		logo: string | null;
 	};
 
 	let { testimonials = undefined }: { testimonials?: TestimonialSummary[] | null } =
@@ -33,6 +34,7 @@
 			initials: "PB",
 			org: "BBWS Ciliwung-Cisadane",
 			photo: null,
+			logo: null,
 		},
 		{
 			name: "Ali Sukali, S.Sos, S.T, M.Si",
@@ -41,6 +43,7 @@
 			initials: "AS",
 			org: "Kementerian PUPR",
 			photo: null,
+			logo: null,
 		},
 		{
 			name: "Seto Ariwibowo, ST. MT.",
@@ -49,6 +52,7 @@
 			initials: "SA",
 			org: "BBWS Serayu Opak",
 			photo: null,
+			logo: null,
 		},
 	];
 
@@ -61,6 +65,7 @@
 					initials: item.initials,
 					org: item.organization ?? item.client_name ?? "",
 					photo: item.photo,
+					logo: item.client_logo,
 				}))
 			: fallbackTestimonials.map((item) => ({
 					...item,
@@ -370,6 +375,18 @@
 									class="w-12 h-12 rounded-full object-cover"
 									style="box-shadow: 0 4px 12px rgba(200,16,46,0.2);"
 								/>
+							{:else if test.logo}
+								<div
+									class="w-12 h-12 rounded-full flex items-center justify-center p-2 shrink-0 bg-white"
+									style="border: 1px solid #EDEDED; box-shadow: 0 4px 12px rgba(0,0,0,0.06);"
+								>
+									<img
+										src={test.logo}
+										alt={$locale === 'EN' ? `${test.org} logo` : `Logo ${test.org}`}
+										class="w-full h-full object-contain"
+										loading="lazy"
+									/>
+								</div>
 							{:else}
 								<div
 									class="w-12 h-12 rounded-full flex items-center justify-center text-sm font-bold text-white"
@@ -419,6 +436,20 @@
 									alt={$locale === 'EN' ? `Photo of ${test.name}` : `Foto ${test.name}`}
 									class="w-9 h-9 rounded-full object-cover shrink-0"
 								/>
+							{:else if test.logo}
+								<div
+									class="w-9 h-9 rounded-full flex items-center justify-center p-1.5 shrink-0 bg-white transition-all duration-300"
+									style="border: 1px solid {activeIndex === i
+										? 'rgba(200,16,46,0.25)'
+										: '#EDEDED'};"
+								>
+									<img
+										src={test.logo}
+										alt={$locale === 'EN' ? `${test.org} logo` : `Logo ${test.org}`}
+										class="w-full h-full object-contain"
+										loading="lazy"
+									/>
+								</div>
 							{:else}
 								<div
 									class="w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold shrink-0 transition-all duration-300"

@@ -502,8 +502,9 @@
 					quote: item.quote,
 					initials: item.initials,
 					photo: item.photo,
+					logo: item.client_logo,
 				}))
-			: fallbackTestimonials[$locale],
+			: fallbackTestimonials[$locale].map((item) => ({ ...item, logo: null })),
 	);
 
 	const featuredTestimonial = $derived(testimonials[0]);
@@ -1347,6 +1348,17 @@
 								class="h-14 w-14 rounded-2xl object-cover"
 								loading="lazy"
 							/>
+						{:else if featuredTestimonial.logo}
+							<div
+								class="h-14 w-14 shrink-0 rounded-2xl border border-[#E5E5E5] bg-white p-2.5"
+							>
+								<img
+									src={featuredTestimonial.logo}
+									alt="Logo {featuredTestimonial.organization}"
+									class="h-full w-full object-contain"
+									loading="lazy"
+								/>
+							</div>
 						{:else}
 							<div
 								class="h-14 w-14 rounded-2xl flex items-center justify-center text-sm font-bold text-white font-mono"
@@ -1387,6 +1399,17 @@
 										class="h-11 w-11 rounded-xl object-cover shrink-0"
 										loading="lazy"
 									/>
+								{:else if testimonial.logo}
+									<div
+										class="h-11 w-11 shrink-0 rounded-xl border border-[#E5E5E5] bg-white p-2"
+									>
+										<img
+											src={testimonial.logo}
+											alt="Logo {testimonial.organization}"
+											class="h-full w-full object-contain"
+											loading="lazy"
+										/>
+									</div>
 								{:else}
 									<div
 										class="h-11 w-11 rounded-xl flex items-center justify-center text-xs font-bold font-mono shrink-0 transition-colors duration-300"
