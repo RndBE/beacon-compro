@@ -148,8 +148,14 @@
 		L.control.zoom({ position: 'bottomright' }).addTo(mapInstance);
 		mapReady = true;
 
+		// The map now stretches to the project list's height, so its box can change
+		// after init (locale swap, API projects arriving) — Leaflet needs telling.
+		const resizeObserver = new ResizeObserver(() => mapInstance?.invalidateSize());
+		resizeObserver.observe(mapContainer);
+
 		return () => {
 			observer.disconnect();
+			resizeObserver.disconnect();
 			clearInterval(interval);
 			if (mapInstance) mapInstance.remove();
 		};
@@ -186,25 +192,25 @@
 			</p>
 		</div>
 
-		<div class="grid lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+		<!-- items-stretch on desktop so the map matches the project list's height -->
+		<div class="grid lg:grid-cols-12 gap-10 lg:gap-14 items-start lg:items-stretch">
 			<!-- Left: Interactive Leaflet Map (7 cols) -->
 			<div
-				class="lg:col-span-7 relative"
+				class="lg:col-span-7 relative lg:h-full"
 				style="
 					opacity: {visible ? 1 : 0};
 					transform: translateX({visible ? 0 : -40}px);
 					transition: all 0.8s cubic-bezier(0.16,1,0.3,1);
 				"
 			>
-				<div class="leaflet-scope relative rounded-[2.5rem] overflow-hidden bg-zinc-50 border border-zinc-200/80 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.08)]">
+				<div class="leaflet-scope relative h-full rounded-[2.5rem] overflow-hidden bg-zinc-50 border border-zinc-200/80 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.08)]">
 					<!-- Inner Liquid Glass Border -->
 					<div class="absolute inset-0 border border-white pointer-events-none rounded-[2.5rem] z-[400] shadow-[inset_0_2px_4px_rgba(255,255,255,0.8)]"></div>
 
 					<!-- Map container -->
 					<div
 						bind:this={mapContainer}
-						class="w-full"
-						style="height: 540px;"
+						class="w-full h-[540px] lg:h-full lg:min-h-[540px]"
 					></div>
 
 					<!-- Overlay: station counter -->
