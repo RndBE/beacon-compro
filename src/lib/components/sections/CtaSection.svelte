@@ -61,11 +61,11 @@
 
 				<!-- Office info (Bento Mono Style) -->
 				<div class="flex flex-col sm:flex-row gap-6">
-					<div class="flex items-center gap-3 bg-white/5 border border-white/10 px-5 py-3.5 rounded-2xl backdrop-blur-md">
+					<div class="flex items-center gap-3 bg-white/5 border border-white/10 px-5 py-3.5 rounded-card backdrop-blur-md">
 						<MapPin size={16} style="color: #C8102E;" />
 						<span class="text-xs font-mono font-semibold tracking-wide text-zinc-300">Kadirojo I, Kalasan, Sleman, DIY</span>
 					</div>
-					<div class="flex items-center gap-3 bg-white/5 border border-white/10 px-5 py-3.5 rounded-2xl backdrop-blur-md">
+					<div class="flex items-center gap-3 bg-white/5 border border-white/10 px-5 py-3.5 rounded-card backdrop-blur-md">
 						<Clock size={16} style="color: #C8102E;" />
 						<span class="text-xs font-mono font-semibold tracking-wide text-zinc-300">{$locale === 'EN' ? 'Mon–Fri, 08:00–17:00 WIB' : 'Senin–Jumat, 08:00–17:00 WIB'}</span>
 					</div>
@@ -85,15 +85,15 @@
 				<button
 					type="button"
 					onclick={openChat}
-					class="group relative flex items-center gap-6 p-7 rounded-[2rem] overflow-hidden transition-all duration-500 active:scale-95 text-left w-full"
+					class="group relative flex items-center gap-6 p-7 rounded-panel overflow-hidden transition-all duration-500 active:scale-95 text-left w-full"
 					style="background: #C8102E; box-shadow: 0 20px 40px -10px rgba(200,16,46,0.3);"
 				>
 					<!-- Perpetual Shimmer Effect -->
 					<div class="absolute inset-0 pointer-events-none translate-x-[-100%] group-hover:animate-shimmer" style="background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent); background-size: 200% 100%;"></div>
 					<!-- Liquid Glass Inner Border -->
-					<div class="absolute inset-0 rounded-[2rem] border border-white/30 pointer-events-none shadow-[inset_0_1px_1px_rgba(255,255,255,0.5)]"></div>
+					<div class="absolute inset-0 rounded-panel border border-white/30 pointer-events-none shadow-[inset_0_1px_1px_rgba(255,255,255,0.5)]"></div>
 
-					<div class="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 transition-transform duration-500 group-hover:scale-110 shadow-sm" style="background: rgba(255,255,255,0.2); backdrop-filter: blur(8px);">
+					<div class="w-14 h-14 rounded-card flex items-center justify-center shrink-0 transition-transform duration-500 group-hover:scale-110 shadow-sm" style="background: rgba(255,255,255,0.2); backdrop-filter: blur(8px);">
 						<MessageCircle size={26} class="text-white" />
 					</div>
 					<div class="flex-1 relative z-10">
@@ -106,10 +106,10 @@
 				<!-- Email CTA — secondary (Deep Glassmorphism) -->
 				<a
 					href="mailto:info@bejogja.com"
-					class="group relative flex items-center gap-6 p-7 rounded-[2rem] overflow-hidden transition-all duration-500 hover:-translate-y-1 active:scale-95 bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20"
+					class="group relative flex items-center gap-6 p-7 rounded-panel overflow-hidden transition-all duration-500 hover:-translate-y-1 active:scale-95 bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20"
 					style="backdrop-filter: blur(12px);"
 				>
-					<div class="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 transition-transform duration-500 group-hover:scale-110" style="background: rgba(200,16,46,0.15);">
+					<div class="w-14 h-14 rounded-card flex items-center justify-center shrink-0 transition-transform duration-500 group-hover:scale-110" style="background: rgba(200,16,46,0.15);">
 						<Mail size={24} style="color: #E8384F;" />
 					</div>
 					<div class="flex-1">

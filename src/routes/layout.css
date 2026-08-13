@@ -68,6 +68,16 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+
+  /* Marketing surface scale — three radii and three elevations, so the sections
+     read as one system instead of a dozen one-off values. Pills stay
+     rounded-full; shadcn keeps its own sm/md/lg/xl radii. */
+  --radius-chip: 12px;
+  --radius-card: 20px;
+  --radius-panel: 32px;
+  --shadow-soft: 0 14px 34px -20px rgba(24, 24, 27, 0.3);
+  --shadow-lift: 0 30px 60px -24px rgba(24, 24, 27, 0.22);
+  --shadow-accent: 0 20px 44px -22px rgba(200, 16, 46, 0.45);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);

@@ -64,8 +64,8 @@
 				<div class="absolute -left-5 top-8 hidden h-20 w-20 rounded-full border border-[#C8102E]/15 md:block"></div>
 				<div class="absolute -bottom-7 left-14 hidden h-10 w-10 rotate-45 rounded-md bg-[#C8102E]/10 md:block"></div>
 
-				<div class="relative rounded-[26px] border border-[#C8102E]/20 bg-white/70 p-2 shadow-[0_28px_80px_-46px_rgba(111,12,28,0.55),inset_0_1px_0_rgba(255,255,255,0.9)] backdrop-blur-xl">
-					<div class="overflow-hidden rounded-[20px] border border-[#E7D8DA] bg-[#FBFBFB]">
+				<div class="relative rounded-panel border border-[#C8102E]/20 bg-white/70 p-2 shadow-[0_28px_80px_-46px_rgba(111,12,28,0.55),inset_0_1px_0_rgba(255,255,255,0.9)] backdrop-blur-xl">
+					<div class="overflow-hidden rounded-card border border-[#E7D8DA] bg-[#FBFBFB]">
 						<div class="flex items-center gap-3 border-b border-[#E7D8DA] bg-white/80 px-4 py-3">
 							<div class="flex gap-1.5">
 								<span class="h-2.5 w-2.5 rounded-full bg-[#E45D55]"></span>
@@ -85,7 +85,7 @@
 							<div class="grid grid-cols-2 gap-2 sm:grid-cols-4">
 								{#each stats as stat, index}
 									<div
-										class="rounded-2xl border border-[#E7D8DA] bg-white px-3 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.9)]"
+										class="rounded-card border border-[#E7D8DA] bg-white px-3 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.9)]"
 										style="animation: fadeInUp 0.55s cubic-bezier(0.16,1,0.3,1) both; animation-delay: {index * 80}ms;"
 									>
 										<span class="block text-[9px] font-semibold uppercase tracking-[0.14em] text-[#8B8586]">{stat.label}</span>
@@ -95,7 +95,7 @@
 							</div>
 
 							<div class="grid gap-3 lg:grid-cols-[1fr_150px]">
-								<div class="rounded-2xl border border-[#E7D8DA] bg-white p-4">
+								<div class="rounded-card border border-[#E7D8DA] bg-white p-4">
 									<div class="mb-3 flex items-start justify-between gap-4">
 										<div>
 											<p class="text-xs font-semibold text-[#272123]">{$locale === 'EN' ? 'Water Level - Ciawi Dam' : 'Tinggi Muka Air - Bendungan Ciawi'}</p>
@@ -120,12 +120,12 @@
 								</div>
 
 								<div class="grid grid-cols-2 gap-3 lg:grid-cols-1">
-									<div class="rounded-2xl border border-[#E7D8DA] bg-[#21191B] p-3 text-white">
+									<div class="rounded-card border border-[#E7D8DA] bg-[#21191B] p-3 text-white">
 										<span class="text-[10px] font-medium text-white/55">{$locale === 'EN' ? 'Gate Status' : 'Status Pintu'}</span>
 										<span class="mt-2 block font-mono text-xl font-extrabold tabular-nums">04/06</span>
 										<span class="mt-1 block text-[10px] text-white/60">{$locale === 'EN' ? 'open safely' : 'terbuka aman'}</span>
 									</div>
-									<div class="rounded-2xl border border-[#E7D8DA] bg-white p-3">
+									<div class="rounded-card border border-[#E7D8DA] bg-white p-3">
 										<span class="text-[10px] font-medium text-[#8B8586]">{$locale === 'EN' ? 'Rainfall' : 'Curah Hujan'}</span>
 										<span class="mt-2 block font-mono text-xl font-extrabold text-[#272123] tabular-nums">5.2mm</span>
 										<span class="mt-1 block text-[10px] text-[#8B8586]">AWS Sentul</span>
@@ -136,7 +136,7 @@
 							<div class="grid gap-2">
 								{#each stations as station, index}
 									<div
-										class="group grid grid-cols-[1fr_auto] items-center gap-3 rounded-2xl border border-[#E7D8DA] bg-white px-3 py-2.5 transition duration-300 hover:-translate-y-0.5 hover:border-[#C8102E]/30"
+										class="group grid grid-cols-[1fr_auto] items-center gap-3 rounded-card border border-[#E7D8DA] bg-white px-3 py-2.5 transition duration-300 hover:-translate-y-0.5 hover:border-[#C8102E]/30"
 										style="animation: fadeInUp 0.55s cubic-bezier(0.16,1,0.3,1) both; animation-delay: {260 + index * 90}ms;"
 									>
 										<div class="flex min-w-0 items-center gap-2.5">
@@ -152,7 +152,7 @@
 					</div>
 				</div>
 
-				<div class="absolute -right-2 -top-7 hidden w-36 rounded-2xl border border-white/70 bg-white/85 p-3 shadow-[0_18px_42px_-28px_rgba(111,12,28,0.55),inset_0_1px_0_rgba(255,255,255,0.9)] backdrop-blur-xl md:block lg:-right-8">
+				<div class="absolute -right-2 -top-7 hidden w-36 rounded-card border border-white/70 bg-white/85 p-3 shadow-[0_18px_42px_-28px_rgba(111,12,28,0.55),inset_0_1px_0_rgba(255,255,255,0.9)] backdrop-blur-xl md:block lg:-right-8">
 					<p class="text-[10px] font-semibold uppercase tracking-[0.12em] text-[#8B8586]">{$locale === 'EN' ? 'Latency' : 'Latensi'}</p>
 					<p class="mt-1 font-mono text-2xl font-extrabold text-[#272123] tabular-nums">1.4s</p>
 					<div class="mt-2 h-1.5 overflow-hidden rounded-full bg-[#F3E6E8]">
@@ -160,7 +160,7 @@
 					</div>
 				</div>
 
-				<div class="absolute -bottom-6 right-4 hidden w-40 rounded-2xl border border-[#E7D8DA] bg-white p-3 shadow-[0_24px_52px_-32px_rgba(111,12,28,0.65)] md:block">
+				<div class="absolute -bottom-6 right-4 hidden w-40 rounded-card border border-[#E7D8DA] bg-white p-3 shadow-accent md:block">
 					<div class="flex items-center justify-between">
 						<span class="text-[10px] font-semibold uppercase tracking-[0.12em] text-[#8B8586]">{$locale === 'EN' ? 'Alarm' : 'Alarm'}</span>
 						<span class="rounded-full bg-[#FBE9EC] px-2 py-0.5 font-mono text-[10px] font-bold text-[#A50D25]">2</span>
@@ -197,7 +197,7 @@
 				<ul class="mt-8 grid gap-3 sm:grid-cols-2">
 					{#each features as feature, index}
 						{@const Icon = featureIcons[index]}
-						<li class="flex items-start gap-3 rounded-2xl border border-white/70 bg-white/55 p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.9)] backdrop-blur">
+						<li class="flex items-start gap-3 rounded-card border border-white/70 bg-white/55 p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.9)] backdrop-blur">
 							<div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#FBE9EC] text-[#C8102E]">
 								<Icon size={15} strokeWidth={2} />
 							</div>
@@ -209,14 +209,14 @@
 				<div class="mt-9 flex flex-col gap-3 sm:flex-row">
 					<a
 						href="/solusi/digital-monitoring-platform"
-						class="btn-tactile inline-flex items-center justify-center gap-2 rounded-xl bg-[#C8102E] px-6 py-3 text-sm font-bold text-white shadow-[0_14px_28px_-18px_rgba(200,16,46,0.8)] hover:bg-[#A50D25]"
+						class="btn-tactile inline-flex items-center justify-center gap-2 rounded-chip bg-[#C8102E] px-6 py-3 text-sm font-bold text-white shadow-accent hover:bg-[#A50D25]"
 					>
 						{$locale === 'EN' ? 'View STESY Demo' : 'Lihat Demo STESY'}
 						<ArrowRight size={15} strokeWidth={2} />
 					</a>
 					<a
 						href="/solusi/digital-monitoring-platform"
-						class="btn-tactile inline-flex items-center justify-center gap-2 rounded-xl border border-[#E0D3D5] bg-white/60 px-6 py-3 text-sm font-bold text-[#272123] backdrop-blur transition-colors hover:bg-white"
+						class="btn-tactile inline-flex items-center justify-center gap-2 rounded-chip border border-[#E0D3D5] bg-white/60 px-6 py-3 text-sm font-bold text-[#272123] backdrop-blur transition-colors hover:bg-white"
 					>
 						{$locale === 'EN' ? 'Learn More' : 'Pelajari Lebih Lanjut'}
 					</a>

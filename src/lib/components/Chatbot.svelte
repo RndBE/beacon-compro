@@ -19,6 +19,14 @@
 
 	let message = $state("");
 	let isLoading = $state(false);
+
+	// The FAB label pill overlaps page content (hero CTA on mobile, cards on
+	// desktop), so it introduces itself once and then folds into the icon.
+	// Hover or keyboard focus brings it back.
+	let labelPinned = $state(true);
+	let labelHovered = $state(false);
+	const showLabel = $derived(labelPinned || labelHovered);
+
 	let sessionToken = $state<string | null>(null);
 	let chatMode = $state<"ai" | "escalated" | "live" | "closed">("ai");
 	let lastMessageId = $state<number | null>(null);
@@ -31,6 +39,25 @@
 	let formPhone = $state("");
 	let formErrors = $state<Record<string, string>>({});
 	let formSubmitting = $state(false);
+
+	$effect(() => {
+		const collapse = () => {
+			labelPinned = false;
+			window.removeEventListener("scroll", onScroll);
+		};
+		const onScroll = () => {
+			if (window.scrollY > 160) collapse();
+		};
+		const timer = setTimeout(collapse, 6000);
+
+		window.addEventListener("scroll", onScroll, { passive: true });
+		onScroll();
+
+		return () => {
+			clearTimeout(timer);
+			window.removeEventListener("scroll", onScroll);
+		};
+	});
 
 	interface ChatMessage {
 		id?: number;
@@ -403,13 +430,21 @@
 <!-- FAB -->
 <div
 	class="fixed {$cookieBannerVisible ? 'bottom-[150px]' : 'bottom-6'} right-6 z-[999] flex max-w-[calc(100vw-3rem)] items-center gap-3 transition-[bottom] duration-300 sm:bottom-6"
+	onmouseenter={() => (labelHovered = true)}
+	onmouseleave={() => (labelHovered = false)}
+	onfocusin={() => (labelHovered = true)}
+	onfocusout={() => (labelHovered = false)}
+	role="presentation"
 >
 	{#if !$chatOpen}
 		<button
 			type="button"
-			class="group flex max-w-[180px] items-center gap-3 rounded-2xl border border-white/70 bg-white/95 px-3 py-3 text-left shadow-[0_18px_40px_-18px_rgba(0,0,0,0.35)] backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:border-[#C8102E]/30 hover:shadow-[0_20px_44px_-18px_rgba(200,16,46,0.35)] sm:max-w-[220px] sm:px-4"
+			class="chat-label group flex items-center gap-3 overflow-hidden rounded-2xl border border-white/70 bg-white/95 py-3 text-left shadow-[0_18px_40px_-18px_rgba(0,0,0,0.35)] backdrop-blur-md hover:-translate-y-0.5 hover:border-[#C8102E]/30 hover:shadow-[0_20px_44px_-18px_rgba(200,16,46,0.35)]"
+			class:is-open={showLabel}
 			onclick={toggleChat}
 			aria-label={copy("Buka chat otomatis Beacon", "Open Beacon automated chat")}
+			aria-hidden={!showLabel}
+			tabindex={showLabel ? 0 : -1}
 		>
 			<span
 				class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#FBE9EC] text-[#C8102E] transition-transform duration-300 group-hover:scale-105"
@@ -804,3 +839,44 @@
 		</div>
 	</div>
 </div>
+
+<style>
+	/* Collapsed by default; the width animation keeps the icon anchored to the
+	   right edge so only the pill grows out of it. */
+	.chat-label {
+		max-width: 0;
+		padding-inline: 0;
+		border-width: 0;
+		opacity: 0;
+		pointer-events: none;
+		white-space: nowrap;
+		transition:
+			max-width 420ms cubic-bezier(0.16, 1, 0.3, 1),
+			padding-inline 420ms cubic-bezier(0.16, 1, 0.3, 1),
+			opacity 240ms ease,
+			transform 300ms ease,
+			border-color 300ms ease,
+			box-shadow 300ms ease;
+	}
+
+	.chat-label.is-open {
+		max-width: 180px;
+		padding-inline: 0.75rem;
+		border-width: 1px;
+		opacity: 1;
+		pointer-events: auto;
+	}
+
+	@media (min-width: 640px) {
+		.chat-label.is-open {
+			max-width: 220px;
+			padding-inline: 1rem;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.chat-label {
+			transition: none;
+		}
+	}
+</style>

@@ -140,7 +140,7 @@
 						<!-- svelte-ignore a11y_click_events_have_key_events -->
 						<!-- svelte-ignore a11y_no_static_element_interactions -->
 						<div
-							class="group relative rounded-3xl overflow-hidden cursor-pointer transition-all duration-[800ms] ease-[cubic-bezier(0.16,1,0.3,1)] shadow-[0_8px_30px_rgb(0,0,0,0.04)]"
+							class="group relative rounded-panel overflow-hidden cursor-pointer transition-all duration-[800ms] ease-[cubic-bezier(0.16,1,0.3,1)] shadow-soft"
 							style="
 								flex: {activePillar === i ? 6 : 1};
 								opacity: {visible ? 1 : 0};
@@ -186,7 +186,7 @@
 							>
 								<div class="max-w-xl">
 									<div class="flex items-center gap-4 mb-6">
-										<div class="w-12 h-12 rounded-2xl bg-[#C8102E] flex items-center justify-center text-white shadow-lg shadow-[#C8102E]/30">
+										<div class="w-12 h-12 rounded-card bg-[#C8102E] flex items-center justify-center text-white shadow-soft shadow-[#C8102E]/30">
 											<Icon size={24} />
 										</div>
 										<h3 class="font-heading text-3xl font-bold text-white tracking-tight">{pillar.name}</h3>
@@ -217,7 +217,7 @@
 							</div>
 							
 							<!-- Inner Liquid Glass Border -->
-							<div class="absolute inset-0 rounded-3xl border border-white/10 pointer-events-none shadow-[inset_0_1px_0_rgba(255,255,255,0.2)]"></div>
+							<div class="absolute inset-0 rounded-panel border border-white/10 pointer-events-none shadow-[inset_0_1px_0_rgba(255,255,255,0.2)]"></div>
 						</div>
 					{/each}
 				</div>
@@ -228,7 +228,7 @@
 						{@const Icon = pillar.icon}
 						<a
 							href={pillar.href}
-							class="group relative rounded-3xl overflow-hidden bg-zinc-900 aspect-[4/3] flex flex-col justify-end p-6"
+							class="group relative rounded-panel overflow-hidden bg-zinc-900 aspect-[4/3] flex flex-col justify-end p-6"
 							style="
 								opacity: {visible ? 1 : 0};
 								transform: translateY({visible ? 0 : 30}px);
@@ -247,7 +247,7 @@
 							<div class="absolute inset-0 bg-gradient-to-t from-zinc-950/90 via-zinc-900/40 to-transparent pointer-events-none"></div>
 
 							<div class="relative z-10">
-								<div class="w-10 h-10 rounded-xl bg-[#C8102E] flex items-center justify-center text-white shadow-lg mb-4">
+								<div class="w-10 h-10 rounded-chip bg-[#C8102E] flex items-center justify-center text-white shadow-soft mb-4">
 									<Icon size={20} />
 								</div>
 								<h3 class="font-heading text-2xl font-bold text-white mb-2">{pillar.name}</h3>
@@ -263,7 +263,7 @@
 							</div>
 							
 							<!-- Inner Border -->
-							<div class="absolute inset-0 rounded-3xl border border-white/10 pointer-events-none"></div>
+							<div class="absolute inset-0 rounded-panel border border-white/10 pointer-events-none"></div>
 						</a>
 					{/each}
 				</div>

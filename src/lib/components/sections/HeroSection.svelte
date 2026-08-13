@@ -355,7 +355,7 @@
 					<button
 						type="button"
 						onclick={openChat}
-						class="group relative inline-flex items-center justify-center gap-3 px-8 py-4 rounded-2xl text-sm font-semibold text-white overflow-hidden transition-all duration-300 hover:scale-[0.98] active:scale-95"
+						class="group relative inline-flex items-center justify-center gap-3 px-8 py-4 rounded-card text-sm font-semibold text-white overflow-hidden transition-all duration-300 hover:scale-[0.98] active:scale-95"
 						style="background: #C8102E; box-shadow: 0 10px 30px -10px rgba(200,16,46,0.4);"
 					>
 						<!-- Perpetual Shimmer Effect -->
@@ -365,7 +365,7 @@
 						></div>
 						<!-- Inner Refraction -->
 						<div
-							class="absolute inset-0 rounded-2xl border border-white/20 pointer-events-none shadow-[inset_0_1px_0_rgba(255,255,255,0.2)]"
+							class="absolute inset-0 rounded-card border border-white/20 pointer-events-none shadow-[inset_0_1px_0_rgba(255,255,255,0.2)]"
 						></div>
 
 						<span class="relative z-10 flex items-center gap-2">
@@ -378,7 +378,7 @@
 					</button>
 					<a
 						href="#pilar-solusi"
-						class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl text-sm font-semibold text-zinc-700 bg-white border border-zinc-200/60 shadow-sm transition-all duration-300 hover:bg-zinc-50 hover:text-zinc-950 hover:-translate-y-0.5 hover:shadow-md"
+						class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-card text-sm font-semibold text-zinc-700 bg-white border border-zinc-200/60 shadow-sm transition-all duration-300 hover:bg-zinc-50 hover:text-zinc-950 hover:-translate-y-0.5 hover:shadow-md"
 					>
 						{$locale === "EN" ? "View Solution Pillars" : "Lihat Pilar Solusi"}
 					</a>
@@ -426,7 +426,7 @@
 					: 40}px); transition: all 1s cubic-bezier(0.16,1,0.3,1) 0.3s;"
 			>
 				<div
-					class="atlas-shell relative h-full overflow-hidden rounded-[2.5rem] border border-white/70 bg-white/70 shadow-[0_32px_70px_-34px_rgba(200,16,46,0.35)] backdrop-blur-xl"
+					class="atlas-shell relative h-full overflow-hidden rounded-panel border border-white/70 bg-white/70 shadow-accent backdrop-blur-xl"
 					style="--atlas-x: {cursorX}%; --atlas-y: {cursorY}%;"
 				>
 					<div class="atlas-grid absolute inset-0"></div>
@@ -489,7 +489,7 @@
 
 					<div class="absolute left-5 right-5 top-5 z-20 flex items-start justify-between gap-4">
 						<div
-							class="rounded-[1.35rem] border border-white/70 bg-white/80 px-4 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] backdrop-blur-md"
+							class="rounded-card border border-white/70 bg-white/80 px-4 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] backdrop-blur-md"
 						>
 							<div class="mb-2 flex items-center gap-2">
 								<Terminal size={14} class="text-zinc-400" strokeWidth={1.8} />
@@ -509,7 +509,7 @@
 						</div>
 
 						<div
-							class={`w-[236px] rounded-[1.35rem] border px-4 py-3 shadow-[0_18px_40px_-26px_rgba(24,24,27,0.4)] backdrop-blur-md transition-colors duration-500 ${
+							class={`w-[236px] rounded-card border px-4 py-3 shadow-soft backdrop-blur-md transition-colors duration-500 ${
 								activeEvent.tone === "critical"
 									? "border-[#C8102E]/30 bg-white/90"
 									: "border-white/70 bg-white/80"
@@ -537,9 +537,9 @@
 					</div>
 
 					<div
-						class="absolute left-1/2 top-[48%] z-20 w-[190px] -translate-x-1/2 -translate-y-1/2 rounded-[1.8rem] bg-zinc-950/95 p-4 text-white shadow-[0_28px_60px_-34px_rgba(24,24,27,0.9)]"
+						class="absolute left-1/2 top-[48%] z-20 w-[190px] -translate-x-1/2 -translate-y-1/2 rounded-panel bg-zinc-950/95 p-4 text-white shadow-lift"
 					>
-						<div class="absolute inset-0 rounded-[1.8rem] border border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.14)]"></div>
+						<div class="absolute inset-0 rounded-panel border border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.14)]"></div>
 						<div class="relative z-10">
 							<div class="mb-4 flex items-center justify-between">
 								<div class="flex items-center gap-2">
@@ -582,7 +582,7 @@
 									}`}
 								></div>
 								<div
-									class={`relative flex h-11 w-11 items-center justify-center rounded-full border bg-white shadow-[0_16px_32px_-22px_rgba(24,24,27,0.65)] ${
+									class={`relative flex h-11 w-11 items-center justify-center rounded-full border bg-white shadow-soft ${
 										node.status === "critical" ? "border-[#C8102E]/35" : "border-white/80"
 									}`}
 								>
@@ -599,7 +599,7 @@
 									{/if}
 								</div>
 								<div
-									class={`atlas-node-label absolute left-1/2 w-[152px] -translate-x-1/2 rounded-2xl border border-white/70 bg-white/85 px-3 py-2 shadow-[0_16px_36px_-28px_rgba(24,24,27,0.55)] backdrop-blur-md ${
+									class={`atlas-node-label absolute left-1/2 w-[152px] -translate-x-1/2 rounded-card border border-white/70 bg-white/85 px-3 py-2 shadow-soft backdrop-blur-md ${
 										node.y > 58 ? "bottom-14" : "top-14"
 									}`}
 								>
@@ -630,7 +630,7 @@
 
 					<div class="absolute bottom-5 left-5 right-5 z-20 grid grid-cols-3 gap-3">
 						<div
-							class="rounded-[1.35rem] border border-white/70 bg-white/85 px-4 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] backdrop-blur-md"
+							class="rounded-card border border-white/70 bg-white/85 px-4 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] backdrop-blur-md"
 						>
 							<div class="mb-2 flex items-center gap-2">
 								<Waves size={13} class="text-zinc-400" strokeWidth={1.8} />
@@ -647,7 +647,7 @@
 						</div>
 
 						<div
-							class="rounded-[1.35rem] border border-white/70 bg-white/85 px-4 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] backdrop-blur-md"
+							class="rounded-card border border-white/70 bg-white/85 px-4 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] backdrop-blur-md"
 						>
 							<div class="mb-2 flex items-center gap-2">
 								<CloudRain size={13} class="text-zinc-400" strokeWidth={1.8} />
@@ -664,7 +664,7 @@
 						</div>
 
 						<div
-							class="rounded-[1.35rem] border border-white/70 bg-white/85 px-4 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] backdrop-blur-md"
+							class="rounded-card border border-white/70 bg-white/85 px-4 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] backdrop-blur-md"
 						>
 							<div class="mb-2 flex items-center gap-2">
 								<Gauge size={13} class="text-[#C8102E]" strokeWidth={1.8} />

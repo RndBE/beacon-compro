@@ -130,7 +130,7 @@
 
 	<!-- Floating diamonds -->
 	<div
-		class="absolute bottom-10 left-[5%] w-12 h-12 rotate-45 rounded-lg pointer-events-none opacity-[0.04]"
+		class="absolute bottom-10 left-[5%] w-12 h-12 rotate-45 rounded-chip pointer-events-none opacity-[0.04]"
 		style="background: #C8102E;"
 	></div>
 	<div
@@ -334,7 +334,7 @@
 			<div class="lg:col-span-8 relative">
 				{#each displayTestimonials as test, i}
 					<div
-						class="rounded-[24px] p-8 lg:p-12 bg-white transition-all duration-500"
+						class="rounded-card p-8 lg:p-12 bg-white transition-all duration-500"
 						style="
 							border: 1px solid #E5E5E5;
 							box-shadow: 0 8px 40px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.5);
@@ -419,7 +419,7 @@
 				{#each displayTestimonials as test, i}
 					<button
 						type="button"
-						class="w-full text-left p-4 rounded-[16px] transition-all duration-300 cursor-pointer"
+						class="w-full text-left p-4 rounded-chip transition-all duration-300 cursor-pointer"
 						style="
 							background: {activeIndex === i ? 'white' : 'transparent'};
 							border: 1px solid {activeIndex === i ? '#C8102E' : 'rgba(200,16,46,0.1)'};

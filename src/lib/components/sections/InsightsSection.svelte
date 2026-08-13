@@ -74,7 +74,7 @@
 			<!-- Featured article — 7 cols -->
 			<a
 				href={`/wawasan/${featured.slug}`}
-				class="lg:col-span-7 group rounded-[20px] overflow-hidden bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+				class="lg:col-span-7 group rounded-card overflow-hidden bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
 				style="
 					border: 1px solid #E5E5E5;
 					opacity: {visible ? 1 : 0};
@@ -89,14 +89,14 @@
 						<div class="absolute inset-0" style="background: linear-gradient(to top, rgba(0,0,0,0.3) 0%, transparent 60%);"></div>
 					{:else}
 						<div class="absolute inset-0 flex items-center justify-center" style="background: linear-gradient(135deg, #FBE9EC 0%, #FFF5F6 50%, #FAFAFA 100%);">
-							<div class="w-24 h-24 rounded-[24px] flex items-center justify-center" style="background: rgba(200,16,46,0.08); backdrop-filter: blur(8px);">
+							<div class="w-24 h-24 rounded-card flex items-center justify-center" style="background: rgba(200,16,46,0.08); backdrop-filter: blur(8px);">
 								<TrendingUp size={40} style="color: #C8102E; opacity: 0.6;" />
 							</div>
 						</div>
 					{/if}
 					<!-- Category badge -->
 					<div class="absolute top-4 left-4">
-						<span class="text-[11px] font-semibold uppercase tracking-wider px-3 py-1.5 rounded-lg text-white" style="background: {featured.category_color};">
+						<span class="text-[11px] font-semibold uppercase tracking-wider px-3 py-1.5 rounded-chip text-white" style="background: {featured.category_color};">
 							{articleCategory(featured, $locale)}
 						</span>
 					</div>
@@ -129,7 +129,7 @@
 				{#each sideArticles as article, i}
 					<a
 						href={`/wawasan/${article.slug}`}
-						class="group flex-1 flex flex-col justify-between rounded-[20px] overflow-hidden bg-white transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg"
+						class="group flex-1 flex flex-col justify-between rounded-card overflow-hidden bg-white transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg"
 						style="
 							border: 1px solid #E5E5E5;
 							opacity: {visible ? 1 : 0};
@@ -144,7 +144,7 @@
 								<div class="absolute inset-0" style="background: linear-gradient(to top, rgba(0,0,0,0.2), transparent);"></div>
 							{:else}
 								<div class="absolute inset-0 flex items-center justify-center" style="background: linear-gradient(135deg, {article.category_color}08, {article.category_color}15);">
-									<div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background: {article.category_color}12;">
+									<div class="w-12 h-12 rounded-chip flex items-center justify-center" style="background: {article.category_color}12;">
 										<span class="text-lg font-heading font-bold" style="color: {article.category_color};">{articleCategory(article, $locale)?.charAt(0)}</span>
 									</div>
 								</div>

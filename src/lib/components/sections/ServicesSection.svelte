@@ -94,7 +94,7 @@
 					{#each services as service, i}
 						{@const ServiceIcon = service.icon}
 						<div
-							class="w-full rounded-3xl border p-4 shadow-[0_16px_34px_-28px_rgba(24,24,27,0.35)] transition {activeService === i
+							class="w-full rounded-panel border p-4 shadow-soft transition {activeService === i
 								? 'border-[#C8102E]/30 bg-[#FFF8F9]'
 								: 'border-zinc-200/70 bg-white'}"
 						>
@@ -105,7 +105,7 @@
 							>
 								<div class="flex items-start gap-3">
 								<div
-									class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border transition-colors {activeService === i
+									class="flex h-11 w-11 shrink-0 items-center justify-center rounded-card border transition-colors {activeService === i
 										? 'border-transparent bg-[#C8102E]'
 										: 'border-zinc-200 bg-white'}"
 								>
@@ -127,7 +127,7 @@
 									<p class="text-sm leading-relaxed text-zinc-600">{service.detail}</p>
 									<button
 										type="button"
-										class="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-[#C8102E] px-5 py-3 text-sm font-bold text-white transition active:scale-[0.98]"
+										class="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-card bg-[#C8102E] px-5 py-3 text-sm font-bold text-white transition active:scale-[0.98]"
 										onclick={(event) => { event.stopPropagation(); openChat(); }}
 									>
 										{$locale === 'EN' ? 'Consult Services' : 'Konsultasi Layanan'}
@@ -143,7 +143,7 @@
 				<div class="hidden lg:flex flex-col gap-2 relative" onmouseenter={() => autoRotate = false} onmouseleave={() => autoRotate = true} role="group">
 					<!-- Animated Highlight Background -->
 					<div 
-						class="absolute left-0 right-0 h-[88px] bg-zinc-50 rounded-[16px] border border-zinc-200/50 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-none"
+						class="absolute left-0 right-0 h-[88px] bg-zinc-50 rounded-chip border border-zinc-200/50 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-none"
 						style="transform: translateY({activeService * 96}px);"
 					>
 						<!-- Left Active Indicator -->
@@ -155,11 +155,11 @@
 						<!-- svelte-ignore a11y_click_events_have_key_events -->
 						<!-- svelte-ignore a11y_no_static_element_interactions -->
 						<div
-							class="relative z-10 w-full text-left group flex items-center gap-4 p-4 h-[88px] rounded-[16px] transition-all duration-300 cursor-pointer"
+							class="relative z-10 w-full text-left group flex items-center gap-4 p-4 h-[88px] rounded-chip transition-all duration-300 cursor-pointer"
 							onclick={() => activeService = i}
 						>
 							<div
-								class="w-12 h-12 rounded-[14px] flex items-center justify-center shrink-0 transition-all duration-500 ease-out"
+								class="w-12 h-12 rounded-chip flex items-center justify-center shrink-0 transition-all duration-500 ease-out"
 								style="
 									background: {activeService === i ? '#C8102E' : '#FFFFFF'};
 									border: 1px solid {activeService === i ? 'transparent' : 'rgba(229,229,229,0.8)'};
@@ -182,7 +182,7 @@
 				{#each services as service, i}
 					{@const ServiceIcon = service.icon}
 					<div
-						class="absolute inset-0 rounded-[2.5rem] p-8 sm:p-10 lg:p-14 transition-all duration-[800ms] ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden"
+						class="absolute inset-0 rounded-panel p-8 sm:p-10 lg:p-14 transition-all duration-[800ms] ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden"
 						style="
 							background: linear-gradient(135deg, #FFFFFF 0%, #FFF8F9 100%);
 							border: 1px solid rgba(200,16,46,0.08);
@@ -194,7 +194,7 @@
 						"
 					>
 						<!-- Liquid Glass Inner Border -->
-						<div class="absolute inset-0 rounded-[2.5rem] border border-white pointer-events-none shadow-[inset_0_2px_4px_rgba(255,255,255,0.8)]"></div>
+						<div class="absolute inset-0 rounded-panel border border-white pointer-events-none shadow-[inset_0_2px_4px_rgba(255,255,255,0.8)]"></div>
 
 						<!-- Large number watermark -->
 						<span class="absolute -top-6 -right-4 font-heading text-[240px] font-extrabold leading-none pointer-events-none tracking-tighter" style="color: rgba(200,16,46,0.03);">
@@ -203,7 +203,7 @@
 
 						<div class="relative z-10 flex flex-col h-full justify-between">
 							<div>
-								<div class="w-16 h-16 rounded-[20px] flex items-center justify-center mb-8" style="background: white; border: 1px solid rgba(200,16,46,0.1); box-shadow: 0 10px 20px -5px rgba(200,16,46,0.05);">
+								<div class="w-16 h-16 rounded-card flex items-center justify-center mb-8" style="background: white; border: 1px solid rgba(200,16,46,0.1); box-shadow: 0 10px 20px -5px rgba(200,16,46,0.05);">
 									<ServiceIcon size={28} style="color: #C8102E;" />
 								</div>
 
@@ -218,12 +218,12 @@
 								<button
 									type="button"
 									onclick={openChat}
-									class="group relative inline-flex items-center gap-3 px-8 py-4 rounded-2xl text-sm font-bold text-white overflow-hidden transition-transform active:scale-95"
+									class="group relative inline-flex items-center gap-3 px-8 py-4 rounded-card text-sm font-bold text-white overflow-hidden transition-transform active:scale-95"
 									style="background: #C8102E; box-shadow: 0 12px 24px -8px rgba(200,16,46,0.4);"
 								>
 									<!-- Perpetual Shimmer Effect -->
 									<div class="absolute inset-0 pointer-events-none translate-x-[-100%] group-hover:animate-shimmer" style="background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent); background-size: 200% 100%;"></div>
-									<div class="absolute inset-0 rounded-2xl border border-white/20 pointer-events-none shadow-[inset_0_1px_0_rgba(255,255,255,0.3)]"></div>
+									<div class="absolute inset-0 rounded-card border border-white/20 pointer-events-none shadow-[inset_0_1px_0_rgba(255,255,255,0.3)]"></div>
 									
 									<span class="relative z-10 flex items-center gap-2">
 										{$locale === 'EN' ? `Ask About ${service.title}` : `Tanya Soal ${service.title}`}

@@ -110,7 +110,7 @@
 			<div class="lg:col-span-5 flex flex-col gap-2.5">
 				{#each needs as need, i}
 					<button
-						class="group w-full text-left p-4 sm:p-5 rounded-2xl transition-all duration-300 outline-none cursor-pointer border active:scale-[0.98]"
+						class="group w-full text-left p-4 sm:p-5 rounded-card transition-all duration-300 outline-none cursor-pointer border active:scale-[0.98]"
 						style="
 							opacity: {visible ? 1 : 0};
 							transform: translateX({visible ? 0 : -20}px);
@@ -124,7 +124,7 @@
 						<div class="flex items-start gap-3.5">
 							<!-- Indicator dot -->
 							<div
-								class="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 mt-0.5 transition-all duration-300"
+								class="w-8 h-8 rounded-chip flex items-center justify-center shrink-0 mt-0.5 transition-all duration-300"
 								style="
 									background: {activeNeed === i ? need.color + '14' : '#F4F4F5'};
 									border: 1px solid {activeNeed === i ? need.color + '25' : '#E5E5E5'};
@@ -167,7 +167,7 @@
 				{#each needs as need, i}
 					{#if activeNeed === i}
 						<div
-							class="sf-card rounded-[24px] overflow-hidden bg-white relative"
+							class="sf-card rounded-card overflow-hidden bg-white relative"
 							style="
 								border: 1px solid {need.color}20;
 								box-shadow: 0 20px 40px -15px {need.color}12, 0 4px 16px rgba(0,0,0,0.04);
@@ -180,7 +180,7 @@
 								<!-- Solution header -->
 								<div class="flex items-center gap-4 mb-6">
 									<div
-										class="w-12 h-12 rounded-2xl flex items-center justify-center"
+										class="w-12 h-12 rounded-card flex items-center justify-center"
 										style="background: {need.color}10; border: 1px solid {need.color}20;"
 									>
 										<svelte:component this={need.icon} size={22} style="color: {need.color};" />
@@ -204,7 +204,7 @@
 									<div class="flex flex-wrap gap-2">
 										{#each need.products as product}
 											<span
-												class="px-3 py-1.5 rounded-lg text-xs font-semibold"
+												class="px-3 py-1.5 rounded-chip text-xs font-semibold"
 												style="background: {need.color}08; color: {need.color}; border: 1px solid {need.color}15;"
 											>
 												{product}

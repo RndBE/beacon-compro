@@ -68,7 +68,7 @@
 		<div class="space-y-8">
 			{#each propositions as prop, i}
 				<div
-					class="group flex flex-col md:flex-row gap-0 rounded-[2rem] overflow-hidden transition-all duration-500 hover:shadow-[0_20px_40px_-15px_rgba(200,16,46,0.15)] hover:-translate-y-1 relative"
+					class="group flex flex-col md:flex-row gap-0 rounded-panel overflow-hidden transition-all duration-500 hover:shadow-accent hover:-translate-y-1 relative"
 					style="
 						background: #FFFFFF;
 						border: 1px solid rgba(229,229,229,0.8);
@@ -78,7 +78,7 @@
 					"
 				>
 					<!-- Inner Glass Border -->
-					<div class="absolute inset-0 border border-white pointer-events-none rounded-[2rem] z-20"></div>
+					<div class="absolute inset-0 border border-white pointer-events-none rounded-panel z-20"></div>
 
 					<!-- Metric block — alternating side with Image Background -->
 					<div class="w-full md:w-1/3 p-8 lg:p-12 flex flex-col justify-center items-center text-center relative overflow-hidden {i % 2 === 1 ? 'md:order-2' : ''}">
@@ -105,10 +105,10 @@
 					<!-- Content block -->
 					<div class="w-full md:w-2/3 p-8 sm:p-10 lg:p-14 flex items-center {i % 2 === 1 ? 'md:order-1' : ''} bg-white relative">
 						<!-- Subtle gradient mesh on hover -->
-						<div class="absolute inset-0 bg-gradient-to-br from-zinc-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-[2rem]"></div>
+						<div class="absolute inset-0 bg-gradient-to-br from-zinc-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-panel"></div>
 
 						<div class="relative z-10 flex flex-col sm:flex-row items-start gap-6 lg:gap-8">
-							<div class="w-16 h-16 rounded-[20px] flex items-center justify-center shrink-0 transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-3 shadow-sm border border-zinc-100" style="background: #FBE9EC;">
+							<div class="w-16 h-16 rounded-card flex items-center justify-center shrink-0 transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-3 shadow-sm border border-zinc-100" style="background: #FBE9EC;">
 								<svelte:component this={prop.icon} size={28} style="color: #C8102E;" />
 							</div>
 							<div class="flex-1 mt-2 sm:mt-0">

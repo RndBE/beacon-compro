@@ -154,12 +154,12 @@
 			{#each [...row1, ...row1] as client}
 				<div class="flex-shrink-0 mx-2.5">
 					<div
-						class="flex items-center gap-3 px-5 py-3 rounded-xl border border-[#E5E5E5] bg-[#FAFAFA] hover:border-[#C8102E] hover:bg-[#FBE9EC] transition-all duration-300 cursor-default group"
+						class="flex items-center gap-3 px-5 py-3 rounded-chip border border-[#E5E5E5] bg-[#FAFAFA] hover:border-[#C8102E] hover:bg-[#FBE9EC] transition-all duration-300 cursor-default group"
 					>
 						<img
 							src={clientLogoSrc(client)}
 							alt={$locale === 'EN' ? `Logo of ${client.name}` : `Logo ${client.name}`}
-							class="w-7 h-7 rounded-lg shrink-0 object-contain"
+							class="w-7 h-7 rounded-chip shrink-0 object-contain"
 							loading="lazy"
 						/>
 						<span
@@ -186,12 +186,12 @@
 			{#each [...row2, ...row2] as client}
 				<div class="flex-shrink-0 mx-2.5">
 					<div
-						class="flex items-center gap-3 px-5 py-3 rounded-xl border border-[#E5E5E5] bg-[#FAFAFA] hover:border-[#C8102E] hover:bg-[#FBE9EC] transition-all duration-300 cursor-default group"
+						class="flex items-center gap-3 px-5 py-3 rounded-chip border border-[#E5E5E5] bg-[#FAFAFA] hover:border-[#C8102E] hover:bg-[#FBE9EC] transition-all duration-300 cursor-default group"
 					>
 						<img
 							src={clientLogoSrc(client)}
 							alt={$locale === 'EN' ? `Logo of ${client.name}` : `Logo ${client.name}`}
-							class="w-7 h-7 rounded-lg shrink-0 object-contain"
+							class="w-7 h-7 rounded-chip shrink-0 object-contain"
 							loading="lazy"
 						/>
 						<span

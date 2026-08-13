@@ -203,9 +203,9 @@
 					transition: all 0.8s cubic-bezier(0.16,1,0.3,1);
 				"
 			>
-				<div class="leaflet-scope relative h-full rounded-[2.5rem] overflow-hidden bg-zinc-50 border border-zinc-200/80 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.08)]">
+				<div class="leaflet-scope relative h-full rounded-panel overflow-hidden bg-zinc-50 border border-zinc-200/80 shadow-lift">
 					<!-- Inner Liquid Glass Border -->
-					<div class="absolute inset-0 border border-white pointer-events-none rounded-[2.5rem] z-[400] shadow-[inset_0_2px_4px_rgba(255,255,255,0.8)]"></div>
+					<div class="absolute inset-0 border border-white pointer-events-none rounded-panel z-[400] shadow-[inset_0_2px_4px_rgba(255,255,255,0.8)]"></div>
 
 					<!-- Map container -->
 					<div
@@ -214,9 +214,9 @@
 					></div>
 
 					<!-- Overlay: station counter -->
-					<div class="absolute top-6 left-6 z-[1000] rounded-[1.5rem] p-5 backdrop-blur-md bg-white/80 border border-white shadow-[0_8px_32px_rgba(0,0,0,0.08)] transition-transform hover:scale-105">
+					<div class="absolute top-6 left-6 z-[1000] rounded-card p-5 backdrop-blur-md bg-white/80 border border-white shadow-soft transition-transform hover:scale-105">
 						<div class="flex items-center gap-4">
-							<div class="w-12 h-12 rounded-[14px] flex items-center justify-center" style="background: #FBE9EC;">
+							<div class="w-12 h-12 rounded-chip flex items-center justify-center" style="background: #FBE9EC;">
 								<Radio size={20} style="color: #C8102E;" />
 							</div>
 							<div>
@@ -235,7 +235,7 @@
 				<div class="flex flex-col gap-3 relative">
 					{#each projects as project, i}
 						<button
-							class="w-full text-left group relative p-5 rounded-[1.25rem] transition-all duration-300 cursor-pointer active:scale-[0.98] overflow-hidden"
+							class="w-full text-left group relative p-5 rounded-card transition-all duration-300 cursor-pointer active:scale-[0.98] overflow-hidden"
 							style="
 								background: {activeProject === i ? '#FFFFFF' : 'transparent'};
 								border: 1px solid {activeProject === i ? 'rgba(200,16,46,0.2)' : 'transparent'};
@@ -279,12 +279,12 @@
 				<div class="mt-8">
 					<a
 						href="/proyek"
-						class="group relative inline-flex items-center gap-3 px-8 py-4 rounded-2xl text-sm font-bold text-white overflow-hidden transition-transform active:scale-95"
+						class="group relative inline-flex items-center gap-3 px-8 py-4 rounded-card text-sm font-bold text-white overflow-hidden transition-transform active:scale-95"
 						style="background: #C8102E; box-shadow: 0 12px 24px -8px rgba(200,16,46,0.4);"
 					>
 						<!-- Perpetual Shimmer Effect -->
 						<div class="absolute inset-0 pointer-events-none translate-x-[-100%] group-hover:animate-shimmer" style="background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent); background-size: 200% 100%;"></div>
-						<div class="absolute inset-0 rounded-2xl border border-white/20 pointer-events-none shadow-[inset_0_1px_0_rgba(255,255,255,0.3)]"></div>
+						<div class="absolute inset-0 rounded-card border border-white/20 pointer-events-none shadow-[inset_0_1px_0_rgba(255,255,255,0.3)]"></div>
 						
 						<span class="relative z-10 flex items-center gap-2">
 							{$locale === 'EN' ? 'Explore All Projects' : 'Jelajahi Semua Proyek'}
