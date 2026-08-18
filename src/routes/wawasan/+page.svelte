@@ -3,6 +3,7 @@
 	import { page } from '$app/stores';
 	import { Clock, BookOpen, Newspaper, Search, ChevronLeft, ChevronRight, ArrowUpRight } from '@lucide/svelte';
 	import Ornaments from '$lib/components/Ornaments.svelte';
+	import { canonicalUrl, itemListJsonLd, jsonLdScript } from '$lib/seo';
 
 	let { data } = $props();
 
@@ -217,7 +218,15 @@
 
 <svelte:head>
 	<title>Wawasan — Studi Kasus, Artikel Teknis & Berita — Beacon Engineering</title>
-	<meta name="description" content="Studi kasus, artikel teknis, dan berita produk dari Beacon Engineering. Wawasan mendalam tentang telemetri dan monitoring infrastruktur Indonesia." />
+	{@html jsonLdScript(
+		itemListJsonLd({
+			name: 'Wawasan Beacon Engineering',
+			description:
+				'Studi kasus, artikel teknis, dan berita produk seputar telemetri dan monitoring infrastruktur di Indonesia.',
+			url: canonicalUrl($page.url),
+			items: articles.map((a) => ({ title: a.title, path: a.href }))
+		})
+	)}
 </svelte:head>
 
 <!-- Hero: Asymmetric Split Layout (SKILL Rule 3: ANTI-CENTER BIAS) -->

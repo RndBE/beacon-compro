@@ -249,7 +249,6 @@
 		name="description"
 		content={copy.metaDesc}
 	/>
-	<link rel="canonical" href="https://beaconengineering.co.id/proyek" />
 </svelte:head>
 
 <!-- Hero — SKILL: Split Screen, DESIGN_VARIANCE: 8, MOTION_INTENSITY: 6 -->

@@ -2,6 +2,15 @@
 	import ArticleLayout from '$lib/components/ArticleLayout.svelte';
 	import { page } from '$app/stores';
 	import { PUBLIC_STORAGE_BASE } from '$env/static/public';
+	import {
+		absoluteUrl,
+		articleJsonLd,
+		breadcrumbJsonLd,
+		canonicalUrl,
+		clampDescription,
+		jsonLdScript,
+		pageTitle
+	} from '$lib/seo';
 
 	let { data } = $props();
 	
@@ -32,8 +41,25 @@
 </script>
 
 <svelte:head>
-	<title>{article?.title ? `${article.title} — Beacon Engineering` : 'Wawasan — Beacon Engineering'}</title>
-	<meta name="description" content={article?.excerpt || 'Artikel wawasan dan studi kasus Beacon Engineering.'} />
+	<title>{article ? pageTitle(article.title) : 'Wawasan — Beacon Engineering'}</title>
+	{#if article}
+		{@html jsonLdScript(articleJsonLd({
+			title: article.title,
+			description: clampDescription(article.excerpt, 300),
+			url: canonicalUrl($page.url),
+			image: article.thumbnail ? absoluteUrl(article.thumbnail) : null,
+			author: article.author,
+			category: article.category,
+			publishedAt: article.published_at,
+			updatedAt: article.updated_at,
+			tags: article.tags
+		}))}
+		{@html jsonLdScript(breadcrumbJsonLd([
+			{ name: 'Beranda', path: '/' },
+			{ name: 'Wawasan', path: '/wawasan' },
+			{ name: article.title, path: `/wawasan/${article.slug}` }
+		]))}
+	{/if}
 </svelte:head>
 
 {#if article}

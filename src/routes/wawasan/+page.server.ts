@@ -24,7 +24,15 @@ export const load: PageServerLoad = async ({ url, fetch }) => {
 		const articlesResponse = await api<any>(endpoint, fetch);
 		return {
 			articlesResponse,
-			activeCategory: category
+			activeCategory: category,
+			seo: {
+				title: category
+					? `${category} — Wawasan Beacon Engineering`
+					: 'Wawasan — Studi Kasus & Artikel Teknis',
+				description:
+					'Studi kasus, artikel teknis, dan berita produk dari Beacon Engineering seputar telemetri dan monitoring infrastruktur air, cuaca, serta geoteknik di Indonesia.',
+				type: 'website' as const
+			}
 		};
 	} catch (error) {
 		console.error('Failed to load articles:', error);
