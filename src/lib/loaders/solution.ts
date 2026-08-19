@@ -1,4 +1,5 @@
 import { api } from '$lib/api';
+import { clampDescription, type SeoMeta } from '$lib/seo';
 
 export interface SolutionDetail {
 	id: number;
@@ -35,4 +36,26 @@ export async function loadSolutionDetail(slug: string, fetchFn: typeof fetch) {
 		console.error(`[Solusi/${slug}] Failed to load:`, err);
 		return null;
 	}
+}
+
+/** Meta halaman solusi: judul, deskripsi, dan gambar dari data API. */
+export function solutionSeo(detail: SolutionDetailResponse | null): SeoMeta | undefined {
+	if (!detail?.solution) return undefined;
+
+	const { solution, sub_solutions } = detail;
+	const subNames = (sub_solutions ?? [])
+		.map((sub) => sub.abbreviation || sub.name)
+		.filter(Boolean)
+		.slice(0, 6)
+		.join(', ');
+
+	return {
+		title: `${solution.name} — Solusi Monitoring Beacon Engineering`,
+		description: clampDescription(
+			[solution.description, subNames && `Mencakup ${subNames}.`].filter(Boolean).join(' '),
+			200
+		),
+		image: solution.thumbnail,
+		type: 'website'
+	};
 }

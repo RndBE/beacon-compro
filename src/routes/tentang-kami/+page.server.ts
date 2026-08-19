@@ -35,6 +35,12 @@ export const load: PageServerLoad = async ({ fetch }) => {
 	return {
 		clients: clients ?? [],
 		aboutPage,
-		testimonials: testimonials ?? []
+		testimonials: testimonials ?? [],
+		seo: {
+			title: 'Tentang Beacon Engineering — Produsen Telemetri Dalam Negeri',
+			description:
+				'Perjalanan, sertifikasi, dan kontribusi Beacon Engineering sebagai produsen instrumentasi hidrologi dan sistem telemetri buatan Indonesia.',
+			type: 'website' as const
+		}
 	};
 };

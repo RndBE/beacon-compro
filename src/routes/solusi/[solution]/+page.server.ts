@@ -1,6 +1,6 @@
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
-import { loadSolutionDetail } from '$lib/loaders/solution';
+import { loadSolutionDetail, solutionSeo } from '$lib/loaders/solution';
 
 /**
  * Catch-all for solutions that don't have a bespoke static folder.
@@ -14,5 +14,5 @@ export const load: PageServerLoad = async ({ params, fetch }) => {
 		throw error(404, `Solusi "${params.solution}" tidak ditemukan`);
 	}
 
-	return { solutionDetail: detail };
+	return { solutionDetail: detail, seo: solutionSeo(detail) };
 };

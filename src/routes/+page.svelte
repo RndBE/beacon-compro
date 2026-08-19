@@ -11,14 +11,48 @@
 	import InsightsSection from '$lib/components/sections/InsightsSection.svelte';
 	import CtaSection from '$lib/components/sections/CtaSection.svelte';
 	import { locale, translations as tr } from '$lib/i18n';
+	import { DEFAULT_OG_IMAGE, SITE_NAME, SITE_URL, jsonLdScript } from '$lib/seo';
 
 	let { data } = $props();
 	let hp = $derived(data.homepage);
+
+	// Identitas perusahaan untuk knowledge panel; datanya sama dengan footer.
+	const ORGANIZATION_JSON_LD = {
+		'@context': 'https://schema.org',
+		'@type': 'Organization',
+		name: SITE_NAME,
+		url: SITE_URL,
+		logo: DEFAULT_OG_IMAGE,
+		email: 'info@bejogja.com',
+		address: {
+			'@type': 'PostalAddress',
+			streetAddress: 'Kadirojo I, Purwomartani, Kalasan',
+			addressLocality: 'Sleman',
+			addressRegion: 'Daerah Istimewa Yogyakarta',
+			postalCode: '55571',
+			addressCountry: 'ID'
+		},
+		sameAs: [
+			'https://instagram.com/beacon_engineering',
+			'https://www.linkedin.com/company/beaconen-gineering/'
+		]
+	};
+
+	const WEBSITE_JSON_LD = {
+		'@context': 'https://schema.org',
+		'@type': 'WebSite',
+		name: SITE_NAME,
+		url: SITE_URL,
+		inLanguage: 'id-ID',
+		publisher: { '@type': 'Organization', name: SITE_NAME, url: SITE_URL }
+	};
 </script>
 
 <svelte:head>
 	<title>{tr['meta.home.title'][$locale]}</title>
 	<meta name="description" content={tr['meta.home.desc'][$locale]} />
+	{@html jsonLdScript(ORGANIZATION_JSON_LD)}
+	{@html jsonLdScript(WEBSITE_JSON_LD)}
 </svelte:head>
 
 <HeroSection />

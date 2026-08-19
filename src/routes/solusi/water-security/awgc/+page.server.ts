@@ -1,7 +1,7 @@
 import type { PageServerLoad } from './$types';
-import { loadSubSolutionDetail } from '$lib/loaders/sub-solution';
+import { loadSubSolutionDetail, subSolutionSeo } from '$lib/loaders/sub-solution';
 
 export const load: PageServerLoad = async ({ fetch }) => {
 	const detail = await loadSubSolutionDetail('awgc', fetch);
-	return { subSolutionDetail: detail };
+	return { subSolutionDetail: detail, seo: subSolutionSeo(detail) };
 };

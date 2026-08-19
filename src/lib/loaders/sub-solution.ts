@@ -1,4 +1,5 @@
 import { api } from '$lib/api';
+import { clampDescription, type SeoMeta } from '$lib/seo';
 
 export interface SpecItem {
 	name: string;
@@ -103,4 +104,37 @@ export function mapTrackRecords(
 		year: record.year,
 		location: record.location
 	}));
+}
+
+/** Meta halaman sub-solusi: dirangkai dari konten utama dan galeri produk. */
+export function subSolutionSeo(detail: SubSolutionDetailResponse | null): SeoMeta | undefined {
+	if (!detail?.sub_solution) return undefined;
+
+	const sub = detail.sub_solution;
+	const label = sub.abbreviation ? `${sub.name} (${sub.abbreviation})` : sub.name;
+	const body = clampDescription(sub.main_content, 200);
+	const productNames = (detail.products ?? [])
+		.map((product) => product.name)
+		.slice(0, 4)
+		.join(', ');
+
+	// Galeri sering kosong untuk sub-solusi baru; jatuh ke gambar produk dulu
+	// sebelum menyerah ke logo default.
+	const image =
+		detail.gallery?.[0]?.image ??
+		detail.products?.find((product) => product.main_image || product.thumbnail)?.main_image ??
+		detail.products?.find((product) => product.thumbnail)?.thumbnail ??
+		null;
+
+	return {
+		title: `${label} — ${sub.solution?.name ?? 'Solusi'} Beacon Engineering`,
+		description:
+			body ||
+			clampDescription(
+				`${label} dari Beacon Engineering${productNames ? `. Varian: ${productNames}` : ''}.`,
+				200
+			),
+		image,
+		type: 'website'
+	};
 }

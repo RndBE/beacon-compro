@@ -1,6 +1,6 @@
 import { error, redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
-import { loadSubSolutionDetail } from '$lib/loaders/sub-solution';
+import { loadSubSolutionDetail, subSolutionSeo } from '$lib/loaders/sub-solution';
 
 /**
  * Catch-all for sub-solutions that don't have a bespoke static folder.
@@ -21,5 +21,5 @@ export const load: PageServerLoad = async ({ params, fetch }) => {
 		throw redirect(307, `/solusi/${canonical}/${params.subSolution}`);
 	}
 
-	return { subSolutionDetail: detail };
+	return { subSolutionDetail: detail, seo: subSolutionSeo(detail) };
 };
