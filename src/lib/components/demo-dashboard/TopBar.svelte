@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { Menu } from '@lucide/svelte';
+	import { shell } from './ui.svelte';
 
 	let now = $state(new Date());
 	onMount(() => {
@@ -11,27 +13,29 @@
 	let hh = $derived(pad(now.getHours()));
 	let mm = $derived(pad(now.getMinutes()));
 	let ss = $derived(pad(now.getSeconds()));
+	let date = $derived(now.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }));
 </script>
 
 <div class="cc-topbar">
+	<button class="cc-topbar__menu" aria-label="Buka menu" onclick={() => (shell.navOpen = true)}><Menu size={18} /></button>
 	<span class="cc-topbar__brand"><span class="cmdctr-pulse"></span> SYSTEM ONLINE · NATIONAL</span>
 	<span class="cc-topbar__div"></span>
-	<div class="cc-topbar__kv">
+	<div class="cc-topbar__kv cc-topbar__kv--md">
 		<span class="cc-topbar__kv-k">Sensor aktif</span><span class="cc-topbar__kv-v">42 / 44</span>
 	</div>
-	<div class="cc-topbar__kv">
+	<div class="cc-topbar__kv cc-topbar__kv--opt">
 		<span class="cc-topbar__kv-k">Last sync</span><span class="cc-topbar__kv-v">2s ago</span>
 	</div>
 	<div class="cc-topbar__kv cc-topbar__kv--danger">
 		<span class="cc-topbar__kv-k">Alarm aktif</span><span class="cc-topbar__kv-v">1</span>
 	</div>
-	<div class="cc-topbar__kv">
+	<div class="cc-topbar__kv cc-topbar__kv--opt">
 		<span class="cc-topbar__kv-k">Notifikasi 24h</span><span class="cc-topbar__kv-v">186</span>
 	</div>
-	<div class="cc-topbar__kv cc-topbar__kv--ok">
+	<div class="cc-topbar__kv cc-topbar__kv--ok cc-topbar__kv--opt">
 		<span class="cc-topbar__kv-k">Uptime 30d</span><span class="cc-topbar__kv-v">99.6%</span>
 	</div>
 	<span class="cc-topbar__clock">
-		<b>{hh}:{mm}<span style="opacity:.5">:{ss}</span> WIB</b>16 Mei 2026
+		<b>{hh}:{mm}<span style="opacity:.5">:{ss}</span> WIB</b><span class="cc-topbar__date">{date}</span>
 	</span>
 </div>

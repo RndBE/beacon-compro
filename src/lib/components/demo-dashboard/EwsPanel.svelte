@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { Box, ArrowRight } from '@lucide/svelte';
 	import { EWS_LEVELS, EWS_ACTIVE, EWS_INFO } from './data';
 </script>
 
@@ -8,7 +9,7 @@
 			<span class="label">EARLY WARNING · BANJIR</span>
 			<span style="font-family:var(--font-mono);font-size:11px;color:var(--ink-mute)">ARGO · prediksi {EWS_INFO.eta}</span>
 		</div>
-		<span class="pill pill--amber">SIAGA</span>
+		<span class="pill pill--amber ews-live">SIAGA</span>
 	</div>
 
 	<div class="ews-scale">
@@ -37,4 +38,6 @@
 		</div>
 		<div class="ews-conf__bar"><span style="width:{EWS_INFO.confidence}%"></span></div>
 	</div>
+
+	<a class="ews-twin" href="/demo/dashboard/digital-twin"><Box size={14} /> Simulasikan di Digital Twin <ArrowRight size={14} /></a>
 </div>

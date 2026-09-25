@@ -1,18 +1,22 @@
 // Pure animation/data-drift helpers for the live demo widgets.
 // Seeds are deterministic-ish; randomness only grows after mount (dashboard is ssr=false).
 
-/** AWLR initial 60-point series (mirrors AWLRChart seed). */
-export function seedAwlr(n: number): number[] {
-	const base = 2.0;
+/**
+ * AWLR 60-point series ending at the station's live level. Most of the rise
+ * lands in the last half hour, matching the "TMA naik 0.6 m dalam 30 menit" alert.
+ */
+export function seedAwlr(n: number, now = 3.42, rise = 0.75): number[] {
 	return Array.from({ length: n }, (_, i) => {
-		const t = i / n;
-		return base + 0.6 * Math.sin(t * 6) + 0.3 * Math.sin(t * 13) + 0.1 * Math.random();
+		const t = i / (n - 1);
+		const shape = 1 / (1 + Math.exp(-(t - 0.62) * 9));
+		const wobble = 0.035 * Math.sin(t * 17) + 0.02 * (Math.random() - 0.5);
+		return now - rise + rise * shape + wobble * (1 - t * 0.6);
 	});
 }
 
-/** Next AWLR sample given the last one. */
-export function driftAwlr(last: number): number {
-	return Math.max(1.2, Math.min(4.2, last + (Math.random() - 0.45) * 0.12));
+/** Next AWLR sample: small noise that keeps hugging the live level. */
+export function driftAwlr(last: number, target = 3.42): number {
+	return last + (target - last) * 0.12 + (Math.random() - 0.5) * 0.035;
 }
 
 /** Rainfall initial 24-bar series (mirrors RainfallBars seed). */

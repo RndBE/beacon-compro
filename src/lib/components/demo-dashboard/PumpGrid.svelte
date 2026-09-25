@@ -19,7 +19,7 @@
 		</div>
 		<span class="pill pill--green" style="font-size:11px">5/6 OPERATIONAL</span>
 	</div>
-	<div style="display:grid;grid-template-columns:1fr 1fr;gap:{compact ? 6 : 10}px">
+	<div style="display:grid;grid-template-columns:repeat(2, minmax(0, 1fr));gap:{compact ? 6 : 10}px">
 		{#each PUMPS as p (p.id)}
 			<div
 				style="display:flex;align-items:center;gap:{compact ? 8 : 12}px;padding:{compact ? '6px 9px' : '10px 14px'};border:1px solid var(--line);border-radius:8px;background:var(--surface-2)"

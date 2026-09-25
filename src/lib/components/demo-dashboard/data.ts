@@ -38,6 +38,12 @@ export interface NavItem {
 	label: string;
 	icon: string;
 	badge?: number;
+	tag?: string;
+}
+
+export interface NavGroup {
+	label: string;
+	items: NavItem[];
 }
 
 export const PUMPS: Pump[] = [
@@ -63,6 +69,34 @@ export const WQ_GAUGES: WqGauge[] = [
 	{ label: 'COND', value: '320', unit: 'µS', min: 0, max: 1000, ok: [0, 500] }
 ];
 
+export interface WqStation {
+	id: string;
+	name: string;
+	gauges: WqGauge[];
+	sampled: string;
+}
+
+/** Water-quality stations. WQ-03 carries the pH 5.1 alarm shown across the dashboard. */
+export const WQ_STATIONS: WqStation[] = [
+	{
+		id: 'WQ-03',
+		name: 'Sungai Hilir · Rawajitu',
+		sampled: '2 menit lalu',
+		gauges: [
+			{ label: 'pH', value: '5.1', unit: '', min: 0, max: 14, ok: [6, 9] },
+			{ label: 'DO', value: '4.6', unit: 'mg/L', min: 0, max: 12, ok: [4, 12] },
+			{ label: 'TSS', value: '88', unit: 'mg/L', min: 0, max: 200, ok: [0, 100] },
+			{ label: 'COND', value: '430', unit: 'µS', min: 0, max: 1000, ok: [0, 500] }
+		]
+	},
+	{
+		id: 'WQ-01',
+		name: 'Outlet Industri',
+		sampled: '6 menit lalu',
+		gauges: WQ_GAUGES
+	}
+];
+
 export const AI_MESSAGES: AiMessage[] = [
 	{
 		title: 'Lift Pump Rawa Pitu turun 21% — periksa mekanis dalam 24 jam',
@@ -81,17 +115,35 @@ export const AI_MESSAGES: AiMessage[] = [
 	}
 ];
 
-export const NAV: NavItem[] = [
-	{ href: '/demo/dashboard', label: 'Overview', icon: 'LayoutDashboard' },
-	{ href: '/demo/dashboard/sites', label: 'Jaringan Sites', icon: 'MapPin' },
-	{ href: '/demo/dashboard/hidrologi', label: 'Hidrologi', icon: 'Waves' },
-	{ href: '/demo/dashboard/perangkat', label: 'Perangkat', icon: 'Cpu' },
-	{ href: '/demo/dashboard/kualitas-air', label: 'Kualitas Air', icon: 'FlaskConical' },
-	{ href: '/demo/dashboard/notifikasi', label: 'Notifikasi', icon: 'Bell', badge: 1 },
-	{ href: '/demo/dashboard/argo', label: 'ARGO AI', icon: 'Sparkles' },
-	{ href: '/demo/dashboard/laporan', label: 'Laporan', icon: 'FileText' },
-	{ href: '/demo/dashboard/pengaturan', label: 'Pengaturan', icon: 'Settings' }
+export const NAV_GROUPS: NavGroup[] = [
+	{
+		label: 'Pemantauan',
+		items: [
+			{ href: '/demo/dashboard', label: 'Overview', icon: 'LayoutDashboard' },
+			{ href: '/demo/dashboard/digital-twin', label: 'Digital Twin', icon: 'Box', tag: '3D' },
+			{ href: '/demo/dashboard/sites', label: 'Jaringan Sites', icon: 'MapPin' },
+			{ href: '/demo/dashboard/hidrologi', label: 'Hidrologi', icon: 'Waves' },
+			{ href: '/demo/dashboard/kualitas-air', label: 'Kualitas Air', icon: 'FlaskConical' }
+		]
+	},
+	{
+		label: 'Operasi',
+		items: [
+			{ href: '/demo/dashboard/perangkat', label: 'Perangkat', icon: 'Cpu' },
+			{ href: '/demo/dashboard/notifikasi', label: 'Notifikasi', icon: 'Bell', badge: 1 },
+			{ href: '/demo/dashboard/argo', label: 'ARGO AI', icon: 'Sparkles' }
+		]
+	},
+	{
+		label: 'Administrasi',
+		items: [
+			{ href: '/demo/dashboard/laporan', label: 'Laporan', icon: 'FileText' },
+			{ href: '/demo/dashboard/pengaturan', label: 'Pengaturan', icon: 'Settings' }
+		]
+	}
 ];
+
+export const NAV: NavItem[] = NAV_GROUPS.flatMap((g) => g.items);
 
 /* ---- Tulang Bawang sensor network (Overview map, ported from tulang-bawang slide 3) ---- */
 export type TbSensorType = 'AWLR' | 'ARR' | 'WQ' | 'SCADA' | 'CCTV' | 'CMD';
@@ -190,4 +242,92 @@ export const TELEMETRY_ROWS: TelemetryRow[] = [
 	{ label: 'Paket diterima · 24h', value: '18.4k', tone: 'ok', pct: 92 },
 	{ label: 'Gateway online', value: '4 / 4', tone: 'ok', pct: 100 },
 	{ label: 'RTU online', value: '42 / 44', tone: 'warn', pct: 95 }
+];
+
+/* ---- Notification log (Notifikasi page) ---- */
+export type Channel = 'WhatsApp' | 'SMS' | 'Telegram';
+
+export interface AlertLog extends Alert {
+	channels: Channel[];
+	recipients: number;
+	read: boolean;
+}
+
+export const ALERT_LOG: AlertLog[] = [
+	{ t: 'now', sev: 'alarm', code: 'WQ-03', msg: 'pH 5.1 di Rawajitu — di bawah ambang baku', channels: ['WhatsApp', 'SMS', 'Telegram'], recipients: 18, read: false },
+	{ t: '2m', sev: 'warn', code: 'ARR-02', msg: 'Curah hujan 32 mm/h · Gedung Aji', channels: ['WhatsApp', 'Telegram'], recipients: 12, read: true },
+	{ t: '8m', sev: 'warn', code: 'AWLR-02', msg: 'TMA naik 0.6 m dalam 30 menit', channels: ['WhatsApp', 'SMS'], recipients: 24, read: true },
+	{ t: '14m', sev: 'ok', code: 'P-04', msg: 'Lift pump Rawa Pitu normal kembali', channels: ['Telegram'], recipients: 6, read: true },
+	{ t: '31m', sev: 'warn', code: 'AWLR-02', msg: 'Status SIAGA · TMA 3.12 m melewati ambang 3.0 m', channels: ['WhatsApp', 'SMS', 'Telegram'], recipients: 32, read: true },
+	{ t: '47m', sev: 'warn', code: 'P-04', msg: 'Debit lift pump turun 21% dari baseline', channels: ['WhatsApp'], recipients: 5, read: true },
+	{ t: '1h', sev: 'ok', code: 'RTU-17', msg: 'RTU Banjar Agung kembali online setelah 12 menit', channels: ['Telegram'], recipients: 4, read: true },
+	{ t: '2h', sev: 'warn', code: 'ARR-01', msg: 'Akumulasi hujan 3 jam 48 mm · Banjar Agung', channels: ['WhatsApp', 'Telegram'], recipients: 12, read: true },
+	{ t: '3h', sev: 'ok', code: 'SCADA-01', msg: 'Sinkronisasi SCADA utility industri selesai', channels: ['Telegram'], recipients: 3, read: true },
+	{ t: '5h', sev: 'alarm', code: 'RTU-31', msg: 'RTU Rawa Pitu offline · baterai 11.2 V', channels: ['WhatsApp', 'SMS'], recipients: 8, read: true },
+	{ t: '6h', sev: 'ok', code: 'CCTV-01', msg: 'Stream CCTV Menggala pulih', channels: ['Telegram'], recipients: 3, read: true },
+	{ t: '9h', sev: 'ok', code: 'SYS', msg: 'Laporan harian otomatis terkirim ke 14 penerima', channels: ['WhatsApp'], recipients: 14, read: true }
+];
+
+/** 24h totals per channel; they add up to the 186 in the top bar. */
+export const CHANNEL_STATS: { ch: Channel; sent: number; delivered: number }[] = [
+	{ ch: 'WhatsApp', sent: 124, delivered: 122 },
+	{ ch: 'SMS', sent: 38, delivered: 37 },
+	{ ch: 'Telegram', sent: 24, delivered: 24 }
+];
+
+/* ---- Devices (Perangkat page) ---- */
+export interface PumpDetail {
+	kind: 'Pompa' | 'Pintu Air';
+	load: number;
+	hours: number;
+	power: string;
+	service: string;
+}
+
+export const PUMP_DETAILS: Record<string, PumpDetail> = {
+	'P-01': { kind: 'Pompa', load: 72, hours: 1284, power: '55 kW', service: '12 hari lalu' },
+	'P-02': { kind: 'Pintu Air', load: 60, hours: 0, power: '7.5 kW', service: '30 hari lalu' },
+	'P-03': { kind: 'Pompa', load: 64, hours: 2210, power: '37 kW', service: '5 hari lalu' },
+	'P-04': { kind: 'Pompa', load: 41, hours: 3890, power: '45 kW', service: '84 hari lalu' },
+	'P-05': { kind: 'Pintu Air', load: 40, hours: 0, power: '7.5 kW', service: '21 hari lalu' },
+	'P-06': { kind: 'Pompa', load: 81, hours: 1570, power: '75 kW', service: '9 hari lalu' }
+};
+
+/* ---- Reports (Laporan page) ---- */
+export interface ReportItem {
+	id: string;
+	kind: 'Harian' | 'Mingguan' | 'Bulanan' | 'Insiden';
+	title: string;
+	/** days before today the period ends */
+	ago: number;
+	/** period length in days */
+	span: number;
+	pages: number;
+	size: string;
+}
+
+export const REPORTS: ReportItem[] = [
+	{ id: 'RPT-D-001', kind: 'Harian', title: 'Ringkasan Operasional Harian', ago: 0, span: 1, pages: 6, size: '1.2 MB' },
+	{ id: 'RPT-I-014', kind: 'Insiden', title: 'Insiden pH Rendah WQ-03 Rawajitu', ago: 0, span: 1, pages: 4, size: '860 KB' },
+	{ id: 'RPT-D-002', kind: 'Harian', title: 'Ringkasan Operasional Harian', ago: 1, span: 1, pages: 6, size: '1.1 MB' },
+	{ id: 'RPT-W-020', kind: 'Mingguan', title: 'Hidrologi & Curah Hujan Mingguan', ago: 2, span: 7, pages: 18, size: '3.4 MB' },
+	{ id: 'RPT-W-019', kind: 'Mingguan', title: 'Kinerja Pompa & Pintu Air', ago: 2, span: 7, pages: 12, size: '2.2 MB' },
+	{ id: 'RPT-I-013', kind: 'Insiden', title: 'RTU Rawa Pitu Offline', ago: 4, span: 1, pages: 3, size: '640 KB' },
+	{ id: 'RPT-M-004', kind: 'Bulanan', title: 'Laporan Bulanan Smart Regency', ago: 9, span: 30, pages: 42, size: '8.9 MB' }
+];
+
+/* ---- Settings (Pengaturan page) ---- */
+export interface DemoUser {
+	name: string;
+	email: string;
+	role: 'Admin' | 'Operator' | 'Engineer' | 'Viewer';
+	unit: string;
+	active: boolean;
+}
+
+export const DEMO_USERS: DemoUser[] = [
+	{ name: 'Operator Command Center', email: 'operator@beacon.id', role: 'Operator', unit: 'Command Center Menggala', active: true },
+	{ name: 'Admin Sistem', email: 'admin@beacon.id', role: 'Admin', unit: 'Beacon Engineering', active: true },
+	{ name: 'Engineer Lapangan', email: 'engineer@beacon.id', role: 'Engineer', unit: 'Dinas PUPR', active: true },
+	{ name: 'Pos Siaga BPBD', email: 'bpbd@beacon.id', role: 'Viewer', unit: 'BPBD Tulang Bawang', active: false }
 ];
