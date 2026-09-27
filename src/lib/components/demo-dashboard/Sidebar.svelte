@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { NAV_GROUPS } from './data';
+	import { NAV_GROUPS, type NavGroup } from './data';
 	import BrandMark from './BrandMark.svelte';
 	import { shell } from './ui.svelte';
 	import {
@@ -14,9 +14,32 @@
 		Sparkles,
 		FileText,
 		Settings,
+		Network,
+		Activity,
+		Radar,
+		Scale,
+		Gauge,
+		Database,
+		Siren,
 		LogOut,
 		X
 	} from '@lucide/svelte';
+
+	let {
+		groups = NAV_GROUPS,
+		eyebrow,
+		title,
+		region = { k: 'Pilot Smart Regency', v: 'Pemkab Tulang Bawang', s: '42/44 node online' },
+		logout = '/demo/logout'
+	}: {
+		groups?: NavGroup[];
+		/** BrandMark eyebrow/title; BrandMark's own defaults when omitted */
+		eyebrow?: string;
+		title?: string;
+		region?: { k: string; v: string; s: string };
+		/** POST target of the sign-out form */
+		logout?: string;
+	} = $props();
 
 	const icons: Record<string, typeof LayoutDashboard> = {
 		LayoutDashboard,
@@ -28,7 +51,14 @@
 		Bell,
 		Sparkles,
 		FileText,
-		Settings
+		Settings,
+		Network,
+		Activity,
+		Radar,
+		Scale,
+		Gauge,
+		Database,
+		Siren
 	};
 
 	let path = $derived($page.url.pathname);
@@ -46,11 +76,11 @@
 
 <aside class="demo-side" class:is-open={shell.navOpen}>
 	<div class="demo-side__brand">
-		<BrandMark />
+		<BrandMark {eyebrow} {title} />
 		<button class="demo-side__close" aria-label="Tutup menu" onclick={() => (shell.navOpen = false)}><X size={18} /></button>
 	</div>
 	<nav class="demo-side__nav">
-		{#each NAV_GROUPS as group (group.label)}
+		{#each groups as group (group.label)}
 			<span class="demo-side__group">{group.label}</span>
 			{#each group.items as item (item.href)}
 				{@const Icon = icons[item.icon]}
@@ -70,12 +100,12 @@
 	</nav>
 
 	<div class="demo-side__region">
-		<span class="demo-side__region-k">Pilot Smart Regency</span>
-		<span class="demo-side__region-v">Pemkab Tulang Bawang</span>
-		<span class="demo-side__region-s"><span class="cc-live-dot"></span>42/44 node online</span>
+		<span class="demo-side__region-k">{region.k}</span>
+		<span class="demo-side__region-v">{region.v}</span>
+		<span class="demo-side__region-s"><span class="cc-live-dot"></span>{region.s}</span>
 	</div>
 
-	<form class="demo-side__logout" method="POST" action="/demo/logout">
+	<form class="demo-side__logout" method="POST" action={logout}>
 		<button type="submit"><LogOut size={18} /> Keluar</button>
 	</form>
 </aside>

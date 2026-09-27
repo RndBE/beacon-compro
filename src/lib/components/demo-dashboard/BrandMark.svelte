@@ -1,5 +1,9 @@
 <script lang="ts">
-	let { eyebrow = 'BEACON · TULANG BAWANG', size = 40 }: { eyebrow?: string; size?: number } = $props();
+	let {
+		eyebrow = 'BEACON · TULANG BAWANG',
+		title = 'Command Center',
+		size = 40
+	}: { eyebrow?: string; title?: string; size?: number } = $props();
 </script>
 
 <div class="brandmark">
@@ -54,7 +58,7 @@
 
 	<span class="brandmark__text">
 		<span class="brandmark__eyebrow">{eyebrow}</span>
-		<span class="brandmark__title">Command Center</span>
+		<span class="brandmark__title">{title}</span>
 	</span>
 </div>
 
