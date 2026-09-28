@@ -24,6 +24,7 @@
 	import {
 		BURST,
 		EVENTS,
+		TRANSIENT,
 		burstAnchor,
 		burstAt,
 		burstLoss,
@@ -32,6 +33,7 @@
 		mnfHistory,
 		noise,
 		ticks24,
+		transientAt,
 		zonePressure
 	} from '$lib/components/demo-pdam/sim';
 
@@ -80,7 +82,7 @@
 			if (lk.id === 'LK-01') a -= BURST.drop['PT-01'] * (burstAt(x, anchor) / BURST.flow);
 			if (lk.id === 'LK-02') a -= 0.07 * (0.9 + 0.1 * noise('lk2', i));
 			// LK-03: short recurring transients
-			if (lk.id === 'LK-03' && [3.2, 13.7, 21.3].some((t) => Math.abs(wrap(x) - t) < 0.2)) a -= 0.25;
+			if (lk.id === TRANSIENT.leak) a -= transientAt(x);
 			actual.push(a);
 		}
 		return { normal, actual, now };
@@ -315,7 +317,9 @@
 					<tbody>
 						{#each LEAK_HISTORY as h (h.id)}
 							<tr>
-								<td class="mono" style="font-weight:700">{h.id}</td>
+								<td class="mono" style="font-weight:700">
+									<a class="leak-hist" href="/demo/pdam/historis?id={h.zone}-IN&span=7&d={Math.max(0, h.ago - 3)}" title="Lihat data historis {h.id}">{h.id}</a>
+								</td>
 								<td>{ZONE_BY_ID[h.zone].name}</td>
 								<td>{h.pipe}</td>
 								<td class="mono">{fmtNum(h.est, 1)} L/s</td>

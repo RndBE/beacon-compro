@@ -21,6 +21,7 @@
 		Gauge,
 		Database,
 		Siren,
+		History,
 		LogOut,
 		X
 	} from '@lucide/svelte';
@@ -58,7 +59,8 @@
 		Scale,
 		Gauge,
 		Database,
-		Siren
+		Siren,
+		History
 	};
 
 	let path = $derived($page.url.pathname);

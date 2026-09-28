@@ -186,13 +186,16 @@ export const LEAK_STATUS_LABEL: Record<LeakStatus, string> = {
 	selesai: 'Selesai'
 };
 
-/** Leak cases closed in the last 30 days (for the history table). */
+/**
+ * Leak cases closed in the last 30 days (for the history table). The repair was finished
+ * `ago` days back at clock hour `end`; `found` / `fixed` are the time to find and to repair.
+ */
 export const LEAK_HISTORY = [
-	{ id: 'LK-98', zone: 'BDG' as ZoneId, pipe: 'JDU Ø10" ACP', est: 11.2, found: '3 j 10 m', fixed: '7 j 40 m', saved: 968, ago: 4 },
-	{ id: 'LK-97', zone: 'PGK' as ZoneId, pipe: 'JDU Ø6" PVC', est: 3.8, found: '1 hari', fixed: '5 j 05 m', saved: 328, ago: 9 },
-	{ id: 'LK-96', zone: 'GMW' as ZoneId, pipe: 'Transmisi Ø12" CI', est: 22.4, found: '1 j 55 m', fixed: '9 j 20 m', saved: 1935, ago: 13 },
-	{ id: 'LK-95', zone: 'KTG' as ZoneId, pipe: 'JDU Ø6" ACP', est: 2.6, found: '2 hari', fixed: '4 j 15 m', saved: 225, ago: 21 },
-	{ id: 'LK-94', zone: 'PDS' as ZoneId, pipe: 'Transmisi Ø16" CI', est: 14.9, found: '2 j 40 m', fixed: '11 j 00 m', saved: 1287, ago: 27 }
+	{ id: 'LK-98', zone: 'BDG' as ZoneId, pipe: 'JDU Ø10" ACP', est: 11.2, found: '3 j 10 m', fixed: '7 j 40 m', saved: 968, ago: 4, end: 20.2 },
+	{ id: 'LK-97', zone: 'PGK' as ZoneId, pipe: 'JDU Ø6" PVC', est: 3.8, found: '1 hari', fixed: '5 j 05 m', saved: 328, ago: 9, end: 14.5 },
+	{ id: 'LK-96', zone: 'GMW' as ZoneId, pipe: 'Transmisi Ø12" CI', est: 22.4, found: '1 j 55 m', fixed: '9 j 20 m', saved: 1935, ago: 13, end: 18.3 },
+	{ id: 'LK-95', zone: 'KTG' as ZoneId, pipe: 'JDU Ø6" ACP', est: 2.6, found: '2 hari', fixed: '4 j 15 m', saved: 225, ago: 21, end: 15.25 },
+	{ id: 'LK-94', zone: 'PDS' as ZoneId, pipe: 'Transmisi Ø16" CI', est: 14.9, found: '2 j 40 m', fixed: '11 j 00 m', saved: 1287, ago: 27, end: 19.5 }
 ];
 
 /* ---- water balance (per zone, 30 days) ---- */
@@ -377,7 +380,8 @@ export const NAV_GROUPS: NavGroup[] = [
 			{ href: '/demo/pdam', label: 'Beranda', icon: 'LayoutDashboard' },
 			{ href: '/demo/pdam/digital-twin', label: 'Digital Twin', icon: 'Box', tag: '3D' },
 			{ href: '/demo/pdam/jaringan', label: 'Peta Jaringan', icon: 'Network' },
-			{ href: '/demo/pdam/realtime', label: 'Realtime', icon: 'Activity' }
+			{ href: '/demo/pdam/realtime', label: 'Realtime', icon: 'Activity' },
+			{ href: '/demo/pdam/historis', label: 'Data Historis', icon: 'History' }
 		]
 	},
 	{

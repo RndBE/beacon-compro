@@ -1,19 +1,40 @@
 <script lang="ts" module>
 	export interface ChartSeries {
+		/** NaN = no data: the line breaks there */
 		values: number[];
 		color: string;
 		label?: string;
 		dash?: string;
 		/** gradient area under the line */
 		fill?: boolean;
+		/** lower edge: shades the band between lo and values (min–max envelope) */
+		lo?: number[];
+		/** 0 = no line (band only) */
 		width?: number;
 		opacity?: number;
+	}
+
+	/** y-range with a minimum span so sensor noise is not blown up to full height (NaN ignored) */
+	export function yRange(v: number[], minSpan: number, extra: number[] = []) {
+		const all = [...v, ...extra].filter(Number.isFinite);
+		let lo = Math.min(...all);
+		let hi = Math.max(...all);
+		const span = hi - lo;
+		if (span < minSpan) {
+			const mid = (lo + hi) / 2;
+			lo = mid - minSpan / 2;
+			hi = mid + minSpan / 2;
+		} else {
+			lo -= span * 0.1;
+			hi += span * 0.1;
+		}
+		return { min: lo, max: hi };
 	}
 </script>
 
 <script lang="ts">
-	// Small responsive SVG line chart shared by the PDAM pages: 24 h curves,
-	// 60-minute realtime traces, threshold lines, highlighted x-bands and a cursor.
+	// Small responsive SVG line chart shared by the PDAM pages: 24 h curves, 60-minute
+	// realtime traces, archive envelopes with data gaps, threshold lines, x-bands and a cursor.
 	let {
 		series,
 		x0 = 0,
@@ -29,7 +50,8 @@
 		yTicks = 4,
 		yFmt = (v: number) => (Math.abs(v) >= 100 ? v.toFixed(0) : v.toFixed(1)),
 		bare = false,
-		inset = 1
+		inset = 1,
+		onhover
 	}: {
 		series: ChartSeries[];
 		x0?: number;
@@ -52,6 +74,8 @@
 		bare?: boolean;
 		/** bare mode: horizontal padding, so the cursor can line up with a range thumb */
 		inset?: number;
+		/** pointer position on the x axis (null when it leaves) */
+		onhover?: (x: number | null) => void;
 	} = $props();
 
 	let W = $state(0);
@@ -62,7 +86,8 @@
 		let hi = max ?? -Infinity;
 		if (min == null || max == null) {
 			for (const s of series)
-				for (const v of s.values) {
+				for (const v of s.lo ? [...s.values, ...s.lo] : s.values) {
+					if (!Number.isFinite(v)) continue;
 					if (min == null) lo = Math.min(lo, v);
 					if (max == null) hi = Math.max(hi, v);
 				}
@@ -84,12 +109,47 @@
 	let ys = $derived((v: number) => pad.t + (1 - (v - dom.lo) / (dom.hi - dom.lo || 1)) * ih);
 	const xAt = (s: ChartSeries, i: number) => x0 + ((x1 - x0) * i) / Math.max(1, s.values.length - 1);
 
+	/** [first, last] index of each unbroken stretch of data */
+	function runs(s: ChartSeries) {
+		const out: [number, number][] = [];
+		let a = -1;
+		s.values.forEach((v, i) => {
+			const ok = Number.isFinite(v) && (!s.lo || Number.isFinite(s.lo[i]));
+			if (ok && a < 0) a = i;
+			if (!ok && a >= 0) (out.push([a, i - 1]), (a = -1));
+		});
+		if (a >= 0) out.push([a, s.values.length - 1]);
+		return out;
+	}
+	const pt = (s: ChartSeries, v: number, i: number) => `${xs(xAt(s, i)).toFixed(1)} ${ys(v).toFixed(1)}`;
+	function line(s: ChartSeries, [a, b]: [number, number]) {
+		let d = '';
+		for (let i = a; i <= b; i++) d += `${i > a ? 'L' : 'M'}${pt(s, s.values[i], i)}`;
+		return d;
+	}
 	function path(s: ChartSeries) {
-		return s.values.map((v, i) => `${i ? 'L' : 'M'}${xs(xAt(s, i)).toFixed(1)} ${ys(v).toFixed(1)}`).join('');
+		return runs(s)
+			.map((r) => line(s, r))
+			.join('');
 	}
 	function area(s: ChartSeries) {
 		const base = pad.t + ih;
-		return `${path(s)}L${xs(x1).toFixed(1)} ${base}L${xs(x0).toFixed(1)} ${base}Z`;
+		return runs(s)
+			.map((r) => `${line(s, r)}L${xs(xAt(s, r[1])).toFixed(1)} ${base}L${xs(xAt(s, r[0])).toFixed(1)} ${base}Z`)
+			.join('');
+	}
+	function band(s: ChartSeries) {
+		return runs(s)
+			.map(([a, b]) => {
+				let d = line(s, [a, b]);
+				for (let i = b; i >= a; i--) d += `L${pt(s, s.lo![i], i)}`;
+				return `${d}Z`;
+			})
+			.join('');
+	}
+	function hover(e: PointerEvent) {
+		const px = e.clientX - (e.currentTarget as Element).getBoundingClientRect().left;
+		onhover?.(x0 + Math.max(0, Math.min(1, (px - pad.l) / iw)) * (x1 - x0));
 	}
 	function valueAt(s: ChartSeries, x: number) {
 		const t = ((x - x0) / (x1 - x0)) * (s.values.length - 1);
@@ -111,7 +171,16 @@
 	);
 </script>
 
-<div bind:clientWidth={W} class="lchart" style="height:{height}px">
+<!-- hover only adds a readout; the values are also in each page's tables -->
+<div
+	role="presentation"
+	bind:clientWidth={W}
+	class="lchart"
+	class:lchart--hover={!!onhover}
+	style="height:{height}px"
+	onpointermove={onhover && hover}
+	onpointerleave={onhover && (() => onhover(null))}
+>
 	{#if W > 0}
 		<svg viewBox={`0 0 ${W} ${height}`} width={W} height={height} role="img" aria-label="Grafik">
 			<defs>
@@ -155,29 +224,35 @@
 			{/each}
 
 			{#each series as s, i (i)}
+				{#if s.lo}<path d={band(s)} fill={s.color} opacity="0.2" />{/if}
 				{#if s.fill}<path d={area(s)} fill="url(#{uid}-{i})" />{/if}
-				<path
-					d={path(s)}
-					fill="none"
-					stroke={s.color}
-					stroke-width={s.width ?? 2}
-					stroke-dasharray={s.dash}
-					stroke-opacity={s.opacity ?? 1}
-					stroke-linejoin="round"
-					stroke-linecap="round"
-				/>
+				{#if s.width !== 0}
+					<path
+						d={path(s)}
+						fill="none"
+						stroke={s.color}
+						stroke-width={s.width ?? 2}
+						stroke-dasharray={s.dash}
+						stroke-opacity={s.opacity ?? 1}
+						stroke-linejoin="round"
+						stroke-linecap="round"
+					/>
+				{/if}
 			{/each}
 
 			{#each marks as m (m.x + (m.t ?? ''))}
 				<line x1={xs(m.x)} x2={xs(m.x)} y1={pad.t} y2={pad.t + ih} stroke={m.c} stroke-width="1" stroke-dasharray="2 3" opacity="0.8" />
-				<circle cx={xs(m.x)} cy={pad.t + ih} r="3.2" fill={m.c} stroke="#07112a" stroke-width="1.5" />
+				<circle cx={xs(m.x)} cy={pad.t + ih} r="3.2" fill={m.c} stroke="#07112a" stroke-width="1.5">
+					{#if m.t}<title>{m.t}</title>{/if}
+				</circle>
 			{/each}
 
 			{#if cursor != null}
 				<line x1={xs(cursor)} x2={xs(cursor)} y1={pad.t - 2} y2={pad.t + ih} stroke="#eaf1fb" stroke-width="1" opacity="0.65" />
 				{#each series as s, i (i)}
-					{#if !s.dash}
-						<circle cx={xs(cursor)} cy={ys(valueAt(s, cursor))} r="3.6" fill="#07112a" stroke={s.color} stroke-width="1.8" />
+					{@const v = valueAt(s, cursor)}
+					{#if !s.dash && s.width !== 0 && Number.isFinite(v)}
+						<circle cx={xs(cursor)} cy={ys(v)} r="3.6" fill="#07112a" stroke={s.color} stroke-width="1.8" />
 					{/if}
 				{/each}
 			{/if}

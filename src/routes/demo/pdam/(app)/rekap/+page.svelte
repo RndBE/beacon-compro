@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
-	import { Activity, Database, FileDown, Flag, RefreshCw, Search, Upload } from '@lucide/svelte';
+	import { Activity, Database, FileDown, Flag, History, RefreshCw, Search, Upload } from '@lucide/svelte';
 	import PageHead from '$lib/components/demo-dashboard/PageHead.svelte';
 	import { notify } from '$lib/components/demo-dashboard/ui.svelte';
 	import LoggerSignalBars from '$lib/components/demo-pdam/LoggerSignalBars.svelte';
@@ -13,6 +13,7 @@
 		completenessOf,
 		completenessTone,
 		fmtDay,
+		gapCause,
 		fmtWeekday,
 		lastDays
 	} from '$lib/components/demo-pdam/logger-health';
@@ -29,16 +30,6 @@
 	// today is still running: only the minutes so far are scheduled
 	let elapsed = $derived(Math.max(1, Math.floor(live.h * 60)));
 	const expectedOn = (i: number, el: number) => (i === TODAY ? el : RECORDS_PER_DAY);
-
-	/** Likely cause of missing records, from the device health data. */
-	function cause(id: string) {
-		const d = DEVICE_BY_ID[id];
-		if (!d) return 'gangguan komunikasi singkat';
-		if (d.lastFault?.startsWith('Sinyal putus')) return 'sinyal seluler putus · data dibuffer di logger';
-		if (d.fault) return d.fault.toLowerCase();
-		if (d.signal < -85) return `sinyal lemah ${fmtNum(d.signal)} dBm`;
-		return 'gangguan komunikasi singkat';
-	}
 
 	const ROWS = ASSETS.map((a) => {
 		const vals = completenessOf(a.id);
@@ -249,13 +240,13 @@
 					<div class="rekap-detail__note">
 						<Flag size={13} />
 						<span
-							><b>{fmtNum(Math.round((exp * (100 - sel.vals[selDay])) / 100))} slot kosong</b> pada {fmtDay(days[selDay])} · {cause(sel.a.id)}</span
+							><b>{fmtNum(Math.round((exp * (100 - sel.vals[selDay])) / 100))} slot kosong</b> pada {fmtDay(days[selDay])} · {gapCause(sel.a.id)}</span
 						>
 					</div>
 				{:else if sel.min < 100}
 					<div class="rekap-detail__note">
 						<Flag size={13} />
-						<span>Terendah <b>{pct(sel.min)}%</b> pada {fmtDay(days[sel.vals.indexOf(sel.min)])} · {cause(sel.a.id)}</span>
+						<span>Terendah <b>{pct(sel.min)}%</b> pada {fmtDay(days[sel.vals.indexOf(sel.min)])} · {gapCause(sel.a.id)}</span>
 					</div>
 				{:else}
 					<div class="rekap-detail__note rekap-detail__note--ok"><span>Lengkap 7 hari · tidak ada slot kosong</span></div>
@@ -267,6 +258,9 @@
 						onclick={() => notify(`Permintaan tarik ulang buffer dikirim ke ${sel.a.id} (demo)`)}><RefreshCw size={13} /> Tarik ulang buffer</button
 					>
 					<a class="demo-btn demo-btn--sm" href="/demo/pdam/realtime?id={sel.a.id}"><Activity size={13} /> Realtime</a>
+					<a class="demo-btn demo-btn--sm" href="/demo/pdam/historis?id={sel.a.id}{selDay != null ? `&d=${TODAY - selDay}` : ''}"
+						><History size={13} /> Data historis</a
+					>
 				</div>
 			</div>
 
@@ -287,7 +281,7 @@
 								<span class="rekap-flags__body">
 									<b>{f.r.a.id} · {f.i === TODAY ? 'hari ini' : `${fmtWeekday(days[f.i])} ${fmtDay(days[f.i])}`}</b>
 									<small
-										>{fmtNum(Math.round((expectedOn(f.i, elapsed) * (100 - f.v)) / 100))} slot kosong · {cause(f.r.a.id)}</small
+										>{fmtNum(Math.round((expectedOn(f.i, elapsed) * (100 - f.v)) / 100))} slot kosong · {gapCause(f.r.a.id)}</small
 									>
 								</span>
 							</button>

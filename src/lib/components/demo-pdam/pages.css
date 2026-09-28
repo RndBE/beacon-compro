@@ -1,8 +1,8 @@
 /* ============================================================
-   PDAM demo · secondary pages (realtime, rekap, siaga, perangkat,
-   tekanan). Shared building blocks live in pdam.css.
+   PDAM demo · secondary pages (realtime, historis, rekap, siaga,
+   perangkat, tekanan). Shared building blocks live in pdam.css.
    Namespaces: .lsig (signal bars) · .rt-* realtime · .rekap-* ·
-   .siaga-* · .dev2-* perangkat · .prs-* tekanan
+   .siaga-* · .dev2-* perangkat · .prs-* tekanan · .hist-* historis
    ============================================================ */
 
 /* ---- shared: 4-bar signal indicator ---- */
@@ -1794,6 +1794,189 @@
 }
 
 /* ============================================================
+   Data Historis (reuses the realtime picker, header, tiles and trend cards)
+   ============================================================ */
+.hist-ctrl {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	gap: 8px;
+}
+.hist-date {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+}
+.hist-date .demo-btn--sm {
+	padding: 6px 8px;
+}
+.hist-date label {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	height: 31px;
+	padding: 0 10px;
+	border-radius: 9px;
+	border: 1px solid var(--line);
+	background: rgba(7, 17, 42, 0.5);
+	font-family: var(--font-mono);
+	font-size: 11px;
+	color: var(--ink-mute);
+}
+.hist-date label:focus-within {
+	border-color: var(--brand-2);
+}
+.hist-date input {
+	border: 0;
+	outline: none;
+	background: transparent;
+	color: var(--ink);
+	font-family: var(--font-mono);
+	font-size: 12px;
+	color-scheme: dark;
+}
+.demo-deck .hist-chart {
+	padding-bottom: 12px;
+}
+.hist-read.is-on {
+	color: #8fd3ff;
+}
+.lchart--hover {
+	cursor: crosshair;
+	touch-action: pan-y;
+}
+
+/* event log */
+.demo-deck .hist-events {
+	padding: 16px 18px;
+}
+.demo-deck .hist-events .card-h {
+	margin-bottom: 10px;
+}
+.hist-ev {
+	display: grid;
+	gap: 2px;
+	max-height: 236px;
+	margin: 0;
+	padding: 0;
+	overflow: auto;
+	list-style: none;
+}
+.hist-ev button {
+	display: grid;
+	grid-template-columns: 8px 120px minmax(0, 1fr) auto;
+	grid-template-areas: 'dot t l id';
+	align-items: center;
+	gap: 2px 10px;
+	width: 100%;
+	padding: 6px 8px;
+	border: 0;
+	border-radius: 8px;
+	background: none;
+	color: inherit;
+	font: inherit;
+	text-align: left;
+	cursor: pointer;
+}
+.hist-ev button:hover {
+	background: rgba(40, 118, 232, 0.16);
+}
+.hist-ev i {
+	grid-area: dot;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+}
+.hist-ev__t {
+	grid-area: t;
+	font-family: var(--font-mono);
+	font-size: 10.5px;
+	color: var(--ink-mute);
+	white-space: nowrap;
+}
+.hist-ev__l {
+	grid-area: l;
+	font-size: 12.5px;
+	color: var(--ink-2);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.hist-ev__id {
+	grid-area: id;
+	font-family: var(--font-mono);
+	font-size: 10.5px;
+	font-weight: 700;
+	color: var(--ink-soft);
+}
+.hist-ev li.is-other {
+	opacity: 0.5;
+}
+.hist-ev__none {
+	margin: 0;
+}
+
+/* daily / hourly table */
+.hist-scroll {
+	max-height: 440px;
+	overflow: auto;
+}
+.hist-table thead th {
+	position: sticky;
+	top: 0;
+	z-index: 1;
+	background: #0c1a37;
+}
+.hist-at {
+	display: block;
+	margin-top: 1px;
+	font-size: 10px;
+	color: var(--ink-mute);
+}
+.hist-day {
+	display: flex;
+	flex-direction: column;
+	gap: 1px;
+	padding: 0;
+	border: 0;
+	background: none;
+	color: var(--ink);
+	font-family: var(--font-mono);
+	font-size: 12px;
+	font-weight: 700;
+	text-align: left;
+	white-space: nowrap;
+	cursor: pointer;
+}
+.hist-day:hover {
+	color: #8fd3ff;
+}
+.hist-day small {
+	font-size: 10px;
+	font-weight: 500;
+	color: var(--ink-mute);
+}
+.hist-evcell {
+	min-width: 64px;
+	white-space: nowrap;
+}
+.hist-evcell i {
+	display: inline-block;
+	width: 8px;
+	height: 8px;
+	margin-right: 4px;
+	border-radius: 50%;
+}
+/* Kebocoran · closed-leak ids open the archive */
+.leak-hist {
+	color: #8fd3ff;
+	text-decoration: none;
+}
+.leak-hist:hover {
+	text-decoration: underline;
+}
+
+/* ============================================================
    Responsive
    ============================================================ */
 @media (max-width: 1280px) {
@@ -1871,6 +2054,25 @@
 	}
 }
 @media (max-width: 760px) {
+	.hist-ctrl {
+		align-items: stretch;
+	}
+	.hist-ctrl .demo-seg {
+		justify-content: space-between;
+	}
+	.hist-date label {
+		flex: 1;
+	}
+	.hist-date input {
+		flex: 1;
+		min-width: 0;
+	}
+	.hist-ev button {
+		grid-template-columns: 8px minmax(0, 1fr) auto;
+		grid-template-areas:
+			'dot t id'
+			'dot l l';
+	}
 	.rt-primary,
 	.rt-primary--strip,
 	.rt-secondary {

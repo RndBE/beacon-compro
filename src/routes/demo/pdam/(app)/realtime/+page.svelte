@@ -2,12 +2,13 @@
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
-	import { Activity, Cpu, Database, FileDown, List } from '@lucide/svelte';
+	import { Activity, Cpu, Database, FileDown, History, List } from '@lucide/svelte';
 	import PageHead from '$lib/components/demo-dashboard/PageHead.svelte';
 	import { notify } from '$lib/components/demo-dashboard/ui.svelte';
 	import RealtimeTrendCard from '$lib/components/demo-pdam/RealtimeTrendCard.svelte';
 	import LoggerSignalBars from '$lib/components/demo-pdam/LoggerSignalBars.svelte';
-	import type { ChartSeries } from '$lib/components/demo-pdam/LineChart.svelte';
+	import LoggerPicker from '$lib/components/demo-pdam/LoggerPicker.svelte';
+	import { yRange, type ChartSeries } from '$lib/components/demo-pdam/LineChart.svelte';
 	import {
 		ASSETS,
 		ASSET_BY_ID,
@@ -26,17 +27,17 @@
 		LIMITS,
 		climateAt,
 		completenessOf,
+		jitter,
 		levelAbove,
 		levelBelow,
 		loggerVolt,
+		minPressureLines,
 		wobble,
 		type AlertLevel
 	} from '$lib/components/demo-pdam/logger-health';
 
 	onMount(() => useLive());
 
-	const TYPES: AssetType[] = ['DMA', 'PT', 'SC', 'RES'];
-	const GROUPS = TYPES.map((t) => ({ type: t, items: ASSETS.filter((a) => a.type === t) }));
 	const DEFAULT_ID = 'GMW-IN';
 	const STATUS_LABEL = { ok: 'NORMAL', warn: 'SIAGA', alarm: 'AWAS' } as const;
 	const pillOf = (s: string) => (s === 'alarm' ? 'danger' : s === 'warn' ? 'amber' : 'green');
@@ -88,18 +89,10 @@
 		for (let i = 0; i < 60; i++) {
 			const m = lastMinute - 59 + i;
 			const t = m / 60;
-			const r = readAsset(a, t, true);
 			const c = climateAt(a.id, t);
-			// slow demand swings (wf) move flow up and pressure down; wp is the supply-side swing.
-			// Small per-minute jitter on top, about a third of the wobble.
-			const wf = wobble(`${a.id}-f`, m);
-			const wp = wobble(`${a.id}-p`, m);
 			out.push({
 				t,
-				flow: r.flow != null ? r.flow * (1 + 0.006 * wf + 0.002 * noise(a.id, m)) : undefined,
-				p1: r.p1 != null ? r.p1 + 0.008 * wp - 0.004 * wf + 0.0027 * noise(`${a.id}-p1`, m) : undefined,
-				p2: r.p2 != null ? r.p2 + 0.008 * wp - 0.006 * wf + 0.0027 * noise(`${a.id}-p2`, m) : undefined,
-				level: r.level != null ? r.level + 0.12 * wobble(`${a.id}-lv`, m) + 0.04 * noise(`${a.id}-lv`, m) : undefined,
+				...jitter(a.id, readAsset(a, t, true), m),
 				fm: d?.fmBattery,
 				fault: d?.fault ? 'warn' : 'ok',
 				volt: loggerVolt(a.id, t, m),
@@ -234,29 +227,6 @@
 	const mean = (v: number[]) => v.reduce((a, b) => a + b, 0) / v.length;
 	const summary = (v: number[], d: number) =>
 		`min ${fmtNum(Math.min(...v), d)} · maks ${fmtNum(Math.max(...v), d)} · rata-rata ${fmtNum(mean(v), d)}`;
-	/** y-range with a minimum span so sensor noise is not blown up to full height */
-	function range(v: number[], minSpan: number, extra: number[] = []) {
-		const all = [...v, ...extra];
-		let lo = Math.min(...all);
-		let hi = Math.max(...all);
-		const span = hi - lo;
-		if (span < minSpan) {
-			const mid = (lo + hi) / 2;
-			lo = mid - minSpan / 2;
-			hi = mid + minSpan / 2;
-		} else {
-			lo -= span * 0.1;
-			hi += span * 0.1;
-		}
-		return { min: lo, max: hi };
-	}
-	/** minimum-pressure levels close enough to the data to be worth drawing */
-	const minLines = (lo: number) =>
-		[
-			{ v: 1.0, c: LEVEL_COLOR.waspada, t: 'waspada 1,0' },
-			{ v: 0.7, c: LEVEL_COLOR.siaga, t: 'siaga 0,7' },
-			{ v: 0.5, c: LEVEL_COLOR.awas, t: 'awas 0,5' }
-		].filter((l) => l.v >= lo - 0.45);
 
 	function trend(key: string, title: string, unit: string, values: number[], color: string, d: number, minSpan: number, opts: Partial<Trend> = {}): Trend {
 		const lines = opts.lines ?? [];
@@ -267,7 +237,7 @@
 			series: [{ values, color, fill: true }],
 			stats: summary(values, d),
 			yFmt: (v) => fmtNum(v, d),
-			...range(values, minSpan, lines.map((l) => l.v)),
+			...yRange(values, minSpan, lines.map((l) => l.v)),
 			...opts,
 			lines
 		};
@@ -295,7 +265,7 @@
 						? Math.max(...p1) > 3.9
 							? [{ v: 4.5, c: LEVEL_COLOR.waspada, t: 'waspada maks 4,5' }]
 							: []
-						: minLines(Math.min(...p2));
+						: minPressureLines(Math.min(...p2));
 				primary.push({
 					key: 'p',
 					title: 'Tekanan P1 · P2',
@@ -311,7 +281,7 @@
 					stats: `P1 ${fmtNum(Math.min(...p1), 2)}–${fmtNum(Math.max(...p1), 2)} · P2 ${fmtNum(Math.min(...p2), 2)}–${fmtNum(Math.max(...p2), 2)} bar`,
 					lines,
 					yFmt: (v) => fmtNum(v, 2),
-					...range([...p1, ...p2], 0.3, lines.map((l) => l.v))
+					...yRange([...p1, ...p2], 0.3, lines.map((l) => l.v))
 				});
 			} else {
 				primary.push(trend('p', 'Tekanan', 'bar', col((x) => x.p1), C.p1, 2, 0.3));
@@ -336,7 +306,7 @@
 			);
 		} else if (sel.type === 'PT') {
 			const p = col((x) => x.p1);
-			primary.push(trend('p', 'Tekanan', 'bar', p, C.p1, 2, 0.3, { lines: minLines(Math.min(...p)) }));
+			primary.push(trend('p', 'Tekanan', 'bar', p, C.p1, 2, 0.3, { lines: minPressureLines(Math.min(...p)) }));
 		} else {
 			const lv = col((x) => x.level);
 			const lines = Math.min(...lv) < 60 ? [{ v: 45, c: LEVEL_COLOR.waspada, t: 'waspada 45%' }] : [];
@@ -430,29 +400,12 @@
 <div class="demo-page">
 	<PageHead title="Realtime Monitoring" sub="Interval rekam 1 menit · 8 parameter · {ASSETS.length} logger" icon={Activity}>
 		<a class="demo-btn" href="/demo/pdam/rekap?id={sel.id}"><Database size={15} /> Rekap data</a>
+		<a class="demo-btn" href="/demo/pdam/historis?id={sel.id}"><History size={15} /> Data historis</a>
 		<button class="demo-btn demo-btn--primary" onclick={exportCsv}><FileDown size={15} /> Ekspor 60 menit</button>
 	</PageHead>
 
 	<div class="rt-layout">
-		<aside class="card rt-picker" aria-label="Pilih logger">
-			<span class="label rt-picker__h">Pilih logger · {ASSETS.length}</span>
-			{#each GROUPS as g (g.type)}
-				<div class="rt-group">
-					<span class="rt-group__h" style="--c:{TYPE_META[g.type].color}"><i></i>{TYPE_META[g.type].label}<small>{g.items.length}</small></span>
-					<div class="rt-group__items">
-						{#each g.items as a (a.id)}
-							{@const lr = readLive(a, live.h, live.tick)}
-							<button class="rt-item" class:is-on={a.id === sel.id} onclick={() => pick(a.id)} aria-pressed={a.id === sel.id}>
-								<span class="status-dot {lr.status}"></span>
-								<span class="rt-item__id">{a.id}</span>
-								<span class="rt-item__v">{lr.value}</span>
-								<span class="rt-item__name">{a.name}</span>
-							</button>
-						{/each}
-					</div>
-				</div>
-			{/each}
-		</aside>
+		<LoggerPicker selected={sel.id} onpick={pick} />
 
 		<section class="rt-main">
 			<div class="card rt-head">

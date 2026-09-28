@@ -31,8 +31,9 @@ export const demand = (h: number) => rawDemand(h) / RAW_MEAN;
 /** 0 at the night minimum, 1 at the morning peak. */
 export const load = (h: number) => clamp01((demand(h) - D_MIN) / (D_MAX - D_MIN));
 
-/** Relative network pressure (1 at night) and the leakage factor it drives (FAVAD N1 = 1.15, mean 1). */
-const pRel = (h: number) => 1 - 0.32 * load(h);
+/** Relative network pressure (1 at night); a leak's orifice flow follows √pRel. */
+export const pRel = (h: number) => 1 - 0.32 * load(h);
+/** Leakage factor driven by pRel (FAVAD N1 = 1.15, mean 1). */
 const PF_MEAN = GRID.slice(0, 288).reduce((a, h) => a + pRel(h) ** 1.15, 0) / 288;
 const leakFactor = (h: number) => pRel(h) ** 1.15 / PF_MEAN;
 
@@ -98,6 +99,12 @@ export function eventStage(h: number): number {
 /* ---------------- zone flows ---------------- */
 /** LK-02: a small leak in Karanggayam that has been growing for five nights (L/s at night pressure). */
 export const CREEP = { zone: 'KRG' as ZoneId, leak: 'LK-02', flow: 5.2 };
+
+/** LK-03: short pressure transients at PT-03 at these clock hours (±`half` h), not yet visible in the MNF. */
+export const TRANSIENT = { id: 'PT-03', leak: 'LK-03', at: [3.2, 13.7, 21.3], half: 0.2, drop: 0.25 };
+/** Pressure lost to an LK-03 transient at clock hour h (bar). */
+export const transientAt = (h: number) =>
+	TRANSIENT.at.some((t) => Math.abs(wrap(h) - t) < TRANSIENT.half) ? TRANSIENT.drop : 0;
 
 export interface ZoneFlow {
 	/** the zone's own input (consumption + losses), L/s */
