@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 	import { Activity, Crosshair, History, Info, Network } from '@lucide/svelte';
 	import PageHead from '$lib/components/demo-dashboard/PageHead.svelte';
-	import WosusokasMap from '$lib/components/demo-spam/WosusokasMap.svelte';
+	import WosusokasTwin from '$lib/components/demo-spam/WosusokasTwin.svelte';
 	import { LOGGERS, PAIRS, RESERVOIRS, roleTag, type Logger } from '$lib/components/demo-spam/wosusokas';
 	import { reading, statusOf } from '$lib/components/demo-spam/field.svelte';
 	import { fmtNum } from '$lib/components/demo-spam/util';
@@ -29,7 +29,7 @@
 	<PageHead title="Peta Jaringan" sub="{LOGGERS.length} logger lapangan · koordinat dari mini-stesy · Reservoir Mojolaban & Plesungan" icon={Network} />
 
 	<div class="demo-grid-2 sites-grid jar-grid">
-		<div class="sites-map jar-map"><WosusokasMap {focusId} wheel onselect={(id) => (focusId = id)} /></div>
+		<div class="sites-map jar-map"><WosusokasTwin {focusId} onselect={(id) => (focusId = id)} /></div>
 		<div class="card sites-list">
 			<div class="sites-list__scroll">
 				<table class="demo-table">
@@ -80,8 +80,9 @@
 	<div class="card jar-source">
 		<Info size={16} />
 		<p>
-			Posisi logger adalah koordinat pemasangan di database mini-stesy. Geometri pipa SPAM Wosusokas belum ada dalam bentuk data, jadi peta hanya menarik garis
-			antara pasangan inlet–outlet satu stasiun. Skema pipa isometrik Plesungan dan Mojolaban menyusul di halaman Skema Pipa.
+			Posisi logger adalah koordinat pemasangan di database mini-stesy. Jalur pipa di model 3D bersifat indikatif: topologinya dari skema pipa mini-stesy
+			(reservoir → stasiun DMA → meter seri inlet–outlet), jalurnya mengikuti jalan OpenStreetMap, dan jaringan distribusi digambar di jalan terdekat tiap
+			outlet. Posisi reservoir diperkirakan dari skema. Pipa menyala dan mengalir saat meter di hilirnya mencatat debit.
 		</p>
 	</div>
 </div>

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { Info } from '@lucide/svelte';
-	import WosusokasMap from '$lib/components/demo-spam/WosusokasMap.svelte';
+	import WosusokasTwin from '$lib/components/demo-spam/WosusokasTwin.svelte';
 	import LoggerCards from '$lib/components/demo-spam/LoggerCards.svelte';
 	import { LOGGERS, RESERVOIRS, SUPPLY, decodeFault, type ReservoirId } from '$lib/components/demo-spam/wosusokas';
 	import { field, reading, statusOf, supplyFlow } from '$lib/components/demo-spam/field.svelte';
@@ -62,7 +62,7 @@
 	</div>
 
 	<div class="pdam-main">
-		<div class="pdam-main__map"><WosusokasMap onselect={pick} /></div>
+		<div class="pdam-main__map"><WosusokasTwin compact /></div>
 		<div class="cc-col">
 			{#each RES as r (r)}
 				{@const x = perRes(r)}

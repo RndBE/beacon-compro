@@ -244,3 +244,149 @@
 		display: flex;
 	}
 }
+
+/* ---- digital twin (Beranda, Peta Jaringan) ---- */
+/* fills its slot: the page decides the height (.pdam-main__map, .jar-map), not the full-page twin rules */
+.twin-stage.spam-twin {
+	height: 100%;
+	min-height: 0;
+}
+.spam-twin.is-compact .twin-hud__title {
+	font-size: 18px;
+}
+.spam-twin .twin-label {
+	transition:
+		transform 0.3s ease,
+		opacity 0.35s ease,
+		background 0.15s,
+		border-color 0.15s;
+}
+/* from afar a logger label keeps only its id and status dot, unless it is an alarm or selected */
+.spam-twin .twin-view.is-far .twin-label--warn:not(.is-selected) .twin-label__v {
+	display: none;
+}
+.spam-twin .twin-view.is-far .twin-label.spam-twin-res .twin-label__v {
+	display: inline;
+}
+.spam-twin .twin-label.spam-twin-res {
+	padding: 5px 10px;
+	font-size: 11px;
+	background: rgba(4, 22, 34, 0.9);
+}
+.twin-legend .spam-tl-idle i {
+	width: 14px;
+	height: 3px;
+	border-radius: 2px;
+	background: #56647d;
+}
+.spam-twin-pick {
+	position: absolute;
+	z-index: 6;
+	right: 14px;
+	bottom: 50px;
+	width: 264px;
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	padding: 12px 14px;
+	border-radius: 12px;
+	border: 1px solid rgba(120, 160, 220, 0.22);
+	background: rgba(5, 13, 34, 0.86);
+	backdrop-filter: blur(8px);
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+.spam-twin-pick__h {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-family: var(--font-mono);
+	font-size: 12px;
+}
+.spam-twin-pick__h b {
+	color: var(--ink);
+	letter-spacing: 0.04em;
+}
+.spam-twin-pick__x {
+	display: grid;
+	place-items: center;
+	width: 24px;
+	height: 24px;
+	margin-left: auto;
+	border-radius: 7px;
+	border: 1px solid rgba(120, 160, 220, 0.2);
+	background: transparent;
+	color: var(--ink-mute);
+	cursor: pointer;
+}
+.spam-twin-pick__x:hover {
+	color: var(--ink);
+}
+.spam-twin-pick__name {
+	font-size: 13px;
+	font-weight: 700;
+	color: var(--ink);
+}
+.spam-twin-pick .pdam-twin-kv {
+	margin: 0;
+}
+.spam-twin-pick__note {
+	font-size: 11.5px;
+	line-height: 1.45;
+	color: var(--ink-soft);
+}
+.spam-twin-pick__foot {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	font-family: var(--font-mono);
+	font-size: 10.5px;
+	color: var(--ink-mute);
+}
+.spam-twin-pick__foot span {
+	margin-right: auto;
+}
+.spam-twin-pick__foot a {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	color: #8fd3ff;
+	text-decoration: none;
+}
+.spam-twin .twin-hud--tl {
+	max-width: calc(100% - 200px);
+}
+/* legend on its own row, credits under it: the twin sits in a card, narrower than a full page */
+.spam-twin .twin-bottom__meta {
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 6px;
+}
+.spam-twin .twin-bottom .twin-attrib {
+	max-width: 100%;
+	text-align: left;
+}
+.spam-twin.is-compact .spam-twin-pick {
+	top: 64px;
+	bottom: auto;
+}
+.spam-twin:not(.is-compact) .spam-twin-pick {
+	bottom: 74px;
+}
+@media (max-width: 720px) {
+	.spam-twin .twin-chips {
+		display: none;
+	}
+	.spam-twin .twin-hud--tl {
+		max-width: 62%;
+	}
+	.spam-twin .twin-hud__title {
+		font-size: 16px;
+	}
+	.spam-twin .twin-attrib {
+		display: none;
+	}
+	.spam-twin-pick {
+		left: 14px;
+		width: auto;
+	}
+}
