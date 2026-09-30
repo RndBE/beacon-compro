@@ -1,0 +1,246 @@
+/* ============================================================
+   SPAM demo (SPAM Regional Wosusokas). Builds on the PDAM demo's
+   pdam.css / pages.css; only what is new lives here.
+   Namespace: .spam-*
+   ============================================================ */
+
+/* ---- data mode bar (lapangan / skenario) ---- */
+.demo-deck .spam-mode {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px 14px;
+	margin-bottom: 14px;
+	padding: 10px 14px;
+	border-radius: 12px;
+	border: 1px solid var(--line);
+	background: rgba(7, 17, 42, 0.45);
+}
+.demo-deck .spam-mode--sim {
+	border-color: rgba(255, 180, 84, 0.35);
+	background: linear-gradient(90deg, rgba(255, 180, 84, 0.08), rgba(7, 17, 42, 0.45) 60%);
+}
+.spam-mode__txt {
+	flex: 1 1 320px;
+	min-width: 0;
+	font-size: 12.5px;
+	line-height: 1.5;
+	color: var(--ink-soft);
+}
+.spam-mode__txt b {
+	color: var(--ink);
+}
+.spam-mode__fresh {
+	font-family: var(--font-mono);
+	font-size: 11px;
+	color: var(--ink-mute);
+	white-space: nowrap;
+}
+.spam-mode__fresh.is-err {
+	color: var(--amber);
+	white-space: normal;
+}
+
+/* ---- source badges ---- */
+.spam-badge {
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+	padding: 2px 7px;
+	border-radius: 999px;
+	font-family: var(--font-mono);
+	font-size: 9.5px;
+	font-weight: 700;
+	letter-spacing: 0.1em;
+	white-space: nowrap;
+	color: var(--green);
+	border: 1px solid rgba(70, 215, 143, 0.4);
+	background: rgba(70, 215, 143, 0.08);
+}
+.spam-badge--sim {
+	color: var(--amber);
+	border: 1px dashed rgba(255, 180, 84, 0.55);
+	background: rgba(255, 180, 84, 0.08);
+}
+
+/* ---- notes and reservoir headers ---- */
+.demo-deck .spam-note {
+	display: flex;
+	gap: 10px;
+	align-items: flex-start;
+	padding: 13px 16px;
+	font-size: 12.5px;
+	line-height: 1.55;
+	color: var(--ink-soft);
+}
+.spam-note b {
+	color: var(--ink);
+}
+.spam-note svg {
+	flex: 0 0 auto;
+	margin-top: 2px;
+	color: #8fd3ff;
+}
+.spam-res {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+}
+.spam-res i {
+	width: 9px;
+	height: 9px;
+	border-radius: 3px;
+	background: var(--c);
+}
+.spam-dim {
+	opacity: 0.55;
+}
+
+/* ---- isometric pipe schematic (Skema Pipa) ---- */
+.spam-skema-layout {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) 320px;
+	gap: 14px;
+	align-items: start;
+}
+.demo-deck .spam-skema-card {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	padding: 14px;
+}
+.spam-skema__head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 6px 14px;
+}
+.spam-skema {
+	position: relative;
+	aspect-ratio: 4 / 3;
+	border-radius: 12px;
+	overflow: hidden;
+	background: #0b1b3a;
+}
+.spam-skema img {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+	pointer-events: none;
+	user-select: none;
+}
+.spam-pin {
+	position: absolute;
+	z-index: 2;
+	display: block;
+	width: 0;
+	height: 0;
+	padding: 0;
+	border: 0;
+	background: none;
+	color: inherit;
+	font: inherit;
+	cursor: pointer;
+}
+.spam-pin i {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 14px;
+	height: 14px;
+	border-radius: 50%;
+	transform: translate(-50%, -50%);
+	background: var(--c);
+	border: 2px solid #07112a;
+	box-shadow:
+		0 0 0 3px var(--s),
+		0 0 14px var(--s);
+}
+.spam-pin.is-on i {
+	box-shadow:
+		0 0 0 3px #fff,
+		0 0 18px var(--s);
+}
+.spam-pin__lbl {
+	position: absolute;
+	left: 12px;
+	top: 0;
+	transform: translateY(-50%);
+	display: flex;
+	flex-direction: column;
+	gap: 1px;
+	padding: 4px 8px;
+	border-radius: 8px;
+	border: 1px solid rgba(120, 160, 220, 0.3);
+	background: rgba(6, 16, 40, 0.86);
+	font-family: var(--font-mono);
+	text-align: left;
+	white-space: nowrap;
+	pointer-events: none;
+}
+.spam-pin--l .spam-pin__lbl {
+	left: auto;
+	right: 12px;
+}
+.spam-pin--up .spam-pin__lbl {
+	top: auto;
+	bottom: 12px;
+	transform: none;
+}
+.spam-pin--down .spam-pin__lbl {
+	top: 12px;
+	transform: none;
+}
+.spam-pin.is-on .spam-pin__lbl {
+	z-index: 3;
+	border-color: rgba(143, 211, 255, 0.7);
+}
+.spam-pin__lbl b {
+	font-size: 11px;
+	color: var(--ink);
+}
+.spam-pin__lbl small {
+	font-size: 10px;
+	color: var(--ink-soft);
+}
+.spam-pin--res {
+	cursor: default;
+}
+.spam-pin--res i {
+	width: 18px;
+	height: 18px;
+	border-radius: 6px;
+	background: #2876e8;
+	box-shadow:
+		0 0 0 3px rgba(60, 195, 242, 0.6),
+		0 0 16px rgba(60, 195, 242, 0.6);
+}
+.spam-skema-side {
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+}
+.demo-deck .spam-skema-list {
+	position: static;
+	max-height: none;
+}
+.demo-deck .spam-skema-detail {
+	padding: 16px;
+}
+
+@media (max-width: 1100px) {
+	.spam-skema-layout {
+		grid-template-columns: 1fr;
+	}
+}
+@media (max-width: 760px) {
+	/* labels would cover the drawing on a phone: show only the selected one */
+	.spam-pin__lbl {
+		display: none;
+	}
+	.spam-pin.is-on .spam-pin__lbl {
+		display: flex;
+	}
+}

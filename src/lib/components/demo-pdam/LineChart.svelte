@@ -17,6 +17,8 @@
 	/** y-range with a minimum span so sensor noise is not blown up to full height (NaN ignored) */
 	export function yRange(v: number[], minSpan: number, extra: number[] = []) {
 		const all = [...v, ...extra].filter(Number.isFinite);
+		// nothing to show yet (loading, or a window without records)
+		if (!all.length) return { min: 0, max: 1 };
 		let lo = Math.min(...all);
 		let hi = Math.max(...all);
 		const span = hi - lo;
@@ -95,6 +97,9 @@
 				if (min == null) lo = Math.min(lo, l.v);
 				if (max == null) hi = Math.max(hi, l.v);
 			}
+			// nothing finite to scale to yet (loading, or a window without records)
+			if (!Number.isFinite(lo)) lo = Number.isFinite(hi) ? hi - 1 : 0;
+			if (!Number.isFinite(hi)) hi = lo + 1;
 			const span = hi - lo || 1;
 			if (min == null) lo -= span * 0.08;
 			if (max == null) hi += span * 0.08;
