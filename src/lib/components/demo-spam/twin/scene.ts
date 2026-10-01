@@ -8,6 +8,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { CSS2DObject, CSS2DRenderer } from 'three/addons/renderers/CSS2DRenderer.js';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 import {
@@ -168,6 +169,20 @@ export function createSpamTwin(opts: TwinOptions): TwinApi {
 
 	const composer = new EffectComposer(renderer);
 	composer.addPass(new RenderPass(scene, camera));
+	// One NaN/Inf pixel in the HDR buffer (e.g. pow() of a slightly negative value at a ribbon edge)
+	// spreads through the bloom blur into a black block; clamp drops it first (max(NaN, 0) = 0 on the GPU).
+	composer.addPass(
+		new ShaderPass({
+			uniforms: { tDiffuse: { value: null } },
+			vertexShader: /* glsl */ `
+				varying vec2 vUv;
+				void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+			fragmentShader: /* glsl */ `
+				uniform sampler2D tDiffuse;
+				varying vec2 vUv;
+				void main() { gl_FragColor = clamp(texture2D(tDiffuse, vUv), 0.0, 64.0); }`
+		})
+	);
 	const bloom = new UnrealBloomPass(new THREE.Vector2(256, 256), 0.55, 0.42, 0.6);
 	composer.addPass(bloom);
 	composer.addPass(new OutputPass());
@@ -286,6 +301,9 @@ export function createSpamTwin(opts: TwinOptions): TwinApi {
 			float inside = clamp(texture2D(uMask, fuv).a * 1.6, 0.0, 1.0);
 			vec4 texel = texture2D(uMap, vUv);
 			vec3 img = texel.rgb;
+			// patch tiles not loaded yet are transparent black; bilinear/mipmap filtering blends them into
+			// the loaded tile edges as dark half-transparent blocks, so divide by alpha to get the colour back
+			if (uIsPatch > 0.5) img = min(texel.rgb / max(texel.a, 0.02), vec3(1.0));
 			float has = uHasMap * uImagery;
 			float fallback = 0.35 + 0.2 * noise(vWorld.xz * 0.9) + 0.1 * noise(vWorld.xz * 5.0);
 
@@ -362,7 +380,10 @@ export function createSpamTwin(opts: TwinOptions): TwinApi {
 		patch.position.set((a.x + b.x) / 2, 0.0015, (a.z + b.z) / 2);
 		patch.scale.set(b.x - a.x, b.z - a.z, 1);
 		patch.visible = true;
-		patchDirty = true;
+		// the patch moves now, so its texture must follow now; waiting for the periodic upload shows the
+		// old imagery at the new place for up to 250 ms
+		patchTex.needsUpdate = true;
+		patchDirty = false;
 		for (let ty = y0; ty < y0 + PATCH_N; ty++)
 			for (let tx = x0; tx < x0 + PATCH_N; tx++) {
 				const im = new Image();
@@ -382,6 +403,8 @@ export function createSpamTwin(opts: TwinOptions): TwinApi {
 		const d = camera.position.distanceTo(controls.target);
 		const fade = 1 - THREE.MathUtils.smoothstep(d, 2.6, 5.5);
 		patchMat.uniforms.uFade.value = fade;
+		// a faded-out patch would still run the full ground shader over a large part of the screen
+		patch.visible = patchAt !== null && fade > 0.01;
 		if (fade <= 0.01) return;
 		const { lon, lat } = unproject(controls.target.x, controls.target.z);
 		const cx = Math.floor(tileX(lon, PATCH_Z));
@@ -523,7 +546,7 @@ export function createSpamTwin(opts: TwinOptions): TwinApi {
 					float streak = smoothstep(0.0, 0.1, f) * smoothstep(0.55, 0.1, f);
 					// a streak only a few pixels long would twinkle under the bloom: fade it to its average
 					streak = mix(streak, 0.26, smoothstep(0.06, 0.25, fwidth(ph))) * uFlowOn * wet;
-					float edge = pow(1.0 - abs(vSide), 0.55);
+					float edge = pow(max(1.0 - abs(vSide), 0.0), 0.55);
 					float pulse = 0.5 + 0.5 * sin(uTime * 3.2);
 					float silent = step(0.5, vAlert) * step(vAlert, 1.5);
 					float loss = step(1.5, vAlert);
@@ -868,6 +891,9 @@ export function createSpamTwin(opts: TwinOptions): TwinApi {
 		camera.updateProjectionMatrix();
 		pipeUniforms.uPxPerDepth.value = (2 * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2))) / h;
 		if (!userMoved && !fly) camera.position.copy(homePos());
+		// setSize clears the canvas and ResizeObserver fires after rAF, so without this one black frame shows
+		composer.render();
+		labelRenderer.render(scene, camera);
 	}
 	const ro = new ResizeObserver(resize);
 	ro.observe(container);
