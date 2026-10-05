@@ -3,6 +3,7 @@
 	import { ArrowRight, MapPin, Radio } from '@lucide/svelte';
 	import Ornaments from '$lib/components/Ornaments.svelte';
 	import { locale } from '$lib/i18n';
+	import { DARK_ATTRIBUTION, LIGHT_BASE_URL, LIGHT_LABELS_URL } from '$lib/components/demo-dashboard/basemap';
 	import { projectCategory, projectLocation, projectName } from '$lib/homepage-copy';
 	import type { FeaturedProject } from '$lib/api';
 
@@ -89,11 +90,13 @@
 			touchZoom: true
 		});
 
-		// CartoDB Positron tiles — clean, minimal
-		L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-			subdomains: 'abcd',
-			maxZoom: 19
-		}).addTo(mapInstance);
+		// Esri light-gray canvas — clean, minimal, no API key
+		L.tileLayer(LIGHT_BASE_URL, { maxZoom: 16 }).addTo(mapInstance);
+		L.tileLayer(LIGHT_LABELS_URL, { maxZoom: 16, pane: 'shadowPane' }).addTo(mapInstance);
+		L.control
+			.attribution({ position: 'bottomleft', prefix: false })
+			.addAttribution(`${DARK_ATTRIBUTION} · © OpenStreetMap contributors`)
+			.addTo(mapInstance);
 
 		// Custom pulsing dot icon
 		const pulseIcon = L.divIcon({

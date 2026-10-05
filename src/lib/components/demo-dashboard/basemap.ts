@@ -8,6 +8,9 @@ export const DARK_BASE_URL = `${ESRI}/Canvas/World_Dark_Gray_Base/MapServer/tile
 export const DARK_LABELS_URL = `${ESRI}/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}`;
 export const DARK_ATTRIBUTION = 'Tiles © Esri, HERE, Garmin';
 
+export const LIGHT_BASE_URL = `${ESRI}/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}`;
+export const LIGHT_LABELS_URL = `${ESRI}/Canvas/World_Light_Gray_Reference/MapServer/tile/{z}/{y}/{x}`;
+
 export const imageryTile = (z: number, x: number, y: number) => `${ESRI}/World_Imagery/MapServer/tile/${z}/${y}/${x}`;
 export const IMAGERY_ATTRIBUTION = 'Citra © Esri, Maxar, Earthstar Geographics';
 

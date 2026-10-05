@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
+	import { DARK_ATTRIBUTION, DARK_BASE_URL, DARK_LABELS_URL } from '$lib/components/demo-dashboard/basemap';
 	import { loadDiyBoundary } from '$lib/ews/data/geojson';
 	import { SIAGA_COLOR, siagaLabel } from '$lib/ews/status';
 	import type { MapMarker, AssetKind } from '$lib/ews/types';
@@ -113,11 +114,9 @@
 				scrollWheelZoom: true,
 			});
 
-			L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-				attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
-				subdomains: 'abcd',
-				maxZoom: 19,
-			}).addTo(map);
+			L.tileLayer(DARK_BASE_URL, { maxZoom: 16 }).addTo(map);
+			L.tileLayer(DARK_LABELS_URL, { maxZoom: 16, pane: 'shadowPane' }).addTo(map);
+			map.attributionControl.setPrefix(false).addAttribution(`${DARK_ATTRIBUTION} · © OpenStreetMap contributors`);
 
 			markerLayer = L.layerGroup().addTo(map);
 
