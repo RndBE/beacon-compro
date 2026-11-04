@@ -8,7 +8,7 @@ describe('buildVcard', () => {
 		const vcf = buildVcard(card, 'ID');
 		expect(vcf).toContain('FN:Sofyan Ariyanto\\, S.T.');
 		expect(vcf).toContain('N:Ariyanto;Sofyan;;;S.T.');
-		expect(vcf).toContain('TEL;TYPE=WORK:+628112850986');
+		expect(vcf).toContain('TEL;TYPE=WORK:+628112401983');
 		expect(vcf.split('\r\n')[0]).toBe('BEGIN:VCARD');
 	});
 

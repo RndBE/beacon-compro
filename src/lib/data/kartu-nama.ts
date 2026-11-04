@@ -37,8 +37,14 @@ export const COMPANY = {
 	]
 } as const;
 
+// Nomor cukup ditulis sekali (format tampilan); versi tel:/wa.me diturunkan darinya.
+const card = (c: Omit<BusinessCard, 'phone'>): BusinessCard => ({
+	...c,
+	phone: c.phoneDisplay.replace(/\D/g, '')
+});
+
 const cards: BusinessCard[] = [
-	{
+	card({
 		slug: 'sofyan',
 		firstName: 'Sofyan',
 		lastName: 'Ariyanto',
@@ -48,10 +54,9 @@ const cards: BusinessCard[] = [
 			ID: 'TELEMETRI · INSTRUMENTASI · IoT',
 			EN: 'TELEMETRY · INSTRUMENTATION · IoT'
 		},
-		phone: '628112850986',
-		phoneDisplay: '+62 811-2850-9986',
+		phoneDisplay: '+62 811-2401-983',
 		photo: '/kartu-nama/sofyan.webp'
-	}
+	})
 ];
 
 export const findCard = (slug: string) => cards.find((c) => c.slug === slug);
