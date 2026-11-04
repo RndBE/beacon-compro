@@ -18,10 +18,13 @@
 
 	let { children, data } = $props();
 
-	let isDemo = $derived($page.url.pathname.startsWith('/demo'));
+	// Halaman mandiri: render tanpa header/footer/chatbot situs.
+	let isStandalone = $derived(
+		$page.url.pathname.startsWith('/demo') || $page.url.pathname.startsWith('/kartu-nama')
+	);
 
-	// Halaman internal tidak perlu masuk indeks pencarian.
-	let noIndex = $derived(isDemo || $page.url.pathname.startsWith('/presentasi'));
+	// Halaman internal dan kartu nama pribadi tidak perlu masuk indeks pencarian.
+	let noIndex = $derived(isStandalone || $page.url.pathname.startsWith('/presentasi'));
 
 	let seo = $derived(($page.data.seo ?? {}) as SeoMeta);
 	let canonical = $derived(canonicalUrl($page.url));
@@ -74,7 +77,7 @@
 	{/if}
 </svelte:head>
 
-{#if isDemo}
+{#if isStandalone}
 	{@render children()}
 {:else}
 	<div class="min-h-screen flex flex-col">

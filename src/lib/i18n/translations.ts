@@ -136,6 +136,55 @@ const translations = {
 	'cat.news': { ID: 'Berita Produk', EN: 'Product News' },
 	'cat.news.desc': { ID: 'Update produk & fitur', EN: 'Product & feature updates' },
 
+	// ─── Digital Business Card (/kartu-nama) ─────────
+	'card.label': { ID: 'KARTU NAMA DIGITAL', EN: 'DIGITAL BUSINESS CARD' },
+	'card.lang': { ID: 'Pilih bahasa', EN: 'Choose language' },
+	'card.call': { ID: 'Telepon', EN: 'Call' },
+	'card.whatsapp': { ID: 'WhatsApp', EN: 'WhatsApp' },
+	'card.email': { ID: 'Email', EN: 'Email' },
+	'card.location': { ID: 'Lokasi', EN: 'Location' },
+	'card.save': { ID: 'Simpan Kontak', EN: 'Save Contact' },
+	'card.share': { ID: 'Bagikan', EN: 'Share' },
+	'card.copied': { ID: 'Tautan disalin', EN: 'Link copied' },
+	'card.eyebrow': { ID: 'KONTAK & PROFIL', EN: 'CONTACT & PROFILE' },
+	'card.title': { ID: 'Mari terhubung dengan', EN: 'Let\'s connect with' },
+	'card.subtitle': {
+		ID: 'Simpan kontak, kirim pesan, atau kunjungi kantor kami di Kalasan, Sleman. Kami siap berdiskusi soal telemetri, instrumentasi, dan monitoring infrastruktur.',
+		EN: 'Save the contact, send a message, or visit our office in Kalasan, Sleman. We are ready to talk telemetry, instrumentation, and infrastructure monitoring.'
+	},
+	'card.phone': { ID: 'TELEPON / WHATSAPP', EN: 'PHONE / WHATSAPP' },
+	'card.web': { ID: 'SITUS WEB', EN: 'WEBSITE' },
+	'card.hq': { ID: 'KANTOR PUSAT', EN: 'HEAD OFFICE' },
+	'card.hours': { ID: 'JAM OPERASIONAL', EN: 'BUSINESS HOURS' },
+	'card.hours.value': {
+		ID: 'Senin – Sabtu · 08.00 – 17.00 WIB',
+		EN: 'Monday – Saturday · 08:00 – 17:00 WIB (UTC+7)'
+	},
+	'card.map': { ID: 'Buka Peta', EN: 'Open Map' },
+	'card.about.label': { ID: 'TENTANG KAMI', EN: 'ABOUT US' },
+	'card.about.title': {
+		ID: 'Pionir sistem telemetri pintar di Indonesia.',
+		EN: 'A pioneer of smart telemetry systems in Indonesia.'
+	},
+	'card.about.desc': {
+		ID: 'Beacon Engineering menghadirkan solusi instrumentasi cerdas untuk efisiensi dan keamanan infrastruktur nasional.',
+		EN: 'Beacon Engineering delivers smart instrumentation solutions for the efficiency and safety of national infrastructure.'
+	},
+	'card.follow': { ID: 'IKUTI KAMI', EN: 'FOLLOW US' },
+	'card.qr.title': { ID: 'Pindai untuk buka kartu nama', EN: 'Scan to open the card' },
+	'card.qr.desc': {
+		ID: 'Arahkan kamera ponsel ke kode ini untuk membuka kartu nama {name} dan menyimpan kontaknya.',
+		EN: 'Point your phone camera at this code to open the business card of {name} and save the contact.'
+	},
+	'card.meta.title': {
+		ID: '{name} — Kartu Nama Digital Beacon Engineering',
+		EN: '{name} — Beacon Engineering Digital Business Card'
+	},
+	'card.meta.desc': {
+		ID: 'Simpan kontak {name}, {role} PT Arta Teknologi Comunindo (Beacon Engineering): telepon, WhatsApp, email, dan lokasi kantor.',
+		EN: 'Save the contact of {name}, {role} at PT Arta Teknologi Comunindo (Beacon Engineering): phone, WhatsApp, email, and office location.'
+	},
+
 	// ─── SEO / Meta ──────────────────────────────────
 	'meta.home.title': { ID: 'Beacon Engineering — Pantau Setiap Tetes, Setiap Getaran, Setiap Awan', EN: 'Beacon Engineering — Monitor Every Drop, Every Vibration, Every Cloud' },
 	'meta.home.desc': { ID: 'Sistem telemetri pintar buatan Indonesia untuk infrastruktur paling strategis negeri ini. 300+ proyek, 200+ partner, 14 tahun pengalaman.', EN: 'Indonesian-built smart telemetry for the nation\'s most strategic infrastructure. 300+ projects, 200+ partners, 14 years of experience.' },
