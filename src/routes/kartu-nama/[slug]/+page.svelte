@@ -15,6 +15,7 @@
 	import SignalPhoto from '$lib/components/kartu-nama/SignalPhoto.svelte';
 	import { COMPANY, fullName, interpolate } from '$lib/data/kartu-nama';
 	import { locale, translations as tr, type Locale, type TranslationKey } from '$lib/i18n';
+	import type { Attachment } from 'svelte/attachments';
 
 	let { data } = $props();
 
@@ -74,6 +75,33 @@
 		{ name: 'YouTube', icon: 'youtube', href: COMPANY.youtube }
 	] as const;
 
+	// Kartu desktop miring mengikuti kursor, dengan kilap yang ikut posisi kursor.
+	const tilt: Attachment<HTMLElement> = (node) => {
+		const fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
+		if (!fine || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+		const move = (e: PointerEvent) => {
+			const r = node.getBoundingClientRect();
+			const x = (e.clientX - r.left) / r.width;
+			const y = (e.clientY - r.top) / r.height;
+			node.style.setProperty('--rx', `${(0.5 - y) * 6}deg`);
+			node.style.setProperty('--ry', `${(x - 0.5) * 8}deg`);
+			node.style.setProperty('--gx', `${x * 100}%`);
+			node.style.setProperty('--gy', `${y * 100}%`);
+		};
+		const leave = () => {
+			node.style.setProperty('--rx', '0deg');
+			node.style.setProperty('--ry', '0deg');
+		};
+
+		node.addEventListener('pointermove', move);
+		node.addEventListener('pointerleave', leave);
+		return () => {
+			node.removeEventListener('pointermove', move);
+			node.removeEventListener('pointerleave', leave);
+		};
+	};
+
 	let copied = $state(false);
 
 	async function share() {
@@ -132,7 +160,7 @@
 		<a
 			href="/kartu-nama/{card.slug}/vcard?lang={$locale.toLowerCase()}"
 			data-sveltekit-reload
-			class="font-heading flex flex-1 items-center justify-center gap-2.5 font-semibold transition-opacity hover:opacity-90 {v ===
+			class="font-heading flex flex-1 items-center justify-center gap-2.5 font-semibold transition hover:opacity-90 active:scale-[0.98] {v ===
 			'm'
 				? 'h-[52px] rounded-[14px] bg-[#C8102E] text-[15px] text-white'
 				: 'h-14 rounded-2xl bg-white text-base text-[#C8102E]'}"
@@ -181,7 +209,7 @@
 	</div>
 {/snippet}
 
-<div class="min-h-screen bg-[#F6F2EB] text-[#1C1714]">
+<div class="kartu min-h-screen bg-[#F6F2EB] text-[#1C1714]">
 	<header class="lg:border-b lg:border-[#E7DFD2]">
 		<div
 			class="mx-auto flex max-w-[480px] items-center justify-between px-5 pt-[18px] lg:h-[76px] lg:max-w-[1440px] lg:px-10 lg:pt-0 xl:px-16 min-[1440px]:px-[120px]"
@@ -234,10 +262,10 @@
 			<!-- Mobile: kartu ringkas + aksi -->
 			<div class="flex flex-col gap-5 lg:hidden">
 				<section
-					class="overflow-hidden rounded-[20px] shadow-[0_16px_36px_rgba(139,10,31,0.25)]"
+					class="card-in overflow-hidden rounded-[20px] shadow-[0_16px_36px_rgba(139,10,31,0.25)]"
 					style="background-image:{bgMobile}"
 				>
-					<div class="relative flex min-h-[180px] flex-col justify-between overflow-hidden p-6 pb-4">
+					<div class="sheen relative flex min-h-[180px] flex-col justify-between overflow-hidden p-6 pb-4">
 						<Hatch size={96} step={7} corner="br" />
 						<div class="absolute top-6 right-6">
 							<SignalPhoto
@@ -274,7 +302,8 @@
 
 			<!-- Desktop: kartu profil -->
 			<section
-				class="relative hidden overflow-hidden rounded-[28px] shadow-[0_24px_48px_rgba(139,10,31,0.25)] lg:col-start-1 lg:row-span-3 lg:row-start-1 lg:block"
+				{@attach tilt}
+				class="card-in sheen tilt relative hidden overflow-hidden rounded-[28px] shadow-[0_24px_48px_rgba(139,10,31,0.25)] lg:col-start-1 lg:row-span-3 lg:row-start-1 lg:block"
 				style="background-image:{bgDesktop}"
 			>
 				<Hatch size={130} step={8} corner="tr" />
@@ -334,7 +363,7 @@
 						href={r.href}
 						target={r.href?.startsWith('http') ? '_blank' : undefined}
 						rel={r.href?.startsWith('http') ? 'noopener' : undefined}
-						class="flex items-center gap-3.5 bg-white p-[14px_16px] lg:gap-3 lg:p-4 xl:gap-4 xl:p-[20px_24px] {r.cls} {r.href
+						class="group flex items-center gap-3.5 bg-white p-[14px_16px] lg:gap-3 lg:p-4 xl:gap-4 xl:p-[20px_24px] {r.cls} {r.href
 							? 'transition-colors hover:bg-[#FDFAF6]'
 							: ''}"
 					>
@@ -354,12 +383,12 @@
 						</span>
 						{#if r.href}
 							<ArrowUpRight
-								class="size-4 shrink-0 text-[#C8102E] lg:hidden"
+								class="size-4 shrink-0 text-[#C8102E] transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 lg:hidden"
 							/>
 						{/if}
 						{#if r.label === 'card.hq'}
 							<span
-								class="hidden shrink-0 items-center gap-1.5 rounded-full border border-[#E7DFD2] px-3.5 py-[9px] text-sm font-medium lg:flex"
+								class="hidden shrink-0 items-center gap-1.5 rounded-full border border-[#E7DFD2] px-3.5 py-[9px] text-sm font-medium transition-colors group-hover:border-[#C8102E]/40 lg:flex"
 							>
 								{l('card.map')}
 								<ArrowUpRight class="size-[15px] text-[#C8102E]" />
@@ -453,3 +482,78 @@
 		</div>
 	</footer>
 </div>
+
+<style>
+	/* Momen utama saat dimuat: kartu naik, lalu (di SignalPhoto/Hatch) beacon menyala,
+	   lalu kilau emas menyapu kartu. Kilau mengulang tiap 9 detik. */
+	.card-in {
+		animation: card-in 1.1s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+	}
+
+	.sheen::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		pointer-events: none;
+		background: linear-gradient(
+			112deg,
+			transparent 38%,
+			rgba(255, 232, 178, 0.26) 48%,
+			rgba(255, 255, 255, 0.1) 52%,
+			transparent 62%
+		);
+		translate: -100% 0;
+		animation: sheen 9s cubic-bezier(0.45, 0, 0.25, 1) 1.5s infinite;
+	}
+
+	/* Pakai `transform`, sedangkan animasi masuk memakai `translate`/`scale`, jadi tidak bertabrakan. */
+	.tilt {
+		transform: perspective(1200px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+		transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	.tilt::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		pointer-events: none;
+		background: radial-gradient(
+			480px circle at var(--gx, 50%) var(--gy, 30%),
+			rgba(255, 236, 196, 0.2),
+			transparent 60%
+		);
+		opacity: 0;
+		transition: opacity 0.5s;
+	}
+
+	.tilt:hover::before {
+		opacity: 1;
+	}
+
+	@keyframes card-in {
+		from {
+			opacity: 0;
+			translate: 0 24px;
+			scale: 0.97;
+		}
+	}
+
+	@keyframes sheen {
+		0% {
+			translate: -100% 0;
+		}
+		16%,
+		100% {
+			translate: 100% 0;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.kartu :global(*),
+		.kartu :global(*::before),
+		.kartu :global(*::after) {
+			animation: none !important;
+			transition: none !important;
+		}
+	}
+</style>
