@@ -141,12 +141,12 @@
 						: 'border-[#EBD49A]/40 bg-white/[0.12] text-white'}"
 				>
 					{#if a.icon}
-						<a.icon class="size-[22px]" />
+						<a.icon class="size-[22px] xl:size-[1.375rem]" />
 					{:else}
-						<BrandIcon name="whatsapp" class="size-[22px]" />
+						<BrandIcon name="whatsapp" class="size-[22px] xl:size-[1.375rem]" />
 					{/if}
 				</span>
-				<span class={v === 'm' ? 'text-[12.5px] text-[#5E554B]' : 'text-[13px] text-[#F8D7DC]'}>
+				<span class={v === 'm' ? 'text-[12.5px] text-[#5E554B]' : 'text-[13px] text-[#F8D7DC] xl:text-[0.8125rem]'}>
 					{l(a.label)}
 				</span>
 			</a>
@@ -197,11 +197,11 @@
 				class="flex flex-1 items-center justify-center gap-2 border text-[13.5px] transition-colors {v ===
 				'm'
 					? 'h-12 rounded-[14px] border-[#E7DFD2] bg-white text-[#1C1714] hover:border-[#C8102E]/40'
-					: 'h-11 rounded-xl border-[#C9A04A]/35 bg-white/[0.06] text-[#F2EDE6] hover:bg-white/10'}"
+					: 'h-11 rounded-xl border-[#C9A04A]/35 bg-white/[0.06] text-[#F2EDE6] hover:bg-white/10 xl:text-[0.84375rem]'}"
 			>
 				<BrandIcon
 					name={s.icon}
-					class={v === 'm' ? 'size-[18px] text-[#C8102E]' : 'size-[17px] text-[#E3C47A]'}
+					class={v === 'm' ? 'size-[18px] text-[#C8102E]' : 'size-[17px] text-[#E3C47A] xl:size-[1.0625rem]'}
 				/>
 				{s.name}
 			</a>
@@ -209,13 +209,13 @@
 	</div>
 {/snippet}
 
-<div class="kartu min-h-screen bg-[#F6F2EB] text-[#1C1714]">
-	<header class="lg:border-b lg:border-[#E7DFD2]">
+<div class="kartu min-h-screen bg-[#F6F2EB] text-[#1C1714] xl:flex xl:min-h-[max(100dvh,600px)] xl:flex-col">
+	<header class="lg:border-b lg:border-[#E7DFD2] xl:shrink-0">
 		<div
-			class="mx-auto flex max-w-[480px] items-center justify-between px-5 pt-[18px] lg:h-[76px] lg:max-w-[1440px] lg:px-10 lg:pt-0 xl:px-16 min-[1440px]:px-[120px]"
+			class="mx-auto flex max-w-[480px] items-center justify-between px-5 pt-[18px] lg:h-[76px] xl:h-[4.75rem] lg:max-w-[1440px] lg:px-10 lg:pt-0 xl:px-16 min-[1440px]:px-[120px]"
 		>
 			<a href="/" class="hidden lg:block" aria-label="Beacon Engineering">
-				<img src="/kartu-nama/logo.png" alt="Beacon Engineering" width="140" height="37" class="h-[37px] w-[140px]" />
+				<img src="/kartu-nama/logo.png" alt="Beacon Engineering" width="140" height="37" class="h-[37px] w-[140px] xl:h-[2.3125rem] xl:w-[8.75rem]" />
 			</a>
 			<div class="flex w-full items-center justify-between lg:w-auto lg:gap-7">
 				<div
@@ -223,7 +223,7 @@
 				>
 					<span class="size-1.5 rounded-full bg-[#C8102E]"></span>
 					<span
-						class="font-mono text-[10px] tracking-[1.4px] whitespace-nowrap text-[#E3C47A] lg:text-[11px] lg:tracking-[1.5px] lg:text-[#776D61]"
+						class="font-mono text-[10px] tracking-[1.4px] whitespace-nowrap text-[#E3C47A] lg:text-[11px] lg:tracking-[1.5px] lg:text-[#776D61] xl:text-[length:max(9px,0.6875rem)]"
 						>{l('card.label')}</span
 					>
 				</div>
@@ -246,7 +246,7 @@
 				</div>
 				<a
 					href="https://{COMPANY.website}"
-					class="hidden items-center gap-1.5 text-[15px] font-medium text-[#1C1714] lg:flex"
+					class="hidden items-center gap-1.5 text-[15px] font-medium text-[#1C1714] lg:flex xl:text-[0.9375rem]"
 				>
 					{COMPANY.website}
 					<ArrowUpRight class="size-4 text-[#C8102E]" />
@@ -256,9 +256,9 @@
 	</header>
 
 	<main
-		class="mx-auto max-w-[480px] px-4 pt-5 pb-8 lg:max-w-[1440px] lg:px-10 lg:pt-10 lg:pb-14 xl:px-16 min-[1440px]:px-[120px]"
+		class="mx-auto max-w-[480px] px-4 pt-5 pb-8 lg:max-w-[1440px] lg:px-10 lg:pt-10 lg:pb-14 xl:flex xl:w-full xl:flex-1 xl:flex-col xl:justify-center xl:px-16 xl:py-6 min-[1440px]:px-[120px]"
 	>
-		<div class="flex flex-col gap-5 lg:grid lg:grid-cols-[440px_1fr] lg:items-start lg:gap-x-8 lg:gap-y-7">
+		<div class="flex flex-col gap-5 lg:grid lg:grid-cols-[440px_1fr] lg:items-start lg:gap-x-8 xl:items-stretch">
 			<!-- Mobile: kartu ringkas + aksi -->
 			<div class="flex flex-col gap-5 lg:hidden">
 				<section
@@ -303,19 +303,19 @@
 			<!-- Desktop: kartu profil -->
 			<section
 				{@attach tilt}
-				class="card-in sheen tilt relative hidden overflow-hidden rounded-[28px] shadow-[0_24px_48px_rgba(139,10,31,0.25)] lg:col-start-1 lg:row-span-3 lg:row-start-1 lg:block"
+				class="card-in sheen tilt relative hidden overflow-hidden rounded-[28px] shadow-[0_24px_48px_rgba(139,10,31,0.25)] lg:col-start-1 lg:row-start-1 lg:block xl:flex xl:flex-col"
 				style="background-image:{bgDesktop}"
 			>
-				<Hatch size={130} step={8} corner="tr" />
-				<div class="relative flex flex-col gap-7 px-8 pt-8 pb-7">
+				<Hatch size={130} step={8} corner="tr" unit="var(--u, 1px)" />
+				<div class="relative flex flex-col gap-7 px-8 pt-8 pb-7 xl:flex-1 xl:gap-5 xl:pt-6 xl:pb-6">
 					<img
 						src="/kartu-nama/logo-white.png"
 						alt="Beacon Engineering"
 						width="132"
 						height="35"
-						class="h-[35px] w-[132px]"
+						class="h-[35px] w-[132px] xl:h-[2.1875rem] xl:w-[8.25rem]"
 					/>
-					<div class="flex h-[326px] items-center justify-center">
+					<div class="flex h-[326px] items-center justify-center xl:h-auto xl:min-h-[calc(244*var(--u,1px))] xl:flex-1">
 						<SignalPhoto
 							src={card.photo}
 							alt={name}
@@ -323,14 +323,15 @@
 							border={4}
 							dot={22}
 							rings={ringsLg}
+								unit="var(--u, 1px)"
 						/>
 					</div>
 					<div class="relative flex flex-col items-center gap-1.5 text-center">
-						<h1 class="font-heading text-[34px] font-bold tracking-[-0.6px] text-balance text-white">{name}</h1>
-						<p class="text-[17px] text-[#F8D7DC]">{card.role[$locale]} · {COMPANY.name}</p>
+						<h1 class="font-heading text-[34px] font-bold tracking-[-0.6px] text-balance text-white xl:text-[1.875rem]">{name}</h1>
+						<p class="text-[17px] text-[#F8D7DC] xl:text-[1.0625rem]">{card.role[$locale]} · {COMPANY.name}</p>
 						<div class="flex items-center gap-2.5 pt-2">
 							<span class="h-0.5 w-4 bg-[#E3C47A]"></span>
-							<span class="font-mono text-[10.5px] tracking-[1.5px] text-[#EBD49A]"
+							<span class="font-mono text-[10.5px] tracking-[1.5px] text-[#EBD49A] xl:text-[length:max(9px,0.65625rem)]"
 								>{card.field[$locale]}</span
 							>
 							<span class="h-0.5 w-4 bg-[#E3C47A]"></span>
@@ -339,126 +340,129 @@
 					{@render saveShare('d')}
 					{@render quickActions('d')}
 				</div>
-				<div class="relative border-t border-[#C9A04A] bg-[#151212] px-8 pt-5 pb-6">
+				<div class="relative border-t border-[#C9A04A] bg-[#151212] px-8 pt-5 pb-6 xl:pt-4 xl:pb-5">
 					{@render socialLinks('d')}
 				</div>
 			</section>
 
-			<!-- Desktop: pembuka -->
-			<div class="hidden flex-col gap-3.5 pt-2 pb-1 lg:col-start-2 lg:flex">
-				<p class="font-mono text-[11px] tracking-[1.6px] text-[#C8102E]">{l('card.eyebrow')}</p>
-				<h2 class="font-heading text-[44px]/[51px] font-bold tracking-[-1.2px]">
-					{l('card.title')}<br /><span class="text-[#C8102E]">{COMPANY.brand}.</span>
-				</h2>
-				<p class="max-w-[580px] text-[17px]/[26px] text-[#5E554B]">{l('card.subtitle')}</p>
-			</div>
-
-			<!-- Detail kontak: satu kolom di mobile, dua kolom di desktop (garis pemisah dari gap-px) -->
-			<section
-				class="grid gap-px overflow-hidden rounded-[18px] border border-[#E7DFD2] bg-[#E7DFD2] lg:col-start-2 lg:grid-cols-2 lg:rounded-[20px]"
-			>
-				{#each rows as r}
-					<svelte:element
-						this={r.href ? 'a' : 'div'}
-						href={r.href}
-						target={r.href?.startsWith('http') ? '_blank' : undefined}
-						rel={r.href?.startsWith('http') ? 'noopener' : undefined}
-						class="group flex items-center gap-3.5 bg-white p-[14px_16px] lg:gap-3 lg:p-4 xl:gap-4 xl:p-[20px_24px] {r.cls} {r.href
-							? 'transition-colors hover:bg-[#FDFAF6]'
-							: ''}"
-					>
-						<span
-							class="flex size-9 shrink-0 items-center justify-center rounded-[10px] bg-[#FBE9EC] lg:size-10 lg:rounded-xl"
-						>
-							<r.icon class="size-[17px] text-[#C8102E] lg:size-[18px]" />
-						</span>
-						<span class="flex min-w-0 flex-1 flex-col gap-[3px] lg:gap-1">
-							<span
-								class="font-mono text-[9.5px] tracking-[1.2px] text-[#776D61] uppercase lg:text-[10px] lg:tracking-[1.3px]"
-								>{l(r.label)}</span
-							>
-							<span class="text-[15px]/5 break-words lg:text-base/[22px]"
-								>{r.value}</span
-							>
-						</span>
-						{#if r.href}
-							<ArrowUpRight
-								class="size-4 shrink-0 text-[#C8102E] transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 lg:hidden"
-							/>
-						{/if}
-						{#if r.label === 'card.hq'}
-							<span
-								class="hidden shrink-0 items-center gap-1.5 rounded-full border border-[#E7DFD2] px-3.5 py-[9px] text-sm font-medium transition-colors group-hover:border-[#C8102E]/40 lg:flex"
-							>
-								{l('card.map')}
-								<ArrowUpRight class="size-[15px] text-[#C8102E]" />
-							</span>
-						{/if}
-					</svelte:element>
-				{/each}
-			</section>
-
-			<div class="flex flex-col gap-5 lg:col-start-2 lg:gap-7 xl:grid xl:grid-cols-[1fr_300px] xl:items-start">
-				<section class="flex flex-col gap-2.5 px-1 pt-3 lg:gap-3 lg:p-0 lg:pt-1.5">
-					<p class="font-mono text-[10px] tracking-[1.6px] text-[#C8102E] lg:text-[11px]">
-						{l('card.about.label')}
-					</p>
-					<h2
-						class="font-heading text-[22px]/[28px] font-bold tracking-[-0.4px] lg:text-2xl/[30px] lg:tracking-[-0.5px]"
-					>
-						{l('card.about.title')}
+			<!-- Kolom kanan dibungkus satu div, supaya di desktop tingginya bisa disamakan dengan kartu profil -->
+			<div class="flex flex-col gap-5 lg:col-start-2 lg:row-start-1 lg:gap-7 xl:justify-between xl:gap-5">
+				<!-- Desktop: pembuka -->
+				<div class="hidden flex-col gap-3.5 pt-2 pb-1 lg:flex xl:gap-2.5 xl:py-0">
+					<p class="font-mono text-[11px] tracking-[1.6px] text-[#C8102E] xl:text-[length:max(9px,0.6875rem)]">{l('card.eyebrow')}</p>
+					<h2 class="font-heading text-[44px]/[51px] font-bold tracking-[-1.2px] xl:text-[2.5rem]/[2.875rem]">
+						{l('card.title')}<br /><span class="text-[#C8102E]">{COMPANY.brand}.</span>
 					</h2>
-					<p class="text-[15px]/[23px] text-[#5E554B] lg:text-[15.5px]/6">{l('card.about.desc')}</p>
-					<ul class="flex flex-wrap gap-2 pt-1.5">
-						{#each COMPANY.solutions as s}
-							<li
-								class="rounded-full border border-[#DCC48A] px-3 py-[7px] text-[13px] lg:px-[13px] lg:text-[13.5px]"
-							>
-								{s}
-							</li>
-						{/each}
-					</ul>
-				</section>
+					<p class="max-w-[580px] text-[17px]/[26px] text-[#5E554B] xl:text-[1.0625rem]/[1.625rem]">{l('card.subtitle')}</p>
+				</div>
 
-				<!-- Mobile: ikuti kami (di desktop sudah ada di kartu merah) -->
-				<section class="flex flex-col gap-3 pt-2 lg:hidden">
-					<div class="flex items-center justify-between px-1">
-						<p class="font-mono text-[10px] tracking-[1.6px] text-[#C8102E]">{l('card.follow')}</p>
-						<p class="font-mono text-[10.5px] text-[#776D61]">{COMPANY.instagram.handle}</p>
-					</div>
-					{@render socialLinks('m')}
-				</section>
-
+				<!-- Detail kontak: satu kolom di mobile, dua kolom di desktop (garis pemisah dari gap-px) -->
 				<section
-					class="relative overflow-hidden rounded-[20px] lg:max-w-[300px] lg:rounded-3xl"
-					style="background-image:{bgQr}"
+					class="grid gap-px overflow-hidden rounded-[18px] border border-[#E7DFD2] bg-[#E7DFD2] lg:grid-cols-2 lg:rounded-[20px]"
 				>
-					<span class="lg:hidden"><Hatch size={72} step={7} corner="tl" /></span>
-					<span class="hidden lg:block"><Hatch size={60} step={7} corner="tl" /></span>
-					<div class="relative flex justify-center px-6 pt-7 pb-[22px] lg:pb-5">
-						<div
-							class="flex size-[196px] items-center justify-center rounded-2xl border-[1.5px] border-[#E3C47A] bg-white lg:size-[176px]"
+					{#each rows as r}
+						<svelte:element
+							this={r.href ? 'a' : 'div'}
+							href={r.href}
+							target={r.href?.startsWith('http') ? '_blank' : undefined}
+							rel={r.href?.startsWith('http') ? 'noopener' : undefined}
+							class="group flex items-center gap-3.5 bg-white p-[14px_16px] lg:gap-3 lg:p-4 xl:gap-4 xl:p-[0.875rem_1.25rem] {r.cls} {r.href
+								? 'transition-colors hover:bg-[#FDFAF6]'
+								: ''}"
 						>
-							<img
-								src="/kartu-nama/qr-{card.slug}.png"
-								alt="QR {name}"
-								width="164"
-								height="164"
-								class="size-[164px] lg:size-[148px]"
-							/>
-						</div>
-					</div>
-					<div
-						class="relative flex flex-col items-center gap-1.5 border-t border-[#C9A04A] bg-[#151212] px-6 pt-[18px] pb-[22px] text-center lg:px-5 lg:pt-4 lg:pb-5"
-					>
-						<p class="font-heading text-[17px] font-semibold text-white lg:text-base">
-							{l('card.qr.title')}
-						</p>
-						<p class="text-[13.5px]/5 text-[#CFC6BA] lg:text-[13px]/[19px]">
-							{interpolate(l('card.qr.desc'), card, $locale)}
-						</p>
-					</div>
+							<span
+								class="flex size-9 shrink-0 items-center justify-center rounded-[10px] bg-[#FBE9EC] lg:size-10 lg:rounded-xl"
+							>
+								<r.icon class="size-[17px] text-[#C8102E] lg:size-[18px] xl:size-[1.125rem]" />
+							</span>
+							<span class="flex min-w-0 flex-1 flex-col gap-[3px] lg:gap-1">
+								<span
+									class="font-mono text-[9.5px] tracking-[1.2px] text-[#776D61] uppercase lg:text-[10px] lg:tracking-[1.3px] xl:text-[length:max(9px,0.625rem)]"
+									>{l(r.label)}</span
+								>
+								<span class="text-[15px]/5 break-words lg:text-base/[22px] xl:text-base/[1.375rem]"
+									>{r.value}</span
+								>
+							</span>
+							{#if r.href}
+								<ArrowUpRight
+									class="size-4 shrink-0 text-[#C8102E] transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 lg:hidden"
+								/>
+							{/if}
+							{#if r.label === 'card.hq'}
+								<span
+									class="hidden shrink-0 items-center gap-1.5 rounded-full border border-[#E7DFD2] px-3.5 py-[9px] text-sm font-medium xl:py-[0.5625rem] transition-colors group-hover:border-[#C8102E]/40 lg:flex"
+								>
+									{l('card.map')}
+									<ArrowUpRight class="size-[15px] text-[#C8102E] xl:size-[0.9375rem]" />
+								</span>
+							{/if}
+						</svelte:element>
+					{/each}
 				</section>
+
+				<div class="flex flex-col gap-5 lg:gap-7 xl:grid xl:grid-cols-[1fr_18.75rem] xl:items-start">
+					<section class="flex flex-col gap-2.5 px-1 pt-3 lg:gap-3 lg:p-0 lg:pt-1.5">
+						<p class="font-mono text-[10px] tracking-[1.6px] text-[#C8102E] lg:text-[11px] xl:text-[length:max(9px,0.6875rem)]">
+							{l('card.about.label')}
+						</p>
+						<h2
+							class="font-heading text-[22px]/[28px] font-bold tracking-[-0.4px] lg:text-2xl/[30px] lg:tracking-[-0.5px] xl:text-2xl/[1.875rem]"
+						>
+							{l('card.about.title')}
+						</h2>
+						<p class="text-[15px]/[23px] text-[#5E554B] lg:text-[15.5px]/6 xl:text-[0.96875rem]/6">{l('card.about.desc')}</p>
+						<ul class="flex flex-wrap gap-2 pt-1.5">
+							{#each COMPANY.solutions as s}
+								<li
+									class="rounded-full border border-[#DCC48A] px-3 py-[7px] text-[13px] lg:px-[13px] lg:text-[13.5px] xl:py-[0.4375rem] xl:text-[0.84375rem]"
+								>
+									{s}
+								</li>
+							{/each}
+						</ul>
+					</section>
+
+					<!-- Mobile: ikuti kami (di desktop sudah ada di kartu merah) -->
+					<section class="flex flex-col gap-3 pt-2 lg:hidden">
+						<div class="flex items-center justify-between px-1">
+							<p class="font-mono text-[10px] tracking-[1.6px] text-[#C8102E]">{l('card.follow')}</p>
+							<p class="font-mono text-[10.5px] text-[#776D61]">{COMPANY.instagram.handle}</p>
+						</div>
+						{@render socialLinks('m')}
+					</section>
+
+					<section
+						class="relative overflow-hidden rounded-[20px] lg:max-w-[300px] lg:rounded-3xl xl:max-w-[18.75rem]"
+						style="background-image:{bgQr}"
+					>
+						<span class="lg:hidden"><Hatch size={72} step={7} corner="tl" /></span>
+						<span class="hidden lg:block"><Hatch size={60} step={7} corner="tl" unit="var(--u, 1px)" /></span>
+						<div class="relative flex justify-center px-6 pt-7 pb-[22px] lg:pb-5 xl:pt-5 xl:pb-4">
+							<div
+								class="flex size-[196px] items-center justify-center rounded-2xl border-[1.5px] border-[#E3C47A] bg-white lg:size-[176px] xl:size-[9.25rem]"
+							>
+								<img
+									src="/kartu-nama/qr-{card.slug}.png"
+									alt="QR {name}"
+									width="164"
+									height="164"
+									class="size-[164px] lg:size-[148px] xl:size-[8rem]"
+								/>
+							</div>
+						</div>
+						<div
+							class="relative flex flex-col items-center gap-1.5 border-t border-[#C9A04A] bg-[#151212] px-6 pt-[18px] pb-[22px] text-center lg:px-5 lg:pt-4 lg:pb-5 xl:px-4 xl:pt-3.5 xl:pb-4"
+						>
+							<p class="font-heading text-[17px] font-semibold text-white lg:text-base">
+								{l('card.qr.title')}
+							</p>
+							<p class="text-[13.5px]/5 text-[#CFC6BA] lg:text-[13px]/[19px] xl:text-[0.8125rem]/[1.1875rem]">
+								{interpolate(l('card.qr.desc'), card, $locale)}
+							</p>
+						</div>
+					</section>
+				</div>
 			</div>
 		</div>
 
@@ -473,9 +477,9 @@
 	</main>
 
 	<!-- Footer desktop -->
-	<footer class="hidden border-t border-[#C9A04A] bg-[#151212] lg:block">
+	<footer class="hidden border-t border-[#C9A04A] bg-[#151212] lg:block xl:shrink-0">
 		<div
-			class="mx-auto flex max-w-[1440px] items-center justify-between px-10 pt-[22px] pb-7 font-mono text-[11px] tracking-[0.4px] xl:px-16 min-[1440px]:px-[120px]"
+			class="mx-auto flex max-w-[1440px] items-center justify-between px-10 pt-[22px] pb-7 font-mono text-[11px] tracking-[0.4px] xl:px-16 xl:pt-[1.375rem] xl:text-[length:max(9px,0.6875rem)] min-[1440px]:px-[120px]"
 		>
 			<p class="text-[#CFC6BA]">© {new Date().getFullYear()} {COMPANY.name} · {COMPANY.brand}</p>
 			<p class="text-[#E3C47A]">{COMPANY.address}</p>
@@ -545,6 +549,16 @@
 		16%,
 		100% {
 			translate: 100% 0;
+		}
+	}
+
+	/* Layar lebar (≥1280px): halaman diskalakan mengikuti tinggi layar supaya muat tanpa scroll.
+	   `--u` = 1px saat tinggi layar sama dengan tinggi desain (1000px); rem ikut berskala, jadi
+	   hampir semua ukuran Tailwind ikut. Di bawah 600px skala berhenti dan halaman boleh di-scroll. */
+	@media (min-width: 1280px) {
+		:global(html:has(.kartu)) {
+			--u: min(1.2px, calc(max(100dvh, 600px) / 1000));
+			font-size: calc(16 * var(--u));
 		}
 	}
 

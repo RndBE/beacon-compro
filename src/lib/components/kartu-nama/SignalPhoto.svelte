@@ -6,7 +6,8 @@
 		size,
 		border,
 		dot,
-		rings
+		rings,
+		unit = '1px'
 	}: {
 		src: string;
 		alt: string;
@@ -17,32 +18,34 @@
 		dot: number;
 		/** Pasangan [diameter px, opasitas] dari cincin terdalam ke terluar. */
 		rings: [number, number][];
+		/** Satuan ukuran; `var(--u)` membuat seluruh foto ikut berskala dengan halaman. */
+		unit?: string;
 	} = $props();
 
 	const outer = $derived(rings.at(-1)?.[0] ?? size);
 </script>
 
-<div class="relative shrink-0" style="width:{size}px;height:{size}px">
+<div class="relative shrink-0" style="width:calc({size} * {unit});height:calc({size} * {unit})">
 	{#each rings as [d, a], i}
 		<span
 			class="ring absolute top-1/2 left-1/2 rounded-full border border-solid"
-			style="width:{d}px;height:{d}px;margin:{-d / 2}px 0 0 {-d / 2}px;--a:{a};--i:{i}"
+			style="width:calc({d} * {unit});height:calc({d} * {unit});margin:calc({-d / 2} * {unit}) 0 0 calc({-d / 2} * {unit});--a:{a};--i:{i}"
 		></span>
 	{/each}
 	<!-- Gelombang sinyal yang merambat dari foto ke cincin terluar -->
-	<span class="ping absolute top-1/2 left-1/2 rounded-full" style="--from:{size}px;--to:{outer}px"></span>
+	<span class="ping absolute top-1/2 left-1/2 rounded-full" style="--from:calc({size} * {unit});--to:calc({outer} * {unit})"></span>
 	<img
 		{src}
 		{alt}
 		width="600"
 		height="600"
 		class="photo relative size-full rounded-full bg-[#E9E3DA] object-cover"
-		style="outline:{border}px solid #151212;outline-offset:{-border / 2}px"
+		style="outline:calc({border} * {unit}) solid #151212;outline-offset:calc({-border / 2} * {unit})"
 	/>
 	<!-- Titik berada di 45° tepi foto: 50% + r·cos45° = 85.36% -->
 	<span
 		class="dot absolute rounded-full bg-[#FFD27A]"
-		style="width:{dot}px;height:{dot}px;left:85.36%;top:85.36%;margin:{-dot / 2}px 0 0 {-dot / 2}px;outline:{dot > 16 ? 3 : 2.5}px solid #fff;--d:{dot}px"
+		style="width:calc({dot} * {unit});height:calc({dot} * {unit});left:85.36%;top:85.36%;margin:calc({-dot / 2} * {unit}) 0 0 calc({-dot / 2} * {unit});outline:calc({dot > 16 ? 3 : 2.5} * {unit}) solid #fff;--d:calc({dot} * {unit})"
 	></span>
 </div>
 

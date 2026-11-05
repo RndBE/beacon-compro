@@ -2,7 +2,12 @@
 	type Corner = 'tl' | 'tr' | 'bl' | 'br';
 
 	/** Garis arsir emas di satu sudut parent (segitiga siku-siku), parent harus `relative`. */
-	let { size, step, corner }: { size: number; step: number; corner: Corner } = $props();
+	let {
+		size,
+		step,
+		corner,
+		unit = '1px'
+	}: { size: number; step: number; corner: Corner; unit?: string } = $props();
 
 	// Digambar sekali untuk sudut kanan-atas, sudut lain didapat dengan memutar.
 	const d = $derived(
@@ -25,6 +30,7 @@
 	width={size}
 	height={size}
 	class="pointer-events-none absolute {place[corner]}"
+	style="width:calc({size} * {unit});height:calc({size} * {unit})"
 	aria-hidden="true"
 >
 	<path {d} class="draw" fill="none" stroke="#F0D38A" stroke-width="1.5" stroke-linecap="round" />
