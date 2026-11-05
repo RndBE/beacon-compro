@@ -29,7 +29,7 @@
 	viewBox="0 0 {size} {size}"
 	width={size}
 	height={size}
-	class="pointer-events-none absolute {place[corner]}"
+	class="pointer-events-none absolute z-10 {place[corner]}"
 	style="width:calc({size} * {unit});height:calc({size} * {unit})"
 	aria-hidden="true"
 >

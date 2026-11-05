@@ -28,7 +28,7 @@
 <div class="relative shrink-0" style="width:calc({size} * {unit});height:calc({size} * {unit})">
 	{#each rings as [d, a], i}
 		<span
-			class="ring absolute top-1/2 left-1/2 rounded-full border border-solid"
+			class="signal-ring absolute top-1/2 left-1/2 rounded-full border border-solid"
 			style="width:calc({d} * {unit});height:calc({d} * {unit});margin:calc({-d / 2} * {unit}) 0 0 calc({-d / 2} * {unit});--a:{a};--i:{i}"
 		></span>
 	{/each}
@@ -56,7 +56,8 @@
 		animation: photo-in 1.1s cubic-bezier(0.22, 1, 0.36, 1) 0.15s backwards;
 	}
 
-	.ring {
+	/* Bukan `.ring`: nama itu bentrok dengan utilitas `ring` Tailwind yang menambah box-shadow hitam. */
+	.signal-ring {
 		border-color: rgba(235, 212, 154, var(--a));
 		animation:
 			ring-on 0.9s cubic-bezier(0.22, 1, 0.36, 1) calc(0.35s + var(--i) * 0.09s) backwards,

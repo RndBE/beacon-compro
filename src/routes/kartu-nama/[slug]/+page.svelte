@@ -284,7 +284,8 @@
 							height="35"
 							class="relative h-[35px] w-[132px]"
 						/>
-						<div class="relative mt-6 flex flex-col gap-1">
+						<!-- mt-12: nama selalu mulai di bawah foto (24px atas + 80px foto), walau jabatan membungkus dua baris -->
+						<div class="relative mt-12 flex flex-col gap-1">
 							<h1 class="font-heading text-2xl font-bold tracking-[-0.4px] text-balance text-white">{name}</h1>
 							<p class="text-sm text-[#F8D7DC]">{card.role[$locale]} · {COMPANY.name}</p>
 						</div>
@@ -313,7 +314,7 @@
 						alt="Beacon Engineering"
 						width="132"
 						height="35"
-						class="h-[35px] w-[132px] xl:h-[2.1875rem] xl:w-[8.25rem]"
+						class="relative z-10 h-[35px] w-[132px] xl:h-[2.1875rem] xl:w-[8.25rem]"
 					/>
 					<div class="flex h-[326px] items-center justify-center xl:h-auto xl:min-h-[calc(244*var(--u,1px))] xl:flex-1">
 						<SignalPhoto
@@ -499,6 +500,8 @@
 		position: absolute;
 		inset: 0;
 		pointer-events: none;
+		/* Tetap di atas logo dan hatch (z-10), seperti sebelum keduanya dinaikkan di atas cincin. */
+		z-index: 20;
 		background: linear-gradient(
 			112deg,
 			transparent 38%,
