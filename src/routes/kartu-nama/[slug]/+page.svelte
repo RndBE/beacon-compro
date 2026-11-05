@@ -444,7 +444,7 @@
 								class="flex size-[196px] items-center justify-center rounded-2xl border-[1.5px] border-[#E3C47A] bg-white lg:size-[176px] xl:size-[9.25rem]"
 							>
 								<img
-									src="/kartu-nama/qr-{card.slug}.png"
+									src="/kartu-nama/{card.slug}/qr.svg"
 									alt="QR {name}"
 									width="164"
 									height="164"

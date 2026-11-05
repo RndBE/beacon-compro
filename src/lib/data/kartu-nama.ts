@@ -1,3 +1,4 @@
+import type { BusinessCardResponse } from '$lib/api';
 import type { Locale } from '$lib/i18n';
 
 type Localized = Record<Locale, string>;
@@ -7,6 +8,7 @@ export type BusinessCard = {
 	/** Nama tanpa gelar, dipakai di field N: vCard. */
 	firstName: string;
 	lastName: string;
+	/** Gelar; boleh kosong. */
 	suffix: string;
 	role: Localized;
 	/** Bidang keahlian, ditampilkan sebagai pita di bawah nama. */
@@ -40,14 +42,15 @@ export const COMPANY = {
 } as const;
 
 // Nomor cukup ditulis sekali (format tampilan); versi tel:/wa.me diturunkan darinya.
-const card = (c: Omit<BusinessCard, 'phone' | 'email'> & { email?: string }): BusinessCard => ({
+const makeCard = (c: Omit<BusinessCard, 'phone' | 'email'> & { email?: string }): BusinessCard => ({
 	...c,
 	email: c.email ?? COMPANY.email,
 	phone: c.phoneDisplay.replace(/\D/g, '')
 });
 
+// Cadangan bila API CMS tidak terjangkau. Sumber utama kartu ada di admin (Kartu Nama).
 const cards: BusinessCard[] = [
-	card({
+	makeCard({
 		slug: 'sofyan',
 		firstName: 'Sofyan',
 		lastName: 'Ariyanto',
@@ -60,7 +63,7 @@ const cards: BusinessCard[] = [
 		phoneDisplay: '+62 811-2401-983',
 		photo: '/kartu-nama/sofyan.webp'
 	}),
-	card({
+	makeCard({
 		slug: 'masywir',
 		firstName: 'Masywir',
 		lastName: 'Arif',
@@ -78,7 +81,22 @@ const cards: BusinessCard[] = [
 
 export const findCard = (slug: string) => cards.find((c) => c.slug === slug);
 
-export const fullName = (c: BusinessCard) => `${c.firstName} ${c.lastName}, ${c.suffix}`;
+/** Respons API `/business-cards/{slug}` menjadi kartu; foto kosong memakai foto bawaan bila ada. */
+export const fromApi = (r: BusinessCardResponse): BusinessCard =>
+	makeCard({
+		slug: r.slug,
+		firstName: r.first_name,
+		lastName: r.last_name,
+		suffix: r.suffix ?? '',
+		role: { ID: r.role_id, EN: r.role_en },
+		field: { ID: r.field_id, EN: r.field_en },
+		phoneDisplay: r.phone_display,
+		email: r.email || undefined,
+		photo: r.photo ?? findCard(r.slug)?.photo ?? ''
+	});
+
+export const fullName = (c: BusinessCard) =>
+	[`${c.firstName} ${c.lastName}`, c.suffix].filter(Boolean).join(', ');
 
 /** Mengisi placeholder {name} dan {role}; gelar "S.T." di akhir kalimat tidak jadi "S.T..". */
 export const interpolate = (s: string, c: BusinessCard, lang: Locale) =>

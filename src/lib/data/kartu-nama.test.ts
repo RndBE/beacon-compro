@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { buildVcard, findCard, interpolate } from './kartu-nama';
+import { buildVcard, findCard, fromApi, fullName, interpolate } from './kartu-nama';
 
 describe('buildVcard', () => {
 	const card = findCard('sofyan')!;
@@ -32,5 +32,42 @@ describe('buildVcard', () => {
 
 	it('returns undefined for an unknown slug', () => {
 		expect(findCard('nope')).toBeUndefined();
+	});
+});
+
+describe('fromApi', () => {
+	const base = {
+		slug: 'budi-santoso',
+		first_name: 'Budi',
+		last_name: 'Santoso',
+		suffix: null,
+		role_id: 'Staf Teknik',
+		role_en: 'Technical Staff',
+		field_id: 'TELEMETRI',
+		field_en: 'TELEMETRY',
+		phone_display: '+62 812-3456-789',
+		email: null,
+		photo: 'https://admin.be-jogja.com/storage/business-cards/budi.webp'
+	};
+
+	it('maps the CMS response and derives the dial digits', () => {
+		const c = fromApi(base);
+		expect(c.role).toEqual({ ID: 'Staf Teknik', EN: 'Technical Staff' });
+		expect(c.phone).toBe('628123456789');
+		expect(c.email).toBe('info@bejogja.com');
+		expect(c.photo).toBe(base.photo);
+	});
+
+	it('keeps the name clean when there is no degree', () => {
+		const c = fromApi(base);
+		expect(fullName(c)).toBe('Budi Santoso');
+		expect(interpolate('Simpan {name}.', c, 'ID')).toBe('Simpan Budi Santoso.');
+		expect(buildVcard(c, 'ID')).toContain('FN:Budi Santoso\r\n');
+	});
+
+	it('uses the bundled photo for a seeded card without an uploaded one', () => {
+		const c = fromApi({ ...base, slug: 'sofyan', photo: null, email: 'x@y.id' });
+		expect(c.photo).toBe('/kartu-nama/sofyan.webp');
+		expect(c.email).toBe('x@y.id');
 	});
 });

@@ -117,6 +117,23 @@ export interface HomepageData {
 	recent_articles: ArticleSummary[];
 }
 
+// ─── Business Card (CMS: Kartu Nama) ──────────
+
+export interface BusinessCardResponse {
+	slug: string;
+	first_name: string;
+	last_name: string;
+	suffix: string | null;
+	role_id: string;
+	role_en: string;
+	field_id: string;
+	field_en: string;
+	phone_display: string;
+	email: string | null;
+	/** Full URL; null for cards that still use the photo bundled with the site. */
+	photo: string | null;
+}
+
 // ─── Search Types ─────────────────────────────
 
 export interface SearchResult {

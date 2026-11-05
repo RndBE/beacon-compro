@@ -1,9 +1,10 @@
 import { error } from '@sveltejs/kit';
-import { buildVcard, findCard } from '$lib/data/kartu-nama';
+import { buildVcard } from '$lib/data/kartu-nama';
+import { loadCard } from '$lib/loaders/kartu-nama';
 import type { RequestHandler } from './$types';
 
-export const GET: RequestHandler = ({ params, url }) => {
-	const card = findCard(params.slug);
+export const GET: RequestHandler = async ({ params, url, fetch }) => {
+	const card = await loadCard(params.slug, fetch);
 	if (!card) error(404, 'Kartu nama tidak ditemukan');
 
 	const lang = url.searchParams.get('lang') === 'en' ? 'EN' : 'ID';
