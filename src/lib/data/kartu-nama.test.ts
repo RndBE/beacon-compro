@@ -22,6 +22,14 @@ describe('buildVcard', () => {
 		expect(interpolate('Role: {role}', card, 'EN')).toBe('Role: Director');
 	});
 
+	it('uses the company email unless the card has its own', () => {
+		expect(card.email).toBe('info@bejogja.com');
+		const masywir = findCard('masywir')!;
+		expect(buildVcard(masywir, 'ID')).toContain('EMAIL:arifmasywir@gmail.com');
+		expect(buildVcard(masywir, 'ID')).toContain('FN:Masywir Arif\\, S.H.\\, M.H.');
+		expect(buildVcard(masywir, 'ID')).toContain('TEL;TYPE=WORK:+6281311569088');
+	});
+
 	it('returns undefined for an unknown slug', () => {
 		expect(findCard('nope')).toBeUndefined();
 	});

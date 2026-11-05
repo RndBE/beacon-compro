@@ -50,14 +50,14 @@
 	const actions = $derived([
 		{ label: 'card.call', href: `tel:+${card.phone}`, icon: Phone, external: false },
 		{ label: 'card.whatsapp', href: `https://wa.me/${card.phone}`, icon: null, external: true },
-		{ label: 'card.email', href: `mailto:${COMPANY.email}`, icon: Mail, external: false },
+		{ label: 'card.email', href: `mailto:${card.email}`, icon: Mail, external: false },
 		{ label: 'card.location', href: COMPANY.mapsUrl, icon: MapPin, external: true }
 	] as const);
 
 	// Urutan mobile; di desktop jam operasional naik di atas kantor pusat (lihat `order`).
 	const rows = $derived([
 		{ label: 'card.phone', value: card.phoneDisplay, href: `tel:+${card.phone}`, icon: Phone, cls: '' },
-		{ label: 'card.email', value: COMPANY.email, href: `mailto:${COMPANY.email}`, icon: Mail, cls: '' },
+		{ label: 'card.email', value: card.email, href: `mailto:${card.email}`, icon: Mail, cls: '' },
 		{ label: 'card.web', value: COMPANY.website, href: `https://${COMPANY.website}`, icon: Globe, cls: '' },
 		{
 			label: 'card.hq',
@@ -285,7 +285,7 @@
 							class="relative h-[35px] w-[132px]"
 						/>
 						<div class="relative mt-6 flex flex-col gap-1">
-							<h1 class="font-heading text-2xl font-bold tracking-[-0.4px] text-white">{name}</h1>
+							<h1 class="font-heading text-2xl font-bold tracking-[-0.4px] text-balance text-white">{name}</h1>
 							<p class="text-sm text-[#F8D7DC]">{card.role[$locale]} · {COMPANY.name}</p>
 						</div>
 					</div>
@@ -326,7 +326,7 @@
 						/>
 					</div>
 					<div class="relative flex flex-col items-center gap-1.5 text-center">
-						<h1 class="font-heading text-[34px] font-bold tracking-[-0.6px] text-white">{name}</h1>
+						<h1 class="font-heading text-[34px] font-bold tracking-[-0.6px] text-balance text-white">{name}</h1>
 						<p class="text-[17px] text-[#F8D7DC]">{card.role[$locale]} · {COMPANY.name}</p>
 						<div class="flex items-center gap-2.5 pt-2">
 							<span class="h-0.5 w-4 bg-[#E3C47A]"></span>

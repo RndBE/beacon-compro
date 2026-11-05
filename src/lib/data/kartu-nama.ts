@@ -14,6 +14,8 @@ export type BusinessCard = {
 	/** Nomor internasional tanpa `+`, dipakai untuk tel: dan wa.me. */
 	phone: string;
 	phoneDisplay: string;
+	/** Email kartu; bila tidak diisi memakai email perusahaan. */
+	email: string;
 	photo: string;
 };
 
@@ -38,8 +40,9 @@ export const COMPANY = {
 } as const;
 
 // Nomor cukup ditulis sekali (format tampilan); versi tel:/wa.me diturunkan darinya.
-const card = (c: Omit<BusinessCard, 'phone'>): BusinessCard => ({
+const card = (c: Omit<BusinessCard, 'phone' | 'email'> & { email?: string }): BusinessCard => ({
 	...c,
+	email: c.email ?? COMPANY.email,
 	phone: c.phoneDisplay.replace(/\D/g, '')
 });
 
@@ -56,6 +59,20 @@ const cards: BusinessCard[] = [
 		},
 		phoneDisplay: '+62 811-2401-983',
 		photo: '/kartu-nama/sofyan.webp'
+	}),
+	card({
+		slug: 'masywir',
+		firstName: 'Masywir',
+		lastName: 'Arif',
+		suffix: 'S.H., M.H.',
+		role: { ID: 'Marketing Partner', EN: 'Marketing Partner' },
+		field: {
+			ID: 'TELEMETRI · INSTRUMENTASI · IoT',
+			EN: 'TELEMETRY · INSTRUMENTATION · IoT'
+		},
+		phoneDisplay: '+62 813-1156-9088',
+		email: 'arifmasywir@gmail.com',
+		photo: '/kartu-nama/masywir.webp'
 	})
 ];
 
@@ -82,7 +99,7 @@ export function buildVcard(c: BusinessCard, lang: Locale): string {
 		`ORG:${esc(`${COMPANY.name} (${COMPANY.brand})`)}`,
 		`TITLE:${esc(c.role[lang])}`,
 		`TEL;TYPE=WORK:+${c.phone}`,
-		`EMAIL:${COMPANY.email}`,
+		`EMAIL:${esc(c.email)}`,
 		`URL:https://${COMPANY.website}`,
 		'ADR:;;Kadirojo I\\, Purwomartani\\, Kalasan;Sleman;DIY;55571;Indonesia',
 		'END:VCARD',
